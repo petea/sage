@@ -102,6 +102,11 @@ Feed.prototype.parseRSS = function() {
 					}
 					break;
 				case "description":
+					if(!item.content) {
+						item.content = CommonFunc.getInnerText(j);
+					}
+					break;
+				case "encoded":
 					item.content = CommonFunc.getInnerText(j);
 					break;
 				case "pubDate":
