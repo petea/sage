@@ -254,7 +254,7 @@ FeedItem.prototype.getTitle = function() {
 	} else {
 		if(this.hasContent()) {
 			temp = this.getContent();
-			temp.replace(/<.*?>/g,'');
+			temp = temp.replace(/<.*?>/g,'');
 			return temp.substring(0, 30) + "...";
 		} else {
 			return "No Title";

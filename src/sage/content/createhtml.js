@@ -94,9 +94,9 @@ var CreateHTML = {
 				description = "<div class=\"item-desc\">" + description + "</div>";
 			}
 
-			if(feed.getItem(i).hasPubDate()) {
-				pubDate = "<div class=\"item-pubDate\">" + feed.getItem(i).getPubDate().toLocaleString() + "</div>";
-			}
+			//if(feed.getItem(i).hasPubDate()) {
+			//	pubDate = "<div class=\"item-pubDate\">" + feed.getItem(i).getPubDate().toLocaleString() + "</div>";
+			//}
 
 			var itemSource = this.ITEM_SOURCE;
 			itemSource = itemSource.replace("**NUMBER**", i+1);
