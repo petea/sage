@@ -91,7 +91,7 @@ var UpdateChecker = {
 		if(this.httpReq) {
 			this.httpReq.abort();
 		}
-		
+
 		this.httpReq = new XMLHttpRequest();
 		this.httpReq.parent = this;
 
@@ -135,7 +135,7 @@ var UpdateChecker = {
 		var lastModified = 0;
 
 		try {
-			var feed = new Feed(UpdateChecker.httpReq.responseXML);
+			var feed = new Feed(UpdateChecker.httpReq.responseXML, UpdateChecker.httpReq.channel.originalURI);
 		} catch(e) {
 			UpdateChecker.checkResult(false, 0);
 			return;
@@ -144,7 +144,7 @@ var UpdateChecker = {
 		if(feed.hasLastPubDate()) {
 			lastModified = feed.getLastPubDate().getTime();
 		}
-		
+
 		UpdateChecker.checkResult(true, lastModified, feed);
 	},
 
@@ -181,7 +181,7 @@ var UpdateChecker = {
 		}
 
 		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
-		
+
 		if(this.checkList.length == 0) {
 			this.checking = false;
 			this.onChecked(name, url);

@@ -567,7 +567,7 @@ function httpGetResult(aResultCode) {
 	if(aResultCode == RESULT_OK) {
 		currentFeed = new Feed(responseXML);
 
-		if(lastResource && lastResource.res) {
+		if(lastResource && lastResource.res, httpReq.channel.originalURI) {
 			if(CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
 				if(CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != currentFeed.getTitle()) {
 					CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, currentFeed.getTitle());

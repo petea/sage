@@ -41,10 +41,10 @@ var GetRssTitle = {
 	httpReq: null,
 	res: null,
 	url: "",
-	
+
 	getRssTitle: function(aBookmrkID){
 		if(this.checking) return;
-	
+
 		this.res = RDF.GetResource(aBookmrkID);
 		var type = CommonFunc.getBMDSProperty(this.res, CommonFunc.RDF_TYPE);
 		if(type == NC_NS + "Bookmark") {
@@ -53,7 +53,7 @@ var GetRssTitle = {
 		if(type == NC_NS + "Livemark") {
 			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_FEEDURL);
 		}
-		
+
 		this.httpReq = new XMLHttpRequest();
 		this.httpReq.onload = this.httpLoaded;
 		this.httpReq.onreadystatechange = this.httpReadyStateChange;
@@ -68,7 +68,7 @@ var GetRssTitle = {
 			this.checking = false;
 		}
 	},
-	
+
 	httpReadyStateChange: function() {
 		if(GetRssTitle.httpReq.readyState == 2) {
 			try {
@@ -80,15 +80,15 @@ var GetRssTitle = {
 			}
 		}
 	},
-	
+
 	httpLoaded: function() {
 		this.checking = false;
-		
-		var feed = new Feed(GetRssTitle.httpReq.responseXML);
+
+		var feed = new Feed(GetRssTitle.httpReq.responseXML, GetRssTitle.httpReq.channel.originalURI);
 		var rssTitle = feed.getTitle();
 
 		if(!rssTitle) return;
-		
+
 		var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 		var resultValue = { value: rssTitle };
 		var result = prompt.prompt(window, "Sage", strRes.getString("get_feed_title"), resultValue, null, {});
