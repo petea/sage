@@ -73,4 +73,15 @@ div.item-pubDate {
 	font-size: x-small;
 	margin: 0px;
 	padding: 8px 10px;
+	width: 80%;
+	float: left;
+}
+
+div.item-technorati {
+	font-size: x-small;
+	margin: 0px;
+	padding: 8px 10px;
+	width: 20%;
+	float: right;
+	text-align: right;
 }

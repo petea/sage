@@ -40,12 +40,6 @@
 <command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
 
 
-
-
-
-
-
-
 <stringbundleset>
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
 </stringbundleset>

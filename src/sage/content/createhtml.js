@@ -100,6 +100,7 @@ var CreateHTML = {
 			var itemSource = this.ITEM_SOURCE;
 			itemSource = itemSource.replace("**NUMBER**", i+1);
 			itemSource = itemSource.replace("**LINK**", link);
+			itemSource = itemSource.replace("**TECHNORATI**", encodeURIComponent(link));
 			itemSource = itemSource.replace("**TITLE**", title);
 			itemSource = itemSource.replace("**DESCRIPTION**", description);
 			itemSource = itemSource.replace("**PUBDATE**", pubDate);

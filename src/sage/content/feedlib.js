@@ -195,8 +195,20 @@ Feed.prototype.getTitle = function() {
 	return this.title;
 }
 
+Feed.prototype.hasDescription = function() {
+	if(!this.description) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 Feed.prototype.getDescription = function() {
-	return this.description;
+	if(this.hasDescription()) {
+		return this.description;
+	} else {
+		return "";
+	}
 }
 
 Feed.prototype.getLink = function() {

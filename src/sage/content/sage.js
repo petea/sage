@@ -51,7 +51,7 @@ function init() {
   	// Load Preference
 	sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
   	// observe Preference
-  	prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.RSS_READER_FOLDER_ID, sageFolderChanged);
+  prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.RSS_READER_FOLDER_ID, sageFolderChanged);
 
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	bookmarksTree.treeBoxObject.selection.select(0);
@@ -62,18 +62,22 @@ function init() {
 
   aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 
-	aConsoleService.logStringMessage("Sage initialized.");
+	logMessage("initialized");
+}
+
+function logMessage(message) {
+	aConsoleService.logStringMessage("Sage: " + message);
 }
 
 
 	// 更新されたRSSのみ表示
-function showOnlyUpdated(){
-	if(getCheckboxCheck("chkOnlyUpdate")){
+function showOnlyUpdated() {
+	if(getCheckboxCheck("chkOnlyUpdate")) {
 		var findURL = "find:datasource=rdf:bookmarks&match=";
 			findURL += CommonFunc.BM_DESCRIPTION;
 			findURL += "&method=is&text=updated";
 		bookmarksTree.tree.setAttribute("ref", findURL);
-	}else{
+	} else {
 		bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	}
 }
@@ -86,7 +90,7 @@ function sageFolderChanged(subject, topic, prefName) {
 }
 
 function done() {
-	if(prefObserverSageFolder){
+	if(prefObserverSageFolder) {
 		CommonFunc.removePrefListener(prefObserverSageFolder);
 	}
 
@@ -95,6 +99,8 @@ function done() {
 		rssLoading = false;
 	}
 	UpdateChecker.done();
+
+	logMessage("shutdown");
 }
 
 function openOPMLWizard() {
@@ -329,17 +335,13 @@ function setRssItemListBox() {
 }
 
 
- // URL が訪問済みか調べる
 function isVisited(aURL){
-	try{
-		var globalHistory = Components.classes["@mozilla.org/rdf/datasource;1?name=history"]
-							.getService(Components.interfaces.nsIGlobalHistory);
-			// ドメインの小文字化を nsIURI に任せる 
-		var URI = Components.classes['@mozilla.org/network/standard-url;1']
-						.createInstance(Components.interfaces.nsIURI);
+	try {
+		var globalHistory = Components.classes["@mozilla.org/browser/global-history;1"].getService(Components.interfaces.nsIGlobalHistory);
+		var URI = Components.classes['@mozilla.org/network/standard-url;1'].createInstance(Components.interfaces.nsIURI);
 		URI.spec = aURL;
 		return globalHistory.isVisited(URI.spec);
-	}catch(e){}
+	} catch(e) {}
 	return false;
 }
 
@@ -417,13 +419,14 @@ function httpGet(aURL) {
 	responseXML = null;
 
 	httpReq = new XMLHttpRequest();
+
+	httpReq.open("GET", aURL);
+
 	httpReq.onload = httpLoaded;	
 	httpReq.onerror = httpError;
 	httpReq.onreadystatechange = httpReadyStateChange;
 
-
 	try {
-		httpReq.open("GET", aURL);
 		httpReq.setRequestHeader("User-Agent", USER_AGENT);
 		httpReq.overrideMimeType("application/xml");
 	} catch(e) {
@@ -438,7 +441,9 @@ function httpGet(aURL) {
 	}
 }
 
-function httpError(e) {}
+function httpError(e) {
+	logMessage("HTTP Error");
+}
 
 function httpReadyStateChange() {
 

@@ -43,12 +43,16 @@ var UpdateChecker = {
 		
 		this.httpReq = new XMLHttpRequest();
 		this.httpReq.parent = this;
-		this.httpReq.onload = this.httpLoaded;
-		this.httpReq.onreadystatechange = this.httpReadyStateChange;
+
 		this.httpReq.open("GET", url);
-		this.httpReq.setRequestHeader("User-Agent", USER_AGENT);
-		this.httpReq.overrideMimeType("application/xml");
+
+		this.httpReq.onload = this.httpLoaded;
+		this.httpReq.onerror = this.httpError;
+		this.httpReq.onreadystatechange = this.httpReadyStateChange;
+
 		try {
+			this.httpReq.setRequestHeader("User-Agent", USER_AGENT);
+			this.httpReq.overrideMimeType("application/xml");
 			this.httpReq.send(null);
 			this.onCheck(name, url);
 		} catch(e) {
@@ -58,6 +62,9 @@ var UpdateChecker = {
 		}
 	},
 
+	httpError: function() {
+		logMessage("HTTP Error");
+	},
 
 	httpReadyStateChange: function() {
 		if(UpdateChecker.httpReq.readyState == 2) {
