@@ -141,7 +141,6 @@ function manageRSSList() {
 	window.openDialog(dialogURL, "", "chrome,all,dialog=no", sageFolderID);
 }
 
-
 function updateCheck(aCheckFolderId) {	
 	UpdateChecker.onCheck = function(aName, aURL) {
 			rssStatusImage.setAttribute("loading", "true");
@@ -170,7 +169,6 @@ function bookmarksOpen(){
 	setStatusLoading();
 	httpGet(lastResource.url);
 }
-
 
 function createTreeContextMenu2(aEvent) {
 	var popup = aEvent.target;
@@ -227,8 +225,6 @@ function bookmarksTreeClick(aEvent){
 	bookmarksOpen();
 }
 
-
-
 function rssItemListBoxClick(aEvent) {
 	if(aEvent.type == "click") {
 		if(aEvent.button == 2 || aEvent.originalTarget.localName != "listitem") {
@@ -258,7 +254,6 @@ function rssItemListBoxClick(aEvent) {
 	selectedItem.setAttribute("visited", "true");
 }
 
-
 function rssTitleLabelClick(aNode, aEvent){
 	var tabbed = false;
 	if(!aNode.hasAttribute("href") || aEvent.button == 2) {
@@ -277,7 +272,6 @@ function rssTitleLabelClick(aNode, aEvent){
 		getContentBrowser().loadURI(link);
 	}
 }
-
 
 function setStatusLoading(label) {
 	rssStatusImage.setAttribute("loading", "true");
@@ -309,8 +303,6 @@ function setStatusError(aStatus) {
 	rssStatusLabel.value = "Error: " + aStatus;
 }
 
-
-	// ブラウザオブジェクトを返す
 function getContentBrowser() {
 	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
 	var topWindowOfType = windowManager.getMostRecentWindow("navigator:browser");
