@@ -602,8 +602,6 @@ function openListItem(oType) {
 
 var linkVisitor = {
 	_uriFixup : Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup),
-	_globalHistory : Components.classes["@mozilla.org/browser/global-history;2"].getService(Components.interfaces.nsIGlobalHistory2),
-	_browserHistory : Components.classes["@mozilla.org/browser/global-history;2"].getService(Components.interfaces.nsIBrowserHistory),
 
 	setVisited:	function (sURI, bRead) {
 		if (!sURI)
@@ -613,8 +611,12 @@ var linkVisitor = {
 		var fixupURI = this._getFixupURI(sURI);
 		if (fixupURI == null)
 			return;
-		if (bRead)
-			this._globalHistory.addURI(fixupURI, false, true);
+		if (bRead) {
+			if (this._ff08)
+				this._globalHistory.addPage(fixupURI);
+			else
+				this._globalHistory.addURI(fixupURI, false, true);
+		}
 		else
 			this._browserHistory.removePage(fixupURI);
 	},
@@ -634,9 +636,25 @@ var linkVisitor = {
 			logMessage("Could not fixup URI: " + sURI);
 			return null;
 		}
+	},
+
+	init : function () {
+		// Firefox 0.8 does not support @mozilla.org/browser/global-history;2 or
+		// nsIGlobalHistory2
+		this._ff08 = !("@mozilla.org/browser/global-history;2" in Components.classes);
+		var gh;
+		if (this._ff08) {
+			gh = Components.classes["@mozilla.org/browser/global-history;1"];
+			linkVisitor._globalHistory = gh.getService(Components.interfaces.nsIGlobalHistory);
+		}
+		else {
+			gh = Components.classes["@mozilla.org/browser/global-history;2"];
+			linkVisitor._globalHistory = gh.getService(Components.interfaces.nsIGlobalHistory2);
+		}
+		linkVisitor._browserHistory = gh.getService(Components.interfaces.nsIBrowserHistory);
 	}
 };
-
+linkVisitor.init();
 
 
 // RSS Item Context Menu
