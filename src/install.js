@@ -22,6 +22,7 @@ const APP_LOCALE_KOKR_PATH	= "locale/ko-KR/";
 const APP_LOCALE_SRYU_PATH	= "locale/sr-YU/";
 const APP_LOCALE_SRYU_LATN_PATH	= "locale/sr-YU@Latn/";
 const APP_LOCALE_ESAR_PATH	= "locale/es-AR/";
+const APP_LOCALE_FIFI_PATH	= "locale/fi-FI/";
 
 initInstall(APP_NAME, APP_CHROME_NAME, APP_VERSION); 
 
@@ -50,6 +51,7 @@ registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_KOKR_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_SRYU_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_SRYU_LATN_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_ESAR_PATH);
+registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_FIFI_PATH);
 
 var result = getLastError(); 
 if(result == SUCCESS) {
