@@ -198,7 +198,7 @@ function createOpmlSource() {
 
 	var srcTemplate =  '<?xml version="1.0" encoding="UTF-8"?>';
 	srcTemplate += '<opml version="1.0">';
-	srcTemplate += '<head><title>RSS Reader Panel Export OPML</title></head>';
+	srcTemplate += '<head><title>Sage OPML Export</title></head>';
 	srcTemplate += '<body/></opml>';
 
 	var opmlDoc = new DOMParser().parseFromString(srcTemplate, "text/xml");
