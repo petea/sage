@@ -1,17 +1,12 @@
-const WIZ_MODE_IMPORT = 0;
-const WIZ_MODE_EXPORT = 1;
-
-var wizMode = WIZ_MODE_IMPORT;
-
-	// XUL Object
-var winMain;
-var txtImportFile;
-var txtExportFile;
+// XUL Object
+var winMain, txtImportFile, txtExportFile;
 var strRes;
 
 
+var g_errorMesage = "";
+
 function init() {
-		// Bookmarks Service
+	// Bookmarks Service
 	initServices();
 	initBMService();
 
@@ -20,33 +15,26 @@ function init() {
 	winMain = document.getElementById("winMain");
 	txtImportFile = document.getElementById("txtImportFile");
 	txtExportFile = document.getElementById("txtExportFile");
+
+	document.getElementById( "pageExport" ).canAdvance = false;
+	document.getElementById( "pageImport" ).canAdvance = false;
 }
 
 function finish() {
-	if(wizMode == WIZ_MODE_IMPORT) {
-		if(!checkFilePath(txtImportFile.value, true)) return false;
-		if(!importOPML()) return false;
-		alert(strRes.getString("opml_import_done"));
-	} else {
-		if(!checkFilePath(txtExportFile.value, false)) return false;
-		exportOPML();
-		alert(strRes.getString("opml_export_done"));
-	}
-	
 	return true;
 }
 
-
 function browseImportFile() {
 	var fpicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
-	fpicker.init(window, "Select OPML File", fpicker.modeOpen);
+	fpicker.init(window, strRes.getString("opml_select_file"), fpicker.modeOpen);
 	fpicker.appendFilter("OPML File(*.xml, *.opml)", "*.xml;*.opml");
 	fpicker.appendFilters(fpicker.filterAll);
 
 	var showResult = fpicker.show();
 	if(showResult == fpicker.returnOK) {
-		txtImportFile.value = fpicker.file.path;	
+		txtImportFile.value = fpicker.file.path;
 	}
+	canAdvanceImport();
 }
 
 function browseExportFile() {
@@ -58,44 +46,45 @@ function browseExportFile() {
 
 	var showResult = fpicker.show();
 	if(showResult == fpicker.returnOK || showResult == fpicker.returnReplace) {
-		txtExportFile.value = fpicker.file.path;	
+		txtExportFile.value = fpicker.file.path;
 	}
+	canAdvanceExport();
 }
-
-
 
 function checkFilePath(aFilePath, aExistCheck) {
 	if(!aFilePath) {
-		alert(strRes.getString("opml_path_blank"));
+		g_errorMesage = strRes.getString("opml_path_blank");
 		return false;
 	}
-	
+
 	var tmpFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
 	try {
 		tmpFile.initWithPath(aFilePath);
 		if(aExistCheck) {
 			if(!tmpFile.exists()) {
-					// ファイルが存在しない
-				alert(strRes.getString("opml_path_nofile"));
+				g_errorMesage = strRes.getString("opml_path_nofile");
 				return false;
 			}
 		}
 	} catch(e) {
-			// 不正なファイルパス
-		alert(strRes.getString("opml_path_invalid"));
+		g_errorMesage = strRes.getString("opml_path_invalid");
 		return false;
 	}
-	
+
 	return true;
 }
-
-
 
 // ********** ********** Import OPML ********** **********
 
 function importOPML() {
+	var path = txtImportFile.value;
+	if (!checkFilePath(path, true)) {
+		reportError(g_errorMesage);
+		return false;
+	}
+
 	var uriFixup = Components.classes['@mozilla.org/docshell/urifixup;1'].getService(Components.interfaces.nsIURIFixup);
-	var opmlUrl = uriFixup.createFixupURI(txtImportFile.value, uriFixup.FIXUP_FLAG_ALLOW_KEYWORD_LOOKUP);
+	var opmlUrl = uriFixup.createFixupURI(path, uriFixup.FIXUP_FLAG_ALLOW_KEYWORD_LOOKUP);
 
 	var httpReq = new XMLHttpRequest();
 	try {
@@ -103,13 +92,13 @@ function importOPML() {
 		httpReq.overrideMimeType("application/xml");
 		httpReq.send(null);
 	} catch(e) {
-		alert(strRes.getString("opml_import_fail"));
+		reportError(strRes.getString("opml_import_fail"));
 		return false;
 	}
-	
+
 	opmlDoc = httpReq.responseXML;
 	if(opmlDoc.documentElement.localName != "opml") {
-		alert(strRes.getString("opml_import_badfile"));
+		reportError(strRes.getString("opml_import_badfile"));
 		return false;
 	}
 	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
@@ -138,7 +127,6 @@ function importOPML() {
 		}
 	}
 
-		// ブックマークの保存
 	BookmarksUtils.flushDataSource();
 
 	return true;
@@ -169,21 +157,24 @@ function createRssItem(aOutlineNode, aRssFolder) {
 	} else {
 		BMSVC.createBookmarkInContainer(title, xmlUrl, null, "no-updated", null, null, aRssFolder, null);
 	}
-	
+
 }
-
-
-
 
 // ********** ********** Export OPML ********** **********
 
 function exportOPML() {
+	var path = txtExportFile.value;
+	if (!checkFilePath(path, false)) {
+		reportError(g_errorMesage);
+		return false;
+	}
+
 	var opmlSource = createOpmlSource();
 	opmlSource = CommonFunc.convertCharCodeFrom(opmlSource, "UTF-8");
 
 	var tmpFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
 	try {
-		tmpFile.initWithPath(txtExportFile.value);
+		tmpFile.initWithPath(path);
 		if(tmpFile.exists()) {
 			tmpFile.remove(true);
 		}
@@ -194,30 +185,31 @@ function exportOPML() {
 		stream.flush();
 		stream.close();
 	} catch(e) {
-		alert(strRes.getString("opml_export_nocreate"));
+		reportError(strRes.getString("opml_export_nocreate"));
+		return false;
 	}
-}
 
+	return true;
+}
 
 function createOpmlSource() {
 	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID,"str", "NC:BookmarksRoot");
 	var rssReaderFolderRes = RDF.GetResource(rssReaderFolderID);
-	
+
 	var srcTemplate =  '<?xml version="1.0" encoding="UTF-8"?>';
 	srcTemplate += '<opml version="1.0">';
 	srcTemplate += '<head><title>RSS Reader Panel Export OPML</title></head>';
 	srcTemplate += '<body/></opml>';
-	
+
 	var opmlDoc = new DOMParser().parseFromString(srcTemplate, "text/xml");
 	var opmlBody = opmlDoc.getElementsByTagName("body")[0];
-	
+
 	opmlBody.appendChild(createOpmlOutline(opmlDoc, rssReaderFolderRes));
 	xmlIndent(opmlDoc);
-	
+
 	var opmlSource = new XMLSerializer().serializeToString(opmlDoc);
 	return opmlSource;
 }
-
 
 function createOpmlOutline(aOpmlDoc, aRssItem) {
 	var url = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_URL);
@@ -227,7 +219,7 @@ function createOpmlOutline(aOpmlDoc, aRssItem) {
 
 	if(isContainer) {
 		outlineNode.setAttribute("text", title);
-		
+
 		var rdfContainer = Components.classes["@mozilla.org/rdf/container;1"].getService(Components.interfaces.nsIRDFContainer);
 		rdfContainer.Init(BMDS, aRssItem);
 		var containerChildren = rdfContainer.GetElements();
@@ -245,9 +237,6 @@ function createOpmlOutline(aOpmlDoc, aRssItem) {
 	return outlineNode;
 }
 
-
-
-	// XML ソースのインデント
 function xmlIndent(aDoc) {
 	var treeWalker = aDoc.createTreeWalker(aDoc, NodeFilter.SHOW_ELEMENT, null, true);
 	aDoc._depth = 0;
@@ -268,7 +257,54 @@ function xmlIndent(aDoc) {
 		}
 	}
 	function getIndent(aDepth) {
-		var result = new Array(aDepth);
+		// in some weird case this is NaN
+		if (aDepth < 0 || isNaN(aDepth))
+			return "";
+		var result = new Array( aDepth );
 		return result.join("\t");
 	}
 }
+
+function isTextBoxEmpty(el) {
+	return /^\s*$/.test(el.value);
+}
+
+function canAdvanceImport() {
+	winMain.canAdvance = !isTextBoxEmpty(txtImportFile)
+}
+
+function canAdvanceExport() {
+	winMain.canAdvance = !isTextBoxEmpty(txtExportFile)
+}
+
+function reportError(s)
+{
+	// This should really show an error prompt
+	alert(s);
+}
+
+
+// Page initializers
+function onPageStartShow() {
+	winMain.getButton("cancel").disabled = false;
+	winMain.canAdvance = true;
+}
+
+function onPageImportShow() {
+	winMain.getButton("cancel").disabled = false;
+	canAdvanceImport();
+}
+
+function onPageExportShow() {
+	winMain.getButton("cancel").disabled = false;
+	canAdvanceExport();
+}
+
+function onPageImportFinishedShow() {
+	document.documentElement.getButton("cancel").disabled = true;
+}
+
+function onPageExportFinishedShow() {
+	document.documentElement.getButton("cancel").disabled = true;
+}
+

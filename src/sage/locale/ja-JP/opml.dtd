@@ -9,3 +9,8 @@
 <!ENTITY rdoExport.label			"OPML のエクスポート">
 
 <!ENTITY browseButton.label			"参照...">
+
+<!ENTITY pageImportFinished.label	"OPML のインポート">
+<!ENTITY pageImportFinished.desc	"Import Complete">
+<!ENTITY pageExportFinished.label	"OPML のエクスポート">
+<!ENTITY pageExportFinished.desc	"Export Complete">

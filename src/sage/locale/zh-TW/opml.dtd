@@ -9,3 +9,8 @@
 <!ENTITY rdoExport.label			"匯出 OPML">
 
 <!ENTITY browseButton.label			"瀏覽...">
+
+<!ENTITY pageImportFinished.label	"匯入 OPML">
+<!ENTITY pageImportFinished.desc	"OPML 匯入完成">
+<!ENTITY pageExportFinished.label	"匯出 OPML">
+<!ENTITY pageExportFinished.desc	"OPML 匯出完成">

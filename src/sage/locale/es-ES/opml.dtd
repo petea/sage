@@ -9,3 +9,8 @@
 <!ENTITY rdoExport.label			"Exportar OPML">
 
 <!ENTITY browseButton.label			"Examinar...">
+
+<!ENTITY pageImportFinished.label	"Importar OPML">
+<!ENTITY pageImportFinished.desc	"Importación Completa">
+<!ENTITY pageExportFinished.label	"Exportar OPML">
+<!ENTITY pageExportFinished.desc	"Exportación Completa">

@@ -7,3 +7,8 @@
 <!ENTITY rdoImport.label "Importa OPML">
 <!ENTITY rdoExport.label "Exporta OPML">
 <!ENTITY browseButton.label "Vés a...">
+
+<!ENTITY pageImportFinished.label	"Importa OPML">
+<!ENTITY pageImportFinished.desc	"S'ha acabat la importaci&#x00f3;">
+<!ENTITY pageExportFinished.label	"Exporta OPML">
+<!ENTITY pageExportFinished.desc	"S'ha acabat l'exportaci&#x00f3;">

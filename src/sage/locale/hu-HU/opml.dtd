@@ -9,3 +9,8 @@
 <!ENTITY rdoExport.label			"OPML export">
 
 <!ENTITY browseButton.label			"Böngészés...">
+
+<!ENTITY pageImportFinished.label	"OPML importálás">
+<!ENTITY pageImportFinished.desc	"Importálás befejezve">
+<!ENTITY pageExportFinished.label	"OPML exportálás">
+<!ENTITY pageExportFinished.desc	"Exportportálás befejezve">

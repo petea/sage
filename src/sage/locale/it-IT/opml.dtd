@@ -10,3 +10,7 @@
 
 <!ENTITY browseButton.label			"Percorso...">
 
+<!ENTITY pageImportFinished.label	"Importare una lista OPML">
+<!ENTITY pageImportFinished.desc	"Importazione Completa">
+<!ENTITY pageExportFinished.label	"Esportare una lista OPML">
+<!ENTITY pageExportFinished.desc	"Esportazione Completa">
