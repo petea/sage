@@ -4,47 +4,47 @@
 
 <Description about="urn:mozilla:install-manifest">
 
-<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
-<em:name>Sage</em:name>
-<em:version>1.3</em:version>
-<em:description>A lightweight RSS and Atom feed aggregator.</em:description>
-<em:creator>The Sage Project</em:creator>
-<em:contributor>Peter Andrews</em:contributor>
-<em:contributor>Erik Arvidsson</em:contributor>
-<em:contributor>flyson</em:contributor>
-<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
-<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
-<em:iconURL>chrome://sage/skin/sage_icon.png</em:iconURL>
+	<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
+	<em:name>Sage</em:name>
+	<em:version>1.3</em:version>
+	<em:description>A lightweight RSS and Atom feed aggregator.</em:description>
+	<em:creator>The Sage Project</em:creator>
+	<em:contributor>Peter Andrews</em:contributor>
+	<em:contributor>Erik Arvidsson</em:contributor>
+	<em:contributor>flyson</em:contributor>
+	<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
+	<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
+	<em:iconURL>chrome://sage/skin/sage_icon.png</em:iconURL>
 
-<em:file>
-<Description about="urn:mozilla:extension:file:sage.jar">
-<em:package>content/</em:package>
-<em:skin>skin/classic/</em:skin>
-<em:locale>locale/en-US/</em:locale>
-<em:locale>locale/ja-JP/</em:locale>
-<em:locale>locale/fr-FR/</em:locale>
-<em:locale>locale/hu-HU/</em:locale>
-<em:locale>locale/it-IT/</em:locale>
-<em:locale>locale/nl-NL/</em:locale>
-<em:locale>locale/ca-CA/</em:locale>
-<em:locale>locale/zh-TW/</em:locale>
-<em:locale>locale/de-DE/</em:locale>
-<em:locale>locale/es-ES/</em:locale>
-<em:locale>locale/ru-RU/</em:locale>
-<em:locale>locale/de-AT/</em:locale>
-<em:locale>locale/de-CH/</em:locale>
-<em:locale>locale/sv-SE/</em:locale>
-<em:locale>locale/ko-KR/</em:locale>
-</Description>
-</em:file>
+	<em:file>
+		<Description about="urn:mozilla:extension:file:sage.jar">
+			<em:package>content/</em:package>
+			<em:skin>skin/classic/</em:skin>
+			<em:locale>locale/en-US/</em:locale>
+			<em:locale>locale/ja-JP/</em:locale>
+			<em:locale>locale/fr-FR/</em:locale>
+			<em:locale>locale/hu-HU/</em:locale>
+			<em:locale>locale/it-IT/</em:locale>
+			<em:locale>locale/nl-NL/</em:locale>
+			<em:locale>locale/ca-CA/</em:locale>
+			<em:locale>locale/zh-TW/</em:locale>
+			<em:locale>locale/de-DE/</em:locale>
+			<em:locale>locale/es-ES/</em:locale>
+			<em:locale>locale/ru-RU/</em:locale>
+			<em:locale>locale/de-AT/</em:locale>
+			<em:locale>locale/de-CH/</em:locale>
+			<em:locale>locale/sv-SE/</em:locale>
+			<em:locale>locale/ko-KR/</em:locale>
+		</Description>
+	</em:file>
 
-<em:targetApplication>
-<Description>
-<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-<em:minVersion>0.7</em:minVersion>
-<em:maxVersion>1.0+</em:maxVersion>
-</Description>
-</em:targetApplication>
+	<em:targetApplication>
+		<Description>
+			<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+			<em:minVersion>0.7</em:minVersion>
+			<em:maxVersion>1.0+</em:maxVersion>
+		</Description>
+	</em:targetApplication>
 
 </Description>
 

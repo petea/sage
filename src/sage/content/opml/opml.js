@@ -101,7 +101,7 @@ function importOPML() {
 		reportError(strRes.getString("opml_import_badfile"));
 		return false;
 	}
-	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
+	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 
 	var folderName = "OPML Import";
 	var opmlTitles = opmlDoc.getElementsByTagName("title");
@@ -193,7 +193,7 @@ function exportOPML() {
 }
 
 function createOpmlSource() {
-	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID,"str", "NC:BookmarksRoot");
+	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID,"str", "NC:BookmarksRoot");
 	var rssReaderFolderRes = RDF.GetResource(rssReaderFolderID);
 
 	var srcTemplate =  '<?xml version="1.0" encoding="UTF-8"?>';

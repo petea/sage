@@ -12,7 +12,7 @@ var feedDiscoveryMode;
 
 var gList;
 var gNameArc;
-var strRes // stringbundle オブジェクト
+var strRes;
 
 function init() {
 	initServices();
@@ -20,7 +20,10 @@ function init() {
 
 	strRes = document.getElementById("strRes");
 
-  sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
+	var header = document.getElementById("header");
+	header.setAttribute("description", header.getAttribute("description") + " " + CommonFunc.versionString(CommonFunc.VERSION, 1));
+
+  sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 	gNameArc = RDF.GetResource(NC_NS + "Name");
 	gList = document.getElementById("select-menu");
 
@@ -54,7 +57,7 @@ function init() {
 }
 
 function accept() {
-	CommonFunc.setPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", sageFolderID);
+	CommonFunc.setPrefValue(CommonFunc.FEED_FOLDER_ID, "str", sageFolderID);
 	CommonFunc.setPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
 	CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", txtUserCssPath.value);
 	CommonFunc.setPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);

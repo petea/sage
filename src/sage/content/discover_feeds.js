@@ -147,7 +147,7 @@ function doAddFeed() {
 			if(title == "") {
 				title = "No Title";
 			}
-			var sage_folder = rdfService.GetResource(CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot"));
+			var sage_folder = rdfService.GetResource(CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot"));
 			if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
 				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, sage_folder, null);
 			} else {

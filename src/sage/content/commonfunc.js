@@ -69,9 +69,11 @@ function dateFormat(date, twelveHourClock, format) {
 
 var CommonFunc = {
 
-	RSS_READER_FOLDER_ID: "sage.folder_id",
+	VERSION: Array(1,3,0),
 	USER_AGENT: "Mozilla/5.0 (Sage)",
 
+	FEED_FOLDER_ID: "sage.folder_id",
+	LAST_VERSION: "sage.last_version",
 	USER_CSS_ENABLE: "sage.user_css.enable",
 	USER_CSS_PATH: "sage.user_css.path",
 	ALLOW_ENCODED_CONTENT: "sage.allow_encoded_content",
@@ -337,7 +339,39 @@ var CommonFunc = {
 		} catch(e) {
 			alert(e)
 		}
-	}
+	},
 
+	// takes a version string, returns an integer triple containing (major version, minor version, patch level)
+	versionStrDecode: function(versionStr) {
+		var regexp = /([0-9]*)\.([0-9]*)\.([0-9]*)/;
+		var result = regexp.exec(versionStr);
+		return Array(parseInt(result[1]), parseInt(result[2]), parseInt(result[3]));
+	},
+
+	// takes a version triple, returns an integer
+	versionToInt: function(versionTriple) {
+		return versionTriple[0]*100 + versionTriple[1]*10 + versionTriple[2];
+	},
+
+	// takes two version triples, returns 1 if the first is more recent, 0 otherwise
+	versionCompare: function(versionA, versionB) {
+		if(this.versionToInt(versionA) > this.versionToInt(versionB)) {
+			return 1;
+		} else {
+			return 0;
+		}
+	},
+
+	// takes a version triple, returns a formatted version string
+	versionString: function(version, pretty) {
+		var formatted;
+		if(pretty) {
+			formatted = version[0].toString() + '.' + version[1].toString();
+			formatted += version[2] != 0 ? "." + version[2] : ""
+		} else {
+			formatted = version[0].toString() + '.' + version[1].toString() + '.' + version[2].toString();
+		}
+		return formatted;
+	}
 
 }

@@ -48,11 +48,20 @@ function init() {
 		strRes.getString("RESULT_ERROR_FAILURE_STR")
 	);
 
+	// get the version string from the last release used
+	var lastVersion = CommonFunc.getPrefValue(CommonFunc.LAST_VERSION, "str", null);
+	if(lastVersion) {
+		lastVersion = CommonFunc.versionStrDecode(lastVersion);
+	} else {
+		lastVersion = Array(1,0,0);
+	}
+	var currentVersion = CommonFunc.VERSION;
+
 	// if feed folder has not been set, assume new user and install default feed folder and demo feeds
-	if(!CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", null)) {
-		logMessage("setting default preferences...");
+	if(!CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", null)) { // check for new user
+		logMessage("new user, creating feed folder and setting default preferences...");
 		var new_folder = BMSVC.createFolderInContainer("Sage Feeds", RDF.GetResource("NC:BookmarksRoot"), null);
-		CommonFunc.setPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", new_folder.Value);
+		CommonFunc.setPrefValue(CommonFunc.FEED_FOLDER_ID, "str", new_folder.Value);
 		if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
 			BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, new_folder, null);
 			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, new_folder, null);
@@ -66,12 +75,19 @@ function init() {
 		setCheckbox("chkShowTooltip", "true");
 		setCheckbox("chkShowFeedItemList", "true");
 		setCheckbox("chkShowFeedItemListToolbar", "true");
+	} else if(CommonFunc.versionCompare(currentVersion, lastVersion)) {  // check for upgrade
+		logMessage("upgrade (last version: " + CommonFunc.versionString(lastVersion, 0) + ", current version: " + CommonFunc.versionString(currentVersion, 0) + "), setting new default preferences...");
+		if(CommonFunc.versionCompare(Array(1,3,0), lastVersion)) {
+			setCheckbox("chkShowFeedItemListToolbar", "true");
+		}
 	}
 
+	CommonFunc.setPrefValue(CommonFunc.LAST_VERSION, "str", CommonFunc.versionString(currentVersion, 0));
+
 	// get feed folder location
-	sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
+	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 	// check for changes to the feed folder
-	prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.RSS_READER_FOLDER_ID, sageFolderChanged);
+	prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.FEED_FOLDER_ID, sageFolderChanged);
 	// set feed folder location
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
@@ -107,7 +123,7 @@ function showOnlyUpdated() {
 
 function sageFolderChanged(subject, topic, prefName) {
 		// observe Preference
-	sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
+	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	bookmarksTree.treeBoxObject.selection.select(0);
 }
