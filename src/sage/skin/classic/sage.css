@@ -81,7 +81,7 @@ treechildren::-moz-tree-twisty {
 }
 /* Work around for bug in separators at level 0 when twisty has width 0 */
 treechildren::-moz-tree-cell-text(Name, separator) {
-	margin-left:	12px;
+	margin-left:	20px;
 }
 
 treechildren::-moz-tree-separator {
