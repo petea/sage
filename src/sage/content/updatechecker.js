@@ -74,11 +74,17 @@ var UpdateChecker = {
 	httpLoaded: function(e) {
 		var lastModified = 0;
 		var gettingLastModified = false;
-		
-		try {
-			lastModified = UpdateChecker.httpReq.getResponseHeader("Last-modified");
-			lastModified = new Date(lastModified).getTime() * 1000;
-		} catch(e) {}
+
+		var feed = new Feed(UpdateChecker.httpReq.responseXML);
+
+		if(feed.hasLastPubDate()) {
+			lastModified = feed.getLastPubDate().getTime() * 1000;
+		} else {
+			try {
+				lastModified = UpdateChecker.httpReq.getResponseHeader("Last-modified");
+				lastModified = new Date(lastModified).getTime() * 1000;
+			} catch(e) {}
+		}
 		
 		UpdateChecker.checkResult(true, lastModified);
 	},

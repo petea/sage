@@ -204,10 +204,10 @@ Feed.prototype.getLink = function() {
 }
 
 Feed.prototype.hasLastPubDate = function() {
-	if(this.lastPubDate) {
-		return true;
-	} else {
+	if(!this.lastPubDate) {
 		return false;
+	} else {
+		return true;
 	}
 }
 
