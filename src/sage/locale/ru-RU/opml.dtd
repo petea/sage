@@ -1,0 +1,11 @@
+<!ENTITY pageStart.label                        "Мастер импорта/экспорта OPML">
+<!ENTITY pageStart.desc                         "Выберите действие">
+<!ENTITY pageImport.label                       "Импорт OPML">
+<!ENTITY pageImport.desc                        "Выберите файл OPML для импорта">
+<!ENTITY pageExport.label                       "Экспорт OPML">
+<!ENTITY pageExport.desc                        "Выберите файл OPML для экспорта">
+
+<!ENTITY rdoImport.label                        "Импорт OPML">
+<!ENTITY rdoExport.label                        "Экспорт OPML">
+
+<!ENTITY browseButton.label                     "Пролистать...">

@@ -1,0 +1,51 @@
+<!ENTITY sage.label                             "Sage">
+<!ENTITY sage.version                           "1.2.2">
+<!ENTITY sage.version.label                             "версия">
+
+<!ENTITY sage.toolbarLabel                      "Sage">
+<!ENTITY sage.sidebarTitle                      "Sage">
+<!ENTITY sage.tooltip                           "Показывает Sage">
+
+<!ENTITY menu.view                              "Вид">
+<!ENTITY menu.showSearchBar                     "Показывать строку поиска лент">
+<!ENTITY menu.showFeedItemList                  "Показывать элементы ленты">
+<!ENTITY menu.showDescTooltip                   "Показывать всплывающие описания">
+<!ENTITY menu.openHTML                          "Открывать ленты в основном окне">
+<!ENTITY menu.tools                             "Настройки">
+<!ENTITY menu.checkUpdate                       "Проверить обновления">
+<!ENTITY menu.manageRSSList                     "Управлять лентами...">
+<!ENTITY menu.opmlImportExport                  "Импорт/Экспорт OPML...">
+<!ENTITY menu.setting                           "Настройки...">
+<!ENTITY menu.sageProjectFeed                           "Новости проекта Sage">
+<!ENTITY menu.discoverFeeds                             "Найти ленты">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Поиск в текущей странице">
+<!ENTITY discovery.button.addFeed    "Добавить ленту">
+<!ENTITY discovery.button.close                  "Закрыть">
+<!ENTITY discovery.header.title                  "Заголовок">
+<!ENTITY discovery.header.format     "Формат">
+<!ENTITY discovery.header.lastPubDate     "Последнее обновление">
+<!ENTITY discovery.header.itemCount     "Элементов">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Общие">
+<!ENTITY settings.autoFeedTitle.label     "Автоматически обновлять заголовки лент">
+<!ENTITY settings.renderFeeds.label     "Отображать ленты в основном окне">
+<!ENTITY settings.twelveHourClock.label     "Время в AM/PM">
+<!ENTITY settings.feedItemOrder.label     "Порядок элементов в ленте">
+<!ENTITY settings.feedItemOrder.chrono     "Хронологический">
+<!ENTITY settings.feedItemOrder.source     "Как в источнике">
+<!ENTITY settings.feedDiscoveryMode.label     "Режим поиска лент">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Исчерпывающий">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Консервативный">
+<!ENTITY settingWindow.title                    "Настройки Sage">
+<!ENTITY selectFolder.label                     "Выберите папку для лент">
+<!ENTITY openInContentsArea.caption             "Отображение лент">
+<!ENTITY enableUserCss.label                    "Использовать личную CSS">
+<!ENTITY browseCss.label                        "Пролистать...">
+<!ENTITY allowEContent.label                    "Разрешить HTML-тэги">
+
+<!ENTITY openSageSidebar.commandkey             "S">
+<!ENTITY openSageSidebar.modifiersKey           "alt">

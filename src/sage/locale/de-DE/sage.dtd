@@ -1,0 +1,52 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.2.2">
+<!ENTITY sage.version.label				"version">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Zeigt Sage an">
+
+<!ENTITY menu.view				"Anzeigen">
+<!ENTITY menu.showSearchBar			"Suchfenster für Feeds anzeigen">
+<!ENTITY menu.showFeedItemList			"Inhaltsübersicht der Feeds anzeigen">
+<!ENTITY menu.showDescTooltip			"Beschreibungen zu den Tooltips anzeigen">
+<!ENTITY menu.openHTML				"Feeds im Hauptfenster anzeigen">
+<!ENTITY menu.tools				"Optionen">
+<!ENTITY menu.checkUpdate			"Feeds auf Aktualisierungen prüfen">
+<!ENTITY menu.manageRSSList			"Feed-Liste verwalten...">
+<!ENTITY menu.opmlImportExport			"OPML Import/Export...">
+<!ENTITY menu.setting				"Einstellungen...">
+<!ENTITY menu.sageProjectFeed				"Sage Projekt Nachrichten">
+<!ENTITY menu.discoverFeeds				"Neue Feeds suchen und finden">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Aktuelle Seite durchsuchen">
+<!ENTITY discovery.button.addFeed    "Feed hinzufügen">
+<!ENTITY discovery.button.close			 "Schließen">
+<!ENTITY discovery.header.title			 "Titel">
+<!ENTITY discovery.header.format     "Format">
+<!ENTITY discovery.header.lastPubDate     "Letzte Aktualisierung">
+<!ENTITY discovery.header.itemCount     "Elemente">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Allgemein">
+<!ENTITY settings.autoFeedTitle.label     "Feed-Titel automatisch updaten">
+<!ENTITY settings.renderFeeds.label     "Feeds im Hauptfenster anzeigen">
+<!ENTITY settings.twelveHourClock.label     "12h-Uhrzeiten verwenden">
+<!ENTITY settings.feedItemOrder.label     "Anordnung der Feed-Elemente">
+<!ENTITY settings.feedItemOrder.chrono     "chronologisch">
+<!ENTITY settings.feedItemOrder.source     "wie Feed-Quelle">
+<!ENTITY settings.feedDiscoveryMode.label     "Neue Feeds suchen und finden">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "ausführlich">
+<!ENTITY settings.feedDiscoveryMode.conservative     "konservativ">
+<!ENTITY settingWindow.title                    "Sage Einstellungen">
+<!ENTITY selectFolder.label			"Feed-Ordner auswählen">
+<!ENTITY openInContentsArea.caption		"Feed Anzeige">
+<!ENTITY enableUserCss.label			"Eigenes CSS verwenden">
+<!ENTITY browseCss.label			"Durchsuchen...">
+<!ENTITY allowEContent.label			"HTML Tags zulassen">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"Alt">
