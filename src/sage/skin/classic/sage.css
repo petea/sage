@@ -163,7 +163,6 @@ toolbarbutton#markAllAsUnreadButton {
 }
 
 #btnSearchSubmit {
-  -moz-appearance: none;
   margin: 2px 2px 2px 0px;
   min-width: 0px;
   min-height: 0px;
