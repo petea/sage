@@ -21,7 +21,7 @@ a:active	{ text-decoration: none; }
 p.item-desc a:link { color: #029; }
 
 #rss-header {
-	-moz-border-radius: 5px;
+	-moz-border-radius: 6px;
 	background-color: #EEEAE4;
 	border: 1px solid #cccccc;
 	padding: 6px 8px;
@@ -42,7 +42,7 @@ p.item-desc a:link { color: #029; }
 }
 
 div.item {
-	-moz-border-radius: 5px;
+	-moz-border-radius: 6px;
 	background-color: #fafafa;
 	border: 1px solid #cccccc;
 	width: 47%;
