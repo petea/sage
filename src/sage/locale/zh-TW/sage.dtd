@@ -17,11 +17,11 @@
 <!ENTITY menu.opmlImportExport			"OPML 匯入/匯出...">
 <!ENTITY menu.setting				"設置...">
 <!ENTITY menu.sageProjectFeed				"Sage Project 新消息">
-<!ENTITY menu.discoverFeeds				"挖掘 Feeds">
+<!ENTITY menu.discoverFeeds				"發覺 Feeds">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "搜尋目前頁面">
-<!ENTITY discovery.button.addFeed    "增加 Feed">
+<!ENTITY discovery.button.addFeed    "加入 Feed">
 <!ENTITY discovery.button.close			 "關閉">
 <!ENTITY discovery.header.title			 "標題">
 <!ENTITY discovery.header.format     "格式">
@@ -31,13 +31,13 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "一般設定">
-<!ENTITY settings.autoFeedTitle.label     "自動更新 feed 標題">
+<!ENTITY settings.autoFeedTitle.label     "自動更新 Feed 標題">
 <!ENTITY settings.renderFeeds.label     "在瀏覽器內容區域表現Feeds">
 <!ENTITY settings.twelveHourClock.label     "使用12小時制">
 <!ENTITY settings.feedItemOrder.label     "Feed 文章順序">
 <!ENTITY settings.feedItemOrder.chrono     "按時間順序排序">
 <!ENTITY settings.feedItemOrder.source     "按來源順序排序">
-<!ENTITY settings.feedDiscoveryMode.label     "挖掘 Feed 模式">
+<!ENTITY settings.feedDiscoveryMode.label     "發覺 Feed 模式">
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "徹底的">
 <!ENTITY settings.feedDiscoveryMode.conservative     "保守的">
 <!ENTITY settingWindow.title                    "Sage 設定">

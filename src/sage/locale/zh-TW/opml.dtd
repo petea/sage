@@ -1,9 +1,9 @@
 <!ENTITY pageStart.label			"OPML 匯入/匯出 精靈">
 <!ENTITY pageStart.desc				"挑選你要的動作">
 <!ENTITY pageImport.label			"匯入 OPML">
-<!ENTITY pageImport.desc			"選擇一個匯入的 OPML 檔案">
+<!ENTITY pageImport.desc			"選擇一個要匯入的 OPML 檔案">
 <!ENTITY pageExport.label			"匯出 OPML">
-<!ENTITY pageExport.desc			"選擇一個匯出的 OPML 檔案">
+<!ENTITY pageExport.desc			"選擇一個要匯出的 OPML 檔案">
 
 <!ENTITY rdoImport.label			"匯入 OPML">
 <!ENTITY rdoExport.label			"匯出 OPML">
