@@ -167,7 +167,11 @@ var CommonFunc = {
 		while(containerChildren.hasMoreElements()) {
 			var res = containerChildren.getNext().QueryInterface(kRDFRSCIID);
 			if(RDFCU.IsContainer(BMDS, res)) {
-				resultArray = resultArray.concat(this.getBMDSCChildren(res));
+				if(BMDS.HasAssertion(res, RDF.GetResource("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), RDF.GetResource("http://home.netscape.com/NC-rdf#Livemark"), true)) {
+					resultArray.push(res);
+				} else {
+					resultArray = resultArray.concat(this.getBMDSCChildren(res));
+				}
 			} else {
 				resultArray.push(res);
 			}

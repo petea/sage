@@ -212,12 +212,18 @@ function createOpmlSource() {
 }
 
 function createOpmlOutline(aOpmlDoc, aRssItem) {
-	var url = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_URL);
+	var type = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.RDF_TYPE);
+	var url;
+	if(type == NC_NS + "Bookmark") {
+		url = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_URL);
+	}
+	if(type == NC_NS + "Livemark") {
+		url = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_FEEDURL);
+	}
 	var title = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_NAME);
-	var isContainer = RDFCU.IsContainer(BMDS, aRssItem);
 	var outlineNode = aOpmlDoc.createElement("outline");
 
-	if(isContainer) {
+	if(type == NC_NS + "Folder") {
 		outlineNode.setAttribute("text", title);
 
 		var rdfContainer = Components.classes["@mozilla.org/rdf/container;1"].getService(Components.interfaces.nsIRDFContainer);
@@ -226,9 +232,12 @@ function createOpmlOutline(aOpmlDoc, aRssItem) {
 
 		while(containerChildren.hasMoreElements()) {
 			var res = containerChildren.getNext().QueryInterface(kRDFRSCIID);
-			outlineNode.appendChild(createOpmlOutline(aOpmlDoc, res));
+			var res_type = CommonFunc.getBMDSProperty(res, CommonFunc.RDF_TYPE);
+			if(res_type == NC_NS + "Folder" || res_type == NC_NS + "Bookmark" || res_type == NC_NS + "Livemark") {
+				outlineNode.appendChild(createOpmlOutline(aOpmlDoc, res));
+			}
 		}
-	} else {
+	} else if(type == NC_NS + "Bookmark" || type == NC_NS + "Livemark") {
 		outlineNode.setAttribute("type", "rss");
 		outlineNode.setAttribute("text", title);
 		outlineNode.setAttribute("title", title);

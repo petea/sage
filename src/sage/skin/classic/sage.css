@@ -37,25 +37,30 @@ toolbarbutton.sage_button2 > .toolbarbutton-text {
   -moz-binding: url("chrome://sage/content/bookmarksTree.xml#bookmarks-tree-name");
 }
 
-treechildren::-moz-tree-image(rss, updated) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
-}
-treechildren::-moz-tree-image(rss, no-updated),
-treechildren::-moz-tree-image(rss, no-check) {
+treechildren::-moz-tree-image(feed),
+treechildren::-moz-tree-image(feed, no-updated),
+treechildren::-moz-tree-image(feed, no-check) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
 }
-treechildren::-moz-tree-image(rss, unknown) {
+treechildren::-moz-tree-image(feed, updated) {
+  -moz-image-region: auto !important;
+  list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
+}
+treechildren::-moz-tree-image(feed, unknown) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
-treechildren::-moz-tree-image(rss, error) {
+treechildren::-moz-tree-image(feed, error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
 }
-treechildren::-moz-tree-cell-text(rss, updated) {
+treechildren::-moz-tree-cell-text(feed, updated) {
   font-weight: bold !important;
+}
+
+treechildren::-moz-tree-twisty {
+	width: 0px !important;
 }
 
 #bookmarksTreeBox,

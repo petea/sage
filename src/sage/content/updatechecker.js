@@ -37,7 +37,14 @@ var UpdateChecker = {
 	check: function() {
 		this.lastResource = this.checkList.shift();
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
-		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
+		var type = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.RDF_TYPE);
+		var url;
+		if(type == NC_NS + "Bookmark") {
+			url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
+		}
+		if(type == NC_NS + "Livemark") {
+			url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_FEEDURL);
+		}
 
 		if(!url) {
 			this.checkResult(false, 0);

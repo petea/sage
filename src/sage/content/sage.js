@@ -192,7 +192,7 @@ function createTreeContextMenu2(aEvent) {
 	var cmdSrc = "";
 	var tempMenuItem;
 
-	if(selection.type == "Bookmark") {
+	if(selection.type == "Bookmark" || selection.type == "Livemark") {
 		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
 		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));

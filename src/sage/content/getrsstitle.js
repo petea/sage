@@ -8,7 +8,13 @@ var GetRssTitle = {
 		if(this.checking) return;
 	
 		this.res = RDF.GetResource(aBookmrkID);
-		this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_URL);
+		var type = CommonFunc.getBMDSProperty(this.res, CommonFunc.RDF_TYPE);
+		if(type == NC_NS + "Bookmark") {
+			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_URL);
+		}
+		if(type == NC_NS + "Livemark") {
+			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_FEEDURL);
+		}
 		
 		this.httpReq = new XMLHttpRequest();
 		this.httpReq.onload = this.httpLoaded;
