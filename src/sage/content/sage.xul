@@ -112,7 +112,7 @@
 </vbox>
 
 <popupset>
-	<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)"/>
+	<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)" noautohide="true"/>
 	<popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
 		<template>
 			<menuitem type="checkbox" uri="..." value="..."

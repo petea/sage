@@ -52,7 +52,7 @@ function init() {
 		logMessage("setting default preferences...");
 		var new_folder = BMSVC.createFolderInContainer("Sage Feeds", RDF.GetResource("NC:BookmarksRoot"), null);
 		CommonFunc.setPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", new_folder.Value);
-		if(BMSVC.createBookmarkInContainer.length == 7) {
+		if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
 			BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, new_folder, null);
 			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, new_folder, null);
 			BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, new_folder, null);
@@ -61,17 +61,18 @@ function init() {
 			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, null, new_folder, null);
 			BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, null, new_folder, null);
 		}
-		setCheckboxCheck("chkShowSearchBar", "false");
-		setCheckboxCheck("chkShowToolTip", "true");
-		setCheckboxCheck("chkShowFeedItemList", "true");
+		setCheckbox("chkShowSearchBar", "false");
+		setCheckbox("chkShowTooltip", "true");
+		setCheckbox("chkShowFeedItemList", "true");
 	}
 
-	// set feed folder location
+	// get feed folder location
 	sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
 	// check for changes to the feed folder
 	prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.RSS_READER_FOLDER_ID, sageFolderChanged);
-
+	// set feed folder location
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
+	// select first entry
 	bookmarksTree.treeBoxObject.selection.select(0);
 
 	FeedSearch.init();
@@ -364,14 +365,14 @@ function isVisited(aURL) {
 	return false;
 }
 
-function getCheckboxCheck(aID) {
-	var checkboxNode = document.getElementById(aID);
+function getCheckboxCheck(element_id) {
+	var checkboxNode = document.getElementById(element_id);
 	return checkboxNode.getAttribute("checked") == "true";
 }
 
-function setCheckboxCheck(aID, value) {
-	var checkboxNode = document.getElementById(aID);
-	return checkboxNode.setAttribute("checked") == value;
+function setCheckbox(element_id, value) {
+	var checkboxNode = document.getElementById(element_id);
+	checkboxNode.setAttribute("checked", value);
 }
 
 function showRssItemListPopup(aEvent) {
