@@ -82,7 +82,7 @@ var CreateHTML = {
 		htmlSource = htmlSource.replace("**HTMLTITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace("**TITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace("**LINK**", feed.getLink());
-		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription() + feed.getLastPubDate().toLocalString());
+		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription() + feed.getLastPubDate().toLocaleString());
 
 		var itemsSource = "";
 		for(var i = 0; i < feed.getItemCount(); i++) {
