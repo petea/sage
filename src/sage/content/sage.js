@@ -249,9 +249,6 @@ function bookmarksTreeClick(aEvent) {
 				return;
 			}
 			break;
-
-		case "dblclick":
-			break;
 	}
 
 	CreateHTML.tabbed = false;

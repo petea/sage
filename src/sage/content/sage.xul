@@ -119,7 +119,7 @@
 		<bookmarks-tree id="bookmarksTree" type="single-column" flex="1"
 			onkeypress="if(event.keyCode == 13) bookmarksTreeClick(event)"
 			ondraggesture="if(event.originalTarget.localName == 'treechildren') nsDragAndDrop.startDrag(event, this.DNDObserver);"
-			onclick="bookmarksTreeClick(event)" ondblclick="bookmarksTreeClick(event)"/>
+			onclick="bookmarksTreeClick(event)"/>
 	</vbox>
 
 	<splitter id="sage-splitter"/>
