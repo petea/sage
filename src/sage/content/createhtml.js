@@ -112,8 +112,7 @@ var CreateHTML = {
 	},
 
 	getSpecialDir: function(aProp) {
-		var dirService = Components.classes['@mozilla.org/file/directory_service;1']
-							.getService(Components.interfaces.nsIProperties);
+		var dirService = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties);
 		return dirService.get(aProp, Components.interfaces.nsILocalFile);
 	}
 }

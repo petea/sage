@@ -24,7 +24,6 @@
 <!ENTITY settings.renderFeeds.label     "Render feeds in contents area">
 <!ENTITY settingWindow.title                    "Sage Settings">
 <!ENTITY selectFolder.label			"Select Feed Folder">
-<!ENTITY uninstall.label			"Uninstall">
 <!ENTITY openInContentsArea.caption		"Feed Rendering">
 <!ENTITY enableUserCss.label			"Use custom CSS">
 <!ENTITY browseCss.label			"Browse...">

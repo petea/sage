@@ -23,14 +23,9 @@
 <hbox style="padding:5px 0px 10px 0px">
 <groupbox flex="1">
 	<caption label="&selectFolder.label;"/>
-	
 	<menulist id="select-menu" oncommand="selectFolder(event);">
 		<menupopup id="select-folder"/>
 	</menulist>
-</groupbox>
-<groupbox orient="horizontal" align="center">
-	<caption label="&uninstall.label;"/>
-	<button label="&uninstall.label;" oncommand="uninstall()"/>
 </groupbox>
 </hbox>
 
