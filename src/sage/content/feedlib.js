@@ -157,12 +157,12 @@ Feed.prototype.parseATOM = function() {
 			tmp_date.setUTCSeconds(tmp_str.substring(17,19));
 			item.pubDate = new Date(tmp_date);
 		}
-		/*
+
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
 		var contentArray = new Array();
-		for(i = 0; i < contentNodes.length; i++){
+		for(var j = 0; i < contentNodes.length; i++){
 			var contType = contentNodes[i].getAttribute("type");
 			contentArray[contType] = CommonFunc.getInnerText(contentNodes[i]);
 		}
@@ -178,8 +178,6 @@ Feed.prototype.parseATOM = function() {
 		}	else if(summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
-
-		*/
 			
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
