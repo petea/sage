@@ -72,7 +72,9 @@ Feed.prototype.parseRSS = function() {
 					item.title = CommonFunc.getInnerText(j);
 					break;
 				case "link":
-					item.link = CommonFunc.getInnerText(j);
+					if(!item.link) {
+						item.link = CommonFunc.getInnerText(j);
+					}
 					break;
 				case "guid":
 					if(!item.link) {
@@ -88,7 +90,7 @@ Feed.prototype.parseRSS = function() {
 					if(tmp_date != "Invalid Date") {
 						item.pubDate = tmp_date;
 					} else {
-						logMessage("unable to parse date string: " + tmp_str);
+						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
 				case "date":
@@ -97,7 +99,7 @@ Feed.prototype.parseRSS = function() {
 					if(tmp_date) {
 						item.pubDate = tmp_date;
 					} else {
-						logMessage("unable to parse date string: " + tmp_str);
+						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
 			}
@@ -174,7 +176,7 @@ Feed.prototype.parseATOM = function() {
 			if(tmp_date) {
 				item.pubDate = tmp_date;
 			} else {
-				logMessage("unable to parse date string: " + tmp_str);
+				logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
 			}
 		}
 
@@ -212,7 +214,7 @@ Feed.prototype.parseATOM = function() {
 }
 
 Feed.prototype.getTitle = function() {
-	return this.title;
+	return this.title.replace(/<.*?>/g,'');
 }
 
 Feed.prototype.hasDescription = function() {
@@ -293,7 +295,7 @@ FeedItem.prototype.hasTitle = function() {
 FeedItem.prototype.getTitle = function() {
 	var title;
 	if(this.hasTitle()) {
-		title = this.title.replace(/<.*?>/g,'');;
+		title = this.title.replace(/<.*?>/g,'');
 	} else {
 		if(this.hasContent()) {
 			temp = this.getContent();

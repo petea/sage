@@ -40,20 +40,20 @@
 		</columns>
 		<rows>
 			<row align="center">
-				<label value="Feed item order:"/>
-				<menulist id="itemOrder">
+				<label value="&settings.feedItemOrder.label;:"/>
+				<menulist id="feedItemOrder">
 					<menupopup>
-						<menuitem label="Cronological" value="chrono"/>
-						<menuitem label="Source" value="source"/>
+						<menuitem label="&settings.feedItemOrder.chrono;" value="chrono"/>
+						<menuitem label="&settings.feedItemOrder.source;" value="source"/>
 					</menupopup>
 				</menulist>
 			</row>
 			<row align="center">
-				<label value="Feed discovery mode:"/>
+				<label value="&settings.feedDiscoveryMode.label;:"/>
 				<menulist id="feedDiscoveryMode">
 					<menupopup>
-						<menuitem label="Exhaustive" value="exhaustive"/>
-						<menuitem label="Conservative" value="conservative"/>
+						<menuitem label="&settings.feedDiscoveryMode.exhaustive;" value="exhaustive"/>
+						<menuitem label="&settings.feedDiscoveryMode.conservative;" value="conservative"/>
 					</menupopup>
 				</menulist>
 			</row>

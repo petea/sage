@@ -19,6 +19,8 @@ var UpdateChecker = {
 				this.checkList.push(resourceList[i]);
 			}
 		}
+
+		logMessage("checking " + this.checkList.length + " feed(s)");
 		
 		this.checking = true;
 		this.check();
@@ -119,7 +121,7 @@ var UpdateChecker = {
 			} else {
 				var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/);
 				if(sig != feed.getSignature()) {
-					logMessage("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
+					//logMessage("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
 					status = CommonFunc.STATUS_UPDATE;
 				} else {
 					status = CommonFunc.STATUS_NO_UPDATE;

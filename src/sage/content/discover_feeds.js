@@ -8,9 +8,23 @@ var ds;
 var rdfService;
 var schema;
 var document_host;
+var bookmarksTree;
+var progressMeter;
+var fetch_total;
+var fetch_done;
+var statusDeck;
+var statusMessage;
+var feeds_found_local;
+var feeds_found_external;
 
 function init() {
+	initServices();
+	initBMService();
+
 	strRes = document.getElementById("strRes");
+	statusDeck = document.getElementById("statusDeck");
+	statusMessage = document.getElementById("statusMessage");
+	progressMeter = document.getElementById("progress");
 	feedTree = document.getElementById("feedTree");
 
 	dataSource = Components.classes["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"];
@@ -27,14 +41,12 @@ function init() {
 	ds = ( ds.getNext(), ds.getNext() );
 	ds = ds.QueryInterface(Components.interfaces.nsIRDFDataSource);
 
-	ds.Assert(rdfService.GetResource(schema + "Feeds"), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + "LocalFeeds"), true);
-	ds.Assert(rdfService.GetResource(schema + "LocalFeeds"), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral("Site Feeds"), true);
-	ds.Assert(rdfService.GetResource(schema + "Feeds"), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + "ExternalFeeds"), true);
-	ds.Assert(rdfService.GetResource(schema + "ExternalFeeds"), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral("External Feeds"), true);
-
 	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-	var window = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
-	var current_document = window.contentDocument;
+	var browserWindow = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
+
+	bookmarksTree = window.arguments[0];
+	
+	var current_document = browserWindow.contentDocument;
 
 	document_host = current_document.location.host;
 	logMessage("host: " + document_host);
@@ -51,36 +63,90 @@ function init() {
 
 	links = current_document.getElementsByTagName("a");
 	for(c = 0; c < links.length; c++) {
-		if(links[c].href.match(/xml$|rss$|rdf$/i)) {
+		if(links[c].href.match(/xml$|rss|rdf|atom/i)) {
 			possible_feeds[links[c].href] = links[c].href;
 			logMessage("Found: " + links[c].href);
 		}
 	}
+
+	fetch_total = 0;
+	fetch_done = 0;
+	feeds_found_local = 0;
+	feeds_found_external = 0;
+
+	for(url in possible_feeds) {
+		fetch_total++;
+	}
+
+	if(fetch_total == 0) {
+		progressUpdate();
+	}
+
+	logMessage("found " + fetch_total + " potential feed URI(s) in " + current_document.location);
 
 	feeds = new Array();
 	var httpReq;
 	for(url in possible_feeds) {
 		httpReq = new XMLHttpRequest();
 		httpReq.onload = httpLoaded;
+		httpReq.onerror = httpError;
 		httpReq.open("GET", url, true);
 		httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
 		httpReq.overrideMimeType("application/xml");
 		try {
 			httpReq.send(null);
 		} catch(e) {
-				// FAILURE
 			httpReq.abort();
+			progressUpdate();
 		}
 	}
-
 }
 
-function doOK() {
+function progressUpdate() {
+	fetch_done++;
+	progressMeter.value = Math.round((fetch_done/fetch_total) * 100);
+	if(fetch_done >= fetch_total) {
+		if((feeds_found_local + feeds_found_external) == 0) {
+			statusMessage.value = strRes.getString("discovery_status_none_found") + ".";
+		} else {
+			var message = "";
+			if(feeds_found_local > 1) message += feeds_found_local + " " + strRes.getString("discovery_status_site_feeds");
+			if(feeds_found_local == 1) message += feeds_found_local + " " + strRes.getString("discovery_status_site_feed");
+			if(feeds_found_local > 0 && feeds_found_external > 0) message += " " + strRes.getString("discovery_status_and") + " ";
+			if(feeds_found_external > 1) message += feeds_found_external + " " + strRes.getString("discovery_status_external_feeds");
+			if(feeds_found_external == 1) message += feeds_found_external + " " + strRes.getString("discovery_status_external_feed");
+			statusMessage.value = strRes.getString("discovery_status_discovered") + " " + message + ":";
+		}
+		statusDeck.selectedIndex = 1;
+	}
+}
+
+function doAddFeed() {
+	var index = feedTree.view.selection.currentIndex;
+	if(index != -1) {
+		var url = feedTree.view.getCellText(index, "url");
+		var title = feedTree.view.getCellText(index, "title");
+		if(url) {
+			if(title == "") {
+				title = "No Title";
+			}
+			var sage_folder = rdfService.GetResource(CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot"));
+			BMSVC.createBookmarkInContainer(title, url, null, "updated", null, null, sage_folder, null);
+			logMessage("added feed: '" + title + "' " + url);
+		}
+	}
+	var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
+	bookmarksTree.treeBoxObject.ensureRowIsVisible(bm_index);
+	bookmarksTree.treeBoxObject.selection.select(bm_index);
   return true;
 }
 
-function doCancel() {
+function doClose() {
   return true;
+}
+
+function httpError() {
+	progressUpdate();
 }
 
 function httpLoaded(e) {
@@ -88,30 +154,51 @@ function httpLoaded(e) {
 	var uri = httpReq.channel.originalURI;
 	try {
 		var feed = new Feed(httpReq.responseXML);
-		addFeed(uri, feed);
+		addDiscoveredFeed(uri, feed);
 	} catch(e) { }
+	progressUpdate();
 }
 
-function addFeed(uri, feed) {
+function addDiscoveredFeed(uri, feed) {
 	var feedClass, lastPubDate, itemCount;
 	if(uri.host == document_host) {  // feed is local
-		feedClass = "LocalFeeds";
+		if(feeds_found_local == 0) {
+			//ds.Assert(rdfService.GetResource(schema + "Feeds"), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + "LocalFeeds"), true);
+			//ds.Assert(rdfService.GetResource(schema + "LocalFeeds"), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral("Site Feeds"), true);
+			//ds.Assert(rdfService.GetResource(schema + "LocalFeeds"), rdfService.GetResource(schema + "Valuation"), rdfService.GetIntLiteral(1), true);
+		}
+		feedClass = "Feeds";
+		feeds_found_local++;
 	} else {  // feed is external
+		if(feeds_found_external == 0) {
+			ds.Assert(rdfService.GetResource(schema + "Feeds"), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + "ExternalFeeds"), true);
+			ds.Assert(rdfService.GetResource(schema + "ExternalFeeds"), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral(strRes.getString("discovery_external_feeds_category")), true);
+			ds.Assert(rdfService.GetResource(schema + "ExternalFeeds"), rdfService.GetResource(schema + "Valuation"), rdfService.GetIntLiteral(0), true);
+		}
 		feedClass = "ExternalFeeds";
+		feeds_found_external++;
 	}
+
 	var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 	lastPubDate = "N/A";
 	if(feed.hasLastPubDate()) {
 		lastPubDate = dateFormat(feed.getLastPubDate(), twelveHourClock, 1);
 	}
-	itemCount = feed.getItemCount()
+	itemCount = feed.getItemCount();
+
+	// feed valuation
+	var valuation = 0;
+	if(feedClass == "Feeds") valuation += 1000;
+	if(feed.hasLastPubDate()) valuation += 100;
 	
 	ds.Assert(rdfService.GetResource(schema + feedClass), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + uri.spec), true);
+
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral(feed.getTitle()), true);
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "Format"), rdfService.GetLiteral(feed.getFormat()), true);
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "URL"), rdfService.GetLiteral(uri.spec), true);
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "LastPubDate"), rdfService.GetLiteral(lastPubDate), true);
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "ItemCount"), rdfService.GetLiteral(itemCount), true);
-	
-	logMessage("Parsed and added: " + uri.spec);
+	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "Valuation"), rdfService.GetIntLiteral(valuation), true);
+
+	logMessage("discovered feed: " + uri.spec);
 }

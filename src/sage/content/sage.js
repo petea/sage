@@ -73,7 +73,7 @@ function init() {
 }
 
 function discoverFeeds() {
-	window.openDialog("chrome://sage/contents/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close");
+	window.openDialog("chrome://sage/contents/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close", bookmarksTree);
 }
 
 	// çXêVÇ≥ÇÍÇΩRSSÇÃÇ›ï\é¶

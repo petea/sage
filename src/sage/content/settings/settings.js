@@ -7,6 +7,8 @@ var chkAllowEContent;
 var chkAutoFeedTitle;
 var chkRenderFeeds;
 var chkTwelveHourClock;
+var feedItemOrder;
+var feedDiscoveryMode;
 
 var gList;
 var gNameArc;
@@ -40,6 +42,12 @@ function init() {
 	chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
 	chkTwelveHourClock.checked = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 
+	feedItemOrder = document.getElementById("feedItemOrder");
+	feedItemOrder.value = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+
+	feedDiscoveryMode = document.getElementById("feedDiscoveryMode");
+	feedDiscoveryMode.value = CommonFunc.getPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", "exhaustive");
+
 	setDisabled();
 
 	setTimeout(fillSelectFolderMenupopup, 0);
@@ -53,6 +61,8 @@ function accept() {
 	CommonFunc.setPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", chkAutoFeedTitle.checked);
 	CommonFunc.setPrefValue(CommonFunc.RENDER_FEEDS, "bool", chkRenderFeeds.checked);
 	CommonFunc.setPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", chkTwelveHourClock.checked);
+	CommonFunc.setPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", feedItemOrder.value);
+	CommonFunc.setPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", feedDiscoveryMode.value);
 }
 
 function selectFolder(aEvent){

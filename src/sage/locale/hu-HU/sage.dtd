@@ -19,8 +19,17 @@
 <!ENTITY menu.opmlImportExport      "OPML import/export...">
 <!ENTITY menu.setting               "Beállítások...">
 <!ENTITY menu.sageProjectFeed				"A Sage projekt hírei">
-<!ENTITY menu.discoverFeeds					"">
+<!ENTITY menu.discoverFeeds					"Discover Feeds">
 
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Searching current page">
+<!ENTITY discovery.button.addFeed    "Add Feed">
+<!ENTITY discovery.button.close			 "Close">
+<!ENTITY discovery.header.title			 "Title">
+<!ENTITY discovery.header.format     "Format">
+<!ENTITY discovery.header.lastPubDate     "Last Update">
+<!ENTITY discovery.header.itemCount     "Items">
+<!ENTITY discovery.header.url     "URL">
 
 <!-- Setting Dialog -->
 <!ENTITY settings.general.caption     "Általános">
@@ -28,6 +37,12 @@
 <!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
 <!ENTITY settings.twelveHourClock.label     "">
 <!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
+<!ENTITY settings.feedItemOrder.label     "Feed Item Order">
+<!ENTITY settings.feedItemOrder.chrono     "Chronological">
+<!ENTITY settings.feedItemOrder.source     "Source">
+<!ENTITY settings.feedDiscoveryMode.label     "Feed discovery mode">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Exhaustive">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Conservative">
 <!ENTITY selectFolder.label         "Válassza ki az RSS listamappát">
 <!ENTITY openInContentsArea.caption "Letöltöttek megjelenítése">
 <!ENTITY enableUserCss.label        "Egyéni stíluslap engedélyezése">

@@ -78,6 +78,8 @@ var CommonFunc = {
 	AUTO_FEED_TITLE: "sage.auto_feed_title",
 	RENDER_FEEDS: "sage.render_feeds",
 	TWELVE_HOUR_CLOCK: "sage.twelve_hour_clock",
+	FEED_ITEM_ORDER: "sage.feed_item_order",
+	FEED_DISCOVERY_MODE: "sage.feed_discovery_mode",
 
 
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
