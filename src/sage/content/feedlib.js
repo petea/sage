@@ -105,15 +105,15 @@ Feed.prototype.parseATOM = function() {
 
 	this.feedFormat = "ATOM";
 
-	for(var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling){
+	for(var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
 		if(i.nodeType != i.ELEMENT_NODE) continue;
-		switch(i.localName){
+		switch(i.localName) {
 			case "title":
 				this.title = CommonFunc.getInnerText(i);
 				break;
 			case "link":
 				if(this.link) {
-					if(i.getAttribute("rel").toLowerCase() == "alternate"){
+					if(i.getAttribute("rel").toLowerCase() == "alternate") {
 						this.link = i.getAttribute("href");
 					}
 				} else {
@@ -137,8 +137,8 @@ Feed.prototype.parseATOM = function() {
 
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
 		if(linkNodes.length) {
-			for (j = 0; j < linkNodes.length; j++) {
-				if (linkNodes[j].getAttribute("rel") == "alternate") {
+			for (var j = 0; j < linkNodes.length; j++) {
+				if (linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
 					item.link = linkNodes[j].getAttribute("href");
 					break;
 				}
