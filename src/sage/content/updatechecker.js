@@ -67,8 +67,9 @@ var UpdateChecker = {
 	},
 
 	done: function() {
-		if(this.checking) {
+		if (this.checking) {
 			this.httpReq.abort();
+			this.setCheckingFlag(this.lastResource, false);
 		}
 	},
 
@@ -105,6 +106,7 @@ var UpdateChecker = {
 			this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
 			this.httpReq.overrideMimeType("application/xml");
 			this.httpReq.send(null);
+			this.setCheckingFlag(this.lastResource, true);
 			this.onCheck(name, url);
 		} catch(e) {
 				// FAILURE
@@ -181,6 +183,7 @@ var UpdateChecker = {
 		}
 
 		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+		this.setCheckingFlag(this.lastResource, false);
 
 		if(this.checkList.length == 0) {
 			this.checking = false;
@@ -191,8 +194,35 @@ var UpdateChecker = {
 		}
 	},
 
+	setCheckingFlag: function(aRes, aSet) {
+		if (!aSet) {
+			// Clear the "checking" indicator on lastResource if it is set
+			var desc = CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION);
+			var status = desc.split(" ")[0];
+			if (status == CommonFunc.STATUS_CHECKING) {
+				CommonFunc.setBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION,
+										   CommonFunc.STATUS_UNKNOWN + " " +
+										   CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+			}
+		} else {
+			CommonFunc.setBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION,
+									   CommonFunc.STATUS_CHECKING + " " +
+									   CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+		}
+
+		// Go to parent folder
+		var predicate = BMDS.ArcLabelsIn(aRes).getNext();
+		if (predicate instanceof Components.interfaces.nsIRDFResource) {
+			var parent = BMDS.GetSource(predicate, aRes, true);
+			if (parent.Value != sageFolderID) {
+				this.setCheckingFlag(parent, aSet);
+			}
+		}
+	},
 
 	onCheck: function(aName, aURL) {},
 	onChecked: function(aName, aURL) {}
 
 }
+
+
