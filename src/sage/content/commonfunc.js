@@ -3,6 +3,11 @@ var CommonFunc = {
 	RSS_READER_FOLDER_ID: "sage.folder_id",
 	USER_AGENT: "Mozilla/5.0 (Sage)",
 
+	USER_CSS_ENABLE: "sage.user_css.enable",
+	USER_CSS_PATH: "sage.user_css.path",
+	ALLOW_ENCODED_CONTENT: "sage.allow_encoded_content",
+	AUTO_FEED_TITLE: "sage.auto_feed_title",
+	RENDER_FEEDS: "sage.render_feeds",
 
 
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++

@@ -18,10 +18,13 @@
 
 
 <!-- Setting Dialog -->
+<!ENTITY settings.general.caption     "General">
+<!ENTITY settings.autoFeedTitle.label     "Automatically Update Feed Titles">
+<!ENTITY settings.renderFeeds.label     "Render Feeds In Contents Area">
 <!ENTITY settingWindow.title                    "Sage Settings">
 <!ENTITY selectFolder.label			"Select Feed Folder">
 <!ENTITY uninstall.label			"Uninstall">
-<!ENTITY openInContentsArea.caption		"Open In Contents Area">
+<!ENTITY openInContentsArea.caption		"Feed Rendering">
 <!ENTITY enableUserCss.label			"Use custom CSS">
 <!ENTITY browseCss.label			"Browse...">
 <!ENTITY allowEContent.label			"Allow HTML Tags">

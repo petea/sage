@@ -4,16 +4,16 @@ var UpdateChecker = {
 	httpReq: null,
 	lastResource: null,
 
-	startCheck: function(aCheckFolderId){
+	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
 	
 		this.resourceList = CommonFunc.getBMDSCChildren(aCheckFolderId);
 		
 			// Delete separator and updeed resource
-		for(var i=0; i<this.resourceList.length; i++){
+		for(var i=0; i<this.resourceList.length; i++) {
 			var url = CommonFunc.getBMDSProperty(this.resourceList[i], CommonFunc.BM_URL);
 			var desc = CommonFunc.getBMDSProperty(this.resourceList[i], CommonFunc.BM_DESCRIPTION);
-			if(!url || desc == CommonFunc.STATUS_UPDATE || desc == CommonFunc.STATUS_NO_CHECK){
+			if(!url || desc == CommonFunc.STATUS_UPDATE || desc == CommonFunc.STATUS_NO_CHECK) {
 				this.resourceList.splice(i,1);
 			}
 		}
@@ -22,22 +22,22 @@ var UpdateChecker = {
 		this.check();
 	},
 
-	done: function(){
-		if(this.checking){
+	done: function() {
+		if(this.checking) {
 			this.httpReq.abort();
 		}
 	},
 
-	check: function(){
+	check: function() {
 		this.lastResource = this.resourceList.shift();
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
 
-		if(!url){
+		if(!url) {
 			this.checkResult(false, 0);
 		}
 
-		if(this.httpReq){
+		if(this.httpReq) {
 			this.httpReq.abort();
 		}
 		
@@ -48,10 +48,10 @@ var UpdateChecker = {
 		this.httpReq.open("GET", url);
 		this.httpReq.setRequestHeader("User-Agent", USER_AGENT);
 		this.httpReq.overrideMimeType("application/xml");
-		try{
+		try {
 			this.httpReq.send(null);
 			this.onCheck(name, url);
-		}catch(e){
+		} catch(e) {
 				// FAILURE
 			this.httpReq.abort();
 			this.checkResult(false, 0);
@@ -59,11 +59,11 @@ var UpdateChecker = {
 	},
 
 
-	httpReadyStateChange: function(){
-		if(UpdateChecker.httpReq.readyState == 2){
-			try{
+	httpReadyStateChange: function() {
+		if(UpdateChecker.httpReq.readyState == 2) {
+			try {
 				UpdateChecker.httpReq.status;
-			}catch(e){
+			} catch(e) {
 					// URL NOT AVAILABLE
 				UpdateChecker.httpReq.abort();
 				UpdateChecker.checkResult(false, 0);
@@ -86,10 +86,10 @@ var UpdateChecker = {
 			} catch(e) {}
 		}
 		
-		UpdateChecker.checkResult(true, lastModified, feed);
+		UpdateChecker.checkResult(true, lastModified);
 	},
 
-	checkResult: function(aSucceed, aLastModified, feed) {
+	checkResult: function(aSucceed, aLastModified) {
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
 		var status = 0;
@@ -100,9 +100,6 @@ var UpdateChecker = {
 		} else {
 			lastVisit /= 1000;
 		}
-
-		//if(feed)
-		//	aConsoleService.logStringMessage(feed.getTitle() + " aLastModified: " + aLastModified + ", lastVisit: " + lastVisit);
 
 		if(aLastModified) {
 			if(aLastModified > lastVisit) {

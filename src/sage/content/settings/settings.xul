@@ -35,7 +35,14 @@
 </hbox>
 
 <groupbox>
+	<caption label="&settings.general.caption;"/>
+	<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
+</groupbox>
+
+<groupbox>
 	<caption label="&openInContentsArea.caption;"/>
+	<checkbox id="chkRenderFeeds" label="&settings.renderFeeds.label;"/>
+	<checkbox id="chkAllowEContent" label="&allowEContent.label;"/>
 	<vbox flex="1">
 		<checkbox id="chkUserCssEnable" label="&enableUserCss.label;" oncommand="setDisabled()"/>
 		<hbox align="center">
@@ -44,7 +51,6 @@
 			<button id="btnBrowseCss" oncommand="browseCss()" label="&browseCss.label;"/>
 		</hbox>
 	</vbox>
-	<checkbox id="chkAllowEContent" label="&allowEContent.label;"/>
 </groupbox>
 
 </dialog>

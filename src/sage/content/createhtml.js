@@ -1,7 +1,4 @@
 var CreateHTML = {
-	USER_CSS_ENABLE: "sage.user_css.enable",
-	USER_CSS_PATH: "sage.user_css.path",
-	ALLOW_ENCODED_CONTENT: "sage.allow_encoded_content",
 	HTML_SOURCE: CommonFunc.loadText("chrome://sage/content/res/template-html.txt"),
 	ITEM_SOURCE: CommonFunc.loadText("chrome://sage/content/res/template-item.txt"),
 	DEFAULT_CSS: "chrome://sage/content/res/sage.css",
@@ -49,8 +46,8 @@ var CreateHTML = {
 	},
 
 	getUserCssURL: function() {
-		var userCssEnable = CommonFunc.getPrefValue(this.USER_CSS_ENABLE, "bool", false);
-		var userCssPath = CommonFunc.getPrefValue(this.USER_CSS_PATH, "wstr", "");
+		var userCssEnable = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
+		var userCssPath = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
 		if(!userCssEnable || !userCssPath) return null;
 
 		var ioService = Components.classes["@mozilla.org/network/io-service;1"]
@@ -70,7 +67,7 @@ var CreateHTML = {
 	},
 
 	createHTMLSource: function(feed) {
-		var allowEContent = CommonFunc.getPrefValue(this.ALLOW_ENCODED_CONTENT, "bool", false);
+		var allowEContent = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
 
 		var htmlSource = this.HTML_SOURCE;
 		var cssUrl	= this.getUserCssURL();

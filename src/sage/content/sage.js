@@ -61,6 +61,8 @@ function init() {
 	toggleShowFeedItemList();
 
   aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+
+	aConsoleService.logStringMessage("Sage initialized.");
 }
 
 
@@ -469,6 +471,12 @@ function httpGetResult(aResultCode) {
 	if(aResultCode == RESULT_OK) {
 		currentFeed = new Feed(responseXML);
 
+		if(CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
+			if(CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != currentFeed.getTitle()) {
+				CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, currentFeed.getTitle());
+			}
+		}
+
 		if(lastResource.res) {
 			BMSVC.updateLastVisitedDate(lastResource.url, responseXML.characterSet);
 			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE);
@@ -476,7 +484,7 @@ function httpGetResult(aResultCode) {
 		setStatusDone();
 		setRssItemListBox();
 		
-		if(getCheckboxCheck("chkOpenHTML")) {
+		if(CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
 			CreateHTML.openHTML(currentFeed);
 		}
 	} else {

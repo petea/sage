@@ -19,6 +19,9 @@
 
 
 <!-- Setting Dialog -->
+<!ENTITY settings.general.caption     "General">
+<!ENTITY settings.autoFeedTitle.label     "Automatically Update Feed Titles">
+<!ENTITY settings.renderFeeds.label     "Render Feeds In Contents Area">
 <!ENTITY settingWindow.title		"設定: RSS リーダパネル">
 <!ENTITY selectFolder.label			"RSS リストフォルダの選択">
 <!ENTITY uninstall.label			"アンインストール">

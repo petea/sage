@@ -56,7 +56,6 @@
 		<spacer flex="1"/>
 		<toolbarbutton type="menu" label="&menu.tools;">
 			<menupopup>
-				<menuitem id="chkOpenHTML" type="checkbox" persist="checked" label="&menu.openHTML;"/>
 				<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
 				<menuitem id="chkShowTooltip" type="checkbox" persist="checked" checked="true" label="&menu.showDescTooltip;"/>
 				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>

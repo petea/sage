@@ -1,54 +1,56 @@
 
-const RSS_READER_FOLDER_ID = CommonFunc.RSS_READER_FOLDER_ID;
-const USER_CSS_ENABLE = "sage.user_css.enable";
-const USER_CSS_PATH = "sage.user_css.path";
-const ALLOW_ENCODED_CONTENT = "sage.allow_encoded_content";
-
 var sageFolderID;
 
 var chkUserCssEnable;
 var txtUserCssPath;
 var chkAllowEContent;
+var chkAutoFeedTitle;
+var chkRenderFeeds;
 
 var gList;
 var gNameArc;
 var strRes // stringbundle オブジェクト
 
-function init(){
+function init() {
 	initServices();
 	initBMService();
-	
+
 	strRes = document.getElementById("strRes");
-	
-  		// 設定の読み込み
-  	sageFolderID = CommonFunc.getPrefValue(RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
+
+  sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
 	gNameArc = RDF.GetResource(NC_NS + "Name");
 	gList = document.getElementById("select-menu");
 
 	chkUserCssEnable = document.getElementById("chkUserCssEnable");
-	chkUserCssEnable.checked = CommonFunc.getPrefValue(USER_CSS_ENABLE, "bool", false);
+	chkUserCssEnable.checked = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
 
 	txtUserCssPath = document.getElementById("txtUserCssPath");
-	txtUserCssPath.value = CommonFunc.getPrefValue(USER_CSS_PATH, "wstr", "");
+	txtUserCssPath.value = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
 
 	chkAllowEContent = document.getElementById("chkAllowEContent");
-	chkAllowEContent.checked = CommonFunc.getPrefValue(ALLOW_ENCODED_CONTENT, "bool", false);
+	chkAllowEContent.checked = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
 
+	chkAutoFeedTitle = document.getElementById("chkAutoFeedTitle");
+	chkAutoFeedTitle.checked = CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true);
+
+	chkRenderFeeds = document.getElementById("chkRenderFeeds");
+	chkRenderFeeds.checked = CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true);
 
 	setDisabled();
 
 	setTimeout(fillSelectFolderMenupopup, 0);
 }
 
-function accept(){
-	// 設定の書き込み
-	CommonFunc.setPrefValue(RSS_READER_FOLDER_ID, "str", sageFolderID);
-	CommonFunc.setPrefValue(USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
-	CommonFunc.setPrefValue(USER_CSS_PATH, "wstr", txtUserCssPath.value);
-	CommonFunc.setPrefValue(ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
+function accept() {
+	CommonFunc.setPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", sageFolderID);
+	CommonFunc.setPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
+	CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", txtUserCssPath.value);
+	CommonFunc.setPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
+	CommonFunc.setPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", chkAutoFeedTitle.checked);
+	CommonFunc.setPrefValue(CommonFunc.RENDER_FEEDS, "bool", chkRenderFeeds.checked);
 }
 
-function uninstall(){
+function uninstall() {
 	var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 	var checkValue = { value: true };
@@ -104,13 +106,13 @@ function selectFolder(aEvent){
 }
 
 
-function setDisabled(){
+function setDisabled() {
 	txtUserCssPath.disabled = !chkUserCssEnable.checked;
 	document.getElementById("btnBrowseCss").disabled = !chkUserCssEnable.checked;
 }
 
 
-function browseCss(){
+function browseCss() {
 	var fpicker = Components.classes["@mozilla.org/filepicker;1"]
 					.createInstance(Components.interfaces.nsIFilePicker);
 	fpicker.init(window, "Select CSS File", fpicker.modeOpen);
@@ -118,16 +120,16 @@ function browseCss(){
 	fpicker.appendFilters(fpicker.filterAll);
 
 	var showResult = fpicker.show();
-	if(showResult == fpicker.returnOK){
+	if(showResult == fpicker.returnOK) {
 		txtUserCssPath.value = fpicker.file.path;	
 	}
 }
 
-function fillSelectFolderMenupopup (){
+function fillSelectFolderMenupopup () {
 	var popup = document.getElementById("select-folder");
 
 	// clearing the old menupopup
-	while (popup.hasChildNodes()){
+	while (popup.hasChildNodes()) {
 		popup.removeChild(popup.firstChild);
 	}
 
@@ -139,13 +141,13 @@ function fillSelectFolderMenupopup (){
 
 	var folder = RDF.GetResource("NC:BookmarksRoot");
 	fillFolder(popup, folder, 1);
-	if(gList.selectedIndex == -1){
+	if(gList.selectedIndex == -1) {
 		gList.selectedIndex = 0;
 		sageFolderID = "NC:BookmarksRoot";
 	}
 }
 
-function fillFolder(aPopup, aFolder, aDepth){
+function fillFolder(aPopup, aFolder, aDepth) {
 	RDFC.Init(BMDS, aFolder);
 	var children = RDFC.GetElements();
 	while (children.hasMoreElements()){
@@ -158,7 +160,7 @@ function fillFolder(aPopup, aFolder, aDepth){
 			element.setAttribute("label", indentation + name);
 			element.setAttribute("id", curr.Value);
 			aPopup.appendChild(element);
-			if (curr.Value == sageFolderID){
+			if (curr.Value == sageFolderID) {
 				gList.selectedItem = element;
 			}
 			fillFolder(aPopup, curr, ++aDepth);
