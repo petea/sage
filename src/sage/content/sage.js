@@ -210,35 +210,40 @@ function createTreeContextMenu2(aEvent) {
 }
 
 function bookmarksTreeClick(aEvent) {
-	if(aEvent.type == "click") {
-		if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {
-			return;
-		}
-		var obj = {};
-		var row = {};
-		bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, row, {}, obj);
-		row = row.value;
+	var selectedItemType = BookmarksUtils.getProperty(bookmarksTree.currentResource, RDF_NS + "type", bookmarksTree.db);
+	logMessage(aEvent.type);
+	switch(aEvent.type) {
+		case "click":
+			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {
+				return;
+			}
+			var obj = {};
+			var row = {};
+			bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, row, {}, obj);
+			row = row.value;
+			if(obj.value == "twisty") return;
+			if(selectedItemType == NC_NS + "Folder") {
+				bookmarksTree.treeBoxObject.view.toggleOpenState(row);
+			}
+			break;
 
-		if(obj.value == "twisty") return;
+		case "keypress":
+			if(aEvent.originalTarget.localName != "tree") {
+				return;
+			}
+			break;
 
-		if (bookmarksTree.getTreeSelection().isContainer[0]) {
-			bookmarksTree.treeBoxObject.view.toggleOpenState(row);
-		}
-	} else if(aEvent.type == "keypress") {
-		if(aEvent.originalTarget.localName != "tree") {
-			return;
-		}
+		case "dblclick":
+			break;
 	}
 
 	CreateHTML.tabbed = false;
 	if(aEvent.button == 1) { CreateHTML.tabbed = true; } // click middle button
 	if(aEvent.ctrlKey) { CreateHTML.tabbed = true; } // press Ctrl Key
 
-	const BOOKMARK_TYPE = RDF_NS + "type";
 	const BOOKMARK_SEPARATOR = NC_NS + "BookmarkSeparator";
-	const BOOKMARK_FOLDER = NC_NS + "Folder"
-	var bookmarkType = BookmarksUtils.getProperty(bookmarksTree.currentResource, BOOKMARK_TYPE , bookmarksTree.db)
-	if(bookmarkType == BOOKMARK_SEPARATOR || bookmarkType == BOOKMARK_FOLDER) {
+	const BOOKMARK_FOLDER = NC_NS + "Folder";
+	if(selectedItemType == BOOKMARK_SEPARATOR || selectedItemType == BOOKMARK_FOLDER) {
 		return;
 	}
 

@@ -211,7 +211,7 @@ Feed.prototype.parseAtom = function() {
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
 		var contentArray = new Array();
-		for(j = 0; j < contentNodes.length; j++){
+		for(j = 0; j < contentNodes.length; j++) {
 			var contType = contentNodes[j].getAttribute("type");
 			contentArray[contType] = CommonFunc.getInnerText(contentNodes[j]);
 		}
