@@ -73,7 +73,7 @@
 </stringbundleset>
 
 <toolbox class="plain">
-	<toolbar class="plain">
+	<toolbar>
 		<toolbarbutton id="checkFeeds" class="sage_button" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
 		<toolbarbutton id="discoverFeeds" class="sage_button" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
 		<spacer flex="1"/>
@@ -93,7 +93,7 @@
 			</menupopup>
 		</toolbarbutton>
 	</toolbar>
-	<toolbar id="barSearch" class="plain" align="center">
+	<toolbar id="barSearch" align="center">
 		<textbox id="txtSearchValue" type="autocomplete" flex="1"
 			ontextentered="FeedSearch.search()"
 			autocompletesearch="form-history"
@@ -105,14 +105,12 @@
 	</toolbar>
 </toolbox>
 
-<vbox>
-	<sidebarheader id="rssStatusBar" align="center">
-		<hbox align="center" flex="1">
-			<image id="rssStatusImage" loading="false"/>
-			<label id="rssStatusLabel" flex="1" crop="end" value=""/>
-		</hbox>
+<sidebarheader id="rssStatusBar" align="center">
+	<hbox align="center" flex="1">
+		<image id="rssStatusImage" loading="false"/>
+		<label id="rssStatusLabel" flex="1" crop="end" value=""/>
+	</hbox>
   </sidebarheader>
-</vbox>
 
 <vbox flex="1">
 
@@ -133,7 +131,7 @@
 		</sidebarheader>
 
 		<toolbox class="plain">
-			<toolbar class="plain" id="itemListToolbar">
+			<toolbar id="itemListToolbar">
 				<toolbarbutton id="markAsReadButton" class="sage_button" command="cmd_markasread"/>
 				<toolbarbutton id="markAsUnreadButton" class="sage_button" command="cmd_markasunread"/>
 				<toolbarbutton id="markAllAsReadButton" class="sage_button" command="cmd_markallasread"/>
