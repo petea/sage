@@ -31,7 +31,7 @@ function Feed(feedXML) {
 Feed.prototype.parseRSS = function() {
 
 	var feedXML = this.feedXML;
-	
+
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
 	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
@@ -300,18 +300,9 @@ Feed.prototype.getItems = function(sort) {
 				items.push(this.items[c]);
 			}
 			function chronoSort(a, b) {
-				var a_ts, b_ts;
-				if(a.hasPubDate()) {
-					a_ts = a.getPubDate().getTime();
-				} else {
-					a_ts = 0;
-				}
-				if(b.hasPubDate()) {
-					b_ts = b.getPubDate().getTime();
-				} else {
-					b_ts = 0;
-				}
-				return (a_ts < b_ts ? 1 : (b_ts < a_ts ? -1 : 0));
+				var a_ts = a.hasPubDate() ? a.getPubDate() : 0;
+				var b_ts = b.hasPubDate() ? b.getPubDate() : 0;
+				return b_ts - a_ts;
 			}
 			items.sort(chronoSort);
 			items_array = items;
