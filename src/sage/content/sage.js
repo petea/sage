@@ -117,7 +117,9 @@ function init() {
 	// set feed folder location
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
-	bookmarksTree.treeBoxObject.selection.select(0);
+	if (bookmarksTree.treeBoxObject.selection) {
+		bookmarksTree.treeBoxObject.selection.select(0);
+	}
 
 	FeedSearch.init();
 	toggleShowSearchBar();

@@ -213,7 +213,7 @@ function httpLoaded(e) {
 	var httpReq = e.target;
 	var uri = httpReq.channel.originalURI;
 	try {
-		var feed = new Feed(httpReq.responseXML);
+		var feed = new Feed(httpReq.responseXML, uri);
 		addDiscoveredFeed(uri, feed);
 	} catch(e) { }
 	progressUpdate();

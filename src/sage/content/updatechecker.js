@@ -135,7 +135,7 @@ var UpdateChecker = {
 		var lastModified = 0;
 
 		try {
-			var feed = new Feed(UpdateChecker.httpReq.responseXML);
+			var feed = new Feed(UpdateChecker.httpReq.responseXML, UpdateChecker.httpReq.channel.originalURI);
 		} catch(e) {
 			UpdateChecker.checkResult(false, 0);
 			return;

@@ -43,14 +43,16 @@ var CreateHTML = {
 
 	_tabbed: false,
 
-	set tabbed(aValue){ this._tabbed = aValue },
+	set tabbed(aValue) { this._tabbed = aValue },
 
 	openHTML: function(feed) {
-		if(!feed) return;
+		if (!feed) {
+			return;
+		}
 
 		try {
 			var htmlURL = this.createHTML(feed);
-			if(this._tabbed) {
+			if (this._tabbed) {
 				getContentBrowser().addTab(htmlURL);
 			} else {
 				getContentBrowser().loadURI(htmlURL);
@@ -68,7 +70,7 @@ var CreateHTML = {
 							.getService(Components.interfaces.nsIIOService);
 		var xmlFilePath = ioService.newFileURI(tmpFile).spec;
 
-		if(tmpFile.exists()) {
+		if (tmpFile.exists()) {
 			tmpFile.remove(true);
 		}
 		tmpFile.create(tmpFile.NORMAL_FILE_TYPE, 0666);
@@ -88,7 +90,9 @@ var CreateHTML = {
 	getUserCssURL: function() {
 		var userCssEnable = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
 		var userCssPath = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
-		if(!userCssEnable || !userCssPath) return null;
+		if (!userCssEnable || !userCssPath) {
+			return null;
+		}
 
 		return userCssPath;
 
@@ -104,7 +108,9 @@ var CreateHTML = {
 			tmpFile.initWithPath(userCssPath);
 			var cssUrl = ioService.newFileURI(tmpFile);
 			var contentType = ioService.newChannelFromURI(cssUrl).contentType;
-			if(contentType != "text/css") return null;
+			if (contentType != "text/css") {
+				return null;
+            }
 
 			return cssUrl.spec;
 		} catch(e) {
@@ -113,37 +119,32 @@ var CreateHTML = {
 		*/
 	},
 
-	formatFileSize:	function (n)
-	{
-		if (n > 1048576)
+	formatFileSize:	function (n) {
+		if (n > 1048576) {
 			return Math.round(n / 1048576) + "M";
-		else if (n > 1024)
+		} else if (n > 1024) {
 			return Math.round(n / 1024) + "K";
-		else
+		} else {
 			return n + "B";
+		}
 	},
 
-	createHTMLSource: function(feed)
-	{
-		return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s)
-			{
+	createHTMLSource: function(feed) {
+		return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
 				return CreateHTML.replaceFeedKeyword(feed, s);
 			});
 
 		return CommonFunc.convertCharCodeFrom(
-			this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s)
-			{
+			this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
 				return CreateHTML.replaceFeedKeyword(feed, s);
 			}),
 			"UTF-8");
 	},
 
-	replaceFeedKeyword:	function (feed, s)
-	{
+	replaceFeedKeyword:	function (feed, s) {
 		var footer;
 
-		switch (s)
-		{
+		switch (s) {
 			case "**CSSURL**":
 				return this.getUserCssURL() || this.DEFAULT_CSS;
 
@@ -178,8 +179,9 @@ var CreateHTML = {
 				footer = feed.getFooter();
 				if (footer.editor) {
 					editor = "<a href=\"mailto:" + footer.editor + "\">Editor</a>";
-					if (footer.webmaster)
+					if (footer.webmaster) {
 						editor += ", ";
+					}
 				}
 				return editor;
 
@@ -199,30 +201,24 @@ var CreateHTML = {
 		return s;
 	},
 
-	getItemsHtml:	function (feed)
-	{
+	getItemsHtml:	function (feed) {
 		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
 		var items = feed.getItems(feedItemOrder);
 		var sb = [];
-		for (var i = 0; i < items.length; i++)
-		{
+		for (var i = 0; i < items.length; i++) {
 			sb.push(this.getItemHtml(feed, items[i], i));
 		}
 		return sb.join("");
 	},
 
-	getItemHtml:	function (feed, item, i)
-	{
-		return  this.ITEM_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s)
-		{
+	getItemHtml:	function (feed, item, i) {
+		return  this.ITEM_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
 			return CreateHTML.replaceFeedItemKeyword(feed, item, i, s);
 		});
 	},
 
-	replaceFeedItemKeyword:	function (feed, item, i, s)
-	{
-		switch (s)
-		{
+	replaceFeedItemKeyword:	function (feed, item, i, s) {
+		switch (s) {
 			case "**NUMBER**":
 				return i  +1;
 
@@ -239,18 +235,14 @@ var CreateHTML = {
 				return item.getAuthor();
 
 			case "**DESCRIPTION**":
-				if (item.hasContent())
-				{
+				if (item.hasContent()) {
 					var allowEContent = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
 					var ds;
-					if (allowEContent)
-					{
+					if (allowEContent) {
 						this.filterHtmlHandler.clear();
 						this.simpleHtmlParser.parse(item.getContent());
 						ds = this.filterHtmlHandler.toString();
-					}
-					else
-					{
+					} else {
 						ds = htmlToText(item.getContent());
 					}
 					return "<div class=\"item-desc\">" + ds + "</div>";
@@ -258,8 +250,7 @@ var CreateHTML = {
 				return "";
 
 			case "**PUBDATE**":
-				if (item.hasPubDate())
-				{
+				if (item.hasPubDate()) {
 					var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 					return "<div class=\"item-pubDate\">" +
 						dateFormat(item.getPubDate(), twelveHourClock) +
@@ -268,8 +259,7 @@ var CreateHTML = {
 				return "";
 
 			case "**ENCLOSURE**":
-				if (item.hasEnclosure())
-				{
+				if (item.hasEnclosure()) {
 					var enc = item.getEnclosure();
 					return "<div class=\"item-enclosure\">" +
 						"<a href=\"" + enc.getLink() + "\" title=\"" +

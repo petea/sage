@@ -84,7 +84,7 @@ var GetRssTitle = {
 	httpLoaded: function() {
 		this.checking = false;
 
-		var feed = new Feed(GetRssTitle.httpReq.responseXML);
+		var feed = new Feed(GetRssTitle.httpReq.responseXML, GetRssTitle.httpReq.channel.originalURI);
 		var rssTitle = feed.getTitle();
 
 		if(!rssTitle) return;

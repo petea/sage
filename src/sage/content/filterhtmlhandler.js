@@ -40,8 +40,7 @@
  * This class creates a simple handler for SimpleHtmlParser that filters out
  * potentially unsafe HTML code
  */
-function FilterHtmlHandler()
-{
+function FilterHtmlHandler() {
 	this._sb = [];
 }
 
@@ -49,26 +48,23 @@ FilterHtmlHandler.prototype = {
 
 	_inBlocked:	null,
 
-	clear:	function ()
-	{
+	clear:	function () {
 		this._sb = [];
 	},
 
-	toString:	function ()
-	{
+	toString:	function () {
 		return this._sb.join("");
 	},
 
 // handler interface
 
-	startElement:   function (sTagName, attrs)
-	{
-		if (this._inBlocked)
+	startElement:   function (sTagName, attrs) {
+		if (this._inBlocked) {
 			return;
+		}
 
 		var ls = sTagName.toLowerCase();
-		switch (ls)
-		{
+		switch (ls) {
 			case "embed":
 			case "link":
 			case "meta":
@@ -90,21 +86,17 @@ FilterHtmlHandler.prototype = {
 				this._sb.push("<" + sTagName);
 		}
 
-		if (!this._inBlocked)
-		{
-			for (var i = 0; i < attrs.length; i++)
-			{
+		if (!this._inBlocked) {
+			for (var i = 0; i < attrs.length; i++) {
 				this.attribute(sTagName, attrs[i].name, attrs[i].value);
 			}
 			this._sb.push(">");
 		}
 	},
 
-	endElement:     function (s)
-	{
+	endElement:     function (s) {
 		var ls = s.toLowerCase();
-		switch (ls)
-		{
+		switch (ls) {
 			case "embed":
 			case "applet":
 			case "object":
@@ -115,69 +107,59 @@ FilterHtmlHandler.prototype = {
 			case "center":
 				return;
 		}
-		if (this._inBlocked)
-		{
-			if (this._inBlocked == ls)
+		if (this._inBlocked) {
+			if (this._inBlocked == ls) {
 				this._inBlocked = null;
+			}
 			return;
 		}
 		this._sb.push("</" + s + ">");
 	},
 
-	attribute:  function (sTagName, sName, sValue)
-	{
-		if (this._inBlocked)
+	attribute:  function (sTagName, sName, sValue) {
+		if (this._inBlocked) {
 			return;
+		}
 
 		var nl = sName.toLowerCase();
 		var vl = String(sValue).toLowerCase();	// might be null
 
-		switch (nl)
-		{
+		switch (nl) {
 			case "align":
 			case "style":
 				return;
 		}
 
 		if (nl == "type" && vl == "text/css" ||
-			nl == "rel" && vl == "stylesheet")
-		{
+			nl == "rel" && vl == "stylesheet") {
 			this._sb.push(" " + sName + "=\"BLOCKED\"");
-		}
-		else if (nl.substr(0,2) == "on")
-		{
+		} else if (nl.substr(0,2) == "on") {
 			//noop
-		}
-		else if ((nl == "href" || nl == "src" || nl == "data" || nl == "codebase") &&
-				 /^javascript\:/i.test(vl))
-		{
+		} else if ((nl == "href" || nl == "src" || nl == "data" || nl == "codebase") &&
+				 /^javascript\:/i.test(vl)) {
 			//noop
-		}
-		else if (nl == "style")
-		{
+		} else if (nl == "style") {
 			sValue = sValue.replace(/\-moz\-binding/gi, "BLOCKED")
 					.replace(/binding/gi, "BLOCKED")
 					.replace(/behavior/gi, "BLOCKED")
 					.replace(/\:\s*expression\s*\(/gi, ":BLOCKED(");
 			this._sb.push(" " + sName + "=\"" + sValue + "\"");
-		}
-		else
-		{
-			if (sValue == null)
+		} else {
+			if (sValue == null) {
 				this._sb.push(" " + sName);
-			else
+			} else {
 				this._sb.push(" " + sName + "=\"" + sValue + "\"");
+			}
 		}
 	},
 
-	characters:	function (s)
-	{
-		if (!this._inBlocked)
+	characters:	function (s) {
+		if (!this._inBlocked) {
 			this._sb.push(s);
+		}
 	},
 
-	comment:	function (s)
-	{
+	comment:	function (s) {
 		//this._sb.push(s);
 	}
 };
