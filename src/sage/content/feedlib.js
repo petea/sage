@@ -166,7 +166,7 @@ var Feed = {
 
 			var contentNodes = aEntryNode.getElementsByTagName("content");
 			var contentArray = new Array();
-			for(var i=0; i<contentNodes.length; i++){
+			for(i = 0; i < contentNodes.length; i++){
 				var contType = contentNodes[i].getAttribute("type");
 				contentArray[contType] = CommonFunc.getInnerText(contentNodes[i]);
 			}
@@ -175,11 +175,11 @@ var Feed = {
 
 			if("application/xhtml+xml" in contentArray) {
 				item.content = contentArray["application/xhtml+xml"];
-			} elseif("text/html" in contentArray) {
+			} else if("text/html" in contentArray) {
 				item.content = contentArray["text/html"];
-			} elseif("text/plain" in contentArray) {
+			} else if("text/plain" in contentArray) {
 				item.content = contentArray["text/plain"];
-			}	elseif(summaryNodes.length) {
+			}	else if(summaryNodes.length) {
 				item.content = CommonFunc.getInnerText(summaryNodes[0]);
 			}
 			
