@@ -1,0 +1,52 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.2.2">
+<!ENTITY sage.version.label				"versión">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Muestra Sage">
+
+<!ENTITY menu.view				"Ver">
+<!ENTITY menu.showSearchBar			"Mostrar barra de búsqueda de fuentes">
+<!ENTITY menu.showFeedItemList			"Mostrar la lista de fuentes ">
+<!ENTITY menu.showDescTooltip			"Mostrar sugerencias de descripción">
+<!ENTITY menu.openHTML				"Abrir fuentes en área de contenidos">
+<!ENTITY menu.tools				"Opciones">
+<!ENTITY menu.checkUpdate			"Comprobar Fuentes">
+<!ENTITY menu.manageRSSList			"Gestionar lista de fuentes...">
+<!ENTITY menu.opmlImportExport			"Importación/Exportación OPML...">
+<!ENTITY menu.setting				"Configuración...">
+<!ENTITY menu.sageProjectFeed				"Noticias Projecto Sage">
+<!ENTITY menu.discoverFeeds				"Descubrir fuentes">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Buscando página actual">
+<!ENTITY discovery.button.addFeed    "Añadir fuente">
+<!ENTITY discovery.button.close			 "Cerrar">
+<!ENTITY discovery.header.title			 "Título">
+<!ENTITY discovery.header.format     "Formato">
+<!ENTITY discovery.header.lastPubDate     "Última actualización">
+<!ENTITY discovery.header.itemCount     "Elementos">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "General">
+<!ENTITY settings.autoFeedTitle.label     "Actualizar automáticamente los títulos de las fuentes">
+<!ENTITY settings.renderFeeds.label     "Representar las fuentes en el área de contenidos">
+<!ENTITY settings.twelveHourClock.label     "Utilizar reloj de 12 horas">
+<!ENTITY settings.feedItemOrder.label     "Orden de la lista de fuentes">
+<!ENTITY settings.feedItemOrder.chrono     "Cronológicamente">
+<!ENTITY settings.feedItemOrder.source     "Fuente">
+<!ENTITY settings.feedDiscoveryMode.label     "Modo descubrimiento de fuentes">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Exhaustivo">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Conservador">
+<!ENTITY settingWindow.title                    "Configurar Sage">
+<!ENTITY selectFolder.label			"Seleccionar carpeta de fuentes">
+<!ENTITY openInContentsArea.caption		"Representación de las fuentes">
+<!ENTITY enableUserCss.label			"Utilizar CSS personalizada">
+<!ENTITY browseCss.label			"Examinar...">
+<!ENTITY allowEContent.label			"Permitir etiquetas HTML">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
