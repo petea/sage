@@ -15,20 +15,20 @@
 <!ENTITY menu.openHTML              "Megnyitás a tartalmi részben">
 <!ENTITY menu.tools                 "Eszközök">
 <!ENTITY menu.checkUpdate           "Frissülések ellenõrzése">
-<!ENTITY menu.manageRSSList         "Manage RSS List...">
+<!ENTITY menu.manageRSSList         "RSS lista menedzselése...">
 <!ENTITY menu.opmlImportExport      "OPML import/export...">
 <!ENTITY menu.setting               "Beállítások...">
 <!ENTITY menu.sageProjectFeed				"A Sage projekt hírei">
-<!ENTITY menu.discoverFeeds					"Discover Feeds">
+<!ENTITY menu.discoverFeeds					"Adagolók keresése">
 
 <!-- Feed Discovery -->
-<!ENTITY discovery.status.searching     "Searching current page">
-<!ENTITY discovery.button.addFeed    "Add Feed">
-<!ENTITY discovery.button.close			 "Close">
-<!ENTITY discovery.header.title			 "Title">
-<!ENTITY discovery.header.format     "Format">
-<!ENTITY discovery.header.lastPubDate     "Last Update">
-<!ENTITY discovery.header.itemCount     "Items">
+<!ENTITY discovery.status.searching     "Keresés a jelenlegi oldalon">
+<!ENTITY discovery.button.addFeed    "Adagoló hozzáadása">
+<!ENTITY discovery.button.close			 "Bezár">
+<!ENTITY discovery.header.title			 "Cím">
+<!ENTITY discovery.header.format     "Formátum">
+<!ENTITY discovery.header.lastPubDate     "Utolsó frissíés">
+<!ENTITY discovery.header.itemCount     "Elemek">
 <!ENTITY discovery.header.url     "URL">
 
 <!-- Setting Dialog -->
@@ -37,12 +37,12 @@
 <!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
 <!ENTITY settings.twelveHourClock.label     "">
 <!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
-<!ENTITY settings.feedItemOrder.label     "Feed Item Order">
-<!ENTITY settings.feedItemOrder.chrono     "Chronological">
-<!ENTITY settings.feedItemOrder.source     "Source">
-<!ENTITY settings.feedDiscoveryMode.label     "Feed discovery mode">
-<!ENTITY settings.feedDiscoveryMode.exhaustive     "Exhaustive">
-<!ENTITY settings.feedDiscoveryMode.conservative     "Conservative">
+<!ENTITY settings.feedItemOrder.label     "Adagoló elemeinek sorrendje">
+<!ENTITY settings.feedItemOrder.chrono     "Idõrendben">
+<!ENTITY settings.feedItemOrder.source     "Forrás szerint">
+<!ENTITY settings.feedDiscoveryMode.label     "Adagolók keresési módja">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Alapos">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Hagyományos">
 <!ENTITY selectFolder.label         "Válassza ki az RSS listamappát">
 <!ENTITY openInContentsArea.caption "Letöltöttek megjelenítése">
 <!ENTITY enableUserCss.label        "Egyéni stíluslap engedélyezése">
