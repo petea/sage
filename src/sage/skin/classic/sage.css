@@ -1,12 +1,24 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 toolbarbutton.sage_button {
-	list-style-image: url("chrome://sage/skin/toolbar.png") !important;
-	-moz-binding: url("chrome://sage/skin/sage.xbl#toolbarbutton");
+	list-style-image:	url("chrome://sage/skin/toolbar.png") !important;
 }
 
 toolbarbutton.sage_button2 > .toolbarbutton-text {
 	display: none !important;
+}
+
+/* Override to hide icon and show text */
+#toolsMenuButton {
+	-moz-box-orient:	horizontal;
+}
+
+#toolsMenuButton .toolbarbutton-text {
+	display:	-moz-box;
+}
+
+#toolsMenuButton .toolbarbutton-icon {
+	display:	none;
 }
 
 #checkFeeds {
