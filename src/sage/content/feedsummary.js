@@ -115,8 +115,8 @@ var feedSummary = {
 
 		var p = document.createElement("p");
 		p.setAttribute("id", "loading-text");
-		// TODO: Should look in the BM DS and find the title
-		p.textContent = strRes.getFormattedString("RESULT_LOADING", [uri]);
+		var title = this._getFeedTitle(uri);
+		p.textContent = strRes.getFormattedString("RESULT_LOADING", [title]);
 		document.body.appendChild(p);
 
 		var pb = document.createElementNS(XUL_NS, "progressmeter");
@@ -127,10 +127,22 @@ var feedSummary = {
 
 		document.body.setAttribute("loading", "true");
 
-
 		if (uri)
 			this.loadFeed(uri);
 
+	},
+
+	_getFeedTitle: function (uri) {
+		var NC_NS = "http://home.netscape.com/NC-rdf#";
+		var RDF = Components.classes["@mozilla.org/rdf/rdf-service;1"]
+					.getService(Components.interfaces.nsIRDFService);
+		var BMDS = RDF.GetDataSource("rdf:bookmarks");
+		var bm = BMDS.GetSource(RDF.GetResource(NC_NS + "URL"), RDF.GetLiteral(uri), true);
+		if (bm) {
+			var name = BMDS.GetTarget(bm, RDF.GetResource(NC_NS + "Name"), true);
+			return name.QueryInterface(Components.interfaces.nsIRDFLiteral).Value;
+		}
+		return uri;
 	},
 
 	onPageUnload:	function (e)
