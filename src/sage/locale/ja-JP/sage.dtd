@@ -1,0 +1,32 @@
+<!ENTITY sage.label			"RSS リーダパネル">
+<!ENTITY sage.version			"1.7">
+
+<!ENTITY sage.toolbarLabel		"RSS リーダ">
+<!ENTITY sage.sidebarTitle		"RSS リーダ">
+<!ENTITY sage.tooltip			"RSS リーダパネルを表示">
+
+
+<!ENTITY menu.view					"表示">
+<!ENTITY menu.showSearchBar			"Feed 検索バーの表示">
+<!ENTITY menu.showFeedItemList			"Show Feed Item List">
+<!ENTITY menu.showDescTooltip		"Description ツールチップの表示">
+<!ENTITY menu.openHTML				"コンテンツエリアで開く">
+<!ENTITY menu.tools					"ツール">
+<!ENTITY menu.checkUpdate			"更新チェック">
+<!ENTITY menu.manageRSSList			"RSS リストの管理">
+<!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
+<!ENTITY menu.setting				"設定...">
+
+
+<!-- Setting Dialog -->
+<!ENTITY settingWindow.title		"設定: RSS リーダパネル">
+<!ENTITY selectFolder.label			"RSS リストフォルダの選択">
+<!ENTITY uninstall.label			"アンインストール">
+<!ENTITY openInContentsArea.caption	"コンテンツエリアで開く">
+<!ENTITY enableUserCss.label		"ユーザー CSS を使う">
+<!ENTITY browseCss.label			"参照...">
+<!ENTITY allowEContent.label		"HTML タグを許可する">
+
+
+<!ENTITY openSageSidebar.commandkey	"S">
+<!ENTITY openSageSidebar.modifiersKey	"alt">

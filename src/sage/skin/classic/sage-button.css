@@ -1,0 +1,9 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#sage-button {
+  list-style-image: url("chrome://sage/skin/sage.png");
+}
+
+toolbar[iconsize="small"] #sage-button {
+  list-style-image: url("chrome://sage/skin/sage-small.png");
+}

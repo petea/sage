@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css" type="text/css"?>
+<?xml-stylesheet href="chrome://sage/skin/sage.css" type="text/css"?>
+
+<?xul-overlay href="chrome://global/content/editMenuOverlay.xul"?>
+
+<!DOCTYPE page SYSTEM "chrome://sage/locale/sage.dtd">
+<page id="pageSagePanel" title="&sage.label;"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onload="init();" onunload="done()">
+
+<script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
+<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
+<script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
+<script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
+
+<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/getrsstitle.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
+
+	<!-- bookmarks & edit commands -->
+<commandset id="editMenuCommands"/>
+<command id="cmd_bm_open" 		   oncommand="goDoCommand('cmd_bm_open');"/>
+<command id="cmd_bm_openinnewwindow" disabled="true"/>
+<command id="cmd_bm_openinnewtab"	 disabled="true"/>
+<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
+<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
+<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
+<command id="cmd_bm_newfolder"	   oncommand="goDoCommand('cmd_bm_newfolder');"/>
+<command id="cmd_bm_newbookmark"	   oncommand="goDoCommand('cmd_bm_newbookmark');"/>
+<command id="cmd_bm_newseparator"	 oncommand="goDoCommand('cmd_bm_newseparator');"/>
+<command id="cmd_bm_find" 		   oncommand="goDoCommand('cmd_bm_find');"/>
+<command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
+
+
+
+
+
+
+
+
+<stringbundleset>
+	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+</stringbundleset>
+
+<toolbox class="plain">
+	<toolbar class="plain">
+		<button label="&menu.checkUpdate;" oncommand="updateCheck()" style="padding: 0px; font-size: x-small"/>
+		<spacer flex="1"/>
+		<toolbarbutton type="menu" label="&menu.tools;">
+			<menupopup>
+				<menuitem id="chkOpenHTML" type="checkbox" persist="checked" label="&menu.openHTML;"/>
+				<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
+				<menuitem id="chkShowTooltip" type="checkbox" persist="checked" checked="true" label="&menu.showDescTooltip;"/>
+				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
+				<menuseparator/>
+				<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
+				<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>
+				<menuseparator/>
+				<menuitem label="&menu.setting;" oncommand="openSettingDialog()"/>
+			</menupopup>
+		</toolbarbutton>
+	</toolbar>
+	<toolbar id="barSearch" class="plain" align="center">
+		<textbox id="txtSearchValue" type="autocomplete" flex="1"
+			ontextentered="FeedSearch.search()"
+			autocompletesearch="form-history"
+			autocompletesearchparam="q"
+			searchengine="" persist="searchengine">
+			<image id="imgSearchEngine" popup="popSearchEngine"/>
+		</textbox>
+		<toolbarbutton id="btnSearchSubmit" oncommand="FeedSearch.search()"/>
+	</toolbar>
+</toolbox>
+
+<vbox>
+	<sidebarheader id="rssStatusBar" align="center">
+		<hbox align="center" flex="1">
+			<image id="rssStatusImage" loading="false"/>
+			<label id="rssStatusLabel" flex="1" crop="end" value=""/>
+		</hbox>
+  </sidebarheader>
+</vbox>
+
+<vbox flex="1">
+
+<vbox id="bookmarksTreeBox" flex="1" persist="height">
+	<bookmarks-tree id="bookmarksTree" type="single-column" flex="1"
+		onkeypress="if(event.keyCode == 13) bookmarksTreeClick(event)"
+		ondraggesture="if(event.originalTarget.localName == 'treechildren') nsDragAndDrop.startDrag(event, this.DNDObserver);"
+		onclick="bookmarksTreeClick(event)"/>
+</vbox>
+
+<splitter id="sage-splitter"/>
+
+<vbox id="rssItemListBoxBox" flex="1" persist="height">
+	<sidebarheader id="feedTitleBar" align="center">
+		<hbox align="center" flex="1">
+			<label id="rssTitleLabel" flex="1" crop="end" value="" onclick="rssTitleLabelClick(this, event)"/>
+		</hbox>
+	</sidebarheader>
+
+	<listbox id="rssItemListBox" class="plain" flex="1"
+		onmouseout="hideRssItemListPopup()"
+		onmouseover="showRssItemListPopup(event)"
+		onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
+		onclick="rssItemListBoxClick(event)"/>
+</vbox>
+
+</vbox>
+
+<popupset>
+	<popup id="rssItemListPopup" class="popupex"/>
+	
+	<popup id="popSearchEngine" datasources="rdf:null"
+			ref="urn:rrp:searchengine:root">
+		<template>
+			<menuitem type="checkbox" uri="..." value="..."
+				oncommand="FeedSearch.popSearchEngineClick(event)"
+				label="rdf:http://fls.moo.jp/moz/rssreader/#name"
+				image="rdf:http://fls.moo.jp/moz/rssreader/#icon"/>
+		</template>
+	</popup>
+</popupset>
+
+</page> 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE wizard SYSTEM "chrome://sage/locale/opml.dtd">
+<wizard id="winMain" title="OPML Import/Export Wizard"
+	onload="init()" onwizardfinish="return finish()"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"></script>
+<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"></script>
+<script type="application/x-javascript" src="chrome://sage/content/opml/opml.js"></script>
+
+<wizardpage pageid="pageStart" next="pageImport"
+		label="&pageStart.label;" description="&pageStart.desc;">
+	<spacer height="40px"/>
+	<hbox>
+		<radiogroup>
+			<radio id="rdoImport" label="&rdoImport.label;" selected="true"
+				onclick="winMain.currentPage.next='pageImport'; wizMode=WIZ_MODE_IMPORT"/>
+			<radio id="rdoExport" label="&rdoExport.label;"
+				onclick="winMain.currentPage.next='pageExport'; wizMode=WIZ_MODE_EXPORT"/>
+		</radiogroup>
+		<spacer flex="1"/>
+	</hbox>
+</wizardpage>
+
+<wizardpage pageid="pageImport" label="&pageImport.label;" description="&pageImport.desc;">
+	<spacer height="40px"/>
+	<hbox align="center">
+		<textbox flex="1" id="txtImportFile"/>
+		<button label="&browseButton.label;" oncommand="browseImportFile()"/>
+	</hbox>
+</wizardpage>
+
+<wizardpage pageid="pageExport" label="&pageExport.label;" description="&pageExport.desc;">
+	<spacer height="40px"/>
+	<hbox align="center">
+		<textbox flex="1" id="txtExportFile"/>
+		<button label="&browseButton.label;" oncommand="browseExportFile()"/>
+	</hbox>
+</wizardpage>
+
+</wizard>

@@ -1,0 +1,79 @@
+html * {
+	-moz-box-sizing: border-box;
+}
+
+html {
+	line-height: 1.3; 
+	background-color: #FFF;
+}
+				
+body {
+	margin: 0px;
+	color: #222;
+	font-family: verdana;
+}
+
+a:link		{ text-decoration: none; color: #DD2B13; }
+a:visited	{ text-decoration: none;  color: #955322; }
+a:hover		{ text-decoration: underline; }
+a:active	{ text-decoration: none; }
+
+p.item-desc a:link { color: #029; }
+
+#rss-header {
+	-moz-border-radius: 5px;
+	background-color: #EEEAE4;
+	border: 1px solid #cccccc;
+	padding: 6px 8px;
+	margin: 10px 2%;
+}
+
+#rss-title {
+	font-size: large;
+	line-height: 1;
+	margin: 0px;
+	padding: 0px;
+}
+
+#rss-desc {
+	font-size: small;
+	margin: 0px;
+	padding: 5px 0px 0px 20px;
+}
+
+div.item {
+	-moz-border-radius: 5px;
+	background-color: #fafafa;
+	border: 1px solid #cccccc;
+	width: 47%;
+	min-width: 14em;
+	margin: 0px 0px 8px 2%;
+	padding: 0px;
+	float: left;
+}
+
+h2.item-title {
+	background-color: #EEEAE4;
+	font-size: x-small;
+	font-weight: normal;
+	line-height: 1.1;
+	margin: 0px;
+	padding: 5px 5px 8px 8px;
+}
+
+span.item-ordinal {
+	padding-right: 0.2em;
+}
+
+div.item-desc {
+	min-height: 6em;
+	font-size: x-small;
+	margin: 0px;
+	padding: 8px 10px;
+}
+
+div.item-pubDate {
+	font-size: x-small;
+	margin: 0px;
+	padding: 8px 10px;
+}

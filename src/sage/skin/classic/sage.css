@@ -1,0 +1,108 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#bookmarksTree {
+  -moz-binding: url("chrome://sage/content/bookmarksTree.xml#bookmarks-tree-name");
+}
+
+treechildren::-moz-tree-image(rss, updated) {
+  -moz-image-region: auto !important;
+  list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
+}
+treechildren::-moz-tree-image(rss, no-updated),
+treechildren::-moz-tree-image(rss, no-check) {
+  -moz-image-region: auto !important;
+  list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
+}
+treechildren::-moz-tree-image(rss, unknown) {
+  -moz-image-region: auto !important;
+  list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
+}
+treechildren::-moz-tree-image(rss, error) {
+  -moz-image-region: auto !important;
+  list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
+}
+
+#bookmarksTreeBox,
+#rssItemListBoxBox {
+  min-height: 90px;
+}
+
+#rssItemListBox > listitem {
+}
+
+#rssItemListBox > listitem[visited="true"] {
+  color: #39A;
+}
+
+
+#sage-splitter {
+  border: none;
+  border-bottom: 1px solid ThreeDLightShadow;
+}
+
+#rssStatusImage {
+  margin-left: 4px;
+  width: 16px;
+  height: 16px;
+}
+#rssStatusImage[loading="true"] {
+  list-style-image: url("chrome://sage/skin/icon/checking.gif");
+}
+#rssStatusImage[loading="error"] {
+  list-style-image: url("chrome://sage/skin/icon/error.gif");
+}
+
+#rssTitleLabel[href]:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* ++++++++++ Search ++++++++++ */
+#barSearch {
+  padding-bottom: 2px;
+}
+
+#imgSearchEngine {
+  width: 16px;
+  height: 16px;
+}
+
+#btnSearchSubmit {
+  -moz-appearance: none;
+  margin: 2px 2px 2px 0px;
+  min-width: 0px;
+  min-height: 0px;
+  list-style-image: url("chrome://sage/skin/icon/search-submit.gif");
+}
+
+/* ++++++++++ popupEX ++++++++++ */
+
+.popupex {
+  -moz-binding : url(chrome://sage/content/popupex.xml#popupex);
+  -moz-appearance: tooltip;
+  display: -moz-popup;
+
+  border: 1px solid InfoText;
+  width: 26em;
+  max-width: 26em;
+  background-color: InfoBackground;
+  color: InfoText;
+  font: message-box;
+
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.popupex-title {
+  font-weight: bold;
+  margin: 0px !important;
+  padding: 3px !important;
+  -moz-box-flex: 1;
+}
+
+.popupex-description {
+  margin: 0px !important;
+  padding: 5px 5px 5px 20px !important;
+  -moz-box-flex: 1;
+}

@@ -1,0 +1,31 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.0">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Displays Sage">
+
+<!ENTITY menu.view				"View">
+<!ENTITY menu.showSearchBar			"Show Feed Search Bar">
+<!ENTITY menu.showFeedItemList			"Show Feed Item List">
+<!ENTITY menu.showDescTooltip			"Show Description Tooltips">
+<!ENTITY menu.openHTML				"Open Feeds In Contents Area">
+<!ENTITY menu.tools				"Options">
+<!ENTITY menu.checkUpdate			"Check Feeds">
+<!ENTITY menu.manageRSSList			"Manage Feed List...">
+<!ENTITY menu.opmlImportExport			"OPML Import/Export...">
+<!ENTITY menu.setting				"Settings...">
+
+
+<!-- Setting Dialog -->
+<!ENTITY settingWindow.title                    "Sage Settings">
+<!ENTITY selectFolder.label			"Select Feed Folder">
+<!ENTITY uninstall.label			"Uninstall">
+<!ENTITY openInContentsArea.caption		"Open In Contents Area">
+<!ENTITY enableUserCss.label			"Use custom CSS">
+<!ENTITY browseCss.label			"Browse...">
+<!ENTITY allowEContent.label			"Allow HTML Tags">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">

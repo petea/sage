@@ -1,0 +1,11 @@
+<!ENTITY pageStart.label			"OPML Import/Export Wizard">
+<!ENTITY pageStart.desc				"Choose an action">
+<!ENTITY pageImport.label			"Import OPML">
+<!ENTITY pageImport.desc			"Select Import OPML File">
+<!ENTITY pageExport.label			"Export OPML">
+<!ENTITY pageExport.desc			"Select Export OPML File">
+
+<!ENTITY rdoImport.label			"Import OPML">
+<!ENTITY rdoExport.label			"Export OPML">
+
+<!ENTITY browseButton.label			"Browse...">

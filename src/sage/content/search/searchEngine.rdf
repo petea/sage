@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+			xmlns:rrp="http://fls.moo.jp/moz/rssreader/#">
+
+		<!-- Search Engine List-->
+	<rdf:Seq rdf:about="urn:rrp:searchengine:root">
+		<rdf:li rdf:resource="http://feedster.com/"/>
+		<rdf:li rdf:resource="http://www.blogdigger.com/"/>
+		<rdf:li rdf:resource="http://www.daypop.com/"/>
+		<rdf:li rdf:resource="http://bulkfeeds.net/"/>
+		<rdf:li rdf:resource="http://naoya.dyndns.org/feedback/"/>
+	</rdf:Seq>
+
+		<!-- Default Search Engine -->
+	<rdf:Description rdf:about="urn:rrp:searchengine:default">
+		<rrp:site rdf:resource="http://feedster.com/"/>
+	</rdf:Description>
+
+
+		<!-- Search Engine Data -->
+	<rdf:Description rdf:about="http://feedster.com/">
+		<rrp:name>Feedster</rrp:name>
+		<rrp:query rdf:resource="http://feedster.com/search.php?sort=date&amp;ie=UTF-8&amp;limit=15&amp;type=rss&amp;q="/>
+		<rrp:icon rdf:resource="chrome://sage/content/search/feedster.png"/>
+		<rrp:charset>UTF-8</rrp:charset>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="http://www.blogdigger.com/">
+		<rrp:name>Blogdigger</rrp:name>
+		<rrp:query rdf:resource="http://www.blogdigger.com/rss.jsp?sortby=date&amp;days=20&amp;queryString="/>
+		<rrp:icon rdf:resource="chrome://sage/content/search/blogdigger.png"/>
+		<rrp:charset>UTF-8</rrp:charset>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="http://www.daypop.com/">
+		<rrp:name>DAYPOP</rrp:name>
+		<rrp:query rdf:resource="http://www.daypop.com/search?s=1&amp;c=15&amp;ext=true&amp;t=a&amp;o=rss&amp;q="/>
+		<rrp:icon rdf:resource="chrome://sage/content/search/daypop.png"/>
+		<rrp:charset>UTF-8</rrp:charset>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="http://bulkfeeds.net/">
+		<rrp:name>Bulkfeeds:ja</rrp:name>
+		<rrp:query rdf:resource="http://bulkfeeds.net/app/search2.rdf?q="/>
+		<rrp:icon rdf:resource="chrome://sage/content/search/bulkfeeds.png"/>
+		<rrp:charset>UTF-8</rrp:charset>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="http://naoya.dyndns.org/feedback/">
+		<rrp:name>FeedBack:ja</rrp:name>
+		<rrp:query rdf:resource="http://naoya.dyndns.org/feedback/app/rss?keyword="/>
+		<rrp:icon rdf:resource="chrome://sage/content/search/feedback.png"/>
+		<rrp:charset>UTF-8</rrp:charset>
+	</rdf:Description>
+</rdf:RDF>

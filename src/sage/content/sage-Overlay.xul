@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://sage/skin/sage-button.css" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://sage/locale/sage.dtd">
+<overlay id="sageOverlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<menupopup id="viewSidebarMenu">
+		<menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
+	</menupopup>
+
+	<keyset id="mainKeyset">
+		<key id="key_openSageSidebar" command="viewSageSidebar"
+			key="&openSageSidebar.commandkey;"
+			modifiers="&openSageSidebar.modifiersKey;"/>
+	</keyset>
+
+	<broadcasterset id="mainBroadcasterSet">
+		<broadcaster id="viewSageSidebar"
+			autoCheck="false"
+			label="&sage.toolbarLabel;"
+			type="checkbox" group="sidebar"
+			sidebarurl="chrome://sage/content/sage.xul"
+			sidebartitle="&sage.sidebarTitle;"
+			oncommand="toggleSidebar('viewSageSidebar');"/>
+	</broadcasterset>
+
+
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="sage-button" tooltiptext="&sage.tooltip;"
+			observes="viewSageSidebar" class="toolbarbutton-1"/>
+	</toolbarpalette>
+</overlay>

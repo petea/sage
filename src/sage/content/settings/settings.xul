@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css"?>
+
+<!DOCTYPE window SYSTEM "chrome://sage/locale/sage.dtd">
+<dialog id="winMain" title="&settingWindow.title;" style="min-width:400px;"
+		onload="init();" ondialogaccept="accept()"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/settings/exUnregisterer.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/settings/settings.js"/>
+
+
+<dialogheader title="&sage.label;" description="&sage.label; version &sage.version;"/>
+
+<stringbundleset>
+	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+</stringbundleset>
+
+<hbox style="padding:5px 0px 10px 0px">
+<groupbox flex="1">
+	<caption label="&selectFolder.label;"/>
+	
+	<menulist id="select-menu" oncommand="selectFolder(event);">
+		<menupopup id="select-folder"/>
+	</menulist>
+</groupbox>
+<groupbox orient="horizontal" align="center">
+	<caption label="&uninstall.label;"/>
+	<button label="&uninstall.label;" oncommand="uninstall()"/>
+</groupbox>
+</hbox>
+
+<groupbox>
+	<caption label="&openInContentsArea.caption;"/>
+	<vbox flex="1">
+		<checkbox id="chkUserCssEnable" label="&enableUserCss.label;" oncommand="setDisabled()"/>
+		<hbox align="center">
+			<spacer width="30"/>
+			<textbox id="txtUserCssPath" flex="1"/>
+			<button id="btnBrowseCss" oncommand="browseCss()" label="&browseCss.label;"/>
+		</hbox>
+	</vbox>
+	<checkbox id="chkAllowEContent" label="&allowEContent.label;"/>
+</groupbox>
+
+</dialog>
+
