@@ -91,13 +91,10 @@ var CreateHTML = {
 			
 			var description = allowEContent ? feed.getItem(i).getContent() : htmlToText(feed.getItem(i).getContent());
 
-			if(!title)
-				title = "No Title";
-
 			if(description)
 				description = "<div class=\"item-desc\">" + description + "</div>";
 
-			if(feed.hasPubDate())
+			if(feed.getItem(i).hasPubDate())
 				pubDate = "<div class=\"item-pubDate\">" + feed.getItem(i).getPubDate().toLocaleString() + "</div>";
 
 			var itemSource = this.ITEM_SOURCE;

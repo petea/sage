@@ -67,7 +67,7 @@ Feed.prototype.parseRSS = function() {
 						item.link = CommonFunc.getInnerText(j);
 					}
 					break;
-				case "encoded":
+				case "description":
 					item.content = CommonFunc.getInnerText(j);
 					break;
 				case "pubDate":
