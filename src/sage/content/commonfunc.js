@@ -11,7 +11,7 @@ function dateFormat(date, twelveHourClock, format) {
 	if(!format) {
 		format = 0;
 	}
-	
+
 	var dayOfMonth = date.getDate();
 
 	var day;
@@ -98,7 +98,7 @@ var CommonFunc = {
 
 	setBMDSProperty: function(aInput, aArcURI, aNewValue) {
 		var changed = false;
-		var aOldValue = this.getBMDSTargetByURL(aInput, aArcURI);		
+		var aOldValue = this.getBMDSTargetByURL(aInput, aArcURI);
 		if(typeof(aInput) == "string") {
 			aInput = RDF.GetResource(aInput);
 		}
@@ -109,9 +109,9 @@ var CommonFunc = {
 		if(typeof(aNewValue) == "string") {
 			aNewValue = RDF.GetLiteral(aNewValue);
 		} else if(typeof(aNewValue) == "number") {
-			aNewValue = RDF.GetIntLiteral(aNewValue);		
+			aNewValue = RDF.GetIntLiteral(aNewValue);
 		}
-		
+
 		if(aArcURI && (aOldValue || aNewValue) && aOldValue != aNewValue) {
 			if(aOldValue && !aNewValue) {
 				BMDS.Unassert(aInput, aArcURI, aOldValue);
@@ -134,7 +134,7 @@ var CommonFunc = {
 		}
 		return this.getBMDSTargetByURL(aInput, aArcURI).Value;
 	},
-	
+
 	getBMDSTargetByURL: function(aInput, aArcURI){
 		if(typeof(aArcURI) == "string"){
 			aArcURI = RDF.GetResource(aArcURI);
@@ -148,14 +148,14 @@ var CommonFunc = {
 			}catch(e){
 				return node? node.QueryInterface(kRDFLITIID) : RDF.GetLiteral("");
 			}
-		}	
+		}
 	},
 
 	getBMDSCChildren: function(aResource){
 		if(typeof(aResource) == "string"){
 			aResource = RDF.GetResource(aResource);
 		}
-	
+
 		var rdfContainer = Components.classes["@mozilla.org/rdf/container;1"]
 								.getService(Components.interfaces.nsIRDFContainer);
 		rdfContainer.Init(BMDS, aResource);
@@ -164,7 +164,7 @@ var CommonFunc = {
 	   	var resultArray = new Array();
 	   	while(containerChildren.hasMoreElements()){
 		   	var res = containerChildren.getNext().QueryInterface(kRDFRSCIID);
-	   	
+
 		   	if(RDFCU.IsContainer(BMDS, res)){
 		   		resultArray = resultArray.concat(this.getBMDSCChildren(res));
 		   	}else{
@@ -182,7 +182,7 @@ var CommonFunc = {
 		var UConvID = "@mozilla.org/intl/scriptableunicodeconverter";
 		var UConvIF  = Components.interfaces.nsIScriptableUnicodeConverter;
 		var UConv = Components.classes[UConvID].getService(UConvIF);
-		
+
 		var tmpString = "";
 		try{
 			UConv.charset = aCharCode;
@@ -194,17 +194,8 @@ var CommonFunc = {
 	},
 
 
-
-	// node 内のテキストを返す
 	getInnerText: function(aNode) {
-		if(!aNode.hasChildNodes()) return "";
-	
-		var resultArray = new Array();
-		var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
-		while(walker.nextNode()) {
-			resultArray.push(walker.currentNode.nodeValue);
-		}
-		return resultArray.join('').replace(/^\s+|\s+$/g, "");
+		return aNode.textContent.replace(/^\s+|\s+$/g, "");
 	},
 
 
@@ -212,7 +203,7 @@ var CommonFunc = {
 		var	URI = Components.classes["@mozilla.org/network/standard-url;1"]
 					.createInstance(Components.interfaces.nsIURI);
 		URI.spec = aURI;
-	
+
 		var IOService = Components.classes['@mozilla.org/network/io-service;1']
 							.getService(Components.interfaces.nsIIOService);
 		var channel = IOService.newChannelFromURI(URI);
@@ -273,7 +264,7 @@ var CommonFunc = {
 		var nsISupportsString = Components.interfaces.nsISupportsString;
 		var xpPref = Components.classes["@mozilla.org/preferences;1"]
 						.getService(Components.interfaces.nsIPrefBranch);
-		
+
 		if(xpPref.getPrefType(aPrefString) == xpPref.PREF_INVALID){
 			return aDefault;
 		}
@@ -323,7 +314,7 @@ var CommonFunc = {
 			return false;
 		}
 	},
-	
+
 		// 監視を開始する
 	addPrefListener: function(aPrefString, aFunc){
 		var prefObserver;
@@ -332,15 +323,15 @@ var CommonFunc = {
 				domain: aPrefString,
 				observe: aFunc
 			};
-			
+
 			var pbi = Components.classes["@mozilla.org/preferences-service;1"]
 							.getService(Components.interfaces.nsIPrefBranchInternal);
 			pbi.addObserver(prefObserver.domain, prefObserver, false);
 		} catch(e){
 			alert(e);
-			prefObserver = null; 
+			prefObserver = null;
 		}
-		
+
 		return prefObserver;
 	},
 
