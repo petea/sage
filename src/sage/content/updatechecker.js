@@ -45,7 +45,7 @@ var UpdateChecker = {
 		this.httpReq.parent = this;
 		this.httpReq.onload = this.httpLoaded;
 		this.httpReq.onreadystatechange = this.httpReadyStateChange;
-		this.httpReq.open("HEAD", url);
+		this.httpReq.open("GET", url);
 		this.httpReq.setRequestHeader("User-Agent", USER_AGENT);
 		this.httpReq.overrideMimeType("application/xml");
 		try{
