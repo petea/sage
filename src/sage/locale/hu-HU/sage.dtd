@@ -24,6 +24,7 @@
 <!ENTITY settings.general.caption     "Általános">
 <!ENTITY settings.autoFeedTitle.label     "Címek automatikus frissítése">
 <!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
+<!ENTITY settings.twelveHourClock.label     "">
 <!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
 <!ENTITY selectFolder.label         "Válassza ki az RSS listamappát">
 <!ENTITY openInContentsArea.caption "Letöltöttek megjelenítése">

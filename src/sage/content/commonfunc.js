@@ -8,6 +8,7 @@ var CommonFunc = {
 	ALLOW_ENCODED_CONTENT: "sage.allow_encoded_content",
 	AUTO_FEED_TITLE: "sage.auto_feed_title",
 	RENDER_FEEDS: "sage.render_feeds",
+	TWELVE_HOUR_CLOCK: "sage.twelve_hour_clock",
 
 
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
@@ -129,10 +130,10 @@ var CommonFunc = {
 		if(!aNode.hasChildNodes()) return "";
 	
 		var resultArray = new Array();
-		var currentNode;
-		var walker = aNode.ownerDocument.createTreeWalker(aNode,
-						NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
-		while(currentNode = walker.nextNode()) resultArray.push(currentNode.nodeValue);
+		var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
+		while(walker.nextNode()) {
+			resultArray.push(walker.currentNode.nodeValue);
+		}
 		return resultArray.join('').replace(/^\s+|\s+$/g, "");
 	},
 

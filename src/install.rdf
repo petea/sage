@@ -2,38 +2,38 @@
 
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
- <Description about="urn:mozilla:install-manifest">
+<Description about="urn:mozilla:install-manifest">
  
- <em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
- <em:name>Sage</em:name>
- <em:version>1.1</em:version>
- <em:description>A lightweight RSS and ATOM feed aggregator.</em:description>
- <em:creator>The Sage Project</em:creator>
- <em:contributor>Peter Andrews</em:contributor>
- <em:contributor>flyson</em:contributor>
- <em:homepageURL>http://sage.mozdev.org</em:homepageURL>
- <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
- <em:iconURL>chrome://sage/skin/sage_icon.png</em:iconURL>
+<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
+<em:name>Sage</em:name>
+<em:version>1.1</em:version>
+<em:description>A lightweight RSS and ATOM feed aggregator.</em:description>
+<em:creator>The Sage Project</em:creator>
+<em:contributor>Peter Andrews</em:contributor>
+<em:contributor>flyson</em:contributor>
+<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
+<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
+<em:iconURL>chrome://sage/skin/sage_icon.png</em:iconURL>
  
- <em:file>
- <Description about="urn:mozilla:extension:file:sage.jar">
- <em:package>content/</em:package>
- <em:skin>skin/classic/</em:skin>
- <em:locale>locale/en-US/</em:locale>
- <em:locale>locale/ja-JP/</em:locale>
- <em:locale>locale/fr-FR/</em:locale>
+<em:file>
+<Description about="urn:mozilla:extension:file:sage.jar">
+<em:package>content/</em:package>
+<em:skin>skin/classic/</em:skin>
+<em:locale>locale/en-US/</em:locale>
+<em:locale>locale/ja-JP/</em:locale>
+<em:locale>locale/fr-FR/</em:locale>
 <em:locale>locale/hu-HU/</em:locale>
- </Description>
- </em:file>
+</Description>
+</em:file>
 
- <em:targetApplication>
- <Description>
- <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
- <em:minVersion>0.7</em:minVersion>
- <em:maxVersion>0.9</em:maxVersion>
- </Description>
- </em:targetApplication>
+<em:targetApplication>
+<Description>
+<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+<em:minVersion>0.7</em:minVersion>
+<em:maxVersion>0.9.9+</em:maxVersion>
+</Description>
+</em:targetApplication>
  
- </Description>
+</Description>
 
 </RDF>

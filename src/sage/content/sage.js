@@ -31,7 +31,6 @@ var aConsoleService
 
 
 function init() {
-	strRes = document.getElementById("strRes");
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
 	rssStatusImage = document.getElementById("rssStatusImage");
@@ -39,6 +38,7 @@ function init() {
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemListPopup = document.getElementById("rssItemListPopup");
 
+	strRes = document.getElementById("strRes");
 	resultStrArray = new Array(
 		strRes.getString("RESULT_OK_STR"),
 		strRes.getString("RESULT_PARSE_ERROR_STR"),
@@ -69,6 +69,49 @@ function logMessage(message) {
 	aConsoleService.logStringMessage("Sage: " + message);
 }
 
+function dateFormat(date, twelveHourClock) {
+	function padout(number) { return (number < 10) ? '0' + number : number; }
+
+	var day;
+	switch (date.getDay()) {
+		case 0: day = strRes.getString("date_sunday_short"); break
+		case 1: day = strRes.getString("date_monday_short"); break
+		case 2: day = strRes.getString("date_tuesday_short"); break
+		case 3: day = strRes.getString("date_wednesday_short"); break
+		case 4: day = strRes.getString("date_thursday_short"); break
+		case 5: day = strRes.getString("date_friday_short"); break
+		case 6: day = strRes.getString("date_saturday_short"); break
+	}
+
+	var month;
+	switch (date.getMonth()) {
+		case 0: month = strRes.getString("date_january_short"); break
+		case 1: month = strRes.getString("date_february_short"); break
+		case 2: month = strRes.getString("date_march_short"); break
+		case 3: month = strRes.getString("date_april_short"); break
+		case 4: month = strRes.getString("date_may_short"); break
+		case 5: month = strRes.getString("date_june_short"); break
+		case 6: month = strRes.getString("date_july_short"); break
+		case 7: month = strRes.getString("date_august_short"); break
+		case 8: month = strRes.getString("date_september_short"); break
+		case 9: month = strRes.getString("date_october_short"); break
+		case 10: month = strRes.getString("date_november_short"); break
+		case 11: month = strRes.getString("date_december_short"); break
+	}
+
+	var year = date.getYear() + 1900;
+
+	var date_str = day + " " + month + " " + date.getDate() + ", " + year; 
+
+	var hours = date.getHours(), minutes = padout(date.getMinutes()), seconds = padout(date.getSeconds());
+	if(twelveHourClock) {
+		var adjhours = (hours == 0) ? 12 : ((hours < 13) ? hours : hours-12);
+		var time_str = adjhours + ":" + minutes + ((hours < 12) ? " AM" : " PM");
+	} else {
+		var time_str = hours + ":" + minutes;
+	}
+	return date_str + " " + time_str;
+}
 
 	// 更新されたRSSのみ表示
 function showOnlyUpdated() {
@@ -156,24 +199,25 @@ function bookmarksOpen(){
 }
 
 
-function createTreeContextMenu2(aEvent){
+function createTreeContextMenu2(aEvent) {
 	var popup = aEvent.target;
 	if(popup.localName != "menupopup") return;
 
 	var selection = bookmarksTree._selection;
 	var itemId = selection.item[0].Value;
 	var cmdSrc = "";
+	var tempMenuItem;
 
-	if(selection.type == "Bookmark"){
+	if(selection.type == "Bookmark") {
 		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
-		var tempMenuItem = document.createElement("menuitem");
+		tempMenuItem = document.createElement("menuitem");
 		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));
 		tempMenuItem.setAttribute("oncommand", cmdSrc);
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
-	}else if(selection.type == "Folder"){
+	} else if(selection.type == "Folder") {
 		cmdSrc = "updateCheck('" + itemId + "')";
-		var tempMenuItem = document.createElement("menuitem");
+		tempMenuItem = document.createElement("menuitem");
 		tempMenuItem.setAttribute("label", strRes.getString("CHECK_UPDATE"));
 		tempMenuItem.setAttribute("oncommand", cmdSrc);
 		popup.appendChild(document.createElement("menuseparator"));
@@ -182,29 +226,28 @@ function createTreeContextMenu2(aEvent){
 }
 
 function bookmarksTreeClick(aEvent){
-	if(aEvent.type == "click"){
-		if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren"){
+	if(aEvent.type == "click") {
+		if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {
 			return;
 		}
 		var obj = {};
 		bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, {}, {}, obj);
 		if(obj.value == "twisty") return;
-	}else if(aEvent.type == "keypress"){
-		if(aEvent.originalTarget.localName != "tree"){
+	} else if(aEvent.type == "keypress") {
+		if(aEvent.originalTarget.localName != "tree") {
 			return;
 		}
 	}
 	
 	CreateHTML.tabbed = false;
-	if(aEvent.button == 1){ CreateHTML.tabbed = true; } // click middle button
-	if(aEvent.ctrlKey){ CreateHTML.tabbed = true; } // press Ctrl Key
+	if(aEvent.button == 1) { CreateHTML.tabbed = true; } // click middle button
+	if(aEvent.ctrlKey) { CreateHTML.tabbed = true; } // press Ctrl Key
 
 	const BOOKMARK_TYPE = RDF_NS + "type";
 	const BOOKMARK_SEPARATOR = NC_NS + "BookmarkSeparator";
 	const BOOKMARK_FOLDER = NC_NS + "Folder"
-	var bookmarkType = (BookmarksUtils.getProperty(bookmarksTree.currentResource,
-							BOOKMARK_TYPE , bookmarksTree.db))
-	if(bookmarkType == BOOKMARK_SEPARATOR || bookmarkType == BOOKMARK_FOLDER){
+	var bookmarkType = (BookmarksUtils.getProperty(bookmarksTree.currentResource, BOOKMARK_TYPE , bookmarksTree.db))
+	if(bookmarkType == BOOKMARK_SEPARATOR || bookmarkType == BOOKMARK_FOLDER) {
 		return;
 	}
 	
@@ -213,13 +256,13 @@ function bookmarksTreeClick(aEvent){
 
 
 
-function rssItemListBoxClick(aEvent){
-	if(aEvent.type == "click"){
-		if(aEvent.button == 2 || aEvent.originalTarget.localName != "listitem"){
+function rssItemListBoxClick(aEvent) {
+	if(aEvent.type == "click") {
+		if(aEvent.button == 2 || aEvent.originalTarget.localName != "listitem") {
 			return;
 		}
-	}else if(aEvent.type == "keypress"){
-		if(aEvent.originalTarget.localName != "listbox"){
+	} else if(aEvent.type == "keypress") {
+		if(aEvent.originalTarget.localName != "listbox") {
 			return;
 		}
 	}
@@ -228,12 +271,12 @@ function rssItemListBoxClick(aEvent){
 	var link = currentFeed.getItem(selectedItem.value).getLink();
 	var tabbed = false;
 
-	if(aEvent.button == 1){ tabbed = true; } // click middle button
-	if(aEvent.ctrlKey){ tabbed = true; } // press Ctrl Key
+	if(aEvent.button == 1) { tabbed = true; } // click middle button
+	if(aEvent.ctrlKey) { tabbed = true; } // press Ctrl Key
 	
-	if(tabbed){
+	if(tabbed) {
 		getContentBrowser().addTab(link);	
-	}else{
+	} else {
 		getContentBrowser().loadURI(link);
 	}
 	selectedItem.setAttribute("visited", "true");
@@ -242,25 +285,25 @@ function rssItemListBoxClick(aEvent){
 
 function rssTitleLabelClick(aNode, aEvent){
 	var tabbed = false;
-	if(!aNode.hasAttribute("href") || aEvent.button == 2){
+	if(!aNode.hasAttribute("href") || aEvent.button == 2) {
 		return;
 	}
 
 	var link = aNode.getAttribute("href");
-	var tabbed = false;
+	tabbed = false;
 
-	if(aEvent.button == 1){ tabbed =true; } // click middle button
-	if(aEvent.ctrlKey){ tabbed = true; } // press Ctrl Key
+	if(aEvent.button == 1) { tabbed =true; } // click middle button
+	if(aEvent.ctrlKey) { tabbed = true; } // press Ctrl Key
 	
-	if(tabbed){
+	if(tabbed) {
 		getContentBrowser().addTab(link);	
-	}else{
+	} else {
 		getContentBrowser().loadURI(link);
 	}
 }
 
 
-function setStatusLoading(label){
+function setStatusLoading(label) {
 	rssStatusImage.setAttribute("loading", "true");
 	if(label) {
 		rssStatusLabel.value = "Loading: " + label;
@@ -269,32 +312,31 @@ function setStatusLoading(label){
 	}
 }
 
-function setStatusDone(){
+function setStatusDone() {
 	rssStatusImage.setAttribute("loading", "false");
 	rssStatusLabel.value = "";
 
-	if(currentFeed){
+	if(currentFeed) {
 		rssTitleLabel.value = htmlToText(currentFeed.getTitle());
-		if(currentFeed.getLink()){
+		if(currentFeed.getLink()) {
 			rssTitleLabel.setAttribute("href", currentFeed.getLink());
 			rssTitleLabel.tooltipText = currentFeed.getLink();
-		}else{
+		} else {
 			rssTitleLabel.removeAttribute("href");
 			rssTitleLabel.tooltipText = "";
 		}
 	}
 }
 
-function setStatusError(aStatus){
+function setStatusError(aStatus) {
 	rssStatusImage.setAttribute("loading", "error");
 	rssStatusLabel.value = "Error: " + aStatus;
 }
 
 
 	// ブラウザオブジェクトを返す
-function getContentBrowser(){
-	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
-							.getService(Components.interfaces.nsIWindowMediator);
+function getContentBrowser() {
+	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
 	var topWindowOfType = windowManager.getMostRecentWindow("navigator:browser");
 	if (topWindowOfType) {
 		return topWindowOfType.document.getElementById('content');

@@ -85,3 +85,8 @@ div.item-technorati {
 	float: right;
 	text-align: right;
 }
+
+img {
+	max-width: 100%;
+	height: auto;
+}

@@ -6,6 +6,7 @@ var txtUserCssPath;
 var chkAllowEContent;
 var chkAutoFeedTitle;
 var chkRenderFeeds;
+var chkTwelveHourClock;
 
 var gList;
 var gNameArc;
@@ -36,6 +37,9 @@ function init() {
 	chkRenderFeeds = document.getElementById("chkRenderFeeds");
 	chkRenderFeeds.checked = CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true);
 
+	chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
+	chkTwelveHourClock.checked = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
+
 	setDisabled();
 
 	setTimeout(fillSelectFolderMenupopup, 0);
@@ -48,6 +52,7 @@ function accept() {
 	CommonFunc.setPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
 	CommonFunc.setPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", chkAutoFeedTitle.checked);
 	CommonFunc.setPrefValue(CommonFunc.RENDER_FEEDS, "bool", chkRenderFeeds.checked);
+	CommonFunc.setPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", chkTwelveHourClock.checked);
 }
 
 function selectFolder(aEvent){

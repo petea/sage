@@ -68,6 +68,7 @@ var CreateHTML = {
 
 	createHTMLSource: function(feed) {
 		var allowEContent = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
+		var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 
 		var htmlSource = this.HTML_SOURCE;
 		var cssUrl	= this.getUserCssURL();
@@ -94,7 +95,7 @@ var CreateHTML = {
 			}
 
 			if(feed.getItem(i).hasPubDate()) {
-				pubDate = "<div class=\"item-pubDate\">" + feed.getItem(i).getPubDate().toLocaleString() + "</div>";
+				pubDate = "<div class=\"item-pubDate\">" + dateFormat(feed.getItem(i).getPubDate(), twelveHourClock) + "</div>";
 			}
 
 			var itemSource = this.ITEM_SOURCE;

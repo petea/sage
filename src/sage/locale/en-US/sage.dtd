@@ -22,6 +22,7 @@
 <!ENTITY settings.general.caption     "General">
 <!ENTITY settings.autoFeedTitle.label     "Automatically update feed titles">
 <!ENTITY settings.renderFeeds.label     "Render feeds in contents area">
+<!ENTITY settings.twelveHourClock.label     "Use 12 hour clock">
 <!ENTITY settingWindow.title                    "Sage Settings">
 <!ENTITY selectFolder.label			"Select Feed Folder">
 <!ENTITY openInContentsArea.caption		"Feed Rendering">

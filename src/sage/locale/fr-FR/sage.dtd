@@ -23,6 +23,7 @@
 <!ENTITY settings.general.caption     "">
 <!ENTITY settings.autoFeedTitle.label     "">
 <!ENTITY settings.renderFeeds.label     "">
+<!ENTITY settings.twelveHourClock.label     "">
 <!ENTITY settingWindow.title                    "Configration de Sage">
 <!ENTITY selectFolder.label			"Sélection du dossier des fils">
 <!ENTITY openInContentsArea.caption		"Ouverture dans le zone de contenu">

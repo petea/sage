@@ -2,8 +2,7 @@
 <?xml-stylesheet href="chrome://sage/skin/sage-button.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://sage/locale/sage.dtd">
-<overlay id="sageOverlay"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay id="sageOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<menupopup id="viewSidebarMenu">
 		<menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
@@ -27,7 +26,6 @@
 
 
 	<toolbarpalette id="BrowserToolbarPalette">
-		<toolbarbutton id="sage-button" tooltiptext="&sage.tooltip;"
-			observes="viewSageSidebar" class="toolbarbutton-1"/>
+		<toolbarbutton id="sage-button" tooltiptext="&sage.tooltip;" observes="viewSageSidebar" class="toolbarbutton-1"/>
 	</toolbarpalette>
 </overlay>

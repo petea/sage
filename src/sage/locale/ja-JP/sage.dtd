@@ -23,6 +23,7 @@
 <!ENTITY settings.general.caption     "">
 <!ENTITY settings.autoFeedTitle.label     "">
 <!ENTITY settings.renderFeeds.label     "">
+<!ENTITY settings.twelveHourClock.label     "">
 <!ENTITY settingWindow.title		"設定: RSS リーダパネル">
 <!ENTITY selectFolder.label			"RSS リストフォルダの選択">
 <!ENTITY openInContentsArea.caption	"コンテンツエリアで開く">

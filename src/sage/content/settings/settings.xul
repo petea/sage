@@ -37,6 +37,7 @@
 <groupbox>
 	<caption label="&openInContentsArea.caption;"/>
 	<checkbox id="chkRenderFeeds" label="&settings.renderFeeds.label;"/>
+	<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
 	<checkbox id="chkAllowEContent" label="&allowEContent.label;"/>
 	<vbox flex="1">
 		<checkbox id="chkUserCssEnable" label="&enableUserCss.label;" oncommand="setDisabled()"/>
