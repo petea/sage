@@ -479,7 +479,8 @@ function setRssItemListBox() {
 
 	for(var i=0; rssObject.items.length>i; i++){
 		var rssItem = rssObject.items[i];
-		var itemLabel = (i+1) + ". " + rssItem.title ? htmlToText(rssItem.title) : "No Title";
+		var itemLabel = rssItem.title ? htmlToText(rssItem.title) : "No Title";
+		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
 		
 		if(isVisited(rssItem.link)){
