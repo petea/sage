@@ -13,17 +13,16 @@ body {
 	font-family: verdana;
 }
 
-a:link		{ text-decoration: none; color: #DD2B13; }
-a:visited	{ text-decoration: none;  color: #955322; }
+a:link		{ text-decoration: none; color: #436976; font-weight: bold; }
+a:visited	{ text-decoration: none;  color: #436976; }
 a:hover		{ text-decoration: underline; }
 a:active	{ text-decoration: none; }
 
 p.item-desc a:link { color: #029; }
 
 #rss-header {
-	-moz-border-radius: 6px;
-	background-color: #EEEAE4;
-	border: 1px solid #cccccc;
+	background-color: #dee7ec;
+	border: 1px solid #8cacbb;
 	padding: 6px 8px;
 	margin: 10px 2%;
 }
@@ -42,9 +41,7 @@ p.item-desc a:link { color: #029; }
 }
 
 div.item {
-	-moz-border-radius: 6px;
-	background-color: #fafafa;
-	border: 1px solid #cccccc;
+	border: 1px solid #8cacbb;
 	width: 47%;
 	min-width: 14em;
 	margin: 0px 0px 8px 2%;
@@ -53,7 +50,7 @@ div.item {
 }
 
 h2.item-title {
-	background-color: #EEEAE4;
+	background-color: #dee7ec;
 	font-size: x-small;
 	font-weight: normal;
 	line-height: 1.1;
