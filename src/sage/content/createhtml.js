@@ -88,14 +88,15 @@ var CreateHTML = {
 		for(var i = 0; i < feed.getItemCount(); i++) {
 			var link = feed.getItem(i).getLink();
 			var title = feed.getItem(i).getTitle();
-			
-			var description = allowEContent ? feed.getItem(i).getContent() : htmlToText(feed.getItem(i).getContent());
 
-			if(description)
+			if(feed.getItem(i).hasContent()) {
+				description = allowEContent ? feed.getItem(i).getContent() : htmlToText(feed.getItem(i).getContent());
 				description = "<div class=\"item-desc\">" + description + "</div>";
+			}
 
-			if(feed.getItem(i).hasPubDate())
+			if(feed.getItem(i).hasPubDate()) {
 				pubDate = "<div class=\"item-pubDate\">" + feed.getItem(i).getPubDate().toLocaleString() + "</div>";
+			}
 
 			var itemSource = this.ITEM_SOURCE;
 			itemSource = itemSource.replace("**NUMBER**", i+1);
