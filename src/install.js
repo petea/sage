@@ -11,6 +11,7 @@ const APP_LOCALE_HUHU_PATH	= "locale/hu-HU/";
 const APP_LOCALE_ITIT_PATH	= "locale/it-IT/";
 const APP_LOCALE_NLNL_PATH	= "locale/nl-NL/";
 const APP_LOCALE_CACA_PATH	= "locale/ca-CA/";
+const APP_LOCALE_ZHTW_PATH	= "locale/zh-TW/";
 
 
 initInstall(APP_NAME, APP_CHROME_NAME, APP_VERSION); 
@@ -29,6 +30,7 @@ registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_HUHU_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_ITIT_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_NLNL_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_CACA_PATH);
+registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_ZHTW_PATH);
 
 var result = getLastError(); 
 if(result == SUCCESS) {

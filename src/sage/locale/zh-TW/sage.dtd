@@ -1,0 +1,52 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.2.1">
+<!ENTITY sage.version.label				"版本">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Displays Sage">
+
+<!ENTITY menu.view				"顯示">
+<!ENTITY menu.showSearchBar			"顯示 Feed 搜尋列">
+<!ENTITY menu.showFeedItemList			"顯示 Fees 文章列表">
+<!ENTITY menu.showDescTooltip			"顯示描述提示">
+<!ENTITY menu.openHTML				"在內容區域開啟Feeds">
+<!ENTITY menu.tools				"選項">
+<!ENTITY menu.checkUpdate			"檢查更新">
+<!ENTITY menu.manageRSSList			"管理 Feed 列表...">
+<!ENTITY menu.opmlImportExport			"OPML 匯入/匯出...">
+<!ENTITY menu.setting				"設置...">
+<!ENTITY menu.sageProjectFeed				"Sage Project 新消息">
+<!ENTITY menu.discoverFeeds				"挖掘 Feeds">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "搜尋目前頁面">
+<!ENTITY discovery.button.addFeed    "增加 Feed">
+<!ENTITY discovery.button.close			 "關閉">
+<!ENTITY discovery.header.title			 "標題">
+<!ENTITY discovery.header.format     "格式">
+<!ENTITY discovery.header.lastPubDate     "最後更新日期">
+<!ENTITY discovery.header.itemCount     "文章數">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "一般設定">
+<!ENTITY settings.autoFeedTitle.label     "自動更新 feed 標題">
+<!ENTITY settings.renderFeeds.label     "在瀏覽器內容區域表現Feeds">
+<!ENTITY settings.twelveHourClock.label     "使用12小時制">
+<!ENTITY settings.feedItemOrder.label     "Feed 文章順序">
+<!ENTITY settings.feedItemOrder.chrono     "按時間順序排序">
+<!ENTITY settings.feedItemOrder.source     "按來源順序排序">
+<!ENTITY settings.feedDiscoveryMode.label     "挖掘 Feed 模式">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "徹底的">
+<!ENTITY settings.feedDiscoveryMode.conservative     "保守的">
+<!ENTITY settingWindow.title                    "Sage 設定">
+<!ENTITY selectFolder.label			"選擇 Feed 的資料夾">
+<!ENTITY openInContentsArea.caption		"Feed 表示">
+<!ENTITY enableUserCss.label			"使用自訂的 CSS">
+<!ENTITY browseCss.label			"瀏覽...">
+<!ENTITY allowEContent.label			"允許 HTML 標籤">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
