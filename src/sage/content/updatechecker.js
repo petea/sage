@@ -114,14 +114,14 @@ var UpdateChecker = {
 		}
 
 		if(aSucceed) {
+			var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/);
 			if(aLastModified) {
-				if(aLastModified > lastVisit) {
+				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
 					status = CommonFunc.STATUS_UPDATE;
 				} else {
 					status = CommonFunc.STATUS_NO_UPDATE;
 				}
 			} else {
-				var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/);
 				if(sig != feed.getSignature()) {
 					//logMessage("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
 					status = CommonFunc.STATUS_UPDATE;
