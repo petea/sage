@@ -7,7 +7,7 @@ var Feed = {
 	link: null,
 	description: null,  
 	items: new Array(),
-  lastPubDate: null,
+	lastPubDate: null,
 
 
 	Feed: function(feedXML) {
@@ -27,7 +27,7 @@ var Feed = {
 
 	parseRSS: function() {
 
-		feedXML = this.feedXML;
+		var feedXML = this.feedXML;
 
 		this.feedFormat = "RSS";
 
@@ -105,7 +105,7 @@ var Feed = {
 
 	parseATOM: function() {
 
-		feedXML = this.feedXML;
+		var feedXML = this.feedXML;
 
 		this.feedFormat = "ATOM";
 
@@ -233,7 +233,7 @@ var Feed = {
 
 	getFormat: function() {
 		return this.feedFormat;
-	},
+	}
 
 }
 
@@ -308,6 +308,6 @@ var FeedItem = {
 		} else {
 			return null;
 		}
-	},
+	}
 
 }
