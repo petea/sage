@@ -114,19 +114,8 @@ treechildren::-moz-tree-cell-text(rss, updated) {
 
 /* ++++++++++ popupEX ++++++++++ */
 
-.popupex {
-  -moz-binding : url(chrome://sage/content/popupex.xml#popupex);
-  -moz-appearance: tooltip;
-  display: -moz-popup;
-
-  border: 1px solid InfoText;
-  width: 26em;
-  max-width: 26em;
-  background-color: InfoBackground;
-  color: InfoText;
-  font: message-box;
-
-  margin: 0px !important;
+#rssItemToolTip {
+  -moz-binding: url(chrome://sage/content/popupex.xml#popupex);
   padding: 0px !important;
 }
 
@@ -134,11 +123,14 @@ treechildren::-moz-tree-cell-text(rss, updated) {
   font-weight: bold;
   margin: 0px !important;
   padding: 3px !important;
-  -moz-box-flex: 1;
 }
 
 .popupex-description {
-  margin: 0px !important;
   padding: 5px 5px 5px 20px !important;
-  -moz-box-flex: 1;
+  max-width: 26em;
+}
+
+.popupex-internal-box {
+  margin: 2px;
+  padding: 2px;
 }

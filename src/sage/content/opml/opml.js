@@ -161,7 +161,12 @@ function createRssItem(aOutlineNode, aRssFolder) {
 		// •sŠ®‘S‚È OUTLINE ‚Í–³Ž‹‚·‚é
 	if(type!="rss" && !title && xmlUrl) return;
 
-	BMSVC.createBookmarkInContainer(title, xmlUrl, null, null, null, null, aRssFolder, null);
+	if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
+		BMSVC.createBookmarkInContainer(title, xmlUrl, null, null, null, aRssFolder, null);
+	} else {
+		BMSVC.createBookmarkInContainer(title, xmlUrl, null, null, null, null, aRssFolder, null);
+	}
+	
 }
 
 

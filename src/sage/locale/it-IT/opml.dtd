@@ -1,0 +1,12 @@
+<!ENTITY pageStart.label			"Assistente per l'importazione/esportazione OPML">
+<!ENTITY pageStart.desc				"Scegliere l'azione da eseguire">
+<!ENTITY pageImport.label			"Importare una lista OPML">
+<!ENTITY pageImport.desc			"Scegliere il file OPML da importare">
+<!ENTITY pageExport.label			"Esportare una lista OPML">
+<!ENTITY pageExport.desc			"Scegliere il file OPML da esportare">
+
+<!ENTITY rdoImport.label			"Importare una lista OPML">
+<!ENTITY rdoExport.label			"Esportare una lista OPML">
+
+<!ENTITY browseButton.label			"Percorso...">
+

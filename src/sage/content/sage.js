@@ -16,7 +16,7 @@ var rssItemListBox;
 var rssStatusImage;
 var rssStatusLabel;
 var rssTitleLabel;
-var rssItemListPopup;
+var rssItemToolTip;
 
 var currentFeed;
 var httpReq;
@@ -35,7 +35,7 @@ function init() {
 	rssStatusImage = document.getElementById("rssStatusImage");
 	rssStatusLabel = document.getElementById("rssStatusLabel");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
-	rssItemListPopup = document.getElementById("rssItemListPopup");
+	rssItemToolTip = document.getElementById("rssItemToolTip");
 
 	strRes = document.getElementById("strRes");
 	resultStrArray = new Array(
@@ -49,12 +49,21 @@ function init() {
 
 	// if feed folder has not been set, assume new user and install default feed folder and demo feeds
 	if(!CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", null)) {
-		logMessage("creating default feed folder...");
+		logMessage("setting default preferences...");
 		var new_folder = BMSVC.createFolderInContainer("Sage Feeds", RDF.GetResource("NC:BookmarksRoot"), null);
 		CommonFunc.setPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", new_folder.Value);
-		BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, null, new_folder, null);
-		BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, null, new_folder, null);
-		BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, null, new_folder, null);
+		if(BMSVC.createBookmarkInContainer.length == 7) {
+			BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, new_folder, null);
+			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, new_folder, null);
+			BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, new_folder, null);
+		} else {
+			BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, null, new_folder, null);
+			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, null, new_folder, null);
+			BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, null, new_folder, null);
+		}
+		setCheckboxCheck("chkShowSearchBar", "false");
+		setCheckboxCheck("chkShowToolTip", "true");
+		setCheckboxCheck("chkShowFeedItemList", "true");
 	}
 
 	// set feed folder location
@@ -339,7 +348,6 @@ function setRssItemListBox() {
 		var itemLabel = item.getTitle();
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
-		
 		if(isVisited(item.getLink())) {
 			listItem.setAttribute("visited", "true");
 		}
@@ -359,6 +367,11 @@ function isVisited(aURL) {
 function getCheckboxCheck(aID) {
 	var checkboxNode = document.getElementById(aID);
 	return checkboxNode.getAttribute("checked") == "true";
+}
+
+function setCheckboxCheck(aID, value) {
+	var checkboxNode = document.getElementById(aID);
+	return checkboxNode.setAttribute("checked") == value;
 }
 
 function showRssItemListPopup(aEvent) {
@@ -392,6 +405,32 @@ function showRssItemListPopup(aEvent) {
 	rssItemListPopup.autoPosition = false;
 	rssItemListPopup.moveTo(popX, popY);
 	popupTimeoutId = setTimeout("rssItemListPopup.showPopup(rssItemListBox)", 150);
+}
+
+function populateToolTip(e) {
+	// if setting disabled
+	if(!getCheckboxCheck("chkShowTooltip")) {
+		e.preventDefault();
+		return;
+	}
+
+	if(document.tooltipNode == rssItemListBox) {
+		e.preventDefault();
+		return;
+	}
+	var listItem = document.tooltipNode;
+	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+	var items = currentFeed.getItems(feedItemOrder);
+	var description = htmlToText(items[listItem.value].getContent());
+  if(description.indexOf("/") != -1) {
+    description = description.replace(/\//gm, "/\u200B");
+  }
+  if(description.length > 400) {
+    description = description.substring(0,400) + "...";
+  }
+
+	rssItemToolTip.title = listItem.label;
+	rssItemToolTip.description = description;
 }
 
 function hideRssItemListPopup(aEvent) {

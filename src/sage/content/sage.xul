@@ -52,8 +52,8 @@
 		<toolbarbutton type="menu" label="&menu.tools;">
 			<menupopup>
 				<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
-				<menuitem id="chkShowTooltip" type="checkbox" persist="checked" checked="true" label="&menu.showDescTooltip;"/>
-				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" checked="true" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
+				<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
+				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
 				<menuseparator/>
 				<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
 				<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>
@@ -104,8 +104,7 @@
 	</sidebarheader>
 
 	<listbox id="rssItemListBox" class="plain" flex="1"
-		onmouseout="hideRssItemListPopup()"
-		onmouseover="showRssItemListPopup(event)"
+		tooltip="rssItemToolTip"
 		onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
 		onclick="rssItemListBoxClick(event)"/>
 </vbox>
@@ -113,10 +112,8 @@
 </vbox>
 
 <popupset>
-	<popup id="rssItemListPopup" class="popupex"/>
-	
-	<popup id="popSearchEngine" datasources="rdf:null"
-			ref="urn:rrp:searchengine:root">
+	<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)"/>
+	<popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
 		<template>
 			<menuitem type="checkbox" uri="..." value="..."
 				oncommand="FeedSearch.popSearchEngineClick(event)"

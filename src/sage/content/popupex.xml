@@ -5,40 +5,30 @@
    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    xmlns:xbl="http://www.mozilla.org/xbl">
 
-  <binding id="popupex" extends="chrome://global/content/bindings/popup.xml#popup">
+  <binding id="popupex" extends="chrome://global/content/bindings/popup.xml#tooltip">
 	<content>
-	  <xul:vbox anonid="popupExBox" class="popupex-internal-box">
+	  <xul:vbox anonid="popupExBox" class="popupex-internal-box" align="stretch">
 	  	<children/>
-	  	<xul:vbox anonid="popupExTitleBox" flex="1"/>
-	  	<xul:vbox anonid="popupExDescBox" flex="1"/>
+	  	<xul:label anonid="popupExTitleBox" class="popupex-title" xbl:inherits="value=title"/>
+	  	<xul:vbox anonid="popupExDescBox" class="popupex-description"/>
 	  </xul:vbox>
 	</content>
-	
+
 	<implementation>
+
 
 	<property name="title" onget="return this.getAttribute('title');">
 		<setter><![CDATA[
-			this.setAttribute('label', val);
-
-			var popupExTitleBox = document.getAnonymousElementByAttribute(this, "anonid", "popupExTitleBox")
-			while(popupExTitleBox.hasChildNodes()){
-				popupExTitleBox.removeChild(popupExTitleBox.firstChild);
-			}
-			const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-			var popupTitle = document.createElementNS(XUL_NS, "label");
-			popupTitle.className = "popupex-title";
-			popupTitle.appendChild(document.createTextNode(val))
-			popupExTitleBox.appendChild(popupTitle);
-
+            this.setAttribute('title', val);
 			return val;
 		]]></setter>
 	</property>
-	
+
 
 	<property name="description" onget="return this.getAttribute('description');">
 		<setter><![CDATA[
 			this.setAttribute('description', val);
-			
+
 			var popupExDescBox = document.getAnonymousElementByAttribute(this, "anonid", "popupExDescBox")
 			while(popupExDescBox.hasChildNodes()){
 				popupExDescBox.removeChild(popupExDescBox.firstChild);
@@ -48,10 +38,9 @@
 				return val;
 			}
 			const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-			var popupDesc = document.createElementNS(XUL_NS, "label");
-			popupDesc.className = "popupex-description";
-			popupDesc.appendChild(document.createTextNode(val))
-			popupExDescBox.appendChild(popupDesc);
+			var popupDesc = document.createElementNS( XUL_NS, "label" );
+			popupDesc.appendChild( document.createTextNode(val) )
+			popupExDescBox.appendChild( popupDesc );
 
 			return val;
 		]]></setter>
@@ -60,26 +49,12 @@
 
 	<handlers>
 		<handler event="popupshowing"><![CDATA[
-			var popupExBox = document.getAnonymousElementByAttribute(this, "anonid", "popupExBox");
-			this.sizeTo(this.popupBoxObject.width, popupExBox.boxObject.height + 5);
-			
-				// スクリーンからはみ出ないようにする
-			var popupBox = this.popupBoxObject;
-			var popupBoxX = popupBox.screenX;
-			var popupBoxY = popupBox.screenY;
-			var popupBoxBottom = popupBox.screenY + popupBox.height;
-			var popupBoxRight = popupBox.screenX + popupBox.width;
-			
-			if(screen.availWidth < popupBoxRight){
-				popupBoxX =  popupBox.screenX  - popupBox.width - 5;
-				this.moveTo(popupBoxX, popupBoxY);
-			}
-
-			if(screen.availHeight < popupBoxBottom){
-				popupBoxY = popupBox.screenY - popupBox.height - 30
-				this.moveTo(popupBoxX, popupBoxY);
-			}
+			this.height = this.boxObject.height;
 		]]></handler>
+		<handler event="popuphiding"><![CDATA[
+			this.height = "";
+		]]></handler>
+
 	</handlers>
 
 </binding>

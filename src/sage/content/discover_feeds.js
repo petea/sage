@@ -143,7 +143,11 @@ function doAddFeed() {
 				title = "No Title";
 			}
 			var sage_folder = rdfService.GetResource(CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot"));
-			BMSVC.createBookmarkInContainer(title, url, null, "updated", null, null, sage_folder, null);
+			if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
+				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, sage_folder, null);
+			} else {
+				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, null, sage_folder, null);
+			}
 			logMessage("added feed: '" + title + "' " + url);
 
 			// select new feed in sibebar

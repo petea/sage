@@ -1,0 +1,54 @@
+<!-- maintained by Giuliano Masseroni [giuliano.masseroni@mozillaitalia.org]  -->
+
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.2">
+<!ENTITY sage.version.label				"">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Mostra il pannello laterale di Sage">
+
+<!ENTITY menu.view				"Visualizza">
+<!ENTITY menu.showSearchBar			"Mostra Barra di Ricerca dei Feed">
+<!ENTITY menu.showFeedItemList			"Mostra la Lista dei Feed">
+<!ENTITY menu.showDescTooltip			"Mostra Descrizione Suggerimenti">
+<!ENTITY menu.openHTML				"Mostra i Feed nel Browser">
+<!ENTITY menu.tools				"Opzioni">
+<!ENTITY menu.checkUpdate			"Controlla i Feed">
+<!ENTITY menu.manageRSSList			"Gestione Lista dei Feed...">
+<!ENTITY menu.opmlImportExport			"Importazione/Esportazione file OPML...">
+<!ENTITY menu.setting				"Preferenze...">
+<!ENTITY menu.sageProjectFeed				"Novità sul Progetto Sage">
+<!ENTITY menu.discoverFeeds				"Feed Trovati">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Ricerca nella Pagina Corrente">
+<!ENTITY discovery.button.addFeed    "Aggiungi un Feed">
+<!ENTITY discovery.button.close			 "Chiudi">
+<!ENTITY discovery.header.title			 "Titolo">
+<!ENTITY discovery.header.format     "Formato">
+<!ENTITY discovery.header.lastPubDate     "Ultimo Aggiornamento">
+<!ENTITY discovery.header.itemCount     "Elementi">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Generale">
+<!ENTITY settings.autoFeedTitle.label     "Aggiorna Automaticamente il Titolo dei feed">
+<!ENTITY settings.renderFeeds.label     "Mostra i Feed nel Browser">
+<!ENTITY settings.twelveHourClock.label     "Usa Modalità 12 ore">
+<!ENTITY settings.feedItemOrder.label     "Ordinamento dei Feed">
+<!ENTITY settings.feedItemOrder.chrono     "Cronologico">
+<!ENTITY settings.feedItemOrder.source     "Sorgente">
+<!ENTITY settings.feedDiscoveryMode.label     "Modalità di Ricerca Feed">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Esaustiva">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Conservativa">
+<!ENTITY settingWindow.title                    "Configurazione di Sage">
+<!ENTITY selectFolder.label			"Selezionare la Cartella dei Feed">
+<!ENTITY openInContentsArea.caption		"Interpretazione dei Feed">
+<!ENTITY enableUserCss.label			"Usa CSS personalizzato">
+<!ENTITY browseCss.label			"Sfoglia...">
+<!ENTITY allowEContent.label			"Permetti i tag HTML">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
