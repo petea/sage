@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"OPML 가져오기/내보내기 마법사">
+<!ENTITY pageStart.desc				"기능을 선택하세요.">
+<!ENTITY pageImport.label			"OPML 가져오기">
+<!ENTITY pageImport.desc			"가져올 OPML 파일을 고르세요.">
+<!ENTITY pageExport.label			"OPML 내보내기">
+<!ENTITY pageExport.desc			"내보낼 OPML 파일을 고르세요.">
+
+<!ENTITY rdoImport.label			"OPML 가져오기">
+<!ENTITY rdoExport.label			"OPML 내보내기">
+
+<!ENTITY browseButton.label			"찾아보기...">
+
+<!ENTITY pageImportFinished.label	"OPML 가져오기">
+<!ENTITY pageImportFinished.desc	"가져오기 완료">
+<!ENTITY pageExportFinished.label	"OPML 내보내기">
+<!ENTITY pageExportFinished.desc	"내보내기 완료">
