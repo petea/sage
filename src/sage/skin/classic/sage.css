@@ -94,6 +94,64 @@ treechildren::-moz-tree-cell-text(rss, updated) {
 }
 
 
+/* ++++++++++ List Tool Bar ++++++++++++ */
+
+toolbarbutton#markAsReadButton,
+toolbarbutton#markAsUnreadButton,
+toolbarbutton#markAllAsReadButton,
+toolbarbutton#markAllAsUnreadButton {
+	list-style-image: url("chrome://sage/skin/toolbar-small.png") !important;
+}
+
+#markAsReadButton {
+	-moz-image-region: rect(0px 80px 16px 64px) !important;
+}
+
+#markAsReadButton:hover {
+	-moz-image-region: rect(16px 80px 32px 64px) !important;
+}
+
+#markAsReadButton[disabled="true"] {
+	-moz-image-region: rect(32px 80px 48px 64px) !important;
+}
+
+#markAsUnreadButton {
+	-moz-image-region: rect(0px 96px 16px 80px) !important;
+}
+
+#markAsUnreadButton:hover {
+	-moz-image-region: rect(16px 96px 32px 80px) !important;
+}
+
+#markAsUnreadButton[disabled="true"] {
+	-moz-image-region: rect(32px 96px 48px 80px) !important;
+}
+
+#markAllAsReadButton {
+	-moz-image-region: rect(0px 48px 16px 32px) !important;
+}
+
+#markAllAsReadButton:hover {
+	-moz-image-region: rect(16px 48px 32px 32px) !important;
+}
+
+#markAllAsReadButton[disabled="true"] {
+	-moz-image-region: rect(32px 48px 48px 32px) !important;
+}
+
+#markAllAsUnreadButton {
+	-moz-image-region: rect(0px 64px 16px 48px) !important;
+}
+
+#markAllAsUnreadButton:hover {
+	-moz-image-region: rect(16px 64px 32px 48px) !important;
+}
+
+#markAllAsUnreadButton[disabled="true"] {
+	-moz-image-region: rect(32px 64px 48px 48px) !important;
+}
+
+
 /* ++++++++++ Search ++++++++++ */
 #barSearch {
   padding-bottom: 2px;

@@ -65,6 +65,7 @@ function init() {
 		setCheckbox("chkShowSearchBar", "false");
 		setCheckbox("chkShowTooltip", "true");
 		setCheckbox("chkShowFeedItemList", "true");
+		setCheckbox("chkShowFeedItemListToolbar", "true");
 	}
 
 	// get feed folder location
@@ -79,6 +80,10 @@ function init() {
 	FeedSearch.init();
 	toggleShowSearchBar();
 	toggleShowFeedItemList();
+	toggleShowFeedItemListToolbar();
+
+	document.documentElement.controllers.appendController(readStateController);
+	readStateController.onCommandUpdate();
 
 	logMessage("initialized");
 }
@@ -247,8 +252,8 @@ function rssItemListBoxClick(aEvent) {
 	var listItem = rssItemListBox.selectedItem;
 	var feedItem = getFeedItemFromListItem( listItem );
 
-	openURI( feedItem.getLink(), aEvent );
 	listItem.setAttribute("visited", "true");
+	openURI(feedItem.getLink(), aEvent);
 }
 
 function rssTitleLabelClick(aNode, aEvent){
@@ -312,6 +317,12 @@ function toggleShowFeedItemList() {
 	if(showFeedItemList) setRssItemListBox();
 }
 
+function toggleShowFeedItemListToolbar() {
+	var showFeedItemListToolbar = getCheckboxCheck("chkShowFeedItemListToolbar");
+	document.getElementById("itemListToolbar").hidden = !showFeedItemListToolbar;
+	if (showFeedItemListToolbar) readStateController.onCommandUpdate();
+}
+
 function setRssItemListBox() {
 	if(!currentFeed) return;
 	if(document.getElementById("rssItemListBoxBox").hidden) return;
@@ -327,12 +338,14 @@ function setRssItemListBox() {
 	for(var i = 0; items.length > i; i++) {
 		var item = items[i];
 		var itemLabel = item.getTitle();
-		itemLabel = (i+1) + ". " + itemLabel;
+		//itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
-		if(isVisited(item.getLink())) {
+		if(linkVisitor.getVisited(item.getLink())) {
 			listItem.setAttribute("visited", "true");
 		}
 	}
+
+	readStateController.onCommandUpdate();
 }
 
 function getCheckboxCheck(element_id) {
@@ -345,39 +358,6 @@ function setCheckbox(element_id, value) {
 	checkboxNode.setAttribute("checked", value);
 }
 
-// TODO: Is this still used?
-function showRssItemListPopup(aEvent) {
-	if(aEvent.originalTarget.localName != "listitem") {
-		rssItemListPopup.hidePopup();
-		return;
-	}
-	if(!getCheckboxCheck("chkShowTooltip")) {
-		rssItemListPopup.hidePopup();
-		return;
-	}
-
-	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-
-	var items = currentFeed.getItems(feedItemOrder);
-
-	var description = htmlToText(items[aEvent.originalTarget.value].getContent());
-	if(description.indexOf("/") != -1) {
-		description = description.replace(/\//gm, "/\u200B");
-	}
-		// description 400ȓɂ
-	if(description.length > 400) {
-		description = description.substring(0,400) + "...";
-	}
-
-	var popX = aEvent.screenX + 10;
-	var popY = aEvent.screenY + 20;
-
-	rssItemListPopup.title = aEvent.originalTarget.label;
-	rssItemListPopup.description = description;
-	rssItemListPopup.autoPosition = false;
-	rssItemListPopup.moveTo(popX, popY);
-	popupTimeoutId = setTimeout("rssItemListPopup.showPopup(rssItemListBox)", 150);
-}
 
 function populateToolTip(e) {
 	// if setting disabled
@@ -403,12 +383,6 @@ function populateToolTip(e) {
 
 	rssItemToolTip.title = listItem.label;
 	rssItemToolTip.description = description;
-}
-
-// TODO: Is this still used?
-function hideRssItemListPopup(aEvent) {
-	clearTimeout(popupTimeoutId);
-	rssItemListPopup.hidePopup();
 }
 
 function htmlToText(aStr) {
@@ -533,194 +507,6 @@ function httpGetResult(aResultCode) {
 	}
 }
 
-
-// link visit code based on LinkVisitor.mozdev.org
-
-
-const _uriFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup);
-const _globalHistory = Components.classes['@mozilla.org/browser/global-history;2'].getService(Components.interfaces.nsIGlobalHistory2);
-const _browserHistory = Components.classes["@mozilla.org/browser/global-history;2"].getService(Components.interfaces.nsIBrowserHistory);
-
-function markURIAsRead( sURI )
-{
-	markURIReadState( sURI, true );
-}
-
-function markURIAsUnread( sURI )
-{
-	markURIReadState( sURI, false );
-}
-
-function markURIReadState( sURI, bRead )
-{
-	if ( !sURI )
-		return;
-
-	// why do we need to fixup the URI?
-	var fixupURI = _getFixupURI( sURI );
-	var visited = _globalHistory.isVisited( fixupURI );
-	if ( visited == bRead )
-		return;
-
-	if ( bRead )
-		_globalHistory.addURI( fixupURI, false, true );
-	else
-		_browserHistory.removePage( fixupURI );
-}
-
-function _getFixupURI( sURI )
-{
-	try
-	{
-		return _uriFixup.createFixupURI( sURI, 0 );
-	}
-	catch( e )
-	{
-		return null;
-	}
-}
-
-function isVisited( sURI )
-{
-	var fixupURI = _getFixupURI( sURI );
-	return _globalHistory.isVisited( fixupURI );
-}
-
-
-// RSS Item Context Menu
-
-/**
- * This is called before the context menu for the listbox is shown. Here we enabled/disable
- * menu items as well as change the text to correctly reflect the read state
- * @param	e : Event
- * @returns	void
- */
-function updateItemContextMenu( e )
-{
-	var popupNode = document.popupNode;
-
-	var menuItemIds = ["rssOpenItem", "rssOpenNewTabItem", "rssOpenNewWindowItem",
-					   "rssMarkAsReadItem", "rssMarkAllAsReadItem", "rssMarkAllAsUnreadItem"];
-	var menuItems = {};
-	for ( var i = 0; i < menuItemIds.length; i++ )
-	{
-		menuItems[ menuItemIds[i] ] = document.getElementById( menuItemIds[i] );
-	}
-
-	// cmd_bm_open
-	// cmd_bm_openinnewwindow
-	// cmd_bm_openinnewtab
-	menuItems.rssOpenItem.label = bmStrRes.getString("cmd_bm_open");
-	menuItems.rssOpenNewTabItem.label = bmStrRes.getString("cmd_bm_openinnewtab");
-	menuItems.rssOpenNewWindowItem.label = bmStrRes.getString("cmd_bm_openinnewwindow");
-
-	menuItems.rssMarkAsReadItem.label = strRes.getString("itemcontext_markasread");
-	menuItems.rssMarkAllAsReadItem.label = strRes.getString("itemcontext_markallasread");
-	menuItems.rssMarkAllAsUnreadItem.label = strRes.getString("itemcontext_markallasunread");
-
-	if ( popupNode.localName == "listbox" )
-	{
-		// only mark all should work
-		for ( var id in menuItems )
-		{
-			if ( (id == "rssMarkAllAsReadItem" || id == "rssMarkAllAsUnreadItem") &&
-				 currentFeed && rssItemListBox.getRowCount() > 0 )
-				menuItems[id].removeAttribute( "disabled" );
-			else
-				menuItems[id].setAttribute( "disabled", "true" );;
-		}
-	}
-	else
-	{
-		for ( id in menuItems )
-			menuItems[id].removeAttribute( "disabled" );
-
-		// need to figure out if the current list item is visited
-		var listItem = popupNode;
-		var feedItem = getFeedItemFromListItem( listItem );
-		var visited = isVisited( feedItem.getLink() );
-		menuItems.rssMarkAsReadItem.label =
-			strRes.getString( visited ? "itemcontext_markasunread" : "itemcontext_markasread" );
-
-		// lets make sure the visited flag is correct in the ui
-		if ( visited )
-			listItem.setAttribute( "visited", "true" );
-		else
-			listItem.removeAttribute( "visited" );
-	}
-}
-
-
-/**
- * This marks the selected items as read/unread. This works with multiple
- * selection as well if we want to enable that in the future.
- * @param	e : Event
- * @returns	void
- */
-function toggleMarkAsRead( e )
-{
-	var listItems = rssItemListBox.selectedItems;
-	for ( var i = 0; i < listItems.length; i++ )
-	{
-		var listItem = listItems[i];
-		var feedItem = getFeedItemFromListItem( listItem );
-		var uri = feedItem.getLink();
-		var visited = isVisited( uri );
-		markURIReadState( uri, !visited );
-		if ( !visited )
-			listItem.setAttribute( "visited", "true" );
-		else
-			listItem.removeAttribute( "visited" );
-	}
-}
-
-/**
- * This called from the context menu.
- * @param	e : Event
- * @returns	void
- */
-function markAllAsRead( e )
-{
-	markAllReadState( true );
-}
-
-/**
- * This called from the context menu.
- * @param	e : Event
- * @returns	void
- */
-function markAllAsUnread( e )
-{
-	markAllReadState( false );
-}
-
-/**
- * Marks all read or unread
- * @param	bRead : Boolean	Whether to mark as read or unread
- * @returns	void
- */
-function markAllReadState( bRead )
-{
-	if ( currentFeed )
-	{
-		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-		var feedItems = currentFeed.getItems( feedItemOrder );
-
-		for ( var i = 0; i < feedItems.length; i++ )
-			markURIReadState( feedItems[i].getLink(), bRead );
-
-		var listItem;
-		for ( var y = 0; y < rssItemListBox.getRowCount(); y++ )
-		{
-			listItem = rssItemListBox.getItemAtIndex( y );
-			if ( bRead )
-				listItem.setAttribute( "visited", "true" );
-			else
-				listItem.removeAttribute( "visited" );
-		}
-	}
-}
-
 // This takes a list item from the rss list box and returns the uri it represents
 // this seems a bit inefficient. Shouldn't there be a direct mapping between these?
 
@@ -729,13 +515,11 @@ function markAllReadState( bRead )
  * @param	oListItem : XULListItem
  * @returns	FeedItem
  */
-function getFeedItemFromListItem( oListItem )
-{
+function getFeedItemFromListItem( oListItem ) {
 	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-	var items = currentFeed.getItems( feedItemOrder );
-	return items[ oListItem.value ];
+	var items = currentFeed.getItems(feedItemOrder);
+	return items[oListItem.value];
 }
-
 
 
 /**
@@ -747,34 +531,32 @@ function getFeedItemFromListItem( oListItem )
  *                          window type.
  * @returns	void
  */
-function openURI( sURI, oType )
-{
+function openURI(sURI, oType) {
 	var windowType;
-	if ( oType instanceof Event )
-	{
+	if (oType instanceof Event) {
 		// figure out what kind of open we want
-		if ( oType.button == 1 || oType.ctrlKey ) // click middle button or ctrl click
+		if (oType.button == 1 || oType.ctrlKey) // click middle button or ctrl click
 			windowType = "tab";
-		else if ( oType.shiftKey )
+		else if (oType.shiftKey)
 			windowType = "window";
 	}
-	else
-	{
+	else {
 		windowType = oType;
 	}
 
-	switch ( windowType )
-	{
+	switch (windowType) {
 		case "tab":
-			getContentBrowser().addTab( sURI );
+			getContentBrowser().addTab(sURI);
 			break;
 		case "window":
-			document.commandDispatcher.focusedWindow.open( sURI );
+			document.commandDispatcher.focusedWindow.open(sURI);
 			break;
 
 		default:
-			getContentBrowser().loadURI( sURI );
+			getContentBrowser().loadURI(sURI);
 	}
+
+	readStateController.onCommandUpdate();
 }
 
 /**
@@ -782,10 +564,245 @@ function openURI( sURI, oType )
  * @param	oType : String
  * @returns	void
  */
-function openListItem( oType )
-{
+function openListItem(oType) {
 	var listItem = document.popupNode;
-	var feedItem = getFeedItemFromListItem( listItem );
-	openURI( feedItem.getLink(), oType );
-	listItem.setAttribute( "visited", "true" );
+	var feedItem = getFeedItemFromListItem(listItem);
+	listItem.setAttribute("visited", "true");
+	openURI(feedItem.getLink(), oType);
 }
+
+// link visit code based on LinkVisitor.mozdev.org
+
+
+var linkVisitor = {
+	_uriFixup : Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup),
+	_globalHistory : Components.classes["@mozilla.org/browser/global-history;2"].getService(Components.interfaces.nsIGlobalHistory2),
+	_browserHistory : Components.classes["@mozilla.org/browser/global-history;2"].getService(Components.interfaces.nsIBrowserHistory),
+
+	setVisited:	function (sURI, bRead) {
+		if (!sURI)
+			return;
+
+		// why do we need to fixup the URI?
+		var fixupURI = this._getFixupURI(sURI);
+		if (fixupURI == null)
+			return;
+		if (bRead)
+			this._globalHistory.addURI(fixupURI, false, true);
+		else
+			this._browserHistory.removePage(fixupURI);
+	},
+
+	getVisited : function (sURI) {
+		var fixupURI = this._getFixupURI(sURI);
+		if (fixupURI == null)
+			return false;
+		return this._globalHistory.isVisited(fixupURI);
+	},
+
+	_getFixupURI : function (sURI) {
+		try {
+			return this._uriFixup.createFixupURI(sURI, 0);
+		}
+		catch (e) {
+			logMessage("Could not fixup URI: " + sURI);
+			return null;
+		}
+	}
+};
+
+
+
+// RSS Item Context Menu
+
+/**
+ * This is called before the context menu for the listbox is shown. Here we
+ * enabled/disable menu items as well as change the text to correctly reflect
+ * the read state
+ * @returns	void
+ */
+function updateItemContextMenu() {
+	readStateController.onCommandUpdate();
+	document.getElementById("rssMarkAsReadItem").hidden =
+		!readStateController.isCommandEnabled("cmd_markasread");
+	document.getElementById("rssMarkAsUnreadItem").hidden =
+		!readStateController.isCommandEnabled("cmd_markasunread");
+}
+
+
+/**
+ * Marks all read or unread
+ * @param	bRead : Boolean	Whether to mark as read or unread
+ * @returns	void
+ */
+function markAllReadState(bRead) {
+	if (currentFeed) {
+		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+		var feedItems = currentFeed.getItems(feedItemOrder);
+
+		for (var i = 0; i < feedItems.length; i++)
+			linkVisitor.setVisited(feedItems[i].getLink(), bRead);
+
+		var listItem;
+		for (var y = 0; y < rssItemListBox.getRowCount(); y++)
+		{
+			listItem = rssItemListBox.getItemAtIndex(y);
+			if (bRead)
+				listItem.setAttribute("visited", "true");
+			else
+				listItem.removeAttribute("visited");
+		}
+	}
+}
+
+
+/**
+ * This marks the selected items as read/unread. This works with multiple
+ * selection as well if we want to enable that in the future.
+ * @param	bRead : Boolean		Whether to mark items read or unread
+ * @returns	void
+ */
+function markReadState(bRead) {
+	var listItems = rssItemListBox.selectedItems;
+	for (var i = 0; i < listItems.length; i++) {
+		var listItem = listItems[i];
+		var feedItem = getFeedItemFromListItem(listItem);
+		var uri = feedItem.getLink();
+		if (bRead)
+			listItem.setAttribute("visited", "true");
+		else
+			listItem.removeAttribute("visited");
+		linkVisitor.setVisited(uri, bRead);
+	}
+}
+
+/**
+ * This toggles the selected items read state. This works with multiple
+ * selection as well if we want to enable that in the future.
+ *
+ * In Thunderbird, pressing M marks all read on unread based on the first
+ * item. This seems more consistent and more useful
+ *
+ * @returns	void
+ */
+function toggleMarkAsRead() {
+	var listItems = rssItemListBox.selectedItems;
+	var read;
+	for (var i = 0; i < listItems.length; i++) {
+		var listItem = listItems[i];
+		var feedItem = getFeedItemFromListItem(listItem);
+		var uri = feedItem.getLink();
+		if (read == null)
+			read = !linkVisitor.getVisited(uri);
+		if (read)
+			listItem.setAttribute("visited", "true");
+		else
+			listItem.removeAttribute("visited");
+		linkVisitor.setVisited(uri, read);
+	}
+}
+
+
+/**
+ * This controller object takes care of the commands related to marking feed
+ * items as read
+ */
+var readStateController = {
+	supportsCommand : function(cmd) {
+		switch (cmd) {
+			case "cmd_markasread":
+			case "cmd_markasunread":
+			case "cmd_toggleread":
+			case "cmd_markallasread":
+			case "cmd_markallasunread":
+				return true;
+			default:
+				return false;
+		}
+	},
+
+	isCommandEnabled : function(cmd) {
+		var items, feedItem, visited, i;
+
+		if (!getCheckboxCheck("chkShowFeedItemList"))
+			return false;
+
+		switch (cmd) {
+			// Enable if any items available. A more exact solution is to loop
+			// over the item and disable/enable dependiong on whether all items
+			// are read/unread. This solution is however too slow to be practical.
+			case "cmd_markallasread":
+			case "cmd_markallasunread":
+				return rssItemListBox.getRowCount() > 0;
+
+			// There is a state where we mark a listitem as visited even though
+			// we don't know if the server will respond and therefore the link
+			// might be unread in the history and read in the UI. In these cases
+			// both mark as read and mark as unread needs to be enabled
+
+			case "cmd_markasread":
+				items = rssItemListBox.selectedItems;
+
+				// if we have one non visited we can mark as read
+				for (i = 0; i < items.length; i++) {
+					feedItem = getFeedItemFromListItem( items[i] );
+					visited = linkVisitor.getVisited( feedItem.getLink() );
+					if (!visited || items[i].getAttribute("visited") != "true")
+						return true;
+				}
+				return false;
+
+			case "cmd_markasunread":
+				items = rssItemListBox.selectedItems;
+
+				// if we have one visited we can mark as unread
+				for (i = 0; i < items.length; i++) {
+					feedItem = getFeedItemFromListItem( items[i] );
+					visited = linkVisitor.getVisited( feedItem.getLink() );
+					if (visited || items[i].getAttribute("visited") == "true")
+						return true;
+				}
+				return false;
+
+			case "cmd_toggleread":
+				return this.isCommandEnabled("cmd_markasread") ||
+					   this.isCommandEnabled("cmd_markasunread");
+		}
+
+		return false;
+	},
+	doCommand : function(cmd) {
+		switch (cmd) {
+			case "cmd_markasread":
+				markReadState(true);
+				break;
+
+			case "cmd_markasunread":
+				markReadState(false);
+				break;
+
+			case "cmd_toggleread":
+				toggleMarkAsRead();
+				break;
+
+			case "cmd_markallasread":
+				markAllReadState(true);
+				break;
+
+			case "cmd_markallasunread":
+				markAllReadState(false);
+				break;
+		}
+		this.onCommandUpdate();
+	},
+
+	onCommandUpdate: function () {
+		var commands = ["cmd_markasread", "cmd_markasunread",
+						"cmd_toggleread",
+						"cmd_markallasread", "cmd_markallasunread"];
+		for (var i = 0; i < commands.length; i++)
+			goSetCommandEnabled(commands[i], this.isCommandEnabled(commands[i]));
+	},
+
+	onEvent : function(evt){ }
+};
