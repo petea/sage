@@ -1,6 +1,6 @@
 <!ENTITY sage.label				"Sage">
 <!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label				"versión">
+<!ENTITY sage.version.label				"versión>
 
 <!ENTITY sage.toolbarLabel			"Sage">
 <!ENTITY sage.sidebarTitle			"Sage">
@@ -10,7 +10,7 @@
 <!ENTITY menu.showSearchBar			"Mostrar barra de búsqueda de fuentes">
 <!ENTITY menu.showFeedItemList			"Mostrar la lista de fuentes">
 <!ENTITY menu.showFeedItemListToolbar	"Mostrar barra de herramientas">
-<!ENTITY menu.showDescTooltip			"Mostrar sugerencias de descripción">
+<!ENTITY menu.showDescTooltip			"Mostrar sugerencias de descripción>
 <!ENTITY menu.openHTML				"Abrir fuentes en área de contenidos">
 <!ENTITY menu.tools				"Opciones">
 <!ENTITY menu.checkUpdate			"Comprobar Fuentes">
@@ -26,7 +26,7 @@
 <!ENTITY discovery.button.close			 "Cerrar">
 <!ENTITY discovery.header.title			 "Título">
 <!ENTITY discovery.header.format     "Formato">
-<!ENTITY discovery.header.lastPubDate     "Última actualización">
+<!ENTITY discovery.header.lastPubDate     "Última actualización>
 <!ENTITY discovery.header.itemCount     "Elementos">
 <!ENTITY discovery.header.url     "URL">
 

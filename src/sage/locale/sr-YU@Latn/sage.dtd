@@ -1,0 +1,83 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version.label				"izdanje">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Otvara Sage">
+
+<!ENTITY menu.view				"Pregled">
+<!ENTITY menu.showSearchBar			"Prikaži liniju za pretragu">
+<!ENTITY menu.showFeedItemList			"Prikaži spisak novosti">
+<!ENTITY menu.showFeedItemListToolbar	"Prikaži alat za prikaz spiska novosti">
+<!ENTITY menu.showDescTooltip			"Prikaži oblačiće sa opisima">
+<!ENTITY menu.openHTML				"Otvori izvore u sadržaju">
+<!ENTITY menu.tools				"Postavke">
+<!ENTITY menu.checkUpdate			"Proveri izvore">
+<!ENTITY menu.manageRSSList			"Uredi spisak izvora...">
+<!ENTITY menu.opmlImportExport			"OPML uvoz/izvoz...">
+<!ENTITY menu.setting				"Postavke...">
+<!ENTITY menu.sageProjectFeed				"Novosti na projektu Sage">
+<!ENTITY menu.discoverFeeds				"Pronađi izvore">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Pretražujem trenutnu stranu">
+<!ENTITY discovery.button.addFeed    "Dodaj izvor">
+<!ENTITY discovery.button.close			 "Zatvori">
+<!ENTITY discovery.header.title			 "Naslov">
+<!ENTITY discovery.header.format     "Format">
+<!ENTITY discovery.header.lastPubDate     "Poslednja izmena">
+<!ENTITY discovery.header.itemCount     "Vesti">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Opšte">
+<!ENTITY settings.autoFeedTitle.label     "Automatski preuzmi naslov izvora">
+<!ENTITY settings.renderFeeds.label     "Prikazuj izvore u sadržaju">
+<!ENTITY settings.twelveHourClock.label     "Prikaz 12-časovnog vremena">
+<!ENTITY settings.feedItemOrder.label     "Redosled">
+<!ENTITY settings.feedItemOrder.chrono     "Hronološki">
+<!ENTITY settings.feedItemOrder.source     "Prema izvoru">
+<!ENTITY settings.feedDiscoveryMode.label     "Način otkrivanja izvora">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Iscrpan">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Konzervativan">
+<!ENTITY settingWindow.title                    "Postavke Sage">
+<!ENTITY selectFolder.label			"Katalog izvora">
+<!ENTITY openInContentsArea.caption		"Prikaz izvora">
+<!ENTITY enableUserCss.label			"Posebna stranica sa stilom">
+<!ENTITY browseCss.label			"Pregledaj...">
+<!ENTITY allowEContent.label			"Dozvoli HTML oznake">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
+
+<!-- These are taken from history.dtd -->
+<!ENTITY openLinkInWindow.label "Otvori">
+<!ENTITY openLinkInWindow.accesskey "O">
+<!ENTITY openInNewTab.label "Otvori u novom jezičku">
+<!ENTITY openInNewTab.accesskey "T">
+<!ENTITY openInNewWindow.label "Otvori u novom prozoru">
+<!ENTITY openInNewWindow.accesskey "W">
+
+<!-- Read State -->
+<!ENTITY markAsRead.command.label			"Označi kao pročitano">
+<!ENTITY markAsRead.command.tooltip			"Označi da je ova vest pročitana">
+<!ENTITY markAsRead.command.accesskey		"R">
+
+<!ENTITY markAsUnread.command.label			"Označi kao nepročitano">
+<!ENTITY markAsUnread.command.tooltip		"Označi da ova vest nije pročitana">
+<!ENTITY markAsUnread.command.accesskey		"U">
+
+<!ENTITY markAllAsRead.command.label		"Sve je pročitano">
+<!ENTITY markAllAsRead.command.tooltip		"Označi da su sve vesti iz ovog izvora pročitane">
+<!ENTITY markAllAsRead.command.accesskey	"A">
+<!ENTITY markAllAsRead.command.key			"C">
+<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+
+<!ENTITY markAllAsUnread.command.label		"Ništa nije pročitano">
+<!ENTITY markAllAsUnread.command.tooltip	"Označi da nijedna vest iz ovog izvora nije pročitana">
+<!ENTITY markAllAsUnread.command.accesskey	"n">
+
+<!ENTITY toggleReadState.command.key		"M">
+
+
