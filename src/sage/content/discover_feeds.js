@@ -47,7 +47,7 @@ function init() {
 	var browserWindow = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
 
 	bookmarksTree = window.arguments[0];
-	
+
 	var current_document = browserWindow.contentDocument;
 
 	document_host = current_document.location.host;
@@ -58,18 +58,23 @@ function init() {
 	possibleFeeds = new Array();
 
 	var links, c;
+	// Allowing file: might not seem good but the XMLHttpRequest will prevent
+	// access to the file system if needed.
+	var uriSchemeRe = /^(http|https|ftp|file):$/;
 
 	if(discoveryMode == "exhaustive") {
 		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
-			if(links[c].href.match(/xml$|rss|rdf|atom|feed/i)) {
+			if(uriSchemeRe.test(links[c].protocol) && links[c].href.test(/xml$|rss|rdf|atom|feed/i)) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
 			}
 		}
 	} else {
 		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
-			if(links[c].href.match(/xml$|rss|rdf|atom|feed/i) && links[c].href.match(new RegExp(document_host, "i"))) {
+			if(uriSchemeRe.test(links[c].protocol) &&
+			   links[c].href.test(/xml$|rss|rdf|atom|feed/i) &&
+			   links[c].host.test(new RegExp(document_host, "i"))) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
 			}
 		}
@@ -209,7 +214,7 @@ function addDiscoveredFeed(uri, feed) {
 	if(possibleFeeds[uri.spec][1] == "explicit") valuation += 100;
 	if(feedClass == "Feeds") valuation += 10;
 	if(feed.hasLastPubDate()) valuation += 1;
-	
+
 	ds.Assert(rdfService.GetResource(schema + feedClass), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + uri.spec), true);
 
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral(feed.getTitle()), true);
