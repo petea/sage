@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"Importera/Exportera OPML">
+<!ENTITY pageStart.desc				"Välj funktion">
+<!ENTITY pageImport.label			"Importera OPML">
+<!ENTITY pageImport.desc			"Välj OPML-fil att importera från">
+<!ENTITY pageExport.label			"Exportera OPML">
+<!ENTITY pageExport.desc			"Välj OPML-fil att exportera till">
+
+<!ENTITY rdoImport.label			"Importera OPML">
+<!ENTITY rdoExport.label			"Exportera OPML">
+
+<!ENTITY browseButton.label			"Bläddra...">
+
+<!ENTITY pageImportFinished.label	"Importera OPML">
+<!ENTITY pageImportFinished.desc	"Importen färdig">
+<!ENTITY pageExportFinished.label	"Exportera OPML">
+<!ENTITY pageExportFinished.desc	"Exporten färdig">

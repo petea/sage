@@ -1,9 +1,9 @@
-<!ENTITY pageStart.label			"Asistente de Importaci髇/Exportaci髇 OPML">
-<!ENTITY pageStart.desc				"Elija una acci髇">
+<!ENTITY pageStart.label			"Asistente de Importaci贸n/Exportaci贸n OPML">
+<!ENTITY pageStart.desc				"Elija una acci贸n">
 <!ENTITY pageImport.label			"Importar OPML">
-<!ENTITY pageImport.desc			"Seleccione un 	archivo OPML de importaci髇">
+<!ENTITY pageImport.desc			"Seleccione un 	archivo OPML de importaci贸n">
 <!ENTITY pageExport.label			"Exportar OPML">
-<!ENTITY pageExport.desc			"Seleccione un archivo OPML de exportaci髇">
+<!ENTITY pageExport.desc			"Seleccione un archivo OPML de exportaci贸n">
 
 <!ENTITY rdoImport.label			"Importar OPML">
 <!ENTITY rdoExport.label			"Exportar OPML">
@@ -11,6 +11,6 @@
 <!ENTITY browseButton.label			"Examinar...">
 
 <!ENTITY pageImportFinished.label	"Importar OPML">
-<!ENTITY pageImportFinished.desc	"Importaci髇 Completa">
+<!ENTITY pageImportFinished.desc	"Importaci贸n Completa">
 <!ENTITY pageExportFinished.label	"Exportar OPML">
-<!ENTITY pageExportFinished.desc	"Exportaci髇 Completa">
+<!ENTITY pageExportFinished.desc	"Exportaci贸n Completa">

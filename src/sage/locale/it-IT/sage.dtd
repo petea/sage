@@ -9,7 +9,7 @@
 <!ENTITY menu.view				"Visualizza">
 <!ENTITY menu.showSearchBar			"Mostra Barra di Ricerca dei Feed">
 <!ENTITY menu.showFeedItemList			"Mostra la Lista dei Feed">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
+<!ENTITY menu.showFeedItemListToolbar	"Mostra la Barra degli Strumenti della Lista dei Feed">
 <!ENTITY menu.showDescTooltip			"Mostra Descrizione Suggerimenti">
 <!ENTITY menu.openHTML				"Mostra i Feed nel Browser">
 <!ENTITY menu.tools				"Opzioni">
@@ -17,7 +17,7 @@
 <!ENTITY menu.manageRSSList			"Gestione Lista dei Feed...">
 <!ENTITY menu.opmlImportExport			"Importazione/Esportazione File OPML...">
 <!ENTITY menu.setting				"Preferenze...">
-<!ENTITY menu.sageProjectFeed				"Novita' sul Progetto Sage">
+<!ENTITY menu.sageProjectFeed				"Novità sul Progetto Sage">
 <!ENTITY menu.discoverFeeds				"Ricerca Feed Esterni">
 
 <!-- Feed Discovery -->
@@ -32,13 +32,13 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Generale">
-<!ENTITY settings.autoFeedTitle.label     "Aggiorna Automaticamente il Titolo dei feed">
+<!ENTITY settings.autoFeedTitle.label     "Aggiorna automaticamente il Titolo dei Feed">
 <!ENTITY settings.renderFeeds.label     "Mostra i Feed nel Browser">
-<!ENTITY settings.twelveHourClock.label     "Usa Modalita' 12 ore">
+<!ENTITY settings.twelveHourClock.label     "Usa Modalità 12 ore">
 <!ENTITY settings.feedItemOrder.label     "Ordinamento dei Feed">
 <!ENTITY settings.feedItemOrder.chrono     "Cronologico">
 <!ENTITY settings.feedItemOrder.source     "Sorgente">
-<!ENTITY settings.feedDiscoveryMode.label     "Modalita' di Ricerca Feed">
+<!ENTITY settings.feedDiscoveryMode.label     "Modalità di Ricerca Feed">
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Esaustiva">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Conservativa">
 <!ENTITY settingWindow.title                    "Configurazione di Sage">
@@ -53,30 +53,30 @@
 <!ENTITY openSageSidebar.modifiersKey		"alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label "Open">
-<!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
-<!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
-<!ENTITY openInNewWindow.accesskey "W">
+<!ENTITY openLinkInWindow.label "Apri">
+<!ENTITY openLinkInWindow.accesskey "A">
+<!ENTITY openInNewTab.label "Apri in una Nuova Scheda">
+<!ENTITY openInNewTab.accesskey "S">
+<!ENTITY openInNewWindow.label "Apri in una Nuova Finestra">
+<!ENTITY openInNewWindow.accesskey "F">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label			"Marca come già letto">
+<!ENTITY markAsRead.command.tooltip			"Marca come già letto">
+<!ENTITY markAsRead.command.accesskey		"l">
 
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label			"Marca come non letto">
+<!ENTITY markAsUnread.command.tooltip		"Marca come non letto">
+<!ENTITY markAsUnread.command.accesskey		"n">
 
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
-<!ENTITY markAllAsRead.command.accesskey	"A">
+<!ENTITY markAllAsRead.command.label		"Marca tutti come letti">
+<!ENTITY markAllAsRead.command.tooltip		"Marca tutti come letti">
+<!ENTITY markAllAsRead.command.accesskey	"t">
 <!ENTITY markAllAsRead.command.key			"C">
 <!ENTITY markAllAsRead.command.modifiers	"accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label		"Marca tutti come non letti">
+<!ENTITY markAllAsUnread.command.tooltip	"Marca tutti come non letti">
+<!ENTITY markAllAsUnread.command.accesskey	"o">
 
 <!ENTITY toggleReadState.command.key		"M">

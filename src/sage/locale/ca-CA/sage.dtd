@@ -1,82 +1,70 @@
 <!ENTITY sage.label "Sage">
 <!ENTITY sage.version "1.3">
-<!ENTITY sage.version.label "versió">
-
+<!ENTITY sage.version.label "Versió">
 <!ENTITY sage.toolbarLabel "Sage">
 <!ENTITY sage.sidebarTitle "Sage">
-<!ENTITY sage.tooltip "Visualitza Sage">
-
-<!ENTITY menu.view "Visualització">
+<!ENTITY sage.tooltip "Mostra el Sage">
+<!ENTITY menu.view "Visualitza">
 <!ENTITY menu.showSearchBar "Mostra la barra de cerca de fonts">
-<!ENTITY menu.showFeedItemList "Mostra la llista de fonts">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
-<!ENTITY menu.showDescTooltip "Mostra els rètols de descripció">
-<!ENTITY menu.openHTML "Obre les fonts a l'àrea de continguts">
+<!ENTITY menu.showFeedItemList "Mostra la llista de les fonts">
+<!ENTITY menu.showFeedItemListToolbar "Mostra la barra del llistat de fonts">
+<!ENTITY menu.showDescTooltip "Mostra els rètols indicadors de funció">
+<!ENTITY menu.openHTML "Obri les fonts a l'àrea de continguts">
 <!ENTITY menu.tools "Opcions">
-<!ENTITY menu.checkUpdate "Comprova les fonts">
-<!ENTITY menu.manageRSSList "Gestiona la llista de fonts">
-<!ENTITY menu.opmlImportExport "Importa/Exporta OPML...">
+<!ENTITY menu.checkUpdate "Descobreix fonts">
+<!ENTITY menu.manageRSSList "Gestiona la llista de fonts...">
+<!ENTITY menu.opmlImportExport "Importació/exportació OPML">
 <!ENTITY menu.setting "Paràmetres...">
-<!ENTITY menu.sageProjectFeed "Notícies del projecte Sage">
+<!ENTITY menu.sageProjectFeed "Notícies del Projecte Sage">
 <!ENTITY menu.discoverFeeds "Descobreix fonts">
-
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching "Cercant la pàgina actual">
 <!ENTITY discovery.button.addFeed "Afegeix font">
 <!ENTITY discovery.button.close "Tanca">
 <!ENTITY discovery.header.title "Títol">
 <!ENTITY discovery.header.format "Format">
-<!ENTITY discovery.header.lastPubDate "Última Actualització">
+<!ENTITY discovery.header.lastPubDate "Darrera actualització">
 <!ENTITY discovery.header.itemCount "Elements">
 <!ENTITY discovery.header.url "URL">
-
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption "General">
-<!ENTITY settings.autoFeedTitle.label "Actualitza automàticament els títols de fonts">
+<!ENTITY settings.autoFeedTitle.label "Actualitza els títols de les fonts automàticament">
 <!ENTITY settings.renderFeeds.label "Representa les fonts a l'àrea de continguts">
 <!ENTITY settings.twelveHourClock.label "Utilitza el rellotge de 12 hores">
-<!ENTITY settings.feedItemOrder.label "Ordre de la llista fonts">
+<!ENTITY settings.feedItemOrder.label "Ordre dels elements de les fonts">
 <!ENTITY settings.feedItemOrder.chrono "Cronològic">
 <!ENTITY settings.feedItemOrder.source "Font">
-<!ENTITY settings.feedDiscoveryMode.label "Mode descobriment de fonts">
+<!ENTITY settings.feedDiscoveryMode.label "Mode de descobriment de fonts">
 <!ENTITY settings.feedDiscoveryMode.exhaustive "Exhaustiu">
 <!ENTITY settings.feedDiscoveryMode.conservative "Conservatiu">
-<!ENTITY settingWindow.title "Paràmetres de Sage">
-<!ENTITY selectFolder.label "Seleccioneu la carpeta de fonts">
-<!ENTITY openInContentsArea.caption "Representació">
-<!ENTITY enableUserCss.label "Utilitza CSS personalitzat">
-<!ENTITY browseCss.label "Vés a...">
-<!ENTITY allowEContent.label "Permet etiquetes HTML">
-
-
+<!ENTITY settingWindow.title "Paràmetres del Sage">
+<!ENTITY selectFolder.label "Seleccioneu la carpeta de les fonts">
+<!ENTITY openInContentsArea.caption "S'estan representant les fonts">
+<!ENTITY enableUserCss.label "Utilitza fulla d'estil personalitzada">
+<!ENTITY browseCss.label "Navega">
+<!ENTITY allowEContent.label "Habilita les etiquetes HTML">
 <!ENTITY openSageSidebar.commandkey "S">
 <!ENTITY openSageSidebar.modifiersKey "alt">
-
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label "Open">
+<!ENTITY openLinkInWindow.label "Obre">
 <!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
+<!ENTITY openInNewTab.label "Obre en una pestanya nova">
 <!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
+<!ENTITY openInNewWindow.label "Obre-ho en una nova finestra">
 <!ENTITY openInNewWindow.accesskey "W">
-
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
-<!ENTITY markAsRead.command.accesskey		"R">
-
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
-<!ENTITY markAsUnread.command.accesskey		"U">
-
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
-
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
-
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY markAsRead.command.label "Marca'l com a llegit">
+<!ENTITY markAsRead.command.tooltip "Marca'l com a llegit">
+<!ENTITY markAsRead.command.accesskey "R">
+<!ENTITY markAsUnread.command.label "Marca'l com a no llegit">
+<!ENTITY markAsUnread.command.tooltip "Marca'l com a no llegit">
+<!ENTITY markAsUnread.command.accesskey "U">
+<!ENTITY markAllAsRead.command.label "Marca'ls tots com a llegits">
+<!ENTITY markAllAsRead.command.tooltip "Marca'ls tots com a llegits">
+<!ENTITY markAllAsRead.command.accesskey "A">
+<!ENTITY markAllAsRead.command.key "C">
+<!ENTITY markAllAsRead.command.modifiers "Majúscula">
+<!ENTITY markAllAsUnread.command.label "Marca'ls tots com a llegits">
+<!ENTITY markAllAsUnread.command.tooltip "Marca'ls tots com a no llegits">
+<!ENTITY markAllAsUnread.command.accesskey "n">
+<!ENTITY toggleReadState.command.key "M">

@@ -1,14 +1,13 @@
-<!ENTITY pageStart.label "Auxiliar d'importació/exportació OPML">
-<!ENTITY pageStart.desc "Escolliu una acció">
-<!ENTITY pageImport.label "Importa OPML">
-<!ENTITY pageImport.desc "Seleccioneu el fitxer d'importació OPML">
-<!ENTITY pageExport.label "Exporta OPML">
-<!ENTITY pageExport.desc "Selecciona el fitxer d'exportació OPML">
-<!ENTITY rdoImport.label "Importa OPML">
-<!ENTITY rdoExport.label "Exporta OPML">
-<!ENTITY browseButton.label "Vés a...">
-
-<!ENTITY pageImportFinished.label	"Importa OPML">
-<!ENTITY pageImportFinished.desc	"S'ha acabat la importaci&#x00f3;">
-<!ENTITY pageExportFinished.label	"Exporta OPML">
-<!ENTITY pageExportFinished.desc	"S'ha acabat l'exportaci&#x00f3;">
+<!ENTITY pageStart.label "Assistent d'importació i d'exportació OPML">
+<!ENTITY pageStart.desc "Seleccioneu una acció">
+<!ENTITY pageImport.label "Importació OPML">
+<!ENTITY pageImport.desc "Seleccioneu el fitxer OPML per importar">
+<!ENTITY pageExport.label "Exportació OPML">
+<!ENTITY pageExport.desc "Selecciona fitxer OPML per exportar">
+<!ENTITY rdoImport.label "Importació OPML">
+<!ENTITY rdoExport.label "Exportació OPML">
+<!ENTITY browseButton.label "Navega">
+<!ENTITY pageImportFinished.label "Importació OPML">
+<!ENTITY pageImportFinished.desc "Importació completada.">
+<!ENTITY pageExportFinished.label "Exportació OPML">
+<!ENTITY pageExportFinished.desc "Exportació completada.">

@@ -9,7 +9,7 @@
 <!ENTITY menu.view                              "Вид">
 <!ENTITY menu.showSearchBar                     "Показывать строку поиска лент">
 <!ENTITY menu.showFeedItemList                  "Показывать элементы ленты">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
+<!ENTITY menu.showFeedItemListToolbar   "Показывать панель элементов">
 <!ENTITY menu.showDescTooltip                   "Показывать всплывающие описания">
 <!ENTITY menu.openHTML                          "Открывать ленты в основном окне">
 <!ENTITY menu.tools                             "Настройки">
@@ -53,30 +53,30 @@
 <!ENTITY openSageSidebar.modifiersKey           "alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label "Open">
+<!ENTITY openLinkInWindow.label "Открыть">
 <!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
+<!ENTITY openInNewTab.label "Открыть в новой вкладке">
 <!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
+<!ENTITY openInNewWindow.label "Открыть в новом окне">
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label                       "Пометить как прочитанное">
+<!ENTITY markAsRead.command.tooltip                     "Пометить как прочитанное">
+<!ENTITY markAsRead.command.accesskey           "R">
 
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label                     "Пометить как непрочитанное">
+<!ENTITY markAsUnread.command.tooltip           "Пометить как непрочитанное">
+<!ENTITY markAsUnread.command.accesskey         "U">
 
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label            "Пометить все как прочитанное">
+<!ENTITY markAllAsRead.command.tooltip          "Пометить все как прочитанное">
+<!ENTITY markAllAsRead.command.accesskey        "A">
+<!ENTITY markAllAsRead.command.key                      "C">
+<!ENTITY markAllAsRead.command.modifiers        "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label          "Пометить все как непрочитанное">
+<!ENTITY markAllAsUnread.command.tooltip        "Пометить все как непрочитанное">
+<!ENTITY markAllAsUnread.command.accesskey      "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key            "M">

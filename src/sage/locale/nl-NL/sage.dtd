@@ -9,7 +9,7 @@
 <!ENTITY menu.view											"Beeld">
 <!ENTITY menu.showSearchBar								"Toon feed zoekbalk">
 <!ENTITY menu.showFeedItemList							"Toon feed itemlijst">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
+<!ENTITY menu.showFeedItemListToolbar					"Show Feed Item List Toolbar">
 <!ENTITY menu.showDescTooltip								"Toon beschrijvende tooltips">
 <!ENTITY menu.openHTML										"Open feeds in Contents Area">
 <!ENTITY menu.tools											"Opties">
@@ -53,30 +53,30 @@
 <!ENTITY openSageSidebar.modifiersKey					"alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label "Open">
-<!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
-<!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
-<!ENTITY openInNewWindow.accesskey "W">
+<!ENTITY openLinkInWindow.label							"Open">
+<!ENTITY openLinkInWindow.accesskey						"O">
+<!ENTITY openInNewTab.label								"Open in nieuwe tab">
+<!ENTITY openInNewTab.accesskey							"T">
+<!ENTITY openInNewWindow.label							"Open in nieuw venster">
+<!ENTITY openInNewWindow.accesskey						"V">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label						"Markeer als gelezen">
+<!ENTITY markAsRead.command.tooltip						"Markeer als gelezen">
+<!ENTITY markAsRead.command.accesskey					"R">
 
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label						"Markeer als ongelezen">
+<!ENTITY markAsUnread.command.tooltip					"Markeer als ongelezen">
+<!ENTITY markAsUnread.command.accesskey				"Z">
 
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label					"Markeer alles als gelezen">
+<!ENTITY markAllAsRead.command.tooltip					"Markeer alles als gelezen">
+<!ENTITY markAllAsRead.command.accesskey				"A">
+<!ENTITY markAllAsRead.command.key						"C">
+<!ENTITY markAllAsRead.command.modifiers				"accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label					"Markeer alles als ongelezen">
+<!ENTITY markAllAsUnread.command.tooltip				"Markeer alles als ongelezen">
+<!ENTITY markAllAsUnread.command.accesskey			"n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key					"M">

@@ -1,6 +1,6 @@
 <!ENTITY sage.label								 "Sage">
 <!ENTITY sage.version							 "1.3">
-<!ENTITY sage.version.label						 "">
+<!ENTITY sage.version.label						 "version">
 
 <!ENTITY sage.toolbarLabel						 "Sage">
 <!ENTITY sage.sidebarTitle						 "Sage">
@@ -9,7 +9,7 @@
 <!ENTITY menu.view								 "Affichage">
 <!ENTITY menu.showSearchBar						 "Afficher la barre de recherche des fils">
 <!ENTITY menu.showFeedItemList					 "Afficher le contenu du fil">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
+<!ENTITY menu.showFeedItemListToolbar			 "Afficher la barre d'outils des éléments du fil">
 <!ENTITY menu.showDescTooltip					 "Afficher les bulles descriptives">
 <!ENTITY menu.openHTML							 "Afficher le contenu des fils dans la zone de navigation">
 <!ENTITY menu.tools								 "Options">
@@ -53,30 +53,30 @@
 <!ENTITY openSageSidebar.modifiersKey			 "alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label "Open">
-<!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
-<!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
-<!ENTITY openInNewWindow.accesskey "W">
+<!ENTITY openLinkInWindow.label					 "Ouvrir">
+<!ENTITY openLinkInWindow.accesskey				 "O">
+<!ENTITY openInNewTab.label						 "Ouvrir dans un nouvel onglet">
+<!ENTITY openInNewTab.accesskey					 "T">
+<!ENTITY openInNewWindow.label					 "Ouvrir dans une nouvelle fenêtre">
+<!ENTITY openInNewWindow.accesskey				 "N">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label				"Marquer comme lu">
+<!ENTITY markAsRead.command.tooltip				"Marquer comme lu">
+<!ENTITY markAsRead.command.accesskey			"L">
 
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label				"Marquer comme non lu">
+<!ENTITY markAsUnread.command.tooltip			"Marquer comme non lu">
+<!ENTITY markAsUnread.command.accesskey			"U">
 
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label			"Marquer tous comme lu">
+<!ENTITY markAllAsRead.command.tooltip			"Marquer tous comme lu">
+<!ENTITY markAllAsRead.command.accesskey		"T">
+<!ENTITY markAllAsRead.command.key				"C">
+<!ENTITY markAllAsRead.command.modifiers		"accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label			"Marquer tous comme non lu">
+<!ENTITY markAllAsUnread.command.tooltip		"Marquer tous comme non lu">
+<!ENTITY markAllAsUnread.command.accesskey		"n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key			"M">

@@ -15,6 +15,9 @@ const APP_LOCALE_ZHTW_PATH	= "locale/zh-TW/";
 const APP_LOCALE_DEDE_PATH	= "locale/de-DE/";
 const APP_LOCALE_ESES_PATH	= "locale/es-ES/";
 const APP_LOCALE_RURU_PATH	= "locale/ru-RU/";
+const APP_LOCALE_DEAT_PATH	= "locale/de-AT/";
+const APP_LOCALE_DECH_PATH	= "locale/de-CH/";
+const APP_LOCALE_SVSE_PATH	= "locale/sv-SE/";
 
 
 initInstall(APP_NAME, APP_CHROME_NAME, APP_VERSION); 
@@ -37,6 +40,9 @@ registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_ZHTW_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_DEDE_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_ESES_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_RURU_PATH);
+registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_DEAT_PATH);
+registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_DECH_PATH);
+registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_SVSE_PATH);
 
 var result = getLastError(); 
 if(result == SUCCESS) {
