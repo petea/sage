@@ -18,7 +18,7 @@ var rssStatusLabel;
 var rssTitleLabel;
 var rssItemListPopup;
 
-var rssObject;
+var currentFeed;
 var httpReq;
 var prefObserverSageFolder;
 var responseXML;
@@ -206,7 +206,7 @@ function rssItemListBoxClick(aEvent){
 	}
 
 	var selectedItem = rssItemListBox.selectedItem;
-	var link = rssObject.items[selectedItem.value].link;
+	var link = currentFeed.getItem(selectedItem.value).getLink();
 	var tabbed = false;
 
 	if(aEvent.button == 1){ tabbed = true; } // click middle button
@@ -250,11 +250,11 @@ function setStatusDone(){
 	rssStatusImage.setAttribute("loading", "false");
 	rssStatusLabel.value = "";
 
-	if(rssObject){
-		rssTitleLabel.value = htmlToText(rssObject.title);
-		if(rssObject.link){
-			rssTitleLabel.setAttribute("href", rssObject.link);
-			rssTitleLabel.tooltipText = rssObject.link;
+	if(currentFeed){
+		rssTitleLabel.value = htmlToText(currentFeed.getTitle());
+		if(currentFeed.getLink()){
+			rssTitleLabel.setAttribute("href", currentFeed.getLink());
+			rssTitleLabel.tooltipText = currentFeed.getLink();
 		}else{
 			rssTitleLabel.removeAttribute("href");
 			rssTitleLabel.tooltipText = "";
@@ -279,184 +279,6 @@ function getContentBrowser(){
 	return null;
 }
 
-
-	// RSS
-function createRssObject(){
-	if(!responseXML){ return; }
-	
-	rssObject = {
-		rssURL: lastResource.url,
-		title: "",
-		link: "",
-		description: "",
-		charSet: responseXML.characterSet,
-		items: new Array()
-	}
-
-	var rootNodeName = responseXML.documentElement.localName.toLowerCase();
-	if(rootNodeName == "feed"){
-		createRssObjectAtom();
-		return;
-	}
-
-	var channelNode;
-	if(responseXML.getElementsByTagName("channel").length != 0){
-		channelNode = responseXML.getElementsByTagName("channel")[0];
-	}else{
-		return;
-	}
-
-	for(var i = channelNode.firstChild; i!=null; i=i.nextSibling){
-		if(i.nodeType != i.ELEMENT_NODE) continue;
-		switch(i.localName){
-			case "title":
-				rssObject.title = CommonFunc.getInnerText(i);
-				break;
-			case "link":
-				rssObject.link = CommonFunc.getInnerText(i);
-				break;
-			case "description":
-				rssObject.description = CommonFunc.getInnerText(i);
-				break;
-		}
-	}
-
-	var itemNodes = responseXML.getElementsByTagName("item");
-	for(i=0; itemNodes.length>i; i++){
-		var rssItem = {title:"", link:"", description:"", content:"", pubDate:""};
-
-		for(var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling){
-			if(j.nodeType != j.ELEMENT_NODE) continue;
-			switch(j.localName){
-				case "title":
-					rssItem.title = CommonFunc.getInnerText(j);
-					break;
-				case "link":
-					rssItem.link = CommonFunc.getInnerText(j);
-					break;
-				case "guid":
-					if(!rssItem.link){
-						rssItem.link = CommonFunc.getInnerText(j);
-					}
-					break;
-				case "description":
-					rssItem.description = CommonFunc.getInnerText(j);
-					break;
-				case "encoded":
-					rssItem.content = CommonFunc.getInnerText(j);
-					break;
-				case "pubDate":
-					rssItem.pubDate = new Date(CommonFunc.getInnerText(j));
-					break;
-				case "date":
-					tmp_str = CommonFunc.getInnerText(j);
-					tmp_date = new Date();
-					tmp_date.setUTCFullYear(tmp_str.substring(0,4));
-					tmp_date.setUTCMonth(tmp_str.substring(5,7) - 1);
-					tmp_date.setUTCDate(tmp_str.substring(8,10));
-					tmp_date.setUTCHours(tmp_str.substring(11,13));
-					tmp_date.setUTCMinutes(tmp_str.substring(14,16));
-					tmp_date.setUTCSeconds(tmp_str.substring(17,19));
-					rssItem.pubDate = new Date(tmp_date);
-					break;
-			}
-		}
-			// title が無いときの処理
-		if(!rssItem.title) {
-			if(rssItem.description) {
-				tempStr = rssItem.description.replace(/<.*?>/g,'');
-				rssItem.title = tempStr.substring(0, 30) + "...";
-			}
-		}
-			// content が無いときの処理
-		if(!rssItem.content) rssItem.content = rssItem.description;
-			// description をプレーンテキストにする
-		rssItem.description = htmlToText(rssItem.description);
-
-		rssObject.items.push(rssItem);
-	}
-}
-
-
-	// ATOM
-function createRssObjectAtom(){
-	for(var i = responseXML.documentElement.firstChild; i!=null; i=i.nextSibling){
-		if(i.nodeType != i.ELEMENT_NODE) continue;
-		switch(i.localName){
-			case "title":
-				rssObject.title = CommonFunc.getInnerText(i);
-				break;
-			case "link":
-				if(rssObject.link){
-					if(i.getAttribute("rel") == "alternate"){
-						rssObject.link = i.getAttribute("href");
-					}
-				}else{
-					rssObject.link = i.getAttribute("href");
-				}
-				break;
-			case "tagline":
-				rssObject.description = CommonFunc.getInnerText(i);
-				break;
-		}
-	}
-
-	var entryNodes = responseXML.getElementsByTagName("entry");
-	for(i=0; entryNodes.length>i; i++){
-		var rssItem = {title:"", link:"", description:"", content:"", pubDate:""};
-
-		var titleNodes = entryNodes[i].getElementsByTagName("title");
-		if(titleNodes.length) rssItem.title = CommonFunc.getInnerText(titleNodes[0]);
-
-		var linkNodes = entryNodes[i].getElementsByTagName("link");
-		if(linkNodes.length) {
-			for (j = 0; j < linkNodes.length; j++) {
-				if (linkNodes[j].getAttribute("rel") == "alternate") {
-					rssItem.link = linkNodes[j].getAttribute("href");
-					break;
-				}
-			}
-		}
-
-
-		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
-		if(issuedNodes.length) {
-			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
-			tmp_date = new Date();
-			tmp_date.setUTCFullYear(tmp_str.substring(0,4));
-			tmp_date.setUTCMonth(tmp_str.substring(5,7) - 1);
-			tmp_date.setUTCDate(tmp_str.substring(8,10));
-			tmp_date.setUTCHours(tmp_str.substring(11,13));
-			tmp_date.setUTCMinutes(tmp_str.substring(14,16));
-			tmp_date.setUTCSeconds(tmp_str.substring(17,19));
-			rssItem.pubDate = new Date(tmp_date);
-		}
-
-		rssItem.content = getAtomContent(entryNodes[i]);
-		rssItem.description = htmlToText(rssItem.content);
-		rssObject.items.push(rssItem);
-	}
-}
-
-
-function getAtomContent(aEntryNode){
-	var contentNodes = aEntryNode.getElementsByTagName("content");
-	var contentArray = new Array();
-	for(var i=0; i<contentNodes.length; i++){
-		var contType = contentNodes[i].getAttribute("type");
-		contentArray[contType] = CommonFunc.getInnerText(contentNodes[i]);
-	}
-
-	if("application/xhtml+xml" in contentArray) return contentArray["application/xhtml+xml"];
-	if("text/html" in contentArray) return contentArray["text/html"];
-	if("text/plain" in contentArray) return contentArray["text/plain"];
-
-	var summaryNodes = aEntryNode.getElementsByTagName("summary");
-	if(summaryNodes.length) return CommonFunc.getInnerText(summaryNodes[0]);
-
-	return "";
-}
-
 function toggleShowSearchBar() {
 	var showSearchBar = getCheckboxCheck("chkShowSearchBar");
 	document.getElementById("barSearch").hidden = !showSearchBar;
@@ -470,22 +292,22 @@ function toggleShowFeedItemList() {
 }
 
 function setRssItemListBox() {
-	if(!rssObject) return;
+	if(!currentFeed) return;
 	if(document.getElementById("rssItemListBoxBox").hidden) return;
 
-	while(rssItemListBox.getRowCount() != 0){
+	while(rssItemListBox.getRowCount() != 0) {
 		rssItemListBox.removeItemAt(0);
 	}
 
-	for(var i=0; rssObject.items.length>i; i++){
-		var rssItem = rssObject.items[i];
-		var itemLabel = rssItem.title ? htmlToText(rssItem.title) : "No Title";
+	for(var i = 0; currentFeed.getItemCount() > i; i++) {
+		var item = currentFeed.getItem(i);
+		var itemLabel = item.getTitle();
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
 		
-		if(isVisited(rssItem.link)){
+		if(isVisited(item.getLink())) {
 			listItem.setAttribute("visited", "true");
-		}		
+		}
 	}
 }
 
@@ -519,8 +341,7 @@ function showRssItemListPopup(aEvent){
 		return;
 	}
 	
-	var description = rssObject.items[aEvent.originalTarget.value].description;
-		// 折り返しをするために URLの / の前にゼロ幅スペースを追加
+	var description = htmlToText(currentFeed.getItem(aEvent.originalTarget.value).getContent());
 	if(description.indexOf("/") != -1){
 		description = description.replace(/\//gm, "/\u200B");
 	}
@@ -567,10 +388,11 @@ function htmlToText(aStr){
 }
 
 
- // ++++++++++ +++++++++  HTTP	++++++++++ +++++++++ 
 
-function httpGet(aURL){
-	if(rssLoading){
+// ++++++++++ +++++++++  HTTP	++++++++++ +++++++++ 
+
+function httpGet(aURL) {
+	if(rssLoading) {
 		httpReq.abort();
 		rssLoading = false;
 	}
@@ -583,42 +405,43 @@ function httpGet(aURL){
 	httpReq.onreadystatechange = httpReadyStateChange;
 
 
-	try{
+	try {
 		httpReq.open("GET" , aURL);
 		httpReq.setRequestHeader("User-Agent", USER_AGENT);
 		httpReq.overrideMimeType("application/xml");
-	}catch(e){
+	} catch(e) {
 		httpGetResult(RESULT_ERROR_FAILURE);
 	}
 
-	try{
+	try {
 		httpReq.send(null);
 		rssLoading = true;
-	}catch(e){
+	} catch(e) {
 		httpGetResult(RESULT_ERROR_FAILURE);
 	}
 }
 
-function httpError(e){}
-function httpReadyStateChange(){
+function httpError(e) {}
 
-	if(httpReq.readyState == 2){
-		try{
-			if(httpReq.status == 404){
+function httpReadyStateChange() {
+
+	if(httpReq.readyState == 2) {
+		try {
+			if(httpReq.status == 404) {
 				httpGetResult(RESULT_NOT_FOUND);
 			}
-		}catch(e){
+		} catch(e) {
 			httpGetResult(RESULT_NOT_AVAILABLE);
 			return;
 		}
-	}else if(httpReq.readyState == 3){}
+	} else if(httpReq.readyState == 3) {}
 }
 
-function httpLoaded(e){
+function httpLoaded(e) {
 	responseXML = httpReq.responseXML;
 	var rootNodeName = responseXML.documentElement.localName.toLowerCase();
 
-	switch(rootNodeName){
+	switch(rootNodeName) {
 		case "parsererror":
 			// XML Parse Error
 			httpGetResult(RESULT_PARSE_ERROR);
@@ -635,24 +458,24 @@ function httpLoaded(e){
 	}
 }
 
-function httpGetResult(aResultCode){
+function httpGetResult(aResultCode) {
 	httpReq.abort();
 	rssLoading = false;
 
-	if(aResultCode == RESULT_OK){
-		createRssObject();
+	if(aResultCode == RESULT_OK) {
+		currentFeed = new Feed(responseXML);
 
-		if(lastResource.res){
-			BMSVC.updateLastVisitedDate(rssObject.rssURL, rssObject.charSet);
+		if(lastResource.res) {
+			BMSVC.updateLastVisitedDate(lastResource.res, responseXML.characterSet);
 			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE);
 		}
 		setStatusDone();
 		setRssItemListBox();
 		
-		if(getCheckboxCheck("chkOpenHTML")){
-			CreateHTML.openHTML(rssObject);
+		if(getCheckboxCheck("chkOpenHTML")) {
+			CreateHTML.openHTML(currentFeed);
 		}
-	}else{
+	} else {
 		setStatusError(resultStrArray[aResultCode]);
 	}
 }

@@ -10,20 +10,20 @@ var CreateHTML = {
 
 	set tabbed(aValue){ this._tabbed = aValue },
 
-	openHTML: function(aRssObject){
-		if(!aRssObject) return;
+	openHTML: function(feed) {
+		if(!feed) return;
 
-		try{
-			var htmlURL = this.createHTML(aRssObject);
-			if(this._tabbed){
+		try {
+			var htmlURL = this.createHTML(feed);
+			if(this._tabbed) {
 				getContentBrowser().addTab(htmlURL);
-			}else{
+			} else {
 				getContentBrowser().loadURI(htmlURL);
 			}
-		}catch(e){}
+		} catch(e) {}
 	},
 
-	createHTML: function(aRssObject){
+	createHTML: function(feed) {
 		var tmpFile = this.getSpecialDir("UChrm");
 		tmpFile.appendRelativePath("sage.html");
 
@@ -31,7 +31,7 @@ var CreateHTML = {
 							.getService(Components.interfaces.nsIIOService);
 		var xmlFilePath = ioService.newFileURI(tmpFile).spec;
 
-		if(tmpFile.exists()){
+		if(tmpFile.exists()) {
 			tmpFile.remove(true);
 		}
 		tmpFile.create(tmpFile.NORMAL_FILE_TYPE, 0666);
@@ -40,7 +40,7 @@ var CreateHTML = {
 						.createInstance(Components.interfaces.nsIFileOutputStream);
 		stream.init(tmpFile, 2, 0x200, false); // open as "write only"
 		
-		var content = this.createHTMLSource(aRssObject);
+		var content = this.createHTMLSource(feed);
 		stream.write(content, content.length);
 		stream.flush();
 		stream.close();
@@ -48,7 +48,7 @@ var CreateHTML = {
 		return xmlFilePath;
 	},
 
-	getUserCssURL: function(){
+	getUserCssURL: function() {
 		var userCssEnable = CommonFunc.getPrefValue(this.USER_CSS_ENABLE, "bool", false);
 		var userCssPath = CommonFunc.getPrefValue(this.USER_CSS_PATH, "wstr", "");
 		if(!userCssEnable || !userCssPath) return null;
@@ -57,41 +57,41 @@ var CreateHTML = {
 							.getService(Components.interfaces.nsIIOService);
 		var tmpFile = Components.classes['@mozilla.org/file/local;1']
 							.createInstance(Components.interfaces.nsILocalFile);
-		try{		
+		try {		
 			tmpFile.initWithPath(userCssPath);
 			var cssUrl = ioService.newFileURI(tmpFile);
 			var contentType = ioService.newChannelFromURI(cssUrl).contentType;
 			if(contentType != "text/css") return null;
 
 			return cssUrl.spec;
-		}catch(e){
+		} catch(e) {
 			return null;
 		}
 	},
 
-	createHTMLSource: function(aRssObject){
+	createHTMLSource: function(feed) {
 		var allowEContent = CommonFunc.getPrefValue(this.ALLOW_ENCODED_CONTENT, "bool", false);
 
 		var htmlSource = this.HTML_SOURCE;
 		var cssUrl	= this.getUserCssURL();
-		if(cssUrl){
+		if(cssUrl) {
 			htmlSource = htmlSource.replace("**CSSURL**", cssUrl);
-		}else{
+		} else {
 			htmlSource = htmlSource.replace("**CSSURL**", this.DEFAULT_CSS);
 		}
-		htmlSource = htmlSource.replace("**HTMLTITLE**", aRssObject.title);
-		htmlSource = htmlSource.replace("**TITLE**", aRssObject.title);
-		htmlSource = htmlSource.replace("**LINK**", aRssObject.link);
-		htmlSource = htmlSource.replace("**DESCRIPTION**", aRssObject.description);
+		htmlSource = htmlSource.replace("**HTMLTITLE**", feed.getTitle());
+		htmlSource = htmlSource.replace("**TITLE**", feed.getTitle());
+		htmlSource = htmlSource.replace("**LINK**", feed.getLink());
+		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription());
 
 		var itemsSource = "";
-		for(var i=0; i<aRssObject.items.length; i++){
-			var link = aRssObject.items[i].link;
-			var title = aRssObject.items[i].title;
+		for(var i = 0; i < feed.getItemCount(); i++) {
+			var link = feed.getItem(i).getLink();
+			var title = feed.getItem(i).getTitle();
 			
-			var description = allowEContent ? aRssObject.items[i].content : aRssObject.items[i].description;
+			var description = allowEContent ? feed.getItem(i).getContent() : htmlToText(feed.getItem(i).getContent());
 
-			var pubDate = aRssObject.items[i].pubDate;
+			var pubDate = feed.getItem(i).getPubDate();
 	
 			if(!title)
 				title = "No Title";
@@ -115,7 +115,7 @@ var CreateHTML = {
 		return CommonFunc.convertCharCodeFrom(htmlSource, "UTF-8");
 	},
 
-	getSpecialDir: function(aProp){
+	getSpecialDir: function(aProp) {
 		var dirService = Components.classes['@mozilla.org/file/directory_service;1']
 							.getService(Components.interfaces.nsIProperties);
 		return dirService.get(aProp, Components.interfaces.nsILocalFile);

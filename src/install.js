@@ -1,6 +1,6 @@
 const APP_NAME			= "Sage";
 const APP_CHROME_NAME		= "sage";
-const APP_VERSION		= "1.0";
+const APP_VERSION		= "1.1";
 const APP_FILE 			= "sage.jar";
 const APP_CONTENTS_PATH		= "content/";
 const APP_SKIN_CLASSIC_PATH	= "skin/classic/";
