@@ -65,7 +65,7 @@ function init() {
 	if(discoveryMode == "exhaustive") {
 		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
-			if(uriSchemeRe.test(links[c].protocol) && links[c].href.test(/xml$|rss|rdf|atom|feed/i)) {
+			if(uriSchemeRe.test(links[c].protocol) && links[c].href.match(/xml$|rss|rdf|atom|feed|syndicate/i)) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
 			}
 		}
@@ -73,8 +73,8 @@ function init() {
 		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
 			if(uriSchemeRe.test(links[c].protocol) &&
-			   links[c].href.test(/xml$|rss|rdf|atom|feed/i) &&
-			   links[c].host.test(new RegExp(document_host, "i"))) {
+			   links[c].href.match(/xml$|rss|rdf|atom|feed|syndicate/i) &&
+			   links[c].host.match(new RegExp(document_host, "i"))) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
 			}
 		}
