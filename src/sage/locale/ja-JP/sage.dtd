@@ -9,7 +9,7 @@
 <!ENTITY menu.view					"表示">
 <!ENTITY menu.showSearchBar			"フィード検索バーの表示">
 <!ENTITY menu.showFeedItemList			"項目リストの表示">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
+<!ENTITY menu.showFeedItemListToolbar	"項目リストツールバーの表示">
 <!ENTITY menu.showDescTooltip		"概要のツールチップの表示">
 <!ENTITY menu.openHTML				"コンテンツエリアで開く">
 <!ENTITY menu.tools					"ツール">
@@ -44,7 +44,7 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "徹底的に">
 <!ENTITY settings.feedDiscoveryMode.conservative     "控えめに">
 <!ENTITY openInContentsArea.caption	"コンテンツエリアで開く">
-<!ENTITY enableUserCss.label		"ユーザー CSS を使う">
+<!ENTITY enableUserCss.label		"ユーザースタイルシートを使う">
 <!ENTITY browseCss.label			"参照...">
 <!ENTITY allowEContent.label		"HTML タグを許可する">
 
@@ -53,30 +53,32 @@
 <!ENTITY openSageSidebar.modifiersKey	"alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label "Open">
+<!ENTITY openLinkInWindow.label "開く">
 <!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
+<!ENTITY openInNewTab.label "新しいタブで開く">
 <!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
+<!ENTITY openInNewWindow.label "新しいウィンドウで開く">
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
+<!ENTITY markAsRead.command.label			"既読に設定">
+<!ENTITY markAsRead.command.tooltip			"既読に設定します">
 <!ENTITY markAsRead.command.accesskey		"R">
 
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
+<!ENTITY markAsUnread.command.label			"未読に設定">
+<!ENTITY markAsUnread.command.tooltip		"未読に設定します">
 <!ENTITY markAsUnread.command.accesskey		"U">
 
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
+<!ENTITY markAllAsRead.command.label		"全て既読に設定">
+<!ENTITY markAllAsRead.command.tooltip		"全て既読に設定します">
 <!ENTITY markAllAsRead.command.accesskey	"A">
 <!ENTITY markAllAsRead.command.key			"C">
 <!ENTITY markAllAsRead.command.modifiers	"accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
+<!ENTITY markAllAsUnread.command.label		"全て未読に設定">
+<!ENTITY markAllAsUnread.command.tooltip	"全て未読に設定します">
 <!ENTITY markAllAsUnread.command.accesskey	"n">
 
 <!ENTITY toggleReadState.command.key		"M">
+
+

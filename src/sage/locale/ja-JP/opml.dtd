@@ -10,7 +10,7 @@
 
 <!ENTITY browseButton.label			"参照...">
 
-<!ENTITY pageImportFinished.label	"Import OPML">
-<!ENTITY pageImportFinished.desc	"Import Complete">
-<!ENTITY pageExportFinished.label	"Export OPML">
-<!ENTITY pageExportFinished.desc	"Export Complete">
+<!ENTITY pageImportFinished.label	"OPML のインポート">
+<!ENTITY pageImportFinished.desc	"インポート完了">
+<!ENTITY pageExportFinished.label	"OPML のエクスポート">
+<!ENTITY pageExportFinished.desc	"エクスポート完了">

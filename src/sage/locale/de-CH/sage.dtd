@@ -3,7 +3,7 @@
 <!ENTITY sage.version.label				"version">
 
 <!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage RSS-/ATOM-Betrachter">
+<!ENTITY sage.sidebarTitle			"Sage">
 <!ENTITY sage.tooltip				"Öffnet Sage">
 
 <!ENTITY menu.view				"Anzeigen">
@@ -39,8 +39,8 @@
 <!ENTITY settings.feedItemOrder.chrono     "chronologisch">
 <!ENTITY settings.feedItemOrder.source     "wie von der Quelle vorgegeben">
 <!ENTITY settings.feedDiscoveryMode.label     "Modus zum Finden neuer Nachrichtenkanäle">
-<!ENTITY settings.feedDiscoveryMode.exhaustive     "ausführlich - inkl. externen Quellen">
-<!ENTITY settings.feedDiscoveryMode.conservative     "konservativ - nur auf dieser Seite">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "ausführlich">
+<!ENTITY settings.feedDiscoveryMode.conservative     "konservativ">
 <!ENTITY settingWindow.title                    "Sage Einstellungen">
 <!ENTITY selectFolder.label			"Ordner für Nachrichtenkanäle auswählen">
 <!ENTITY openInContentsArea.caption		"Anzeige der Nachrichtenkanäle">
