@@ -14,7 +14,7 @@
 <script type="application/x-javascript" src="chrome://sage/content/settings/settings.js"/>
 
 
-<dialogheader title="&sage.label;" description="&sage.label; version &sage.version;"/>
+<dialogheader title="&sage.label;" description="version &sage.version;"/>
 
 <stringbundleset>
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>

@@ -71,23 +71,21 @@ Feed.prototype.parseRSS = function() {
 					item.content = CommonFunc.getInnerText(j);
 					break;
 				case "pubDate":
-					tmp_date = new Date(CommonFunc.getInnerText(j));
+					tmp_str = CommonFunc.getInnerText(j);
+					tmp_date = new Date(tmp_str);
 					if(tmp_date != "Invalid Date") {
 						item.pubDate = tmp_date;
+					} else {
+						logMessage("unable to parse date string: " + tmp_str);
 					}
 					break;
 				case "date":
 					tmp_str = CommonFunc.getInnerText(j);
-					tmp_date = new Date();
-					tmp_date.setUTCFullYear(tmp_str.substring(0,4));
-					tmp_date.setUTCMonth(tmp_str.substring(5,7) - 1);
-					tmp_date.setUTCDate(tmp_str.substring(8,10));
-					tmp_date.setUTCHours(tmp_str.substring(11,13));
-					tmp_date.setUTCMinutes(tmp_str.substring(14,16));
-					tmp_date.setUTCSeconds(tmp_str.substring(17,19));
-					tmp_date = new Date(tmp_date);
-					if(tmp_date != "Invalid Date") {
+					tmp_date = iso8601ToJSDate(tmp_str);
+					if(tmp_date) {
 						item.pubDate = tmp_date;
+					} else {
+						logMessage("unable to parse date string: " + tmp_str);
 					}
 					break;
 			}
@@ -154,16 +152,11 @@ Feed.prototype.parseATOM = function() {
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
 		if(issuedNodes.length) {
 			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
-			tmp_date = new Date();
-			tmp_date.setUTCFullYear(tmp_str.substring(0,4));
-			tmp_date.setUTCMonth(tmp_str.substring(5,7) - 1);
-			tmp_date.setUTCDate(tmp_str.substring(8,10));
-			tmp_date.setUTCHours(tmp_str.substring(11,13));
-			tmp_date.setUTCMinutes(tmp_str.substring(14,16));
-			tmp_date.setUTCSeconds(tmp_str.substring(17,19));
-			tmp_date = new Date(tmp_date);
-			if(tmp_date != "Invalid Date") {
+			tmp_date = iso8601ToJSDate(tmp_str);
+			if(tmp_date) {
 				item.pubDate = tmp_date;
+			} else {
+				logMessage("unable to parse date string: " + tmp_str);
 			}
 		}
 
@@ -316,5 +309,67 @@ FeedItem.prototype.getPubDate = function() {
 		return this.pubDate;
 	} else {
 		return null;
+	}
+}
+
+
+
+/* -------------- Utility Functions ---------------- */
+
+
+// Parses an ISO 8601 formatted date string and returns a JavaScript Date object, returns null on parse error
+// Example inputs:  2004-06-17T18:00Z 2004-06-17T18:34:12+02:00
+
+function iso8601ToJSDate(date_str) {
+	var tmp = date_str.split("T");
+	var date = tmp[0];
+
+  date = date.split("-");
+	var year = date[0];
+	var month = date[1];
+	var day = date[2];
+
+	var hours = 0;
+	var minutes = 0;
+	var seconds = 0;
+	var tz_mark = "Z";
+	var tz_hours = 0;
+	var tz_minutes = 0;
+
+	if(tmp.length == 2) {
+		var whole_time = tmp[1];
+		tz_mark = whole_time.match("[Z+-]{1}");
+		tmp = whole_time.split(tz_mark);
+		var time = tmp[0];
+		if(tz_mark != "Z") {
+			var tz = tmp[1];
+			tmp = tz.split(":");
+			tz_hours = tmp[0];
+			tz_minutes = tmp[1];
+		}
+		tmp = time.split(":");
+		hours = tmp[0];
+		minutes = tmp[1];
+		if(tmp.length == 3) {
+			seconds = tmp[2];
+		}
+	}
+
+	var utc = Date.UTC(year, month - 1, day, hours, minutes, seconds);
+	var tmp_date;
+	if(tz_mark == "Z") {
+		tmp_date = new Date(utc);
+	} else if(tz_mark == "+") {
+		tmp_date = new Date(utc - tz_hours*3600000 - tz_minutes*60000);
+	} else if(tz_mark == "-") {
+		tmp_date = new Date(utc + tz_hours*3600000 + tz_minutes*60000);
+	} else {
+		tmp_date = "Invalid Date";
+	}
+	
+	if (tmp_date == "Invalid Date") {
+		return null;
+	} else {
+		return tmp_date;
 	}
 }
