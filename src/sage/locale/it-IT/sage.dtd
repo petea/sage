@@ -1,5 +1,3 @@
-<!-- maintained by Giuliano Masseroni [giuliano.masseroni@mozillaitalia.org]  -->
-
 <!ENTITY sage.label				"Sage">
 <!ENTITY sage.version				"1.2">
 <!ENTITY sage.version.label				"">
@@ -18,7 +16,7 @@
 <!ENTITY menu.manageRSSList			"Gestione Lista dei Feed...">
 <!ENTITY menu.opmlImportExport			"Importazione/Esportazione file OPML...">
 <!ENTITY menu.setting				"Preferenze...">
-<!ENTITY menu.sageProjectFeed				"Novità sul Progetto Sage">
+<!ENTITY menu.sageProjectFeed				"Novita' sul Progetto Sage">
 <!ENTITY menu.discoverFeeds				"Feed Trovati">
 
 <!-- Feed Discovery -->
@@ -35,11 +33,11 @@
 <!ENTITY settings.general.caption     "Generale">
 <!ENTITY settings.autoFeedTitle.label     "Aggiorna Automaticamente il Titolo dei feed">
 <!ENTITY settings.renderFeeds.label     "Mostra i Feed nel Browser">
-<!ENTITY settings.twelveHourClock.label     "Usa Modalità 12 ore">
+<!ENTITY settings.twelveHourClock.label     "Usa Modalita' 12 ore">
 <!ENTITY settings.feedItemOrder.label     "Ordinamento dei Feed">
 <!ENTITY settings.feedItemOrder.chrono     "Cronologico">
 <!ENTITY settings.feedItemOrder.source     "Sorgente">
-<!ENTITY settings.feedDiscoveryMode.label     "Modalità di Ricerca Feed">
+<!ENTITY settings.feedDiscoveryMode.label     "Modalita' di Ricerca Feed">
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Esaustiva">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Conservativa">
 <!ENTITY settingWindow.title                    "Configurazione di Sage">
