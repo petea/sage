@@ -4,7 +4,8 @@
 			<a href="**LINK**">**TITLE**</a>
 		</h2>
 		**DESCRIPTION**
+		**AUTHOR**
 		**PUBDATE**
 		**ENCLOSURE**
-		<div class="item-technorati"><a href="http://www.technorati.com/cosmos/search.html?url=**TECHNORATI**" title="Technorati Trackback"><img src="chrome://sage/skin/technorati.gif" border="0"></a></div>
+		<div class="item-technorati"><a href="http://www.technorati.com/cosmos/search.html?url=**TECHNORATI**" title="Technorati Trackback"><img src="chrome://sage/skin/technorati.gif"></a></div>
 	</div>

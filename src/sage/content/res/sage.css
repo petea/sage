@@ -109,6 +109,14 @@ div.item-enclosure {
 	border:	0;
 }
 
+div.item-author {
+	font-size: x-small;
+	margin: 0px;
+	padding: 0px 10px;
+	width: 80%;
+	float: left;
+}
+
 div.item-technorati {
 	font-size: x-small;
 	margin: 0px;
@@ -116,6 +124,10 @@ div.item-technorati {
 	width: 20%;
 	float: right;
 	text-align: right;
+}
+
+div.item-technorati img {
+	border:	0;
 }
 
 img {

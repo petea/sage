@@ -17,7 +17,9 @@ var CreateHTML = {
 			} else {
 				getContentBrowser().loadURI(htmlURL);
 			}
-		} catch(e) {}
+		} catch(e) {
+			dump(e);
+		}
 	},
 
 	createHTML: function(feed) {
@@ -81,6 +83,7 @@ var CreateHTML = {
 		htmlSource = htmlSource.replace("**HTMLTITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace("**TITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace(/\*\*LINK\*\*/g, feed.getLink());
+		htmlSource = htmlSource.replace("**AUTHOR**", feed.getAuthor());
 		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription());
 		htmlSource = htmlSource.replace("**LOGOLINK**", feed.getLogo().link);
 		htmlSource = htmlSource.replace("**LOGOALT**", feed.getLogo().alt);
@@ -97,6 +100,7 @@ var CreateHTML = {
 		}
 		htmlSource = htmlSource.replace("**EDITOR**", editor);
 
+		// TODO: localizations
 		if (footer.webmaster) {
 			webmaster = "<a href=\"mailto:" + footer.webmaster + "\">Webmaster</a>";
 		}
@@ -107,6 +111,7 @@ var CreateHTML = {
 		for(var i = 0; i < items.length; i++) {
 			var link = items[i].getLink();
 			var title = items[i].getTitle();
+			var author = items[i].getAuthor();
 			var enclosure = "";
 			var description = "";
 			var pubDate = "";
@@ -116,6 +121,11 @@ var CreateHTML = {
 				description = "<div class=\"item-desc\">" + description + "</div>";
 			}
 
+			// TODO: localizations
+			if(items[i].hasAuthor()) {
+				author = "<div class=\"item-author\">By " + author + "</div>";
+			}
+
 			if(items[i].hasPubDate()) {
 				pubDate = "<div class=\"item-pubDate\">" + dateFormat(items[i].getPubDate(), twelveHourClock) + "</div>";
 			}
@@ -123,10 +133,11 @@ var CreateHTML = {
 			if(items[i].hasEnclosure()) {
 				var tmp = items[i].getEnclosure();
 				enclosure = "<div class=\"item-enclosure\">" +
+					// TODO: localizations
 					"<a href=\"" + tmp.getLink() + "\" title=\"Enclosure\">" +
 					"<img src=\"" +
-					(tmp.hasMimetype() ?
-						"moz-icon://goat?size=16&contentType=" + tmp.getMimetype() :
+					(tmp.hasMimeType() ?
+						"moz-icon://goat?size=16&contentType=" + tmp.getMimeType() :
 						"chrome://sage/skin/enclosure.png") +
 					"\"></a> " +
 					(tmp.getDesc() ? tmp.getDesc() + ", " : "") +
@@ -138,6 +149,7 @@ var CreateHTML = {
 			itemSource = itemSource.replace("**LINK**", link);
 			itemSource = itemSource.replace("**TECHNORATI**", encodeURIComponent(link));
 			itemSource = itemSource.replace("**TITLE**", title);
+			itemSource = itemSource.replace("**AUTHOR**", author);
 			itemSource = itemSource.replace("**DESCRIPTION**", description);
 			itemSource = itemSource.replace("**PUBDATE**", pubDate);
 			itemSource = itemSource.replace("**ENCLOSURE**", enclosure);

@@ -12,6 +12,7 @@ function Feed(feedXML) {
 	this.link = null;
 	this.logo = {link:"", alt:""};
 	this.description = null;
+    this.author = null;
 	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
 	this.items = new Array();
 	this.lastPubDate = null;
@@ -31,7 +32,6 @@ function Feed(feedXML) {
 }
 
 Feed.prototype.parseRSS = function() {
-
 	var feedXML = this.feedXML;
 
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
@@ -78,27 +78,30 @@ Feed.prototype.parseRSS = function() {
 			case "description":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
+			case "author":
+				this.author = entityDecode(CommonFunc.getInnerText(i));
+				break;
 			case "copyright":
-				this.footer.copyright = CommonFunc.getInnerText(i);
+				this.footer.copyright = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "generator":
-				this.footer.generator = CommonFunc.getInnerText(i);
+				this.footer.generator = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "webMaster":
-				this.footer.webmaster = CommonFunc.getInnerText(i);
+				this.footer.webmaster = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "managingEditor":
-				this.footer.editor = CommonFunc.getInnerText(i);
+				this.footer.editor = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "image":
 				for(var j = i.firstChild; j!=null; j=j.nextSibling) {
 					if(j.nodeType != j.ELEMENT_NODE) continue;
 					switch(j.localName) {
 						case "url":
-							this.logo.link = CommonFunc.getInnerText(j);
+							this.logo.link = entityDecode(CommonFunc.getInnerText(j));
 							break;
 						case "title":
-							this.logo.alt = CommonFunc.getInnerText(j);
+							this.logo.alt = entityDecode(CommonFunc.getInnerText(j));
 							break;
 					}
 				}
@@ -109,7 +112,7 @@ Feed.prototype.parseRSS = function() {
 	var itemNodes = feedXML.getElementsByTagName("item");
 	var item, guid;
 	for(i = 0; itemNodes.length > i; i++) {
-		item = {title:"", link:"", content:"", pubDate:"", enclosure:""};
+		item = {title:"", link:"", content:"", author:"", pubDate:"", enclosure:""};
 		guid = null;
 
 		for(var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
@@ -122,6 +125,9 @@ Feed.prototype.parseRSS = function() {
 					if(!item.link) {
 						item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(CommonFunc.getInnerText(j));
 					}
+					break;
+				case "author":
+					item.author = entityDecode(CommonFunc.getInnerText(j));
 					break;
 				case "guid":
 					if(!guid) {
@@ -164,7 +170,7 @@ Feed.prototype.parseRSS = function() {
 			item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid);
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate, item.enclosure);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure);
 
 		if(tmpFeedItem.hasPubDate()) {
 			if(tmpFeedItem.getPubDate() > this.lastPubDate) {
@@ -177,7 +183,6 @@ Feed.prototype.parseRSS = function() {
 }
 
 Feed.prototype.parseAtom = function() {
-
 	var feedXML = this.feedXML;
 
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
@@ -209,18 +214,21 @@ Feed.prototype.parseAtom = function() {
 			case "tagline":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
+			case "name":
+				this.author = entityDecode(CommonFunc.getInnerText(i));
+				break;
 			case "copyright":
-				this.footer.copyright = CommonFunc.getInnerText(i);
+				this.footer.copyright = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "generator":
-				this.footer.generator = CommonFunc.getInnerText(i);
+				this.footer.generator = entityDecode(CommonFunc.getInnerText(i));
 				break;
 		}
 	}
 
 	var entryNodes = feedXML.getElementsByTagName("entry");
 	for(i = 0; entryNodes.length > i; i++) {
-		var item = {title:"", link:"", content:"", pubDate:"", enclosure:""};
+		var item = {title:"", link:"", author:"", content:"", pubDate:"", enclosure:""};
 
 		var titleNodes = entryNodes[i].getElementsByTagName("title");
 		if(titleNodes.length) {
@@ -235,6 +243,11 @@ Feed.prototype.parseAtom = function() {
 					break;
 				}
 			}
+		}
+
+		var authorNodes = entryNodes[i].getElementsByTagName("author");
+		if(authorNodes.length) {
+			item.author = entityDecode(CommonFunc.getInnerText(authorNodes[0]));
 		}
 
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
@@ -269,7 +282,7 @@ Feed.prototype.parseAtom = function() {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate, item.enclosure);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure);
 
 		if(tmpFeedItem.hasPubDate()) {
 			if(tmpFeedItem.getPubDate() > this.lastPubDate) {
@@ -286,11 +299,7 @@ Feed.prototype.getTitle = function() {
 }
 
 Feed.prototype.hasDescription = function() {
-	if(!this.description) {
-		return false;
-	} else {
-		return true;
-	}
+	return Boolean(this.description);
 }
 
 Feed.prototype.getDescription = function() {
@@ -305,12 +314,20 @@ Feed.prototype.getLink = function() {
 	return this.link;
 }
 
-Feed.prototype.hasLastPubDate = function() {
-	if(!this.lastPubDate) {
-		return false;
+Feed.prototype.hasAuthor = function() {
+	return Boolean(this.author);
+}
+
+Feed.prototype.getAuthor = function() {
+	if(this.hasAuthor()) {
+		return this.author;
 	} else {
-		return true;
+		return "";
 	}
+}
+
+Feed.prototype.hasLastPubDate = function() {
+	return Boolean(this.lastPubDate);
 }
 
 Feed.prototype.getLastPubDate = function() {
@@ -402,20 +419,17 @@ Feed.prototype.getLogo = function() {
  *
  */
 
-function FeedItem(title, link, content, pubDate, enclosure) {
+function FeedItem(title, link, author, content, pubDate, enclosure) {
 	this.title = title;
 	this.link = link;
+	this.author = author;
 	this.content = content;
 	this.pubDate = pubDate;
 	this.enclosure = enclosure;
 }
 
 FeedItem.prototype.hasTitle = function() {
-	if(!this.title) {
-		return false;
-	} else {
-		return true;
-	}
+	return Boolean(this.title);
 }
 
 FeedItem.prototype.getTitle = function() {
@@ -434,16 +448,24 @@ FeedItem.prototype.getTitle = function() {
 	return title;
 }
 
+FeedItem.prototype.hasAuthor = function() {
+	return Boolean(this.author);
+}
+
+FeedItem.prototype.getAuthor = function() {
+	if(this.hasAuthor()) {
+		return this.author;
+	} else {
+		return "";
+	}
+}
+
 FeedItem.prototype.getLink = function() {
 	return this.link;
 }
 
 FeedItem.prototype.hasContent = function() {
-	if(!this.content) {
-		return false;
-	} else {
-		return true;
-	}
+	return Boolean(this.content);
 }
 
 FeedItem.prototype.getContent = function() {
@@ -455,11 +477,7 @@ FeedItem.prototype.getContent = function() {
 }
 
 FeedItem.prototype.hasPubDate = function() {
-	if(!this.pubDate) {
-		return false;
-	} else {
-		return true;
-	}
+	return Boolean(this.pubDate);
 }
 
 FeedItem.prototype.getPubDate = function() {
@@ -489,10 +507,10 @@ FeedItem.prototype.getEnclosure = function() {
  *
  */
 
-function FeedItemEnclosure(link, length, mimetype) {
+function FeedItemEnclosure(link, length, mimeType) {
 	this.link = link;
 	this.length = length;
-	this.mimetype = mimetype;
+	this.mimeType = mimeType;
 }
 
 FeedItemEnclosure.prototype.hasLink = function() {
@@ -535,21 +553,48 @@ FeedItemEnclosure.prototype.getSize = function() {
 	}
 }
 
-FeedItemEnclosure.prototype.hasMimetype = function() {
-	return Boolean(this.mimetype);
+FeedItemEnclosure.prototype.hasMimeType = function() {
+	return Boolean(this.mimeType);
 }
 
-FeedItemEnclosure.prototype.getMimetype = function() {
-	if(this.hasMimetype()) {
-		return this.mimetype;
+FeedItemEnclosure.prototype.getMimeType = function() {
+	if(this.hasMimeType()) {
+		return this.mimeType;
 	} else {
 		return null;
+		// TODO: Use mime service to map URI to mime type
+
 	}
 }
 
 FeedItemEnclosure.prototype.getDesc = function() {
-	if(this.hasMimetype()) {
-		return navigator.mimeTypes[this.mimetype].description;
+	if(this.hasMimeType()) {
+
+		var mimeService = Components.classes["@mozilla.org/mime;1"].createInstance(Components.interfaces.nsIMIMEService);
+		var mimeInfo = mimeService.getFromTypeAndExtension(this.mimeType, "");	// should also pass extension
+
+		// from nsHelperAppDlg.js
+		// 1. Try to use the pretty description of the type, if one is available.
+		var typeString = mimeInfo.Description;
+
+		if (typeString == "") {
+			// 2. If there is none, use the extension to identify the file, e.g. "ZIP file"
+			var primaryExtension = "";
+			try {
+				primaryExtension = mimeInfo.primaryExtension;
+			}
+			catch (ex) {
+			}
+			if (primaryExtension != "")
+				typeString = primaryExtension.toUpperCase() + " file";
+			// 3. If we can't even do that, just give up and show the MIME type.
+			else
+				typeString = mimeInfo.MIMEType;
+		}
+
+		return typeString;
+
+		//return navigator.mimeTypes[this.mimeType].description;
 	} else {
 		return null;
 	}
