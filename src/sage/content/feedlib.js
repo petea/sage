@@ -267,10 +267,10 @@ FeedItem.prototype.getLink = function() {
 }
 
 FeedItem.prototype.hasContent = function() {
-	if(this.content) {
-		return true;
-	} else {
+	if(!this.content) {
 		return false;
+	} else {
+		return true;
 	}
 }
 
@@ -283,10 +283,10 @@ FeedItem.prototype.getContent = function() {
 }
 
 FeedItem.prototype.hasPubDate = function() {
-	if(this.pubDate) {
-		return true;
-	} else {
+	if(!this.pubDate) {
 		return false;
+	} else {
+		return true;
 	}
 }
 
