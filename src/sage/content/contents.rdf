@@ -13,12 +13,12 @@
 		chrome:name="sage"
 		chrome:extension="true"
 		chrome:settingsURL="chrome://sage/content/settings/settings.xul"
-		chrome:description="A lightweight RSS and ATOM feed aggregator.">
+		chrome:description="A lightweight RSS and Atom feed aggregator.">
   </RDF:Description>
 
 
 	<RDF:Seq about="urn:mozilla:overlays">
-		<RDF:li resource="chrome://browser/content/browser.xul"/>		
+		<RDF:li resource="chrome://browser/content/browser.xul"/>
 	</RDF:Seq>
 
 	<!-- overlay information for Mozilla Firebird-->

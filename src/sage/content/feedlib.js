@@ -20,7 +20,7 @@ function Feed(feedXML) {
 
 	var rootNodeName = feedXML.documentElement.localName.toLowerCase();
 	if(rootNodeName == "feed") {
-		this.parseATOM();
+		this.parseAtom();
 	} else if(rootNodeName == "rss" || rootNodeName == "rdf") {
 		this.parseRSS();
 	} else {
@@ -132,16 +132,16 @@ Feed.prototype.parseRSS = function() {
 	}
 }
 
-Feed.prototype.parseATOM = function() {
+Feed.prototype.parseAtom = function() {
 
 	var feedXML = this.feedXML;
 
 	var firstElement = feedXML.documentElement;
 
 	if(firstElement.hasAttribute("version")) {
-		this.feedFormat = "ATOM (" + firstElement.getAttribute("version") + ")";
+		this.feedFormat = "Atom (" + firstElement.getAttribute("version") + ")";
 	} else {
-		this.feedFormat = "ATOM (?)";
+		this.feedFormat = "Atom (?)";
 	}
 
 	for(var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
@@ -215,7 +215,7 @@ Feed.prototype.parseATOM = function() {
 		}	else if(summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
-			
+
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
 		if(tmpFeedItem.hasPubDate()) {
@@ -464,7 +464,7 @@ function iso8601ToJSDate(date_str) {
 	} else {
 		tmp_date = "Invalid Date";
 	}
-	
+
 	if (tmp_date == "Invalid Date") {
 		return null;
 	} else {

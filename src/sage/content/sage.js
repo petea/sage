@@ -491,7 +491,7 @@ function httpLoaded(e) {
 			httpGetResult(RESULT_OK);
 			break;
 		default:
-			// Not RSS or ATOM
+			// Not RSS or Atom
 			httpGetResult(RESULT_NOT_RSS);
 			break;
 	}
