@@ -265,6 +265,17 @@ function createTreeContextMenu2(aEvent) {
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
 	}
+
+	// if we are not rendering the summary we should disable the open new window and tab
+	var cmdWin = document.getElementById("cmd_bm_openinnewwindow");
+	var cmdTab = document.getElementById("cmd_bm_openinnewtab");
+	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
+		cmdWin.removeAttribute("disabled");
+		cmdTab.removeAttribute("disabled");
+	} else {
+		cmdWin.setAttribute("disabled", "true");
+		cmdTab.setAttribute("disabled", "true");
+	}
 }
 
 function bookmarksTreeClick(aEvent) {
@@ -579,6 +590,7 @@ function openURI(sURI, oType) {
 			getContentBrowser().addTab(sURI);
 			break;
 		case "window":
+			// XXX: This opens the window in the background if using the context menu
 			document.commandDispatcher.focusedWindow.open(sURI);
 			break;
 
@@ -634,7 +646,7 @@ var linkVisitor = {
 
 	_getFixupURI : function (sURI) {
 		try {
-			return this._uriFixup.createFixupURI(sURI, 0);
+			return this._uriFixup.FixupURI(sURI, 0);
 		}
 		catch (e) {
 			logMessage("Could not fixup URI: " + sURI);
