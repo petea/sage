@@ -125,6 +125,7 @@ Feed.prototype.parseRSS = function() {
 		if(!item.link && guid) {
 			item.link = guid;
 		}
+		// TODO: We should make the link absolute. Bug #7202
 
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
@@ -221,6 +222,8 @@ Feed.prototype.parseAtom = function() {
 		}	else if(summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
+
+		// TODO: This should make the link absolute. Bug #7202
 
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
