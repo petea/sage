@@ -1,0 +1,33 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.0">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Lance Sage">
+
+<!ENTITY menu.view				"Affichage">
+<!ENTITY menu.showSearchBar			"Montrer la barre de recherche des fils">
+<!ENTITY menu.showFeedItemList			"Montrer le contenu du fil">
+<!ENTITY menu.showDescTooltip			"Montrer les bulles descriptives">
+<!ENTITY menu.openHTML				"Ouvrir les fils dans la zone de contenu">
+<!ENTITY menu.tools				"Options">
+<!ENTITY menu.checkUpdate			"Vérifier les fils">
+<!ENTITY menu.manageRSSList			"Gérer la liste des fils...">
+<!ENTITY menu.opmlImportExport			"Import/Export OPML...">
+<!ENTITY menu.setting				"Configuration...">
+<!ENTITY menu.sageProjectFeed				"">
+
+<!-- Setting Dialog -->
+<!ENTITY settings.general.caption     "">
+<!ENTITY settings.autoFeedTitle.label     "">
+<!ENTITY settings.renderFeeds.label     "">
+<!ENTITY settingWindow.title                    "Configration de Sage">
+<!ENTITY selectFolder.label			"Sélection du dossier des fils">
+<!ENTITY openInContentsArea.caption		"Ouverture dans le zone de contenu">
+<!ENTITY enableUserCss.label			"Utiliser une feuille de style CSS personnalisée">
+<!ENTITY browseCss.label			"Sélectionner...">
+<!ENTITY allowEContent.label			"Autoriser les balises HTML">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">

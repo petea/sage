@@ -8,7 +8,7 @@
 
 <!ENTITY menu.view					"表示">
 <!ENTITY menu.showSearchBar			"Feed 検索バーの表示">
-<!ENTITY menu.showFeedItemList			"Show Feed Item List">
+<!ENTITY menu.showFeedItemList			"">
 <!ENTITY menu.showDescTooltip		"Description ツールチップの表示">
 <!ENTITY menu.openHTML				"コンテンツエリアで開く">
 <!ENTITY menu.tools					"ツール">
@@ -16,13 +16,13 @@
 <!ENTITY menu.manageRSSList			"RSS リストの管理">
 <!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
 <!ENTITY menu.setting				"設定...">
-<!ENTITY menu.sageProjectFeed				"Sage Project News">
+<!ENTITY menu.sageProjectFeed				"">
 
 
 <!-- Setting Dialog -->
-<!ENTITY settings.general.caption     "General">
-<!ENTITY settings.autoFeedTitle.label     "Automatically Update Feed Titles">
-<!ENTITY settings.renderFeeds.label     "Render Feeds In Contents Area">
+<!ENTITY settings.general.caption     "">
+<!ENTITY settings.autoFeedTitle.label     "">
+<!ENTITY settings.renderFeeds.label     "">
 <!ENTITY settingWindow.title		"設定: RSS リーダパネル">
 <!ENTITY selectFolder.label			"RSS リストフォルダの選択">
 <!ENTITY openInContentsArea.caption	"コンテンツエリアで開く">
