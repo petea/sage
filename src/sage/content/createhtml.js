@@ -82,7 +82,7 @@ var CreateHTML = {
 		htmlSource = htmlSource.replace("**HTMLTITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace("**TITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace("**LINK**", feed.getLink());
-		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription());
+		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription() + feed.getLastPubDate().toLocalString());
 
 		var itemsSource = "";
 		for(var i = 0; i < feed.getItemCount(); i++) {
@@ -93,7 +93,7 @@ var CreateHTML = {
 
 			if(feed.getItem(i).hasContent()) {
 				description = allowEContent ? feed.getItem(i).getContent() : htmlToText(feed.getItem(i).getContent());
-				description = "<div class=\"item-desc\">" + description + feed.getItem(i).getPubDate().toLocaleString() + "</div>";
+				description = "<div class=\"item-desc\">" + description + "</div>";
 			}
 
 			if(feed.getItem(i).hasPubDate()) {
