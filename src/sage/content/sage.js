@@ -646,7 +646,7 @@ var linkVisitor = {
 
 	_getFixupURI : function (sURI) {
 		try {
-			return this._uriFixup.FixupURI(sURI, 0);
+			return this._uriFixup.createFixupURI(sURI, 0);
 		}
 		catch (e) {
 			logMessage("Could not fixup URI: " + sURI);
