@@ -559,7 +559,7 @@ function markURIReadState( sURI, bRead )
 	if ( bRead )
 		_globalHistory.addURI( fixupURI, false, true );
 	else
-		_browserHistory.removePage( fixupURI.spec );
+		_browserHistory.removePage( fixupURI );
 }
 
 function _getFixupURI( sURI )
