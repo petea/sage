@@ -41,18 +41,11 @@
  *
  */
 
-function Feed(feedXML) {
-	this.feedXML = feedXML;
-	this.feedFormat = null;
-
-	this.title = null;
-	this.link = null;
+function Feed(feedXML, aURI) {
+	this.uri = aURI;
 	this.logo = {link:"", alt:""};
-	this.description = null;
-    this.author = null;
 	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
 	this.items = new Array();
-	this.lastPubDate = null;
 
 	if(!feedXML) {
 		throw "Empty Feed";
@@ -60,17 +53,23 @@ function Feed(feedXML) {
 
 	var rootNodeName = feedXML.documentElement.localName.toLowerCase();
 	if(rootNodeName == "feed") {
-		this.parseAtom();
+		this.parseAtom(feedXML);
 	} else if(rootNodeName == "rss" || rootNodeName == "rdf") {
-		this.parseRSS();
+		this.parseRSS(feedXML);
 	} else {
 		throw "Feed has invalid root element";
 	}
 }
 
-Feed.prototype.parseRSS = function() {
-	var feedXML = this.feedXML;
+Feed.prototype.feedFormat =
+Feed.prototype.title =
+Feed.prototype.link =
+Feed.prototype.description =
+Feed.prototype.author =
+Feed.prototype.lastPubDate = null;
 
+
+Feed.prototype.parseRSS = function(feedXML) {
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
 	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
@@ -219,9 +218,7 @@ Feed.prototype.parseRSS = function() {
 	}
 }
 
-Feed.prototype.parseAtom = function() {
-	var feedXML = this.feedXML;
-
+Feed.prototype.parseAtom = function(feedXML) {
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
 	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
@@ -329,6 +326,10 @@ Feed.prototype.parseAtom = function() {
 
 		this.items.push(tmpFeedItem);
 	}
+}
+
+Feed.prototype.getURI = function() {
+	return this.uri;
 }
 
 Feed.prototype.getTitle = function() {
@@ -555,39 +556,15 @@ FeedItemEnclosure.prototype.hasLink = function() {
 }
 
 FeedItemEnclosure.prototype.getLink = function() {
-	if(this.hasLink()) {
-		return this.link;
-	} else {
-		return null;
-	}
+	return this.hasLink() ? this.link : null;
 }
 
 FeedItemEnclosure.prototype.hasLength = function() {
-	return Boolean(this.length);
+	return this.length != null;
 }
 
 FeedItemEnclosure.prototype.getLength = function() {
-	if(this.hasLength()) {
-		return this.length;
-	} else {
-		return null;
-	}
-}
-
-FeedItemEnclosure.prototype.getSize = function() {
-	if(this.hasLength()) {
-		if (this.length > 1048576) {
-			return Math.round(this.length / 1048576) + "M";
-            }
-		else if (this.length > 1024) {
-			return Math.round(this.length / 1024) + "K";
-		}
-		else {
-			return this.length + "B";
-		}
-	} else {
-		return null;
-	}
+	return this.hasLength() ? this.length : null;
 }
 
 FeedItemEnclosure.prototype.hasMimeType = function() {
@@ -595,16 +572,11 @@ FeedItemEnclosure.prototype.hasMimeType = function() {
 }
 
 FeedItemEnclosure.prototype.getMimeType = function() {
-	if(this.hasMimeType()) {
-		return this.mimeType;
-	} else {
-		return null;
-		// TODO: Use mime service to map URI to mime type
-
-	}
+	return this.hasMimeType() ? this.mimeType : null;
+	// TODO: Use mime service to map URI to mime type
 }
 
-FeedItemEnclosure.prototype.getDesc = function() {
+FeedItemEnclosure.prototype.getDescription = function() {
 	if(this.hasMimeType()) {
 
 		var mimeService = Components.classes["@mozilla.org/mime;1"].createInstance(Components.interfaces.nsIMIMEService);

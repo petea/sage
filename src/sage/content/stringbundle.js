@@ -14,7 +14,7 @@
  * The Original Code is Sage.
  *
  * The Initial Developer of the Original Code is
- * Peter Andrews <petea@jhu.edu>.
+ * Erik Arvidsson <erik@eae.net>.
  * Portions created by the Initial Developer are Copyright (C) 2005
  * the Initial Developer. All Rights Reserved.
  *
@@ -36,65 +36,88 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var GetRssTitle = {
-	checking: false,
-	httpReq: null,
-	res: null,
-	url: "",
+// TODO: Need to update the license block with info regarding this being ported
+// from the XBL code
 
-	getRssTitle: function(aBookmrkID){
-		if(this.checking) return;
+// This is a direct port of the stringbundle xbl implementation
 
-		this.res = RDF.GetResource(aBookmrkID);
-		var type = CommonFunc.getBMDSProperty(this.res, CommonFunc.RDF_TYPE);
-		if(type == NC_NS + "Bookmark") {
-			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_URL);
+function StringBundle(aSrc)
+{
+	if (aSrc)
+		this.src = aSrc;
+}
+
+StringBundle.prototype = {
+	_src:		null,
+	_bundle:	null,
+
+	set src(s) {
+		this._bundle = null
+		return this._src = s;
+	},
+
+	get src ()
+	{
+		return this._src;
+	},
+
+	getString:	function (aStringKey)
+	{
+		try
+		{
+			return this.stringBundle.GetStringFromName(aStringKey);
 		}
-		if(type == NC_NS + "Livemark") {
-			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_FEEDURL);
-		}
-
-		this.httpReq = new XMLHttpRequest();
-		this.httpReq.onload = this.httpLoaded;
-		this.httpReq.onreadystatechange = this.httpReadyStateChange;
-		this.httpReq.open("GET", this.url);
-		this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
-		this.httpReq.overrideMimeType("application/xml");
-		try {
-			this.httpReq.send(null);
-		} catch(e) {
-				// FAILURE
-			this.httpReq.abort();
-			this.checking = false;
+		catch (e)
+		{
+			dump("*** Failed to get string " + aStringKey + " in bundle: " + this.src + "\n");
+			throw e;
 		}
 	},
 
-	httpReadyStateChange: function() {
-		if(GetRssTitle.httpReq.readyState == 2) {
-			try {
-				GetRssTitle.httpReq.status;
-			} catch(e) {
-					// URL NOT AVAILABLE
-				GetRssTitle.httpReq.abort();
-				GetRssTitle.checking = false;
+
+	getFormattedString:	function (aStringKey, aStringsArray)
+	{
+		try
+		{
+			return this.stringBundle.formatStringFromName(aStringKey, aStringsArray, aStringsArray.length);
+		}
+		catch (e)
+		{
+			dump("*** Failed to get string " + aStringKey + " in bundle: " + this.src + "\n");
+			throw e;
+		}
+	},
+
+	get stringBundle ()
+	{
+		if (!this._bundle)
+		{
+			try
+			{
+				var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"]
+					.getService(Components.interfaces.nsIStringBundleService);
+				this._bundle = stringBundleService.createBundle(this.src, this.appLocale);
+			}
+			catch (e)
+			{
+				dump("Failed to get stringbundle:\n");
+				dump(e + "\n");
 			}
 		}
+		return this._bundle;
 	},
 
-	httpLoaded: function() {
-		this.checking = false;
-
-		var feed = new Feed(GetRssTitle.httpReq.responseXML);
-		var rssTitle = feed.getTitle();
-
-		if(!rssTitle) return;
-
-		var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-		var resultValue = { value: rssTitle };
-		var result = prompt.prompt(window, "Sage", strRes.getString("get_feed_title"), resultValue, null, {});
-
-		if(result) {
-			CommonFunc.setBMDSProperty(GetRssTitle.res, CommonFunc.BM_NAME, resultValue.value);
+	get appLocale()
+	{
+		try
+		{
+			var localeService = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+				.getService(Components.interfaces.nsILocaleService);
+			return localeService.getApplicationLocale();
+		}
+		catch (ex)
+		{
+			return null;
 		}
 	}
-}
+};

@@ -121,6 +121,15 @@ var CommonFunc = {
 	FEED_DISCOVERY_MODE: "sage.feed_discovery_mode",
 
 
+	RESULT_OK:	 			0,
+	RESULT_PARSE_ERROR:		1,
+	RESULT_NOT_RSS:			2,
+	RESULT_NOT_FOUND:		3,
+	RESULT_NOT_AVAILABLE:	4,
+	RESULT_ERROR_FAILURE:	5,
+
+	FEED_SUMMARY_URI:		"chrome://sage/content/feedsummary.html",
+
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
 
 	BM_LAST_VISIT: 		"http://home.netscape.com/WEB-rdf#LastVisitDate",
@@ -176,7 +185,7 @@ var CommonFunc = {
 		}
 		return this.getBMDSTargetByURL(aInput, aArcURI).Value;
 	},
-	
+
 	getBMDSTargetByURL: function(aInput, aArcURI) {
 		if(typeof(aArcURI) == "string") {
 			aArcURI = RDF.GetResource(aArcURI);
@@ -246,7 +255,7 @@ var CommonFunc = {
 	loadText: function(aURI) {
 		var	URI = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
 		URI.spec = aURI;
-	
+
 		var IOService = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
 		var channel = IOService.newChannelFromURI(URI);
 		var stream	= channel.open();
