@@ -1,5 +1,6 @@
 <!ENTITY sage.label			"RSS リーダパネル">
 <!ENTITY sage.version			"1.2">
+<!ENTITY sage.version.label				"">
 
 <!ENTITY sage.toolbarLabel		"RSS リーダ">
 <!ENTITY sage.sidebarTitle		"RSS リーダ">
@@ -17,7 +18,7 @@
 <!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
 <!ENTITY menu.setting				"設定...">
 <!ENTITY menu.sageProjectFeed				"">
-
+<!ENTITY menu.discoverFeeds				"">
 
 <!-- Setting Dialog -->
 <!ENTITY settings.general.caption     "">

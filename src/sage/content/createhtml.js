@@ -79,7 +79,7 @@ var CreateHTML = {
 		}
 		htmlSource = htmlSource.replace("**HTMLTITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace("**TITLE**", feed.getTitle());
-		htmlSource = htmlSource.replace("**LINK**", feed.getLink());
+		htmlSource = htmlSource.replace(/\*\*LINK\*\*/g, feed.getLink());
 		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription());
 
 		var itemsSource = "";

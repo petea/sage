@@ -102,7 +102,7 @@ function fillSelectFolderMenupopup () {
 function fillFolder(aPopup, aFolder, aDepth) {
 	RDFC.Init(BMDS, aFolder);
 	var children = RDFC.GetElements();
-	while (children.hasMoreElements()){
+	while (children.hasMoreElements()) {
 		var curr = children.getNext();
 		if (RDFCU.IsContainer(BMDS, curr)) {
 			curr = curr.QueryInterface(Components.interfaces.nsIRDFResource);

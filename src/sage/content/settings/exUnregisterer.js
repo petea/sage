@@ -408,8 +408,8 @@ exUnregisterer.prototype =
 	{
 		var dsource;
 		try {
-			var dsource = this.RDF.GetDataSource(aDsourcePath);
-				dsource = dsource.QueryInterface(Components.interfaces.nsIRDFDataSource);
+			dsource = this.RDF.GetDataSource(aDsourcePath);
+			dsource = dsource.QueryInterface(Components.interfaces.nsIRDFDataSource);
 		}
 		catch(e) {
 			return;

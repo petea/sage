@@ -1,5 +1,38 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+toolbarbutton.sage_button {
+	list-style-image: url("chrome://sage/skin/toolbar.png") !important;
+	-moz-binding: url("chrome://sage/skin/sage.xbl#toolbarbutton");
+}
+
+toolbarbutton.sage_button2 > .toolbarbutton-text {
+	display: none !important;
+}
+
+#checkFeeds {
+	-moz-image-region: rect(0px 26px 24px 0px) !important;
+}
+
+#checkFeeds[buttondown="true"] {
+	-moz-image-region: rect(24px 26px 48px 0px) !important;
+}
+
+#checkFeeds[disabled="true"] {
+	-moz-image-region: rect(48px 26px 72px 0px) !important;
+}
+
+#discoverFeeds {
+	-moz-image-region: rect(0px 52px 24px 26px) !important;
+}
+
+#discoverFeeds[buttondown="true"] {
+	-moz-image-region: rect(24px 52px 48px 26px) !important;
+}
+
+#discoverFeeds[disabled="true"] {
+	-moz-image-region: rect(48px 52px 72px 26px) !important;
+}
+
 #bookmarksTree {
   -moz-binding: url("chrome://sage/content/bookmarksTree.xml#bookmarks-tree-name");
 }
@@ -37,7 +70,6 @@ treechildren::-moz-tree-cell-text(rss, updated) {
 #rssItemListBox > listitem[visited="true"] {
   font-weight:  normal;
 }
-
 
 #sage-splitter {
   border: none;

@@ -47,7 +47,7 @@ var GetRssTitle = {
 		
 		var prompt = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 		var resultValue = { value: rssTitle };
-		var result = prompt.prompt(window, "RSS Reader Panel", "New Title", resultValue, null, {});
+		var result = prompt.prompt(window, "Sage", strRes.getString("get_feed_title"), resultValue, null, {});
 
 		if(result) {
 			CommonFunc.setBMDSProperty(GetRssTitle.res, CommonFunc.BM_NAME, resultValue.value);

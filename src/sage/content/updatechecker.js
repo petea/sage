@@ -1,20 +1,22 @@
 var UpdateChecker = {
 	checking: false,
-	resourceList: null,
+	checkList: null,
 	httpReq: null,
 	lastResource: null,
 
 	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
-	
-		this.resourceList = CommonFunc.getBMDSCChildren(aCheckFolderId);
-		
+
+		var resourceList = CommonFunc.getBMDSCChildren(aCheckFolderId);
+		this.checkList = new Array();
+
 			// Delete separator and updeed resource
-		for(var i=0; i<this.resourceList.length; i++) {
-			var url = CommonFunc.getBMDSProperty(this.resourceList[i], CommonFunc.BM_URL);
-			var desc = CommonFunc.getBMDSProperty(this.resourceList[i], CommonFunc.BM_DESCRIPTION);
-			if(!url || desc == CommonFunc.STATUS_UPDATE || desc == CommonFunc.STATUS_NO_CHECK) {
-				this.resourceList.splice(i,1);
+		for(var i = 0; i < resourceList.length; i++) {
+			var url = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_URL);
+			var desc = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_DESCRIPTION);
+			var status = desc.split(" ")[0];
+			if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
+				this.checkList.push(resourceList[i]);
 			}
 		}
 		
@@ -29,7 +31,7 @@ var UpdateChecker = {
 	},
 
 	check: function() {
-		this.lastResource = this.resourceList.shift();
+		this.lastResource = this.checkList.shift();
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
 
@@ -80,7 +82,6 @@ var UpdateChecker = {
 
 	httpLoaded: function(e) {
 		var lastModified = 0;
-		var gettingLastModified = false;
 
 		try {
 			var feed = new Feed(UpdateChecker.httpReq.responseXML);
@@ -91,17 +92,12 @@ var UpdateChecker = {
 
 		if(feed.hasLastPubDate()) {
 			lastModified = feed.getLastPubDate().getTime();
-		} else {
-			try {
-				lastModified = UpdateChecker.httpReq.getResponseHeader("Last-modified");
-				lastModified = new Date(lastModified).getTime();
-			} catch(e) {}
 		}
 		
-		UpdateChecker.checkResult(true, lastModified);
+		UpdateChecker.checkResult(true, lastModified, feed);
 	},
 
-	checkResult: function(aSucceed, aLastModified) {
+	checkResult: function(aSucceed, aLastModified, feed) {
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
 		var status = 0;
@@ -113,23 +109,29 @@ var UpdateChecker = {
 			lastVisit /= 1000;
 		}
 
-		if(aLastModified) {
-			if(aLastModified > lastVisit) {
-				status = CommonFunc.STATUS_UPDATE;
+		if(aSucceed) {
+			if(aLastModified) {
+				if(aLastModified > lastVisit) {
+					status = CommonFunc.STATUS_UPDATE;
+				} else {
+					status = CommonFunc.STATUS_NO_UPDATE;
+				}
 			} else {
-				status = CommonFunc.STATUS_NO_UPDATE;
+				var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/);
+				if(sig != feed.getSignature()) {
+					logMessage("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
+					status = CommonFunc.STATUS_UPDATE;
+				} else {
+					status = CommonFunc.STATUS_NO_UPDATE;
+				}
 			}
 		} else {
-			if(aSucceed) {
-				status = CommonFunc.STATUS_UNKNOWN;
-			} else {
-				status = CommonFunc.STATUS_ERROR;
-			}
+			status = CommonFunc.STATUS_ERROR;
 		}
 
-		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status);
+		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
 		
-		if(this.resourceList.length == 0) {
+		if(this.checkList.length == 0) {
 			this.checking = false;
 			this.onChecked(name, url);
 			return;

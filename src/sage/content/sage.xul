@@ -8,8 +8,8 @@
 
 <!DOCTYPE page SYSTEM "chrome://sage/locale/sage.dtd">
 <page id="pageSagePanel" title="&sage.label;"
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	onload="init();" onunload="done()">
 
 <script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
@@ -46,7 +46,8 @@
 
 <toolbox class="plain">
 	<toolbar class="plain">
-		<toolbarbutton image="chrome://sage/skin/check_feeds.png" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"></toolbarbutton>
+		<toolbarbutton id="checkFeeds" class="sage_button" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
+		<toolbarbutton id="discoverFeeds" class="sage_button" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
 		<spacer flex="1"/>
 		<toolbarbutton type="menu" label="&menu.tools;">
 			<menupopup>

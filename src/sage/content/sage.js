@@ -27,7 +27,6 @@ var rssLoading = false;
 var sageFolderID = "";
 var enableTooltip = true;
 var popupTimeoutId=0;
-var aConsoleService
 
 
 function init() {
@@ -48,69 +47,33 @@ function init() {
 		strRes.getString("RESULT_ERROR_FAILURE_STR")
 	);
 
-  	// Load Preference
+	// if feed folder has not been set, assume new user and install default feed folder and demo feeds
+	if(!CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", null)) {
+		logMessage("creating default feed folder...");
+		var new_folder = BMSVC.createFolderInContainer("Sage Feeds", RDF.GetResource("NC:BookmarksRoot"), null);
+		CommonFunc.setPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", new_folder.Value);
+		BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, null, new_folder, null);
+		BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, null, new_folder, null);
+		BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, null, new_folder, null);
+	}
+
+	// set feed folder location
 	sageFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
-  	// observe Preference
-  prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.RSS_READER_FOLDER_ID, sageFolderChanged);
+	// check for changes to the feed folder
+	prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.RSS_READER_FOLDER_ID, sageFolderChanged);
 
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	bookmarksTree.treeBoxObject.selection.select(0);
-	
+
 	FeedSearch.init();
 	toggleShowSearchBar();
 	toggleShowFeedItemList();
 
-  aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
-
 	logMessage("initialized");
 }
 
-function logMessage(message) {
-	aConsoleService.logStringMessage("Sage: " + message);
-}
-
-function dateFormat(date, twelveHourClock) {
-	function padout(number) { return (number < 10) ? '0' + number : number; }
-
-	var day;
-	switch (date.getDay()) {
-		case 0: day = strRes.getString("date_sunday_short"); break
-		case 1: day = strRes.getString("date_monday_short"); break
-		case 2: day = strRes.getString("date_tuesday_short"); break
-		case 3: day = strRes.getString("date_wednesday_short"); break
-		case 4: day = strRes.getString("date_thursday_short"); break
-		case 5: day = strRes.getString("date_friday_short"); break
-		case 6: day = strRes.getString("date_saturday_short"); break
-	}
-
-	var month;
-	switch (date.getMonth()) {
-		case 0: month = strRes.getString("date_january_short"); break
-		case 1: month = strRes.getString("date_february_short"); break
-		case 2: month = strRes.getString("date_march_short"); break
-		case 3: month = strRes.getString("date_april_short"); break
-		case 4: month = strRes.getString("date_may_short"); break
-		case 5: month = strRes.getString("date_june_short"); break
-		case 6: month = strRes.getString("date_july_short"); break
-		case 7: month = strRes.getString("date_august_short"); break
-		case 8: month = strRes.getString("date_september_short"); break
-		case 9: month = strRes.getString("date_october_short"); break
-		case 10: month = strRes.getString("date_november_short"); break
-		case 11: month = strRes.getString("date_december_short"); break
-	}
-
-	var year = date.getYear() + 1900;
-
-	var date_str = day + ", " + month + " " + date.getDate() + ", " + year; 
-
-	var hours = date.getHours(), minutes = padout(date.getMinutes()), seconds = padout(date.getSeconds());
-	if(twelveHourClock) {
-		var adjhours = (hours == 0) ? 12 : ((hours < 13) ? hours : hours-12);
-		var time_str = adjhours + ":" + minutes + ((hours < 12) ? " AM" : " PM");
-	} else {
-		var time_str = hours + ":" + minutes;
-	}
-	return date_str + " " + time_str;
+function discoverFeeds() {
+	window.openDialog("chrome://sage/contents/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close");
 }
 
 	// XV‚³‚ê‚½RSS‚Ì‚Ý•\Ž¦
@@ -148,12 +111,12 @@ function done() {
 
 function openOPMLWizard() {
 	var dialogURL = "chrome://sage/content/opml/opml.xul";
-	window.openDialog(dialogURL, "", "chrome,dialog,modal");
+	window.openDialog(dialogURL, "", "chrome,modal,close");
 }
 
 function openSettingDialog() {
 	var dialogURL = "chrome://sage/content/settings/settings.xul";
-	window.openDialog(dialogURL, "", "chrome,dialog,modal");
+	window.openDialog(dialogURL, "", "chrome,modal,close");
 }
 
 function openSageProjectFeed() {
@@ -376,8 +339,7 @@ function setRssItemListBox() {
 	}
 }
 
-
-function isVisited(aURL){
+function isVisited(aURL) {
 	try {
 		var globalHistory = Components.classes["@mozilla.org/browser/global-history;1"].getService(Components.interfaces.nsIGlobalHistory);
 		var URI = Components.classes['@mozilla.org/network/standard-url;1'].createInstance(Components.interfaces.nsIURI);
@@ -387,27 +349,27 @@ function isVisited(aURL){
 	return false;
 }
 
-function getCheckboxCheck(aID){
+function getCheckboxCheck(aID) {
 	var checkboxNode = document.getElementById(aID);
 	return checkboxNode.getAttribute("checked") == "true";
 }
 
-function showRssItemListPopup(aEvent){
-	if(aEvent.originalTarget.localName != "listitem"){
+function showRssItemListPopup(aEvent) {
+	if(aEvent.originalTarget.localName != "listitem") {
 		rssItemListPopup.hidePopup();
 		return;
 	}
-	if(!getCheckboxCheck("chkShowTooltip")){
+	if(!getCheckboxCheck("chkShowTooltip")) {
 		rssItemListPopup.hidePopup();
 		return;
 	}
 	
 	var description = htmlToText(currentFeed.getItem(aEvent.originalTarget.value).getContent());
-	if(description.indexOf("/") != -1){
+	if(description.indexOf("/") != -1) {
 		description = description.replace(/\//gm, "/\u200B");
 	}
 		// description ‚ð400•¶ŽšˆÈ“à‚É‚·‚é
-	if(description.length > 400){
+	if(description.length > 400) {
 		description = description.substring(0,400) + "...";
 	}
 
@@ -421,27 +383,23 @@ function showRssItemListPopup(aEvent){
 	popupTimeoutId = setTimeout("rssItemListPopup.showPopup(rssItemListBox)", 150);
 }
 
-function hideRssItemListPopup(aEvent){
+function hideRssItemListPopup(aEvent) {
 	clearTimeout(popupTimeoutId);
 	rssItemListPopup.hidePopup();
 }
 
-
-function htmlToText(aStr){
-	var	formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"]
-								.createInstance(Components.interfaces.nsIFormatConverter);
-	var fromStr = Components.classes["@mozilla.org/supports-string;1"]
-								.createInstance(Components.interfaces.nsISupportsString);
+function htmlToText(aStr) {
+	var	formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Components.interfaces.nsIFormatConverter);
+	var fromStr = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
 	fromStr.data = aStr;
 	var toStr = { value: null };
 
-	try{
-		formatConverter.convert("text/html", fromStr, fromStr.toString().length,
-									"text/unicode", toStr, {});
-	}catch(e){
+	try {
+		formatConverter.convert("text/html", fromStr, fromStr.toString().length, "text/unicode", toStr, {});
+	} catch(e) {
 		return aStr;
 	}
-	if(toStr.value){
+	if(toStr.value) {
 		toStr = toStr.value.QueryInterface(Components.interfaces.nsISupportsString);
 		return toStr.toString();
 	}
@@ -536,8 +494,8 @@ function httpGetResult(aResultCode) {
 				}
 			}
 
-			BMSVC.updateLastVisitedDate(lastResource.url, responseXML.characterSet);
-			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE);
+			BMSVC.updateLastVisitedDate(lastResource.url, "UTF-8");
+			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE + " " + currentFeed.getSignature());
 		}
 
 		setStatusDone();

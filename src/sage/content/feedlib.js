@@ -16,8 +16,10 @@ function	Feed(feedXML) {
 	var rootNodeName = feedXML.documentElement.localName.toLowerCase();
 	if(rootNodeName == "feed") {
 		this.parseATOM();
-	} else {
+	} else if(rootNodeName == "rss" || rootNodeName == "rdf") {
 		this.parseRSS();
+	} else {
+		throw "Feed has invalid root element";
 	}
 }
 
@@ -25,7 +27,17 @@ Feed.prototype.parseRSS = function() {
 
 	var feedXML = this.feedXML;
 
-	this.feedFormat = "RSS";
+	first_element = feedXML.documentElement;
+
+	if(first_element.localName.toLowerCase() == "rdf") {
+		this.feedFormat = "RSS (1.0)";
+	} else if(first_element.localName.toLowerCase() == "rss") {
+		if(first_element.hasAttribute("version")) {
+			this.feedFormat = "RSS (" + first_element.getAttribute("version") + ")";
+		} else {
+			this.feedFormat = "RSS (?)";
+		}
+	}
 
 	var channelNode;
 	if(feedXML.getElementsByTagName("channel").length != 0) {
@@ -107,7 +119,13 @@ Feed.prototype.parseATOM = function() {
 
 	var feedXML = this.feedXML;
 
-	this.feedFormat = "ATOM";
+	first_element = feedXML.documentElement;
+
+	if(first_element.hasAttribute("version")) {
+		this.feedFormat = "ATOM (" + first_element.getAttribute("version") + ")";
+	} else {
+		this.feedFormat = "ATOM (?)";
+	}
 
 	for(var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
 		if(i.nodeType != i.ELEMENT_NODE) continue;
@@ -245,6 +263,16 @@ Feed.prototype.getFormat = function() {
 	return this.feedFormat;
 }
 
+Feed.prototype.getSignature = function() {
+	var sig = "[";
+	for(var c = 0; c < this.getItemCount(); c++) {
+		if(c != 0) sig += ",";
+		sig += this.getItem(c).getTitle().length;
+	}
+	sig += "]";
+	return sig;
+}
+
 
 
 function FeedItem(title, link, content, pubDate) {
@@ -263,17 +291,19 @@ FeedItem.prototype.hasTitle = function() {
 }
 
 FeedItem.prototype.getTitle = function() {
+	var title;
 	if(this.hasTitle()) {
-		return this.title;
+		title = this.title.replace(/<.*?>/g,'');;
 	} else {
 		if(this.hasContent()) {
 			temp = this.getContent();
 			temp = temp.replace(/<.*?>/g,'');
-			return temp.substring(0, 30) + "...";
+			title = temp.substring(0, 30) + "...";
 		} else {
-			return "No Title";
+			title = "No Title";
 		}
 	}
+	return title;
 }
 
 FeedItem.prototype.getLink = function() {
@@ -335,17 +365,23 @@ function iso8601ToJSDate(date_str) {
 	var tz_mark = "Z";
 	var tz_hours = 0;
 	var tz_minutes = 0;
+	var time, whole_time, tz;
 
 	if(tmp.length == 2) {
-		var whole_time = tmp[1];
+		whole_time = tmp[1];
 		tz_mark = whole_time.match("[Z+-]{1}");
-		tmp = whole_time.split(tz_mark);
-		var time = tmp[0];
-		if(tz_mark != "Z") {
-			var tz = tmp[1];
-			tmp = tz.split(":");
-			tz_hours = tmp[0];
-			tz_minutes = tmp[1];
+		if(tz_mark) {
+			tmp = whole_time.split(tz_mark);
+			time = tmp[0];
+			if(tz_mark == "+" || tz_mark == "-") {
+				tz = tmp[1];
+				tmp = tz.split(":");
+				tz_hours = tmp[0];
+				tz_minutes = tmp[1];
+			}
+		} else {
+			tz_mark = "Z";
+			time = whole_time;
 		}
 		tmp = time.split(":");
 		hours = tmp[0];

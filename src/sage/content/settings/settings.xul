@@ -14,7 +14,7 @@
 <script type="application/x-javascript" src="chrome://sage/content/settings/settings.js"/>
 
 
-<dialogheader title="&sage.label;" description="version &sage.version;"/>
+<dialogheader title="&sage.label;" description="&sage.version.label; &sage.version;"/>
 
 <stringbundleset>
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
@@ -32,12 +32,38 @@
 <groupbox>
 	<caption label="&settings.general.caption;"/>
 	<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
+	<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
+	<grid>
+		<columns>
+			<column/>
+			<column/>
+		</columns>
+		<rows>
+			<row align="center">
+				<label value="Feed item order:"/>
+				<menulist id="itemOrder">
+					<menupopup>
+						<menuitem label="Cronological" value="chrono"/>
+						<menuitem label="Source" value="source"/>
+					</menupopup>
+				</menulist>
+			</row>
+			<row align="center">
+				<label value="Feed discovery mode:"/>
+				<menulist id="feedDiscoveryMode">
+					<menupopup>
+						<menuitem label="Exhaustive" value="exhaustive"/>
+						<menuitem label="Conservative" value="conservative"/>
+					</menupopup>
+				</menulist>
+			</row>
+		</rows>
+	</grid>
 </groupbox>
 
 <groupbox>
 	<caption label="&openInContentsArea.caption;"/>
 	<checkbox id="chkRenderFeeds" label="&settings.renderFeeds.label;"/>
-	<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
 	<checkbox id="chkAllowEContent" label="&allowEContent.label;"/>
 	<vbox flex="1">
 		<checkbox id="chkUserCssEnable" label="&enableUserCss.label;" oncommand="setDisabled()"/>

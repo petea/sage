@@ -2,6 +2,7 @@
 
 <!ENTITY sage.label				"Sage">
 <!ENTITY sage.version				"1.2">
+<!ENTITY sage.version.label				"">
 
 <!ENTITY sage.toolbarLabel			"Sage">
 <!ENTITY sage.sidebarTitle			"Sage">
@@ -18,6 +19,7 @@
 <!ENTITY menu.opmlImportExport			"Import/Export OPML...">
 <!ENTITY menu.setting				"Configuration...">
 <!ENTITY menu.sageProjectFeed				"">
+<!ENTITY menu.discoverFeeds				"">
 
 <!-- Setting Dialog -->
 <!ENTITY settings.general.caption     "">

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+					xmlns:xbl="http://www.mozilla.org/xbl">
+
+  <binding id="toolbarbutton" extends="chrome://global/content/bindings/button.xml#menu-button-base">
+    <content>
+        <xul:toolbarbutton anonid="button" allowevents="true" class="sage_button2" xbl:inherits="disabled,buttonover,buttondown,label"/>
+    </content>
+  </binding>
+
+</bindings>
