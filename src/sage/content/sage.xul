@@ -63,6 +63,8 @@
 				<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
 				<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>
 				<menuseparator/>
+				<menuitem label="&menu.sageProjectFeed;" oncommand="openSageProjectFeed()"/>
+				<menuseparator/>
 				<menuitem label="&menu.setting;" oncommand="openSettingDialog()"/>
 			</menupopup>
 		</toolbarbutton>

@@ -107,6 +107,13 @@ function openSettingDialog() {
 	window.openDialog(dialogURL, "", "chrome,dialog,modal");
 }
 
+function openSageProjectFeed() {
+	lastResource = null;
+	var feedURL = "http://sage.mozdev.org/rss.xml";
+	setStatusLoading();
+	httpGet(feedURL);
+}
+
 function manageRSSList() {
 	var dialogURL = "chrome://browser/content/bookmarks/bookmarksManager.xul";
 	window.openDialog(dialogURL, "", "chrome,all,dialog=no", sageFolderID);
@@ -412,7 +419,7 @@ function httpGet(aURL) {
 
 
 	try {
-		httpReq.open("GET" , aURL);
+		httpReq.open("GET", aURL);
 		httpReq.setRequestHeader("User-Agent", USER_AGENT);
 		httpReq.overrideMimeType("application/xml");
 	} catch(e) {
@@ -471,13 +478,13 @@ function httpGetResult(aResultCode) {
 	if(aResultCode == RESULT_OK) {
 		currentFeed = new Feed(responseXML);
 
-		if(CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
-			if(CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != currentFeed.getTitle()) {
-				CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, currentFeed.getTitle());
-			}
-		}
-
 		if(lastResource.res) {
+			if(CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
+				if(CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != currentFeed.getTitle()) {
+					CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, currentFeed.getTitle());
+				}
+			}
+
 			BMSVC.updateLastVisitedDate(lastResource.url, responseXML.characterSet);
 			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE);
 		}

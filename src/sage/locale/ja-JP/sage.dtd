@@ -16,6 +16,7 @@
 <!ENTITY menu.manageRSSList			"RSS リストの管理">
 <!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
 <!ENTITY menu.setting				"設定...">
+<!ENTITY menu.sageProjectFeed				"Sage Project News">
 
 
 <!-- Setting Dialog -->
