@@ -134,7 +134,7 @@ Feed.prototype.parseATOM = function() {
 		if(titleNodes.length) {
 			item.title = CommonFunc.getInnerText(titleNodes[0]);
 		}
-		/*
+
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
 		if(linkNodes.length) {
 			for (var j = 0; j < linkNodes.length; j++) {
@@ -144,7 +144,7 @@ Feed.prototype.parseATOM = function() {
 				}
 			}
 		}
-
+		/*
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
 		if(issuedNodes.length) {
 			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
