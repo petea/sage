@@ -53,7 +53,7 @@
 			<menupopup>
 				<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
 				<menuitem id="chkShowTooltip" type="checkbox" persist="checked" checked="true" label="&menu.showDescTooltip;"/>
-				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
+				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" checked="true" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
 				<menuseparator/>
 				<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
 				<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>

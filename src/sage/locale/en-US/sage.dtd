@@ -41,7 +41,7 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Exhaustive">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Conservative">
 <!ENTITY settingWindow.title                    "Sage Settings">
-<!ENTITY selectFolder.label			"Select Feed Folder">
+<!ENTITY selectFolder.label			"Feed folder">
 <!ENTITY openInContentsArea.caption		"Feed Rendering">
 <!ENTITY enableUserCss.label			"Use custom CSS">
 <!ENTITY browseCss.label			"Browse...">

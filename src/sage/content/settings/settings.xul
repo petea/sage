@@ -20,25 +20,20 @@
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
 </stringbundleset>
 
-<hbox style="padding:5px 0px 10px 0px">
-<groupbox flex="1">
-	<caption label="&selectFolder.label;"/>
-	<menulist id="select-menu" oncommand="selectFolder(event);">
-		<menupopup id="select-folder"/>
-	</menulist>
-</groupbox>
-</hbox>
-
 <groupbox>
 	<caption label="&settings.general.caption;"/>
-	<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
-	<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
 	<grid>
 		<columns>
 			<column/>
 			<column/>
 		</columns>
 		<rows>
+			<row align="center">
+				<label value="&selectFolder.label;:"/>
+				<menulist id="select-menu" oncommand="selectFolder(event);">
+					<menupopup id="select-folder"/>
+				</menulist>
+			</row>
 			<row align="center">
 				<label value="&settings.feedItemOrder.label;:"/>
 				<menulist id="feedItemOrder">
@@ -59,6 +54,8 @@
 			</row>
 		</rows>
 	</grid>
+	<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
+	<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
 </groupbox>
 
 <groupbox>
@@ -76,4 +73,3 @@
 </groupbox>
 
 </dialog>
-

@@ -8,9 +8,9 @@
 		<menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
 	</menupopup>
 
-  <menupopup id="menu_ToolsPopup">
-    <menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
-  </menupopup>
+	<menupopup id="menu_ToolsPopup">
+		<menuitem key="key_openSageSidebar" observes="viewSageSidebar" position="1"/>
+	</menupopup>
 
 	<keyset id="mainKeyset">
 		<key id="key_openSageSidebar" command="viewSageSidebar"
