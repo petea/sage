@@ -75,7 +75,12 @@ var UpdateChecker = {
 		var lastModified = 0;
 		var gettingLastModified = false;
 
-		var feed = new Feed(UpdateChecker.httpReq.responseXML);
+		try {
+			var feed = new Feed(UpdateChecker.httpReq.responseXML);
+		} catch(e) {
+			UpdateChecker.checkResult(false, 0);
+			return;
+		}
 
 		if(feed.hasLastPubDate()) {
 			lastModified = feed.getLastPubDate().getTime();

@@ -110,7 +110,7 @@ function openSettingDialog() {
 function openSageProjectFeed() {
 	lastResource = null;
 	var feedURL = "http://sage.mozdev.org/rss.xml";
-	setStatusLoading();
+	setStatusLoading("Sage Project News");
 	httpGet(feedURL);
 }
 
@@ -254,9 +254,13 @@ function rssTitleLabelClick(aNode, aEvent){
 }
 
 
-function setStatusLoading(){
+function setStatusLoading(label){
 	rssStatusImage.setAttribute("loading", "true");
-	rssStatusLabel.value = "Loading: " + lastResource.name;
+	if(label) {
+		rssStatusLabel.value = "Loading: " + label;
+	} else {
+		rssStatusLabel.value = "Loading: " + lastResource.name;
+	}
 }
 
 function setStatusDone(){
@@ -478,7 +482,7 @@ function httpGetResult(aResultCode) {
 	if(aResultCode == RESULT_OK) {
 		currentFeed = new Feed(responseXML);
 
-		if(lastResource.res) {
+		if(lastResource) {
 			if(CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
 				if(CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != currentFeed.getTitle()) {
 					CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, currentFeed.getTitle());
@@ -488,6 +492,7 @@ function httpGetResult(aResultCode) {
 			BMSVC.updateLastVisitedDate(lastResource.url, responseXML.characterSet);
 			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE);
 		}
+
 		setStatusDone();
 		setRssItemListBox();
 		
