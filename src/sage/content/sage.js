@@ -179,8 +179,19 @@ function BookmarkResource(aRes, aDB) {
 
 function bookmarksOpen() {
 	lastResource = new BookmarkResource(bookmarksTree.currentResource, bookmarksTree.db);
-	setStatusLoading();
-	httpGet(lastResource.url);
+	// get type of parent node
+	var predicate = lastResource.db.ArcLabelsIn(lastResource.res).getNext();
+	if(predicate instanceof Components.interfaces.nsIRDFResource) {
+		var parent = lastResource.db.GetSource(predicate, lastResource.res, true);
+	}
+	var parentType = BookmarksUtils.getProperty(parent, RDF_NS + "type", lastResource.db);
+	// if this is a livemark child, open as a web page, otherwise process it as a feed
+	if(parentType == NC_NS + "Livemark") {
+		getContentBrowser().loadURI(lastResource.url);
+	} else {
+		setStatusLoading();
+		httpGet(lastResource.url);
+	}
 }
 
 function createTreeContextMenu2(aEvent) {
@@ -192,7 +203,14 @@ function createTreeContextMenu2(aEvent) {
 	var cmdSrc = "";
 	var tempMenuItem;
 
-	if(selection.type == "Bookmark" || selection.type == "Livemark") {
+	// get type of parent node
+	var predicate = bookmarksTree.db.ArcLabelsIn(bookmarksTree.currentResource).getNext();
+	if(predicate instanceof Components.interfaces.nsIRDFResource) {
+		var parent = bookmarksTree.db.GetSource(predicate, bookmarksTree.currentResource, true);
+	}
+	var parentType = BookmarksUtils.getProperty(parent, RDF_NS + "type", bookmarksTree.db);
+
+	if((selection.type == "Bookmark" && parentType != NC_NS + "Livemark") || selection.type == "Livemark") {
 		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
 		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));
