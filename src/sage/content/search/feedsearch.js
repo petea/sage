@@ -45,18 +45,18 @@ var FeedSearch = {
 	txtSearchValue: null,
 	imgSearchEngine: null,
 	popSearchEngine: null,
-	
+
 	rdfDS: null,
 	searchEngine: "",
 	searchEngineName: "",
 	query: "",
 	charset: "",
-	
+
 	init: function(){
 		this.txtSearchValue = document.getElementById("txtSearchValue");
-		this.imgSearchEngine = document.getElementById("imgSearchEngine");		
+		this.imgSearchEngine = document.getElementById("imgSearchEngine");
 		this.popSearchEngine = document.getElementById("popSearchEngine");
-		
+
 		// init Search Engine RDF DataSource
 		this.rdfDS = this.RDF.GetDataSource(this.SEARCH_ENGINE_RDF);
 		var remote = this.rdfDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
@@ -67,16 +67,16 @@ var FeedSearch = {
 			sink.addXMLSinkObserver(this.sinkObserver);
 		}
 	},
-	
+
 	initRdfDataSource: function() {
 		this.popSearchEngine.database.AddDataSource(this.rdfDS);
 		this.popSearchEngine.builder.rebuild();
 		var tmpSearchEngine = this.txtSearchValue.getAttribute("searchengine");
 		if(!tmpSearchEngine)
 			tmpSearchEngine = this.getRdfProperty("urn:rrp:searchengine:default", this.RRP_NS + "site");
-		this.setSearchEngine(tmpSearchEngine);	
+		this.setSearchEngine(tmpSearchEngine);
 	},
-	
+
 	search: function() {
 		var searchValue = this.txtSearchValue.value;
 		if(searchValue == "") return;
@@ -96,9 +96,9 @@ var FeedSearch = {
 			url: this.query + searchValue
 		};
 		setStatusLoading();
-		httpGet(lastResource.url);
+		feedLoader.loadURI(lastResource.url);
 	},
-	
+
 	setSearchEngine: function(aSearchEngine) {
 		this.searchEngine = aSearchEngine;
 		this.searchEngineName = this.getRdfProperty(aSearchEngine, this.RRP_NS + "name");
@@ -108,14 +108,14 @@ var FeedSearch = {
 		this.txtSearchValue.setAttribute("searchengine", this.searchEngine);
 		this.imgSearchEngine.src = this.getRdfProperty(aSearchEngine, this.RRP_NS + "icon");
 	},
-	
+
 	popSearchEngineClick: function(aEvent) {
 		var menuitemNode = aEvent.originalTarget;
 		if(menuitemNode.nodeName != "menuitem") return;
-		
+
 		this.setSearchEngine(menuitemNode.value);
 	},
-	
+
 	getRdfProperty: function(aRes, aProperty) {
 		if(typeof(aRes) == "string") aRes = this.RDF.GetResource(aRes);
 		if(typeof(aProperty) == "string") aProperty = this.RDF.GetResource(aProperty);
@@ -126,7 +126,7 @@ var FeedSearch = {
 			return target.QueryInterface(Components.interfaces.nsIRDFResource).Value;
 		}
 	},
-	
+
 	sinkObserver: {
 		onBeginLoad: function(aSink) {},
 		onInterrupt: function(aSink) {},
