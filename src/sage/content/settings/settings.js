@@ -77,13 +77,13 @@ function setDisabled() {
 function browseCss() {
 	var fpicker = Components.classes["@mozilla.org/filepicker;1"]
 					.createInstance(Components.interfaces.nsIFilePicker);
-	fpicker.init(window, "Select CSS File", fpicker.modeOpen);
-	fpicker.appendFilter("CSS File(*.css)", "*.css");
+	fpicker.init(window, strRes.getString("css_select_file"), fpicker.modeOpen);
+	fpicker.appendFilter(strRes.getString("css_css_file") + " (*.css)", "*.css");
 	fpicker.appendFilters(fpicker.filterAll);
 
 	var showResult = fpicker.show();
 	if(showResult == fpicker.returnOK) {
-		txtUserCssPath.value = fpicker.file.path;	
+		txtUserCssPath.value = fpicker.file.path;
 	}
 }
 
