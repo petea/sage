@@ -162,9 +162,9 @@ Feed.prototype.parseATOM = function() {
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
 		var contentArray = new Array();
-		for(var j = 0; i < contentNodes.length; i++){
-			var contType = contentNodes[i].getAttribute("type");
-			contentArray[contType] = CommonFunc.getInnerText(contentNodes[i]);
+		for(var j = 0; j < contentNodes.length; j++){
+			var contType = contentNodes[j].getAttribute("type");
+			contentArray[contType] = CommonFunc.getInnerText(contentNodes[j]);
 		}
 
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
