@@ -21,9 +21,11 @@ var UpdateChecker = {
 		}
 
 		logMessage("checking " + this.checkList.length + " feed(s)");
-		
-		this.checking = true;
-		this.check();
+
+		if (this.checkList.length > 0) {
+			this.checking = true;
+			this.check();
+		}
 	},
 
 	done: function() {

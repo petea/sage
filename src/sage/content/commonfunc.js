@@ -87,8 +87,11 @@ var CommonFunc = {
 	BM_LAST_VISIT: 		"http://home.netscape.com/WEB-rdf#LastVisitDate",
 	BM_LAST_MODIFIED:	"http://home.netscape.com/WEB-rdf#LastModifiedDate",
 	BM_DESCRIPTION:		"http://home.netscape.com/NC-rdf#Description",
-	BM_NAME:			"http://home.netscape.com/NC-rdf#Name",
-	BM_URL:				"http://home.netscape.com/NC-rdf#URL",
+	BM_NAME:					"http://home.netscape.com/NC-rdf#Name",
+	BM_URL:						"http://home.netscape.com/NC-rdf#URL",
+	BM_FEEDURL:				"http://home.netscape.com/NC-rdf#FeedURL",
+
+	RDF_TYPE:					"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
 
 	STATUS_UPDATE: "updated",
 	STATUS_NO_UPDATE: "no-updated",
@@ -125,52 +128,50 @@ var CommonFunc = {
 		return changed;
 	},
 
-	getBMDSProperty: function(aInput, aArcURI){
-		if(typeof(aInput) == "string"){
+	getBMDSProperty: function(aInput, aArcURI) {
+		if(typeof(aInput) == "string") {
 			aInput = RDF.GetResource(aInput);
 		}
-		if(typeof(aArcURI) == "string"){
+		if(typeof(aArcURI) == "string") {
 			aArcURI = RDF.GetResource(aArcURI);
 		}
 		return this.getBMDSTargetByURL(aInput, aArcURI).Value;
 	},
-
-	getBMDSTargetByURL: function(aInput, aArcURI){
-		if(typeof(aArcURI) == "string"){
+	
+	getBMDSTargetByURL: function(aInput, aArcURI) {
+		if(typeof(aArcURI) == "string") {
 			aArcURI = RDF.GetResource(aArcURI);
 		}
 		var node = BMDS.GetTarget(aInput, aArcURI, true);
-		try{
+		try {
 			return node.QueryInterface(kRDFRSCIID);
-		}catch(e){
-			try{
+		} catch(e) {
+			try {
 				return node.QueryInterface(Components.interfaces.nsIRDFDate);
-			}catch(e){
+			} catch(e) {
 				return node? node.QueryInterface(kRDFLITIID) : RDF.GetLiteral("");
 			}
 		}
 	},
 
-	getBMDSCChildren: function(aResource){
-		if(typeof(aResource) == "string"){
+	getBMDSCChildren: function(aResource) {
+		if(typeof(aResource) == "string") {
 			aResource = RDF.GetResource(aResource);
 		}
 
-		var rdfContainer = Components.classes["@mozilla.org/rdf/container;1"]
-								.getService(Components.interfaces.nsIRDFContainer);
+		var rdfContainer = Components.classes["@mozilla.org/rdf/container;1"].getService(Components.interfaces.nsIRDFContainer);
 		rdfContainer.Init(BMDS, aResource);
-	   	var containerChildren = rdfContainer.GetElements();
+		var containerChildren = rdfContainer.GetElements();
 
-	   	var resultArray = new Array();
-	   	while(containerChildren.hasMoreElements()){
-		   	var res = containerChildren.getNext().QueryInterface(kRDFRSCIID);
-
-		   	if(RDFCU.IsContainer(BMDS, res)){
-		   		resultArray = resultArray.concat(this.getBMDSCChildren(res));
-		   	}else{
-			   	resultArray.push(res);
+		var resultArray = new Array();
+		while(containerChildren.hasMoreElements()) {
+			var res = containerChildren.getNext().QueryInterface(kRDFRSCIID);
+			if(RDFCU.IsContainer(BMDS, res)) {
+				resultArray = resultArray.concat(this.getBMDSCChildren(res));
+			} else {
+				resultArray.push(res);
 			}
-	   	}
+		}
 		return resultArray;
 	},
 
@@ -178,16 +179,16 @@ var CommonFunc = {
 
 // ++++++++++ ++++++++++ CharCode ++++++++++ ++++++++++
 
-	convertCharCodeFrom: function(aString, aCharCode){
+	convertCharCodeFrom: function(aString, aCharCode) {
 		var UConvID = "@mozilla.org/intl/scriptableunicodeconverter";
 		var UConvIF  = Components.interfaces.nsIScriptableUnicodeConverter;
 		var UConv = Components.classes[UConvID].getService(UConvIF);
 
 		var tmpString = "";
-		try{
+		try {
 			UConv.charset = aCharCode;
 			tmpString = UConv.ConvertFromUnicode(aString);
-		}catch(e){
+		} catch(e) {
 			tmpString = null;
 		}
 		return tmpString;
@@ -199,17 +200,14 @@ var CommonFunc = {
 	},
 
 
-	loadText: function(aURI){
-		var	URI = Components.classes["@mozilla.org/network/standard-url;1"]
-					.createInstance(Components.interfaces.nsIURI);
+	loadText: function(aURI) {
+		var	URI = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
 		URI.spec = aURI;
-
-		var IOService = Components.classes['@mozilla.org/network/io-service;1']
-							.getService(Components.interfaces.nsIIOService);
+	
+		var IOService = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
 		var channel = IOService.newChannelFromURI(URI);
 		var stream	= channel.open();
-		var scriptableStream = Components.classes['@mozilla.org/scriptableinputstream;1']
-									.createInstance(Components.interfaces.nsIScriptableInputStream);
+		var scriptableStream = Components.classes['@mozilla.org/scriptableinputstream;1'].createInstance(Components.interfaces.nsIScriptableInputStream);
 		scriptableStream.init(stream);
 
 		var fileContents = scriptableStream.read(scriptableStream.available());
