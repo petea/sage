@@ -127,14 +127,14 @@ Feed.prototype.parseATOM = function() {
 	}
 
 	var entryNodes = feedXML.getElementsByTagName("entry");
-	for(var i = 0; entryNodes.length > i; i++){
+	for(i = 0; entryNodes.length > i; i++) {
 		var item = {title:"", link:"", content:"", pubDate:""};
 
 		var titleNodes = entryNodes[i].getElementsByTagName("title");
 		if(titleNodes.length) {
 			item.title = CommonFunc.getInnerText(titleNodes[0]);
 		}
-
+		/*
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
 		if(linkNodes.length) {
 			for (var j = 0; j < linkNodes.length; j++) {
@@ -157,7 +157,7 @@ Feed.prototype.parseATOM = function() {
 			tmp_date.setUTCSeconds(tmp_str.substring(17,19));
 			item.pubDate = new Date(tmp_date);
 		}
-
+		*/
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
