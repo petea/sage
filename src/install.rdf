@@ -35,6 +35,9 @@
 			<em:locale>locale/de-CH/</em:locale>
 			<em:locale>locale/sv-SE/</em:locale>
 			<em:locale>locale/ko-KR/</em:locale>
+			<em:locale>locale/sr-YU/</em:locale>
+			<em:locale>locale/sr-YU@Latn/</em:locale>
+			<em:locale>locale/es-AR/</em:locale>
 		</Description>
 	</em:file>
 
