@@ -71,7 +71,10 @@ Feed.prototype.parseRSS = function() {
 					item.content = CommonFunc.getInnerText(j);
 					break;
 				case "pubDate":
-					item.pubDate = new Date(CommonFunc.getInnerText(j));
+					tmp_date = new Date(CommonFunc.getInnerText(j));
+					if(tmp_date != "Invalid Date") {
+						item.pubDate = tmp_date;
+					}
 					break;
 				case "date":
 					tmp_str = CommonFunc.getInnerText(j);
@@ -82,7 +85,10 @@ Feed.prototype.parseRSS = function() {
 					tmp_date.setUTCHours(tmp_str.substring(11,13));
 					tmp_date.setUTCMinutes(tmp_str.substring(14,16));
 					tmp_date.setUTCSeconds(tmp_str.substring(17,19));
-					item.pubDate = new Date(tmp_date);
+					tmp_date = new Date(tmp_date);
+					if(tmp_date != "Invalid Date") {
+						item.pubDate = tmp_date;
+					}
 					break;
 			}
 		}
@@ -155,7 +161,10 @@ Feed.prototype.parseATOM = function() {
 			tmp_date.setUTCHours(tmp_str.substring(11,13));
 			tmp_date.setUTCMinutes(tmp_str.substring(14,16));
 			tmp_date.setUTCSeconds(tmp_str.substring(17,19));
-			item.pubDate = new Date(tmp_date);
+			tmp_date = new Date(tmp_date);
+			if(tmp_date != "Invalid Date") {
+				item.pubDate = tmp_date;
+			}
 		}
 
 		var aEntryNode = entryNodes[i];
