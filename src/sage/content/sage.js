@@ -280,7 +280,7 @@ function setStatusDone() {
 	rssStatusLabel.value = "";
 
 	if(currentFeed) {
-		rssTitleLabel.value = htmlToText(currentFeed.getTitle());
+		rssTitleLabel.value = currentFeed.getTitle();
 		if(currentFeed.getLink()) {
 			rssTitleLabel.setAttribute("href", currentFeed.getLink());
 			rssTitleLabel.tooltipText = currentFeed.getLink();

@@ -65,13 +65,13 @@ Feed.prototype.parseRSS = function() {
 		if(i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
-				this.title = CommonFunc.getInnerText(i);
+				this.title = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "link":
 				this.link = CommonFunc.getInnerText(i);
 				break;
 			case "description":
-				this.description = CommonFunc.getInnerText(i);
+				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
 		}
 	}
@@ -86,7 +86,7 @@ Feed.prototype.parseRSS = function() {
 			if(j.nodeType != j.ELEMENT_NODE) continue;
 			switch(j.localName) {
 				case "title":
-					item.title = CommonFunc.getInnerText(j);
+					item.title = entityDecode(CommonFunc.getInnerText(j));
 					break;
 				case "link":
 					if(!item.link) {
@@ -155,7 +155,7 @@ Feed.prototype.parseAtom = function() {
 		if(i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
-				this.title = CommonFunc.getInnerText(i);
+				this.title = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "link":
 				if(this.link) {
@@ -167,7 +167,7 @@ Feed.prototype.parseAtom = function() {
 				}
 				break;
 			case "tagline":
-				this.description = CommonFunc.getInnerText(i);
+				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
 		}
 	}
@@ -178,7 +178,7 @@ Feed.prototype.parseAtom = function() {
 
 		var titleNodes = entryNodes[i].getElementsByTagName("title");
 		if(titleNodes.length) {
-			item.title = CommonFunc.getInnerText(titleNodes[0]);
+			item.title = entityDecode(CommonFunc.getInnerText(titleNodes[0]));
 		}
 
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
@@ -479,4 +479,22 @@ function iso8601ToJSDate(date_str) {
 	} else {
 		return tmp_date;
 	}
+}
+
+function entityDecode(aStr) {
+	var	formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Components.interfaces.nsIFormatConverter);
+	var fromStr = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+	fromStr.data = aStr;
+	var toStr = { value: null };
+
+	try {
+		formatConverter.convert("text/html", fromStr, fromStr.toString().length, "text/unicode", toStr, {});
+	} catch(e) {
+		return aStr;
+	}
+	if(toStr.value) {
+		toStr = toStr.value.QueryInterface(Components.interfaces.nsISupportsString);
+		return toStr.toString();
+	}
+	return aStr;
 }
