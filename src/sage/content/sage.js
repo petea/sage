@@ -145,7 +145,7 @@ function manageRSSList() {
 function updateCheck(aCheckFolderId) {	
 	UpdateChecker.onCheck = function(aName, aURL) {
 			rssStatusImage.setAttribute("loading", "true");
-			rssStatusLabel.value = "Checking: " + aName;
+			rssStatusLabel.value = strRes.getString("RESULT_CHECKING") + ": " + aName;
 	}
 	UpdateChecker.onChecked = function(aName, aURL) {
 		setStatusDone();
