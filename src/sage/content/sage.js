@@ -215,8 +215,15 @@ function bookmarksTreeClick(aEvent) {
 			return;
 		}
 		var obj = {};
-		bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, {}, {}, obj);
+		var row = {};
+		bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, row, {}, obj);
+		row = row.value;
+
 		if(obj.value == "twisty") return;
+
+		if (bookmarksTree.getTreeSelection().isContainer[0]) {
+			bookmarksTree.treeBoxObject.view.toggleOpenState(row);
+		}
 	} else if(aEvent.type == "keypress") {
 		if(aEvent.originalTarget.localName != "tree") {
 			return;
