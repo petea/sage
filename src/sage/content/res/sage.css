@@ -3,10 +3,10 @@ html * {
 }
 
 html {
-	line-height: 1.3; 
+	line-height: 1.3;
 	background-color: #FFF;
 }
-				
+
 body {
 	margin: 0px;
 	color: #222;
@@ -38,6 +38,25 @@ p.item-desc a:link { color: #029; }
 	font-size: small;
 	margin: 0px;
 	padding: 5px 0px 0px 20px;
+}
+
+#rss-footer {
+	clear: both;
+	font-size: x-small;
+	padding: 6px 8px;
+	margin: 10px 2%;
+	text-align: center;
+}
+
+#rss-copyright {
+}
+
+#rss-generator {
+	display: none;
+}
+
+#rss-logo {
+	float: right;
 }
 
 div.item {
@@ -75,6 +94,19 @@ div.item-pubDate {
 	padding: 8px 10px;
 	width: 80%;
 	float: left;
+}
+
+div.item-enclosure {
+	font-size: x-small;
+	margin: 0px;
+	padding: 8px 10px;
+	width: 80%;
+	clear: left;
+	float: left;
+}
+
+.item-enclosure img {
+	border:	0;
 }
 
 div.item-technorati {

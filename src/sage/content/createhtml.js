@@ -36,12 +36,12 @@ var CreateHTML = {
 		var stream = Components.classes['@mozilla.org/network/file-output-stream;1']
 						.createInstance(Components.interfaces.nsIFileOutputStream);
 		stream.init(tmpFile, 2, 0x200, false); // open as "write only"
-		
+
 		var content = this.createHTMLSource(feed);
 		stream.write(content, content.length);
 		stream.flush();
 		stream.close();
-		
+
 		return xmlFilePath;
 	},
 
@@ -54,7 +54,7 @@ var CreateHTML = {
 							.getService(Components.interfaces.nsIIOService);
 		var tmpFile = Components.classes['@mozilla.org/file/local;1']
 							.createInstance(Components.interfaces.nsILocalFile);
-		try {		
+		try {
 			tmpFile.initWithPath(userCssPath);
 			var cssUrl = ioService.newFileURI(tmpFile);
 			var contentType = ioService.newChannelFromURI(cssUrl).contentType;
@@ -82,12 +82,32 @@ var CreateHTML = {
 		htmlSource = htmlSource.replace("**TITLE**", feed.getTitle());
 		htmlSource = htmlSource.replace(/\*\*LINK\*\*/g, feed.getLink());
 		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription());
+		htmlSource = htmlSource.replace("**LOGOLINK**", feed.getLogo().link);
+		htmlSource = htmlSource.replace("**LOGOALT**", feed.getLogo().alt);
+
+		var footer = feed.getFooter();
+		htmlSource = htmlSource.replace("**COPYRIGHT**", footer.copyright);
+		htmlSource = htmlSource.replace("**GENERATOR**", footer.generator);
+		var editor = "";
+		var webmaster = "";
+		if (footer.editor) {
+			editor = "<a href=\"mailto:" + footer.editor + "\">Editor</a>";
+			if (footer.webmaster)
+				editor += ", ";
+		}
+		htmlSource = htmlSource.replace("**EDITOR**", editor);
+
+		if (footer.webmaster) {
+			webmaster = "<a href=\"mailto:" + footer.webmaster + "\">Webmaster</a>";
+		}
+		htmlSource = htmlSource.replace("**WEBMASTER**", webmaster);
 
 		var itemsSource = "";
 		var items = feed.getItems(feedItemOrder);
 		for(var i = 0; i < items.length; i++) {
 			var link = items[i].getLink();
 			var title = items[i].getTitle();
+			var enclosure = "";
 			var description = "";
 			var pubDate = "";
 
@@ -100,6 +120,19 @@ var CreateHTML = {
 				pubDate = "<div class=\"item-pubDate\">" + dateFormat(items[i].getPubDate(), twelveHourClock) + "</div>";
 			}
 
+			if(items[i].hasEnclosure()) {
+				var tmp = items[i].getEnclosure();
+				enclosure = "<div class=\"item-enclosure\">" +
+					"<a href=\"" + tmp.getLink() + "\" title=\"Enclosure\">" +
+					"<img src=\"" +
+					(tmp.hasMimetype() ?
+						"moz-icon://goat?size=16&contentType=" + tmp.getMimetype() :
+						"chrome://sage/skin/enclosure.png") +
+					"\"></a> " +
+					(tmp.getDesc() ? tmp.getDesc() + ", " : "") +
+					tmp.getSize() + "</div>";
+			}
+
 			var itemSource = this.ITEM_SOURCE;
 			itemSource = itemSource.replace("**NUMBER**", i+1);
 			itemSource = itemSource.replace("**LINK**", link);
@@ -107,6 +140,7 @@ var CreateHTML = {
 			itemSource = itemSource.replace("**TITLE**", title);
 			itemSource = itemSource.replace("**DESCRIPTION**", description);
 			itemSource = itemSource.replace("**PUBDATE**", pubDate);
+			itemSource = itemSource.replace("**ENCLOSURE**", enclosure);
 			itemsSource += itemSource;
 		}
 		htmlSource = htmlSource.replace("**ITEMS**", itemsSource);

@@ -10,7 +10,9 @@ function Feed(feedXML) {
 
 	this.title = null;
 	this.link = null;
+	this.logo = {link:"", alt:""};
 	this.description = null;
+	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
 	this.items = new Array();
 	this.lastPubDate = null;
 
@@ -76,13 +78,38 @@ Feed.prototype.parseRSS = function() {
 			case "description":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
+			case "copyright":
+				this.footer.copyright = CommonFunc.getInnerText(i);
+				break;
+			case "generator":
+				this.footer.generator = CommonFunc.getInnerText(i);
+				break;
+			case "webMaster":
+				this.footer.webmaster = CommonFunc.getInnerText(i);
+				break;
+			case "managingEditor":
+				this.footer.editor = CommonFunc.getInnerText(i);
+				break;
+			case "image":
+				for(var j = i.firstChild; j!=null; j=j.nextSibling) {
+					if(j.nodeType != j.ELEMENT_NODE) continue;
+					switch(j.localName) {
+						case "url":
+							this.logo.link = CommonFunc.getInnerText(j);
+							break;
+						case "title":
+							this.logo.alt = CommonFunc.getInnerText(j);
+							break;
+					}
+				}
+				break;
 		}
 	}
 
 	var itemNodes = feedXML.getElementsByTagName("item");
 	var item, guid;
 	for(i = 0; itemNodes.length > i; i++) {
-		item = {title:"", link:"", content:"", pubDate:""};
+		item = {title:"", link:"", content:"", pubDate:"", enclosure:""};
 		guid = null;
 
 		for(var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
@@ -127,6 +154,9 @@ Feed.prototype.parseRSS = function() {
 						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
+				case "enclosure":
+					item.enclosure = new FeedItemEnclosure(j.getAttribute("url"), j.getAttribute("length"), j.getAttribute("type"));
+					break;
 			}
 		}
 
@@ -134,7 +164,7 @@ Feed.prototype.parseRSS = function() {
 			item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid);
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate, item.enclosure);
 
 		if(tmpFeedItem.hasPubDate()) {
 			if(tmpFeedItem.getPubDate() > this.lastPubDate) {
@@ -179,12 +209,18 @@ Feed.prototype.parseAtom = function() {
 			case "tagline":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
+			case "copyright":
+				this.footer.copyright = CommonFunc.getInnerText(i);
+				break;
+			case "generator":
+				this.footer.generator = CommonFunc.getInnerText(i);
+				break;
 		}
 	}
 
 	var entryNodes = feedXML.getElementsByTagName("entry");
 	for(i = 0; entryNodes.length > i; i++) {
-		var item = {title:"", link:"", content:"", pubDate:""};
+		var item = {title:"", link:"", content:"", pubDate:"", enclosure:""};
 
 		var titleNodes = entryNodes[i].getElementsByTagName("title");
 		if(titleNodes.length) {
@@ -233,7 +269,7 @@ Feed.prototype.parseAtom = function() {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate, item.enclosure);
 
 		if(tmpFeedItem.hasPubDate()) {
 			if(tmpFeedItem.getPubDate() > this.lastPubDate) {
@@ -336,6 +372,29 @@ Feed.prototype.getSignature = function() {
 	return sig;
 }
 
+Feed.prototype.hasFooter = function() {
+	return Boolean(this.footer);
+}
+
+Feed.prototype.getFooter = function() {
+	if(this.hasFooter()) {
+		return this.footer;
+	} else {
+		return "";
+	}
+}
+
+Feed.prototype.hasLogo = function() {
+	return Boolean(this.logo);
+}
+
+Feed.prototype.getLogo = function() {
+	if(this.hasLogo()) {
+		return this.logo;
+	} else {
+		return "";
+	}
+}
 
 
 /**
@@ -343,11 +402,12 @@ Feed.prototype.getSignature = function() {
  *
  */
 
-function FeedItem(title, link, content, pubDate) {
+function FeedItem(title, link, content, pubDate, enclosure) {
 	this.title = title;
 	this.link = link;
 	this.content = content;
 	this.pubDate = pubDate;
+	this.enclosure = enclosure;
 }
 
 FeedItem.prototype.hasTitle = function() {
@@ -410,6 +470,90 @@ FeedItem.prototype.getPubDate = function() {
 	}
 }
 
+FeedItem.prototype.hasEnclosure = function() {
+	return Boolean(this.enclosure);
+}
+
+FeedItem.prototype.getEnclosure = function() {
+	if(this.hasEnclosure()) {
+		return this.enclosure;
+	} else {
+		return null;
+	}
+}
+
+
+
+/**
+ * FeedItemEnclosure class
+ *
+ */
+
+function FeedItemEnclosure(link, length, mimetype) {
+	this.link = link;
+	this.length = length;
+	this.mimetype = mimetype;
+}
+
+FeedItemEnclosure.prototype.hasLink = function() {
+	return Boolean(this.link);
+}
+
+FeedItemEnclosure.prototype.getLink = function() {
+	if(this.hasLink()) {
+		return this.link;
+	} else {
+		return null;
+	}
+}
+
+FeedItemEnclosure.prototype.hasLength = function() {
+	return Boolean(this.length);
+}
+
+FeedItemEnclosure.prototype.getLength = function() {
+	if(this.hasLength()) {
+		return this.length;
+	} else {
+		return null;
+	}
+}
+
+FeedItemEnclosure.prototype.getSize = function() {
+	if(this.hasLength()) {
+		if (this.length > 1048576) {
+			return Math.round(this.length / 1048576) + "M";
+            }
+		else if (this.length > 1024) {
+			return Math.round(this.length / 1024) + "K";
+		}
+		else {
+			return this.length + "B";
+		}
+	} else {
+		return null;
+	}
+}
+
+FeedItemEnclosure.prototype.hasMimetype = function() {
+	return Boolean(this.mimetype);
+}
+
+FeedItemEnclosure.prototype.getMimetype = function() {
+	if(this.hasMimetype()) {
+		return this.mimetype;
+	} else {
+		return null;
+	}
+}
+
+FeedItemEnclosure.prototype.getDesc = function() {
+	if(this.hasMimetype()) {
+		return navigator.mimeTypes[this.mimetype].description;
+	} else {
+		return null;
+	}
+}
 
 
 /**

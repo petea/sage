@@ -15,8 +15,10 @@
 		<h1 id="rss-title"><a id="rss-link" href="**LINK**">**TITLE**</a></h1>
 		<p id="rss-desc">**DESCRIPTION**</p>
 	</div>
-	
-	**ITEMS**
+
+	<div class="items">
+		**ITEMS**
+	</div>
 </body>
 
 </html>
