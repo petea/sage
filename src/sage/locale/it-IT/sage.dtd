@@ -14,10 +14,10 @@
 <!ENTITY menu.tools				"Opzioni">
 <!ENTITY menu.checkUpdate			"Controlla i Feed">
 <!ENTITY menu.manageRSSList			"Gestione Lista dei Feed...">
-<!ENTITY menu.opmlImportExport			"Importazione/Esportazione file OPML...">
+<!ENTITY menu.opmlImportExport			"Importazione/Esportazione File OPML...">
 <!ENTITY menu.setting				"Preferenze...">
 <!ENTITY menu.sageProjectFeed				"Novita' sul Progetto Sage">
-<!ENTITY menu.discoverFeeds				"Feed Trovati">
+<!ENTITY menu.discoverFeeds				"Ricerca Feed Esterni">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Ricerca nella Pagina Corrente">
@@ -43,9 +43,9 @@
 <!ENTITY settingWindow.title                    "Configurazione di Sage">
 <!ENTITY selectFolder.label			"Selezionare la Cartella dei Feed">
 <!ENTITY openInContentsArea.caption		"Interpretazione dei Feed">
-<!ENTITY enableUserCss.label			"Usa CSS personalizzato">
+<!ENTITY enableUserCss.label			"Usa CSS Personalizzato">
 <!ENTITY browseCss.label			"Sfoglia...">
-<!ENTITY allowEContent.label			"Permetti i tag HTML">
+<!ENTITY allowEContent.label			"Permetti i Tag HTML">
 
 
 <!ENTITY openSageSidebar.commandkey		"S">

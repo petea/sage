@@ -1,0 +1,52 @@
+<!ENTITY sage.label											"Sage">
+<!ENTITY sage.version										"1.2">
+<!ENTITY sage.version.label								"versie">
+
+<!ENTITY sage.toolbarLabel									"Sage">
+<!ENTITY sage.sidebarTitle									"Sage">
+<!ENTITY sage.tooltip										"Toon Sage">
+
+<!ENTITY menu.view											"Beeld">
+<!ENTITY menu.showSearchBar								"Toon feed zoekbalk">
+<!ENTITY menu.showFeedItemList							"Toon feed itemlijst">
+<!ENTITY menu.showDescTooltip								"Toon beschrijvende tooltips">
+<!ENTITY menu.openHTML										"Open feeds in Contents Area">
+<!ENTITY menu.tools											"Opties">
+<!ENTITY menu.checkUpdate									"Controleer feeds">
+<!ENTITY menu.manageRSSList								"Beheer feedlijst...">
+<!ENTITY menu.opmlImportExport							"OPML Importeren/Exporteren...">
+<!ENTITY menu.setting										"Instellingen...">
+<!ENTITY menu.sageProjectFeed								"Sage Projectnieuws">
+<!ENTITY menu.discoverFeeds								"Ontdek feeds">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching						"Zoeken op huidige pagina">
+<!ENTITY discovery.button.addFeed						"Feed toevoegen">
+<!ENTITY discovery.button.close							"Sluiten">
+<!ENTITY discovery.header.title							"Titel">
+<!ENTITY discovery.header.format							"Formaat">
+<!ENTITY discovery.header.lastPubDate					"Laatste update">
+<!ENTITY discovery.header.itemCount						"Items">
+<!ENTITY discovery.header.url								"URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption						"Algemeen">
+<!ENTITY settings.autoFeedTitle.label					"Automatisch feedtitels bijwerken">
+<!ENTITY settings.renderFeeds.label						"Feeds weergeven in Contents Area">
+<!ENTITY settings.twelveHourClock.label				"Gebruik 12-uurs klok">
+<!ENTITY settings.feedItemOrder.label					"Volgorde van feeditems">
+<!ENTITY settings.feedItemOrder.chrono					"Chronologisch">
+<!ENTITY settings.feedItemOrder.source					"Bron">
+<!ENTITY settings.feedDiscoveryMode.label				"Feed ontdekkingsmodus">
+<!ENTITY settings.feedDiscoveryMode.exhaustive		"Grondig">
+<!ENTITY settings.feedDiscoveryMode.conservative	"Conservatief">
+<!ENTITY settingWindow.title								"Sage instellingen">
+<!ENTITY selectFolder.label								"Selecteer map met feeds">
+<!ENTITY openInContentsArea.caption						"Feedweergave">
+<!ENTITY enableUserCss.label								"Gebruik aangepaste CSS">
+<!ENTITY browseCss.label									"Verkennen...">
+<!ENTITY allowEContent.label								"HTML tags toestaan">
+
+
+<!ENTITY openSageSidebar.commandkey						"S">
+<!ENTITY openSageSidebar.modifiersKey					"alt">
