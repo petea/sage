@@ -269,9 +269,9 @@ function rssTitleLabelClick(aNode, aEvent){
 function setStatusLoading(label) {
 	rssStatusImage.setAttribute("loading", "true");
 	if(label) {
-		rssStatusLabel.value = "Loading: " + label;
+		rssStatusLabel.value = strRes.getString("RESULT_LOADING") + ": " + label;
 	} else {
-		rssStatusLabel.value = "Loading: " + lastResource.name;
+		rssStatusLabel.value = strRes.getString("RESULT_LOADING") + ": " + lastResource.name;
 	}
 }
 

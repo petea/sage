@@ -1,5 +1,10 @@
 
-function	Feed(feedXML) {
+/**
+ * Feed class
+ *
+ */
+
+function Feed(feedXML) {
 	this.feedXML = feedXML;
 	this.feedFormat = null;
 
@@ -27,26 +32,36 @@ Feed.prototype.parseRSS = function() {
 
 	var feedXML = this.feedXML;
 
-	first_element = feedXML.documentElement;
+	var firstElement = feedXML.documentElement;
 
-	if(first_element.localName.toLowerCase() == "rdf") {
+	if(firstElement.localName.toLowerCase() == "rdf") {
 		this.feedFormat = "RSS (1.0)";
-	} else if(first_element.localName.toLowerCase() == "rss") {
-		if(first_element.hasAttribute("version")) {
-			this.feedFormat = "RSS (" + first_element.getAttribute("version") + ")";
+	} else if(firstElement.localName.toLowerCase() == "rss") {
+		if(firstElement.hasAttribute("version")) {
+			this.feedFormat = "RSS (" + firstElement.getAttribute("version") + ")";
 		} else {
 			this.feedFormat = "RSS (?)";
 		}
 	}
 
 	var channelNode;
+	for(var i = firstElement.firstChild; i != null; i = i.nextSibling) {
+		if(i.nodeType != i.ELEMENT_NODE) continue;
+		if(i.localName.toLowerCase() == "channel") {
+			channelNode = i;
+		}
+	}
+	if(!channelNode) {
+		throw "No channel element where expected";
+	}
+
 	if(feedXML.getElementsByTagName("channel").length != 0) {
 		channelNode = feedXML.getElementsByTagName("channel")[0];
 	} else {
 		throw "No elements in channel tag";
 	}
 
-	for(var i = channelNode.firstChild; i != null; i = i.nextSibling) {
+	for(i = channelNode.firstChild; i != null; i = i.nextSibling) {
 		if(i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
@@ -121,10 +136,10 @@ Feed.prototype.parseATOM = function() {
 
 	var feedXML = this.feedXML;
 
-	first_element = feedXML.documentElement;
+	var firstElement = feedXML.documentElement;
 
-	if(first_element.hasAttribute("version")) {
-		this.feedFormat = "ATOM (" + first_element.getAttribute("version") + ")";
+	if(firstElement.hasAttribute("version")) {
+		this.feedFormat = "ATOM (" + firstElement.getAttribute("version") + ")";
 	} else {
 		this.feedFormat = "ATOM (?)";
 	}
@@ -277,6 +292,11 @@ Feed.prototype.getSignature = function() {
 
 
 
+/**
+ * FeedItem class
+ *
+ */
+
 function FeedItem(title, link, content, pubDate) {
 	this.title = title;
 	this.link = link;
@@ -346,8 +366,10 @@ FeedItem.prototype.getPubDate = function() {
 
 
 
-/* -------------- Utility Functions ---------------- */
-
+/**
+ * Utility functions
+ *
+ */
 
 // Parses an ISO 8601 formatted date string and returns a JavaScript Date object, returns null on parse error
 // Example inputs:  2004-06-17T18:00Z 2004-06-17T18:34:12+02:00

@@ -51,8 +51,8 @@ function browseImportFile() {
 
 function browseExportFile() {
 	var fpicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
-	fpicker.init(window, "Select OPML File", fpicker.modeSave);
-	fpicker.appendFilter("OPML File(*.xml, *.opml)", "*.xml;*.opml");
+	fpicker.init(window, strRes.getString("opml_select_file"), fpicker.modeSave);
+	fpicker.appendFilter(strRes.getString("opml_opml_file") + "(*.xml, *.opml)", "*.xml;*.opml");
 	fpicker.appendFilters(fpicker.filterAll);
 	fpicker.defaultString = "export.opml";
 

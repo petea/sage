@@ -34,7 +34,7 @@
 <!ENTITY settings.autoFeedTitle.label     "Automatically update feed titles">
 <!ENTITY settings.renderFeeds.label     "Render feeds in contents area">
 <!ENTITY settings.twelveHourClock.label     "Use 12 hour clock">
-<!ENTITY settings.feedItemOrder.label     "Feed Item Order">
+<!ENTITY settings.feedItemOrder.label     "Feed item order">
 <!ENTITY settings.feedItemOrder.chrono     "Chronological">
 <!ENTITY settings.feedItemOrder.source     "Source">
 <!ENTITY settings.feedDiscoveryMode.label     "Feed discovery mode">

@@ -3,7 +3,6 @@ var strRes;
 var feedTree;
 var dataSource;
 var rdf;
-var feeds;
 var ds;
 var rdfService;
 var schema;
@@ -16,8 +15,11 @@ var statusDeck;
 var statusMessage;
 var feeds_found_local;
 var feeds_found_external;
+var possibleFeeds;
 
 function init() {
+	var discoveryMode = CommonFunc.getPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", "exhaustive");
+
 	initServices();
 	initBMService();
 
@@ -30,7 +32,7 @@ function init() {
 	dataSource = Components.classes["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"];
 	rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"];
 
-	rdfService =	rdf.getService(Components.interfaces.nsIRDFService);
+	rdfService = rdf.getService(Components.interfaces.nsIRDFService);
 
 	ds = dataSource.createInstance(Components.interfaces.nsIRDFInMemoryDataSource);
 	feedTree.database.AddDataSource(ds);
@@ -49,22 +51,37 @@ function init() {
 	var current_document = browserWindow.contentDocument;
 
 	document_host = current_document.location.host;
+	if(document_host.match(/^www\./i)) {
+		document_host = document_host.substring(4, document_host.length - 1);
+	}
 	logMessage("host: " + document_host);
 
-	var possible_feeds = new Object();
+	possibleFeeds = new Array();
 
-	var links = current_document.getElementsByTagName("link");
-	for(var c = 0; c < links.length; c++) {
-		if(links[c].rel == "alternate" && (links[c].type == "text/xml" || links[c].type == "application/atom+xml" || links[c].type == "application/rss+xml")) {
-			possible_feeds[links[c].href] = links[c].href;
-			logMessage("Found: " + links[c].href);
+	var links, c;
+
+	if(discoveryMode == "exhaustive") {
+		links = current_document.getElementsByTagName("a");
+		for(c = 0; c < links.length; c++) {
+			if(links[c].href.match(/xml$|rss|rdf|atom/i)) {
+				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
+				logMessage("Found: " + links[c].href);
+			}
+		}
+	} else {
+		links = current_document.getElementsByTagName("a");
+		for(c = 0; c < links.length; c++) {
+			if(links[c].href.match(/xml$|rss|rdf|atom/i) && links[c].href.match(new RegExp(document_host, "i"))) {
+				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
+				logMessage("Found: " + links[c].href);
+			}
 		}
 	}
 
-	links = current_document.getElementsByTagName("a");
+	links = current_document.getElementsByTagName("link");
 	for(c = 0; c < links.length; c++) {
-		if(links[c].href.match(/xml$|rss|rdf|atom/i)) {
-			possible_feeds[links[c].href] = links[c].href;
+		if(links[c].rel == "alternate" && (links[c].type == "text/xml" || links[c].type == "application/atom+xml" || links[c].type == "application/rss+xml")) {
+			possibleFeeds[links[c].href] = Array(links[c].href, "explicit");
 			logMessage("Found: " + links[c].href);
 		}
 	}
@@ -74,7 +91,7 @@ function init() {
 	feeds_found_local = 0;
 	feeds_found_external = 0;
 
-	for(url in possible_feeds) {
+	for(entry in possibleFeeds) {
 		fetch_total++;
 	}
 
@@ -84,16 +101,15 @@ function init() {
 
 	logMessage("found " + fetch_total + " potential feed URI(s) in " + current_document.location);
 
-	feeds = new Array();
 	var httpReq;
-	for(url in possible_feeds) {
+	for(entry in possibleFeeds) {
 		httpReq = new XMLHttpRequest();
 		httpReq.onload = httpLoaded;
 		httpReq.onerror = httpError;
-		httpReq.open("GET", url, true);
-		httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
-		httpReq.overrideMimeType("application/xml");
 		try {
+			httpReq.open("GET", possibleFeeds[entry][0], true);
+			httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
+			httpReq.overrideMimeType("application/xml");
 			httpReq.send(null);
 		} catch(e) {
 			httpReq.abort();
@@ -133,11 +149,13 @@ function doAddFeed() {
 			var sage_folder = rdfService.GetResource(CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot"));
 			BMSVC.createBookmarkInContainer(title, url, null, "updated", null, null, sage_folder, null);
 			logMessage("added feed: '" + title + "' " + url);
+
+			// select new feed in sibebar
+			var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
+			bookmarksTree.treeBoxObject.ensureRowIsVisible(bm_index);
+			bookmarksTree.treeBoxObject.selection.select(bm_index);
 		}
 	}
-	var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
-	bookmarksTree.treeBoxObject.ensureRowIsVisible(bm_index);
-	bookmarksTree.treeBoxObject.selection.select(bm_index);
   return true;
 }
 
@@ -161,7 +179,7 @@ function httpLoaded(e) {
 
 function addDiscoveredFeed(uri, feed) {
 	var feedClass, lastPubDate, itemCount;
-	if(uri.host == document_host) {  // feed is local
+	if(uri.host.match(new RegExp(document_host, "i"))) {  // feed is local
 		if(feeds_found_local == 0) {
 			//ds.Assert(rdfService.GetResource(schema + "Feeds"), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + "LocalFeeds"), true);
 			//ds.Assert(rdfService.GetResource(schema + "LocalFeeds"), rdfService.GetResource(schema + "Title"), rdfService.GetLiteral("Site Feeds"), true);
@@ -188,8 +206,9 @@ function addDiscoveredFeed(uri, feed) {
 
 	// feed valuation
 	var valuation = 0;
-	if(feedClass == "Feeds") valuation += 1000;
-	if(feed.hasLastPubDate()) valuation += 100;
+	if(possibleFeeds[uri.spec][1] == "explicit") valuation += 100;
+	if(feedClass == "Feeds") valuation += 10;
+	if(feed.hasLastPubDate()) valuation += 1;
 	
 	ds.Assert(rdfService.GetResource(schema + feedClass), rdfService.GetResource(schema + "child"), rdfService.GetResource(schema + uri.spec), true);
 
@@ -199,6 +218,8 @@ function addDiscoveredFeed(uri, feed) {
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "LastPubDate"), rdfService.GetLiteral(lastPubDate), true);
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "ItemCount"), rdfService.GetLiteral(itemCount), true);
 	ds.Assert(rdfService.GetResource(schema + uri.spec), rdfService.GetResource(schema + "Valuation"), rdfService.GetIntLiteral(valuation), true);
+
+	feedTree.builder.rebuild();
 
 	logMessage("discovered feed: " + uri.spec);
 }
