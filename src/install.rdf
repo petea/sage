@@ -27,6 +27,9 @@
 <em:locale>locale/nl-NL/</em:locale>
 <em:locale>locale/ca-CA/</em:locale>
 <em:locale>locale/zh-TW/</em:locale>
+<em:locale>locale/de-DE/</em:locale>
+<em:locale>locale/es-ES/</em:locale>
+<em:locale>locale/ru-RU/</em:locale>
 </Description>
 </em:file>
 
