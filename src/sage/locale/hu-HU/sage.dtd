@@ -1,0 +1,36 @@
+<!-- maintained by Feher Janos [feher.janos@mindworks.hu]  -->
+
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version				"1.1">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Sage megjelenítése">
+
+<!ENTITY menu.view				"Megnéz">
+<!ENTITY menu.showSearchBar         "Keresõmezõ mutatása">
+<!ENTITY menu.showFeedItemList			"Mutassa a letöltött elemek listáját">
+<!ENTITY menu.showDescTooltip       "Leírás-tooltip megjelenítése">
+<!ENTITY menu.openHTML              "Megnyitás a tartalmi részben">
+<!ENTITY menu.tools                 "Eszközök">
+<!ENTITY menu.checkUpdate           "Frissülések ellenõrzése">
+<!ENTITY menu.manageRSSList         "Manage RSS List...">
+<!ENTITY menu.opmlImportExport      "OPML import/export...">
+<!ENTITY menu.setting               "Beállítások...">
+<!ENTITY menu.sageProjectFeed				"A Sage projekt hírei">
+
+
+<!-- Setting Dialog -->
+<!ENTITY settings.general.caption     "Általános">
+<!ENTITY settings.autoFeedTitle.label     "Címek automatikus frissítése">
+<!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
+<!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
+<!ENTITY selectFolder.label         "Válassza ki az RSS listamappát">
+<!ENTITY openInContentsArea.caption "Letöltöttek megjelenítése">
+<!ENTITY enableUserCss.label        "Egyéni stíluslap engedélyezése">
+<!ENTITY browseCss.label            "Böngészés...">
+<!ENTITY allowEContent.label        "HTML tagek engedélyezése">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
