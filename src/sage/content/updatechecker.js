@@ -78,28 +78,34 @@ var UpdateChecker = {
 		var feed = new Feed(UpdateChecker.httpReq.responseXML);
 
 		if(feed.hasLastPubDate()) {
-			lastModified = feed.getLastPubDate().getTime() * 1000;
+			lastModified = feed.getLastPubDate().getTime();
 		} else {
 			try {
 				lastModified = UpdateChecker.httpReq.getResponseHeader("Last-modified");
-				lastModified = new Date(lastModified).getTime() * 1000;
+				lastModified = new Date(lastModified).getTime();
 			} catch(e) {}
 		}
 		
-		UpdateChecker.checkResult(true, lastModified);
+		UpdateChecker.checkResult(true, lastModified, feed);
 	},
 
-	checkResult: function(aSucceed, aLastModified) {
+	checkResult: function(aSucceed, aLastModified, feed) {
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
 		var status = 0;
 
+		var lastVisit = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_LAST_VISIT);
+		if(!lastVisit) {
+			lastVisit = 0;
+		} else {
+			lastVisit /= 1000;
+		}
+
+		//if(feed)
+		//	aConsoleService.logStringMessage(feed.getTitle() + " aLastModified: " + aLastModified + ", lastVisit: " + lastVisit);
+
 		if(aLastModified) {
-			var lastVisit = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_LAST_VISIT);
-			if(!lastVisit) { lastVisit = 0; }
-	
-			var updated = (aLastModified > lastVisit);
-			if(updated) {
+			if(aLastModified > lastVisit) {
 				status = CommonFunc.STATUS_UPDATE;
 			} else {
 				status = CommonFunc.STATUS_NO_UPDATE;

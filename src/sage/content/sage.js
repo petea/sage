@@ -27,8 +27,10 @@ var rssLoading = false;
 var sageFolderID = "";
 var enableTooltip = true;
 var popupTimeoutId=0;
+var aConsoleService
 
-function init(){
+
+function init() {
 	strRes = document.getElementById("strRes");
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
@@ -57,6 +59,8 @@ function init(){
 	FeedSearch.init();
 	toggleShowSearchBar();
 	toggleShowFeedItemList();
+
+  aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 }
 
 
@@ -466,7 +470,7 @@ function httpGetResult(aResultCode) {
 		currentFeed = new Feed(responseXML);
 
 		if(lastResource.res) {
-			BMSVC.updateLastVisitedDate(lastResource.res, responseXML.characterSet);
+			BMSVC.updateLastVisitedDate(lastResource.url, responseXML.characterSet);
 			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE);
 		}
 		setStatusDone();
