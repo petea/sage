@@ -62,19 +62,19 @@ function init() {
 	// access to the file system if needed.
 	var uriSchemeRe = /^(http|https|ftp|file):$/;
 
+	links = current_document.getElementsByTagName("a");
+
 	if(discoveryMode == "exhaustive") {
-		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
 			if(uriSchemeRe.test(links[c].protocol) && links[c].href.match(/xml$|rss|rdf|atom|feed|syndicate/i)) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
 			}
 		}
 	} else {
-		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
 			if(uriSchemeRe.test(links[c].protocol) &&
-			   links[c].href.match(/xml$|rss|rdf|atom|feed|syndicate/i) &&
-			   links[c].host.match(new RegExp(document_host, "i"))) {
+					links[c].href.match(/xml$|rss|rdf|atom|feed|syndicate/i) &&
+					links[c].host.match(new RegExp(document_host, "i"))) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
 			}
 		}

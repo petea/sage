@@ -1,5 +1,5 @@
 <!ENTITY sage.label                             "Sage">
-<!ENTITY sage.version                           "1.2.2">
+<!ENTITY sage.version                           "1.3">
 <!ENTITY sage.version.label                             "версия">
 
 <!ENTITY sage.toolbarLabel                      "Sage">
@@ -9,6 +9,7 @@
 <!ENTITY menu.view                              "Вид">
 <!ENTITY menu.showSearchBar                     "Показывать строку поиска лент">
 <!ENTITY menu.showFeedItemList                  "Показывать элементы ленты">
+<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
 <!ENTITY menu.showDescTooltip                   "Показывать всплывающие описания">
 <!ENTITY menu.openHTML                          "Открывать ленты в основном окне">
 <!ENTITY menu.tools                             "Настройки">
@@ -47,5 +48,35 @@
 <!ENTITY browseCss.label                        "Пролистать...">
 <!ENTITY allowEContent.label                    "Разрешить HTML-тэги">
 
+
 <!ENTITY openSageSidebar.commandkey             "S">
 <!ENTITY openSageSidebar.modifiersKey           "alt">
+
+<!-- These are taken from history.dtd -->
+<!ENTITY openLinkInWindow.label "Open">
+<!ENTITY openLinkInWindow.accesskey "O">
+<!ENTITY openInNewTab.label "Open in New Tab">
+<!ENTITY openInNewTab.accesskey "T">
+<!ENTITY openInNewWindow.label "Open in New Window">
+<!ENTITY openInNewWindow.accesskey "W">
+
+<!-- Read State -->
+<!ENTITY markAsRead.command.label			"Mark as Read">
+<!ENTITY markAsRead.command.tooltip			"Mark as Read">
+<!ENTITY markAsRead.command.accesskey		"R">
+
+<!ENTITY markAsUnread.command.label			"Mark as Unread">
+<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
+<!ENTITY markAsUnread.command.accesskey		"U">
+
+<!ENTITY markAllAsRead.command.label		"Mark All as Read">
+<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
+<!ENTITY markAllAsRead.command.accesskey	"A">
+<!ENTITY markAllAsRead.command.key			"C">
+<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+
+<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
+<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
+<!ENTITY markAllAsUnread.command.accesskey	"n">
+
+<!ENTITY toggleReadState.command.key		"M">
