@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"OPML-tuonti/vientivelho">
+<!ENTITY pageStart.desc				"Valitse toiminto:">
+<!ENTITY pageImport.label			"Tuo OPML-tiedosto">
+<!ENTITY pageImport.desc			"Valitse tuotava OPML-tiedosto">
+<!ENTITY pageExport.label			"Vie OPML-tiedosto">
+<!ENTITY pageExport.desc			"Valitse vietävä OPML-tiedosto">
+
+<!ENTITY rdoImport.label			"Tuo OPML">
+<!ENTITY rdoExport.label			"Vie OPML">
+
+<!ENTITY browseButton.label			"Selaa...">
+
+<!ENTITY pageImportFinished.label	"Tuo OPML">
+<!ENTITY pageImportFinished.desc	"Tuonti onnistui.">
+<!ENTITY pageExportFinished.label	"Vie OPML">
+<!ENTITY pageExportFinished.desc	"Vienti onnistui.">

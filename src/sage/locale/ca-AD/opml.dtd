@@ -3,7 +3,7 @@
 <!ENTITY pageImport.label "Importació OPML">
 <!ENTITY pageImport.desc "Seleccioneu el fitxer OPML per importar">
 <!ENTITY pageExport.label "Exportació OPML">
-<!ENTITY pageExport.desc "Selecciona fitxer OPML per exportar">
+<!ENTITY pageExport.desc "Seleccioneu fitxer OPML per exportar">
 <!ENTITY rdoImport.label "Importació OPML">
 <!ENTITY rdoExport.label "Exportació OPML">
 <!ENTITY browseButton.label "Navega">

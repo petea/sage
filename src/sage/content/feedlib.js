@@ -123,7 +123,7 @@ Feed.prototype.parseRSS = function() {
 					break;
 				case "link":
 					if(!item.link) {
-						item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(CommonFunc.getInnerText(j));
+						item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(CommonFunc.getInnerText(j)) : CommonFunc.getInnerText(j);
 					}
 					break;
 				case "author":
@@ -167,7 +167,7 @@ Feed.prototype.parseRSS = function() {
 		}
 
 		if(!item.link && guid) {
-			item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid);
+			item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
 		}
 
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure);
@@ -239,7 +239,7 @@ Feed.prototype.parseAtom = function() {
 		if(linkNodes.length) {
 			for (var j = 0; j < linkNodes.length; j++) {
 				if (linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
-					item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href"));
+					item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
 					break;
 				}
 			}

@@ -69,7 +69,7 @@ function dateFormat(date, twelveHourClock, format) {
 
 var CommonFunc = {
 
-	VERSION: Array(1,3,0),
+	VERSION: Array(1,3,1),
 	USER_AGENT: "Mozilla/5.0 (Sage)",
 
 	FEED_FOLDER_ID: "sage.folder_id",

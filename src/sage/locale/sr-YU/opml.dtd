@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"Чаробњак за увоз/извоз OPML-а">
+<!ENTITY pageStart.desc				"Избор команде">
+<!ENTITY pageImport.label			"Увези OPML">
+<!ENTITY pageImport.desc			"Избор OPML датотеке за увоз">
+<!ENTITY pageExport.label			"Извези OPML">
+<!ENTITY pageExport.desc			"Избор OPML датотеке за извоз">
+
+<!ENTITY rdoImport.label			"Увези OPML">
+<!ENTITY rdoExport.label			"Извези OPML">
+
+<!ENTITY browseButton.label			"Прегледај...">
+
+<!ENTITY pageImportFinished.label	"Увоз OPML">
+<!ENTITY pageImportFinished.desc	"Увоз је обављен">
+<!ENTITY pageExportFinished.label	"Извоз OPML">
+<!ENTITY pageExportFinished.desc	"Извоз је обављен">
