@@ -1,4 +1,5 @@
 <!ENTITY sage.label "Sage">
+<!ENTITY sage.version "1.3">
 <!ENTITY sage.version.label "Versió">
 <!ENTITY sage.toolbarLabel "Sage">
 <!ENTITY sage.sidebarTitle "Sage">
@@ -10,7 +11,7 @@
 <!ENTITY menu.showDescTooltip "Mostra els rètols indicadors de funció">
 <!ENTITY menu.openHTML "Obri les fonts a l'àrea de continguts">
 <!ENTITY menu.tools "Opcions">
-<!ENTITY menu.checkUpdate "Descobreix fonts">
+<!ENTITY menu.checkUpdate "Comprova les fonts">
 <!ENTITY menu.manageRSSList "Gestiona la llista de fonts...">
 <!ENTITY menu.opmlImportExport "Importació/exportació OPML">
 <!ENTITY menu.setting "Paràmetres...">
@@ -38,7 +39,7 @@
 <!ENTITY settings.feedDiscoveryMode.conservative "Conservatiu">
 <!ENTITY settingWindow.title "Paràmetres del Sage">
 <!ENTITY selectFolder.label "Seleccioneu la carpeta de les fonts">
-<!ENTITY openInContentsArea.caption "S'estan representant les fonts">
+<!ENTITY openInContentsArea.caption "Representació de les fonts">
 <!ENTITY enableUserCss.label "Utilitza fulla d'estil personalitzada">
 <!ENTITY browseCss.label "Navega">
 <!ENTITY allowEContent.label "Habilita les etiquetes HTML">
@@ -52,18 +53,18 @@
 <!ENTITY openInNewWindow.label "Obre-ho en una nova finestra">
 <!ENTITY openInNewWindow.accesskey "W">
 <!-- Read State -->
-<!ENTITY markAsRead.command.label "Marca'l com a llegit">
+<!ENTITY markAsRead.command.label "Marca'l com a llegit (R)">
 <!ENTITY markAsRead.command.tooltip "Marca'l com a llegit">
 <!ENTITY markAsRead.command.accesskey "R">
-<!ENTITY markAsUnread.command.label "Marca'l com a no llegit">
+<!ENTITY markAsUnread.command.label "Marca'l com a no llegit (U)">
 <!ENTITY markAsUnread.command.tooltip "Marca'l com a no llegit">
 <!ENTITY markAsUnread.command.accesskey "U">
-<!ENTITY markAllAsRead.command.label "Marca'ls tots com a llegits">
+<!ENTITY markAllAsRead.command.label "Marca'ls tots com a llegits (A)">
 <!ENTITY markAllAsRead.command.tooltip "Marca'ls tots com a llegits">
 <!ENTITY markAllAsRead.command.accesskey "A">
 <!ENTITY markAllAsRead.command.key "C">
 <!ENTITY markAllAsRead.command.modifiers "Majúscula">
-<!ENTITY markAllAsUnread.command.label "Marca'ls tots com a llegits">
+<!ENTITY markAllAsUnread.command.label "Marca'ls tots com a no llegits">
 <!ENTITY markAllAsUnread.command.tooltip "Marca'ls tots com a no llegits">
 <!ENTITY markAllAsUnread.command.accesskey "n">
 <!ENTITY toggleReadState.command.key "M">
