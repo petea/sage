@@ -463,7 +463,7 @@ function httpGetResult(aResultCode) {
 	rssLoading = false;
 
 	if(aResultCode == RESULT_OK) {
-		currentFeed = new Feed(responseXML);
+		//currentFeed = new Feed(responseXML);
 
 		if(lastResource.res) {
 			BMSVC.updateLastVisitedDate(lastResource.res, responseXML.characterSet);
