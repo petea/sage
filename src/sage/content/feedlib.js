@@ -31,6 +31,9 @@ function Feed(feedXML) {
 Feed.prototype.parseRSS = function() {
 
 	var feedXML = this.feedXML;
+	
+	const nsIURIFixup = Components.interfaces.nsIURIFixup;
+	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
 	var firstElement = feedXML.documentElement;
 
@@ -90,7 +93,7 @@ Feed.prototype.parseRSS = function() {
 					break;
 				case "link":
 					if(!item.link) {
-						item.link = CommonFunc.getInnerText(j);
+						item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(CommonFunc.getInnerText(j));
 					}
 					break;
 				case "guid":
@@ -123,9 +126,8 @@ Feed.prototype.parseRSS = function() {
 		}
 
 		if(!item.link && guid) {
-			item.link = guid;
+			item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid);
 		}
-		// TODO: We should make the link absolute. Bug #7202
 
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
@@ -142,6 +144,9 @@ Feed.prototype.parseRSS = function() {
 Feed.prototype.parseAtom = function() {
 
 	var feedXML = this.feedXML;
+
+	const nsIURIFixup = Components.interfaces.nsIURIFixup;
+	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
 	var firstElement = feedXML.documentElement;
 
@@ -185,7 +190,7 @@ Feed.prototype.parseAtom = function() {
 		if(linkNodes.length) {
 			for (var j = 0; j < linkNodes.length; j++) {
 				if (linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
-					item.link = linkNodes[j].getAttribute("href");
+					item.link = URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href"));
 					break;
 				}
 			}
@@ -222,8 +227,6 @@ Feed.prototype.parseAtom = function() {
 		}	else if(summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
-
-		// TODO: This should make the link absolute. Bug #7202
 
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
