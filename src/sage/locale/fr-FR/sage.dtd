@@ -1,10 +1,10 @@
 <!ENTITY sage.label								 "Sage">
-<!ENTITY sage.version							 "1.2">
+<!ENTITY sage.version							 "1.2.2">
 <!ENTITY sage.version.label						 "">
 
 <!ENTITY sage.toolbarLabel						 "Sage">
 <!ENTITY sage.sidebarTitle						 "Sage">
-<!ENTITY sage.tooltip							 "Affiche le panneau latÃ©ral Sage">
+<!ENTITY sage.tooltip							 "Affiche le panneau latéral Sage">
 
 <!ENTITY menu.view								 "Affichage">
 <!ENTITY menu.showSearchBar						 "Afficher la barre de recherche des fils">
@@ -12,12 +12,12 @@
 <!ENTITY menu.showDescTooltip					 "Afficher les bulles descriptives">
 <!ENTITY menu.openHTML							 "Afficher le contenu des fils dans la zone de navigation">
 <!ENTITY menu.tools								 "Options">
-<!ENTITY menu.checkUpdate						 "VÃ©rifier les fils">
-<!ENTITY menu.manageRSSList						 "GÃ©rer la liste des fils...">
+<!ENTITY menu.checkUpdate						 "Vérifier les fils">
+<!ENTITY menu.manageRSSList						 "Gérer la liste des fils...">
 <!ENTITY menu.opmlImportExport					 "Import/Export OPML...">
 <!ENTITY menu.setting							 "Configuration...">
-<!ENTITY menu.sageProjectFeed					 "NouveautÃ©s du projet Sage">
-<!ENTITY menu.discoverFeeds						 "DÃ©couvrir de nouveaux fils">
+<!ENTITY menu.sageProjectFeed					 "Nouveautés du projet Sage">
+<!ENTITY menu.discoverFeeds						 "Découvrir de nouveaux fils">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     		 "Chercher dans la page en cours">
@@ -25,29 +25,30 @@
 <!ENTITY discovery.button.close			 		 "Fermer">
 <!ENTITY discovery.header.title			 		 "Nom">
 <!ENTITY discovery.header.format     			 "Format">
-<!ENTITY discovery.header.lastPubDate     		 "DerniÃ¨re mise Ã  jour">
-<!ENTITY discovery.header.itemCount     		 "ÃlÃ©ments">
+<!ENTITY discovery.header.lastPubDate     		 "Dernière mise à jour">
+<!ENTITY discovery.header.itemCount     		 "Éléments">
 <!ENTITY discovery.header.url     				 "Adresse">
 
 <!-- Setting Dialog -->
-<!ENTITY settings.general.caption     			 "GÃ©nÃ©ral">
-<!ENTITY settings.autoFeedTitle.label     		 "Mise Ã  jour automatique des titres des fils">
+<!ENTITY settings.general.caption     			 "Général">
+<!ENTITY settings.autoFeedTitle.label     		 "Mise à jour automatique des titres des fils">
 <!ENTITY settings.renderFeeds.label				 "Afficher les fils dans la zone de navigation">
 <!ENTITY settings.twelveHourClock.label			 "Utiliser une horloge sur 12 heures">
 <!ENTITY settingWindow.title                     "Configuration de Sage">
-<!ENTITY selectFolder.label						 "SÃ©lection du dossier des fils">
-<!ENTITY settings.feedItemOrder.label     		 "Ordre des Ã©lÃ©ments du fil">
+<!ENTITY selectFolder.label						 "Sélection du dossier des fils">
+<!ENTITY settings.feedItemOrder.label     		 "Ordre des éléments du fil">
 <!ENTITY settings.feedItemOrder.chrono     		 "Chronologique">
 <!ENTITY settings.feedItemOrder.source     		 "Source">
-<!ENTITY settings.feedDiscoveryMode.label     	 "Mode de dÃ©couverte des fils">
+<!ENTITY settings.feedDiscoveryMode.label     	 "Mode de découverte des fils">
 <!ENTITY settings.feedDiscoveryMode.exhaustive   "Exhaustif">
 <!ENTITY settings.feedDiscoveryMode.conservative "Prudent">
 <!ENTITY openInContentsArea.caption				 "Ouverture dans la zone de navigation">
-<!ENTITY enableUserCss.label					 "Utiliser une feuille de style CSS personnalisÃ©e">
+<!ENTITY enableUserCss.label					 "Utiliser une feuille de style CSS personnalisée">
 <!ENTITY browseCss.label						 "Parcourir...">
 <!ENTITY allowEContent.label					 "Autoriser les balises HTML">
 
 
 <!ENTITY openSageSidebar.commandkey				 "S">
 <!ENTITY openSageSidebar.modifiersKey			 "alt">
+
 

@@ -152,19 +152,22 @@ function outlineFilter(aNode) {
 	}
 }
 
-	// outline 要素から ブックマークアイテムを作成
 function createRssItem(aOutlineNode, aRssFolder) {
 	var type = aOutlineNode.getAttribute("type");
 	var title = aOutlineNode.getAttribute("title");
 	if(!title) title = aOutlineNode.getAttribute("text");
-	var xmlUrl = aOutlineNode.getAttribute("xmlUrl");
-		// 不完全な OUTLINE は無視する
+	if(aOutlineNode.hasAttribute("xmlUrl")) {
+		var xmlUrl = aOutlineNode.getAttribute("xmlUrl");
+	} else {
+		var xmlUrl = aOutlineNode.getAttribute("xmlurl");
+	}
+
 	if(type!="rss" && !title && xmlUrl) return;
 
 	if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
-		BMSVC.createBookmarkInContainer(title, xmlUrl, null, null, null, aRssFolder, null);
+		BMSVC.createBookmarkInContainer(title, xmlUrl, null, "no-updated", null, aRssFolder, null);
 	} else {
-		BMSVC.createBookmarkInContainer(title, xmlUrl, null, null, null, null, aRssFolder, null);
+		BMSVC.createBookmarkInContainer(title, xmlUrl, null, "no-updated", null, null, aRssFolder, null);
 	}
 	
 }
