@@ -144,7 +144,8 @@
 			contextmenu="rssItemListBoxContextMenu"
 			onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
 			onclick="rssItemListBoxClick(event)"
-			onselect="readStateController.onCommandUpdate()"/>
+			onselect="readStateController.onCommandUpdate()"
+			disableKeyNavigation="true"/>
 	</vbox>
 
 </vbox>
