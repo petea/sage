@@ -125,7 +125,7 @@ Feed.prototype.parseATOM = function() {
 				break;
 		}
 	}
-
+  /*
 	var entryNodes = feedXML.getElementsByTagName("entry");
 	for(i = 0; entryNodes.length > i; i++){
 		var item = {title:"", link:"", content:"", pubDate:""};
@@ -167,8 +167,6 @@ Feed.prototype.parseATOM = function() {
 			contentArray[contType] = CommonFunc.getInnerText(contentNodes[i]);
 		}
 
-		/*
-
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
 
 		if("application/xhtml+xml" in contentArray) {
@@ -180,8 +178,6 @@ Feed.prototype.parseATOM = function() {
 		}	else if(summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
-
-		*/
 			
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
 
@@ -193,6 +189,7 @@ Feed.prototype.parseATOM = function() {
 
 		this.items.push(tmpFeedItem);
 	}
+  */
 }
 
 Feed.prototype.getTitle = function() {
