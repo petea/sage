@@ -25,7 +25,7 @@ toolbarbutton.sage_button2 > .toolbarbutton-text {
 	-moz-image-region: rect(0px 26px 24px 0px) !important;
 }
 
-#checkFeeds[buttondown="true"] {
+#checkFeeds:active {
 	-moz-image-region: rect(24px 26px 48px 0px) !important;
 }
 
@@ -37,7 +37,7 @@ toolbarbutton.sage_button2 > .toolbarbutton-text {
 	-moz-image-region: rect(0px 52px 24px 26px) !important;
 }
 
-#discoverFeeds[buttondown="true"] {
+#discoverFeeds:active {
 	-moz-image-region: rect(24px 52px 48px 26px) !important;
 }
 
@@ -73,12 +73,21 @@ treechildren::-moz-tree-cell-text(feed, updated) {
 
 /* If this is removed, please remove next rule as well */
 treechildren::-moz-tree-twisty {
-	width:	0 !important;
+	-moz-appearance: none !important;
+	padding-right: 0px !important;
+	padding-top: 0px !important;
+	width:	0px !important;
+	list-style-image: none !important;
 }
-
 /* Work around for bug in separators at level 0 when twisty has width 0 */
 treechildren::-moz-tree-cell-text(Name, separator) {
 	margin-left:	12px;
+}
+
+treechildren::-moz-tree-separator {
+  -moz-appearance: separator !important;
+  border-top: 1px solid ThreeDShadow !important;
+  border-bottom: 1px solid ThreeDHighlight !important;
 }
 
 #bookmarksTreeBox,
@@ -138,7 +147,7 @@ toolbarbutton#markAllAsUnreadButton {
 	-moz-image-region: rect(32px 80px 48px 64px) !important;
 }
 
-#markAsReadButton[buttondown="true"] {
+#markAsReadButton:active {
 	-moz-image-region: rect(48px 80px 64px 64px) !important;
 }
 
@@ -154,7 +163,7 @@ toolbarbutton#markAllAsUnreadButton {
 	-moz-image-region: rect(32px 96px 48px 80px) !important;
 }
 
-#markAsUnreadButton[buttondown="true"] {
+#markAsUnreadButton:active {
 	-moz-image-region: rect(48px 96px 64px 80px) !important;
 }
 
@@ -170,7 +179,7 @@ toolbarbutton#markAllAsUnreadButton {
 	-moz-image-region: rect(32px 48px 48px 32px) !important;
 }
 
-#markAllAsReadButton[buttondown="true"] {
+#markAllAsReadButton:active {
 	-moz-image-region: rect(48px 48px 64px 32px) !important;
 }
 
@@ -186,7 +195,7 @@ toolbarbutton#markAllAsUnreadButton {
 	-moz-image-region: rect(32px 64px 48px 48px) !important;
 }
 
-#markAllAsUnreadButton[buttondown="true"] {
+#markAllAsUnreadButton:active {
 	-moz-image-region: rect(48px 64px 64px 48px) !important;
 }
 

@@ -27,7 +27,7 @@
 			<rule rdf:type="http://home.netscape.com/NC-rdf#BookmarkSeparator">
 			<treechildren>
 				<treeitem uri="rdf:*">
-				<treerow properties="rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#type">
+				<treerow properties="rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#type separator">
 					<treecell label="rdf:http://home.netscape.com/NC-rdf#Name" properties="separator"/>
 				</treerow>
 				</treeitem>
