@@ -26,19 +26,19 @@
 <script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
 
 	<!-- bookmarks & edit commands -->
-<commandset id="editMenuCommands"/>
-<command id="cmd_bm_open" 		   oncommand="goDoCommand('cmd_bm_open');"/>
-<command id="cmd_bm_openinnewwindow" disabled="true"/>
-<command id="cmd_bm_openinnewtab"	 disabled="true"/>
-<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
-<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
-<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
-<command id="cmd_bm_newfolder"	   oncommand="goDoCommand('cmd_bm_newfolder');"/>
-<command id="cmd_bm_newbookmark"	   oncommand="goDoCommand('cmd_bm_newbookmark');"/>
-<command id="cmd_bm_newseparator"	 oncommand="goDoCommand('cmd_bm_newseparator');"/>
-<command id="cmd_bm_find" 		   oncommand="goDoCommand('cmd_bm_find');"/>
-<command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
-
+<commandset id="editMenuCommands">
+	<command id="cmd_bm_open" 		   oncommand="goDoCommand('cmd_bm_open');"/>
+	<command id="cmd_bm_openinnewwindow" disabled="true"/>
+	<command id="cmd_bm_openinnewtab"	 disabled="true"/>
+	<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
+	<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
+	<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
+	<command id="cmd_bm_newfolder"	   oncommand="goDoCommand('cmd_bm_newfolder');"/>
+	<command id="cmd_bm_newbookmark"	   oncommand="goDoCommand('cmd_bm_newbookmark');"/>
+	<command id="cmd_bm_newseparator"	 oncommand="goDoCommand('cmd_bm_newseparator');"/>
+	<command id="cmd_bm_find" 		   oncommand="goDoCommand('cmd_bm_find');"/>
+	<command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
+</commandset>
 
 <stringbundleset>
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
@@ -46,7 +46,7 @@
 
 <toolbox class="plain">
 	<toolbar class="plain">
-		<button label="&menu.checkUpdate;" oncommand="updateCheck()" style="padding: 0px; font-size: x-small"/>
+		<toolbarbutton image="chrome://sage/skin/check_feeds.png" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"></toolbarbutton>
 		<spacer flex="1"/>
 		<toolbarbutton type="menu" label="&menu.tools;">
 			<menupopup>

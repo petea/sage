@@ -101,7 +101,7 @@ function dateFormat(date, twelveHourClock) {
 
 	var year = date.getYear() + 1900;
 
-	var date_str = day + " " + month + " " + date.getDate() + ", " + year; 
+	var date_str = day + ", " + month + " " + date.getDate() + ", " + year; 
 
 	var hours = date.getHours(), minutes = padout(date.getMinutes()), seconds = padout(date.getSeconds());
 	if(twelveHourClock) {
