@@ -152,7 +152,6 @@ function outlineFilter(aNode) {
 	}
 }
 
-	// outline 要素から ブックマークアイテムを作成
 function createRssItem(aOutlineNode, aRssFolder) {
 	var type = aOutlineNode.getAttribute("type");
 	var title = aOutlineNode.getAttribute("title");
@@ -162,7 +161,7 @@ function createRssItem(aOutlineNode, aRssFolder) {
 	} else {
 		var xmlUrl = aOutlineNode.getAttribute("xmlurl");
 	}
-		// 不完全な OUTLINE は無視する
+
 	if(type!="rss" && !title && xmlUrl) return;
 
 	if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
