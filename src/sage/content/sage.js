@@ -211,7 +211,6 @@ function createTreeContextMenu2(aEvent) {
 
 function bookmarksTreeClick(aEvent) {
 	var selectedItemType = BookmarksUtils.getProperty(bookmarksTree.currentResource, RDF_NS + "type", bookmarksTree.db);
-	logMessage(aEvent.type);
 	switch(aEvent.type) {
 		case "click":
 			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {

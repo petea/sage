@@ -4,49 +4,49 @@
 
 <!ENTITY sage.toolbarLabel			"Sage">
 <!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Sage megjelenítése">
+<!ENTITY sage.tooltip				"Sage megjelenÃ­tÃ©se">
 
-<!ENTITY menu.view				"Megnéz">
-<!ENTITY menu.showSearchBar         "Keresõmezõ mutatása">
-<!ENTITY menu.showFeedItemList			"Mutassa a letöltött elemek listáját">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
-<!ENTITY menu.showDescTooltip       "Leírás-tooltip megjelenítése">
-<!ENTITY menu.openHTML              "Megnyitás a tartalmi részben">
-<!ENTITY menu.tools                 "Eszközök">
-<!ENTITY menu.checkUpdate           "Frissülések ellenõrzése">
-<!ENTITY menu.manageRSSList         "RSS lista menedzselése...">
+<!ENTITY menu.view				"MegnÃ©z">
+<!ENTITY menu.showSearchBar         "KeresÃµmezÃµ mutatÃ¡sa">
+<!ENTITY menu.showFeedItemList			"Mutassa a letÃ¶ltÃ¶tt elemek listÃ¡jÃ¡t">
+<!ENTITY menu.showFeedItemListToolbar	"Mutassa a letÃ¶ltÃ¶tt elemek listÃ¡jÃ¡t az EszkÃ¶ztÃ¡rban">
+<!ENTITY menu.showDescTooltip       "LeÃ­rÃ¡s-tooltip megjelenÃ­tÃ©se">
+<!ENTITY menu.openHTML              "MegnyitÃ¡s a tartalmi rÃ©szben">
+<!ENTITY menu.tools                 "EszkÃ¶zÃ¶k">
+<!ENTITY menu.checkUpdate           "FrissÃ¼lÃ©sek ellenÃµrzÃ©se">
+<!ENTITY menu.manageRSSList         "RSS lista menedzselÃ©se...">
 <!ENTITY menu.opmlImportExport      "OPML import/export...">
-<!ENTITY menu.setting               "Beállítások...">
-<!ENTITY menu.sageProjectFeed				"A Sage projekt hírei">
-<!ENTITY menu.discoverFeeds					"Adagolók keresése">
+<!ENTITY menu.setting               "BeÃ¡llÃ­tÃ¡sok...">
+<!ENTITY menu.sageProjectFeed				"A Sage projekt hÃ­rei">
+<!ENTITY menu.discoverFeeds					"AdagolÃ³k keresÃ©se">
 
 <!-- Feed Discovery -->
-<!ENTITY discovery.status.searching     "Keresés a jelenlegi oldalon">
-<!ENTITY discovery.button.addFeed    "Adagoló hozzáadása">
-<!ENTITY discovery.button.close			 "Bezár">
-<!ENTITY discovery.header.title			 "Cím">
-<!ENTITY discovery.header.format     "Formátum">
-<!ENTITY discovery.header.lastPubDate     "Utolsó frissíés">
+<!ENTITY discovery.status.searching     "KeresÃ©s a jelenlegi oldalon">
+<!ENTITY discovery.button.addFeed    "AdagolÃ³ hozzÃ¡adÃ¡sa">
+<!ENTITY discovery.button.close			 "BezÃ¡r">
+<!ENTITY discovery.header.title			 "CÃ­m">
+<!ENTITY discovery.header.format     "FormÃ¡tum">
+<!ENTITY discovery.header.lastPubDate     "UtolsÃ³ frissÃ­Ã©s">
 <!ENTITY discovery.header.itemCount     "Elemek">
 <!ENTITY discovery.header.url     "URL">
 
 <!-- Setting Dialog -->
-<!ENTITY settings.general.caption     "Általános">
-<!ENTITY settings.autoFeedTitle.label     "Címek automatikus frissítése">
-<!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
+<!ENTITY settings.general.caption     "ÃltalÃ¡nos">
+<!ENTITY settings.autoFeedTitle.label     "CÃ­mek automatikus frissÃ­tÃ©se">
+<!ENTITY settings.renderFeeds.label     "MegnyitÃ¡s a tartalmi rÃ©szben">
 <!ENTITY settings.twelveHourClock.label     "">
-<!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
-<!ENTITY settings.feedItemOrder.label     "Adagoló elemeinek sorrendje">
-<!ENTITY settings.feedItemOrder.chrono     "Idõrendben">
-<!ENTITY settings.feedItemOrder.source     "Forrás szerint">
-<!ENTITY settings.feedDiscoveryMode.label     "Adagolók keresési módja">
+<!ENTITY settingWindow.title        "Az RSS olvasÃ³panel beÃ¡llÃ­tÃ¡sai">
+<!ENTITY settings.feedItemOrder.label     "AdagolÃ³ elemeinek sorrendje">
+<!ENTITY settings.feedItemOrder.chrono     "IdÃµrendben">
+<!ENTITY settings.feedItemOrder.source     "ForrÃ¡s szerint">
+<!ENTITY settings.feedDiscoveryMode.label     "AdagolÃ³k keresÃ©si mÃ³dja">
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Alapos">
-<!ENTITY settings.feedDiscoveryMode.conservative     "Hagyományos">
-<!ENTITY selectFolder.label         "Válassza ki az RSS listamappát">
-<!ENTITY openInContentsArea.caption "Letöltöttek megjelenítése">
-<!ENTITY enableUserCss.label        "Egyéni stíluslap engedélyezése">
-<!ENTITY browseCss.label            "Böngészés...">
-<!ENTITY allowEContent.label        "HTML tagek engedélyezése">
+<!ENTITY settings.feedDiscoveryMode.conservative     "HagyomÃ¡nyos">
+<!ENTITY selectFolder.label         "VÃ¡lassza ki az RSS listamappÃ¡t">
+<!ENTITY openInContentsArea.caption "LetÃ¶ltÃ¶ttek megjelenÃ­tÃ©se">
+<!ENTITY enableUserCss.label        "EgyÃ©ni stÃ­luslap engedÃ©lyezÃ©se">
+<!ENTITY browseCss.label            "BÃ¶ngÃ©szÃ©s...">
+<!ENTITY allowEContent.label        "HTML tagek engedÃ©lyezÃ©se">
 
 
 <!ENTITY openSageSidebar.commandkey		"S">
@@ -55,28 +55,28 @@
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Open">
 <!ENTITY openLinkInWindow.accesskey "O">
-<!ENTITY openInNewTab.label "Open in New Tab">
+<!ENTITY openInNewTab.label "MegnyitÃ¡s Ãºj lapon">
 <!ENTITY openInNewTab.accesskey "T">
-<!ENTITY openInNewWindow.label "Open in New Window">
+<!ENTITY openInNewWindow.label "MegnyitÃ¡s Ãºj ablakban">
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Mark as Read">
-<!ENTITY markAsRead.command.tooltip			"Mark as Read">
+<!ENTITY markAsRead.command.label			"Olvasottnak jelÃ¶l">
+<!ENTITY markAsRead.command.tooltip			"Olvasottnak jelÃ¶l">
 <!ENTITY markAsRead.command.accesskey		"R">
 
-<!ENTITY markAsUnread.command.label			"Mark as Unread">
-<!ENTITY markAsUnread.command.tooltip		"Mark as Unread">
+<!ENTITY markAsUnread.command.label			"Olvasatlannak jelÃ¶l">
+<!ENTITY markAsUnread.command.tooltip		"Olvasatlannak jelÃ¶l">
 <!ENTITY markAsUnread.command.accesskey		"U">
 
-<!ENTITY markAllAsRead.command.label		"Mark All as Read">
-<!ENTITY markAllAsRead.command.tooltip		"Mark All as Read">
+<!ENTITY markAllAsRead.command.label		"Olvasottnak jelÃ¶li az Ã¶sszeset">
+<!ENTITY markAllAsRead.command.tooltip		"Olvasottnak jelÃ¶li az Ã¶sszeset">
 <!ENTITY markAllAsRead.command.accesskey	"A">
 <!ENTITY markAllAsRead.command.key			"C">
 <!ENTITY markAllAsRead.command.modifiers	"accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Mark All as Unread">
-<!ENTITY markAllAsUnread.command.tooltip	"Mark All as Unread">
+<!ENTITY markAllAsUnread.command.label		"Olvasatkannak jelÃ¶li az Ã¶sszeset">
+<!ENTITY markAllAsUnread.command.tooltip	"Olvasatlannak jelÃ¶li az Ã¶sszeset">
 <!ENTITY markAllAsUnread.command.accesskey	"n">
 
 <!ENTITY toggleReadState.command.key		"M">
