@@ -218,22 +218,19 @@ var CommonFunc = {
 		return fileContents;
 	},
 
+
 // ++++++++++ ++++++++++ preferences ++++++++++ ++++++++++
 
-
-		// 	preferences の値を書き込む
-	setPrefValue : function(aPrefString, aPrefType, aValue){
+	setPrefValue : function(aPrefString, aPrefType, aValue) {
 		var nsISupportsString = Components.interfaces.nsISupportsString;
-		var xpPref = Components.classes["@mozilla.org/preferences;1"]
-						.getService(Components.interfaces.nsIPrefBranch);
+		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
 
 		var prefType = xpPref.getPrefType(aPrefString);
 
-		try{
-			switch (aPrefType){
+		try {
+			switch(aPrefType) {
 				case "wstr":
-					var string = Components.classes['@mozilla.org/supports-string;1']
-									.createInstance(nsISupportsString);
+					var string = Components.classes['@mozilla.org/supports-string;1'].createInstance(nsISupportsString);
 					string.data = aValue;
 					return xpPref.setComplexValue(aPrefString, nsISupportsString, string);
 					break;
@@ -241,33 +238,31 @@ var CommonFunc = {
 					return xpPref.setCharPref(aPrefString, aValue);
 					break;
 				case "int":
-					aValue = parseInt(aValue); // 文字列を整数値に変換
+					aValue = parseInt(aValue);
 					return xpPref.setIntPref(aPrefString, aValue);
 					break;
 				case "bool":
 				default:
-					if(typeof(aValue) == "string"){
-						aValue = (aValue == "true"); // 文字列を真偽値に変換
+					if(typeof(aValue) == "string") {
+						aValue = (aValue == "true");
 					}
 					return xpPref.setBoolPref(aPrefString, aValue);
 					break;
 			}
-		}catch(e){
+		} catch(e) {
 		}
 		return null;
 	},
 
-		// 	preferences の値を読み込む
-	getPrefValue : function(aPrefString, aPrefType, aDefault){
+	getPrefValue : function(aPrefString, aPrefType, aDefault) {
 		var nsISupportsString = Components.interfaces.nsISupportsString;
-		var xpPref = Components.classes["@mozilla.org/preferences;1"]
-						.getService(Components.interfaces.nsIPrefBranch);
+		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
 
-		if(xpPref.getPrefType(aPrefString) == xpPref.PREF_INVALID){
+		if(xpPref.getPrefType(aPrefString) == xpPref.PREF_INVALID) {
 			return aDefault;
 		}
-		try{
-			switch (aPrefType){
+		try {
+			switch (aPrefType) {
 				case "wstr":
 					return xpPref.getComplexValue(aPrefString, nsISupportsString).data;
 					break;
@@ -282,12 +277,11 @@ var CommonFunc = {
 					return xpPref.getBoolPref(aPrefString);
 					break;
 			}
-		}catch(e){
+		} catch(e) {
 		}
 		return aDefault;
 	},
 
-		// preferences の内容を消去
 	clearPref: function(aPrefString) {
 		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
 
@@ -313,8 +307,7 @@ var CommonFunc = {
 		}
 	},
 
-		// 監視を開始する
-	addPrefListener: function(aPrefString, aFunc){
+	addPrefListener: function(aPrefString, aFunc) {
 		var prefObserver;
 		try {
 			prefObserver = {
@@ -322,10 +315,9 @@ var CommonFunc = {
 				observe: aFunc
 			};
 
-			var pbi = Components.classes["@mozilla.org/preferences-service;1"]
-							.getService(Components.interfaces.nsIPrefBranchInternal);
+			var pbi = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranchInternal);
 			pbi.addObserver(prefObserver.domain, prefObserver, false);
-		} catch(e){
+		} catch(e) {
 			alert(e);
 			prefObserver = null;
 		}
@@ -333,12 +325,10 @@ var CommonFunc = {
 		return prefObserver;
 	},
 
-	// 監視を終了する
-	removePrefListener: function(aObserver){
+	removePrefListener: function(aObserver) {
 		var prefObserver;
 		try {
-			var pbi = Components.classes["@mozilla.org/preferences-service;1"]
-							.getService(Components.interfaces.nsIPrefBranchInternal);
+			var pbi = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranchInternal);
 			pbi.removeObserver(aObserver.domain, aObserver);
 		} catch(e) {
 			alert(e)
