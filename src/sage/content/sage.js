@@ -53,7 +53,7 @@ function init() {
 	if(lastVersion) {
 		lastVersion = CommonFunc.versionStrDecode(lastVersion);
 	} else {
-		lastVersion = Array(1,0,0);
+		lastVersion = Array(0,0,0);
 	}
 	var currentVersion = CommonFunc.VERSION;
 
