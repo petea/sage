@@ -71,8 +71,14 @@ treechildren::-moz-tree-cell-text(feed, updated) {
   font-weight: bold !important;
 }
 
+/* If this is removed, please remove next rule as well */
 treechildren::-moz-tree-twisty {
-	width: 0px !important;
+	width:	0 !important;
+}
+
+/* Work around for bug in separators at level 0 when twisty has width 0 */
+treechildren::-moz-tree-cell-text(Name, separator) {
+	margin-left:	12px;
 }
 
 #bookmarksTreeBox,
