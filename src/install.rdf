@@ -8,8 +8,8 @@
  <em:name>Sage</em:name>
  <em:version>1.1</em:version>
  <em:description>A lightweight RSS and ATOM feed aggregator.</em:description>
- <em:contributor>Peter Andrews</em:creator>
- <em:contributor>flyson</em:creator>
+ <em:contributor>Peter Andrews</em:contributor>
+ <em:contributor>flyson</em:contributor>
  <em:homepageURL>http://sage.mozdev.org</em:homepageURL>
  <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
  <em:iconURL>chrome://sage/skin/sage_icon.png</em:iconURL>
