@@ -115,6 +115,7 @@ var feedSummary = {
 
 		var p = document.createElement("p");
 		p.setAttribute("id", "loading-text");
+		// TODO: Should look in the BM DS and find the title
 		p.textContent = strRes.getFormattedString("RESULT_LOADING", [uri]);
 		document.body.appendChild(p);
 
