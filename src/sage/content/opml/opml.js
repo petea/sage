@@ -7,12 +7,15 @@ var wizMode = WIZ_MODE_IMPORT;
 var winMain;
 var txtImportFile;
 var txtExportFile;
+var strRes;
 
 
 function init() {
 		// Bookmarks Service
 	initServices();
 	initBMService();
+
+	strRes = document.getElementById("strRes");
 
 	winMain = document.getElementById("winMain");
 	txtImportFile = document.getElementById("txtImportFile");
@@ -23,11 +26,11 @@ function finish() {
 	if(wizMode == WIZ_MODE_IMPORT) {
 		if(!checkFilePath(txtImportFile.value, true)) return false;
 		if(!importOPML()) return false;
-		alert("Import Complete");
+		alert(strRes.getString("opml_import_done"));
 	} else {
 		if(!checkFilePath(txtExportFile.value, false)) return false;
 		exportOPML();
-		alert("Export Complete");
+		alert(strRes.getString("opml_export_done"));
 	}
 	
 	return true;
@@ -63,7 +66,7 @@ function browseExportFile() {
 
 function checkFilePath(aFilePath, aExistCheck) {
 	if(!aFilePath) {
-		alert("Please choose an OPML file.");
+		alert(strRes.getString("opml_path_blank"));
 		return false;
 	}
 	
@@ -73,13 +76,13 @@ function checkFilePath(aFilePath, aExistCheck) {
 		if(aExistCheck) {
 			if(!tmpFile.exists()) {
 					// ファイルが存在しない
-				alert("The specified file does not exist.");
+				alert(strRes.getString("opml_path_nofile"));
 				return false;
 			}
 		}
 	} catch(e) {
 			// 不正なファイルパス
-		alert("Invalid file path.")
+		alert(strRes.getString("opml_path_invalid"));
 		return false;
 	}
 	
@@ -100,13 +103,13 @@ function importOPML() {
 		httpReq.overrideMimeType("application/xml");
 		httpReq.send(null);
 	} catch(e) {
-		alert("Load Failure");
+		alert(strRes.getString("opml_import_fail"));
 		return false;
 	}
 	
 	opmlDoc = httpReq.responseXML;
 	if(opmlDoc.documentElement.localName != "opml") {
-		alert("This does not appear to be an OPML file.");
+		alert(strRes.getString("opml_import_badfile"));
 		return false;
 	}
 	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.RSS_READER_FOLDER_ID, "str", "NC:BookmarksRoot");
@@ -183,7 +186,7 @@ function exportOPML() {
 		stream.flush();
 		stream.close();
 	} catch(e) {
-		alert("File creation error");
+		alert(strRes.getString("opml_export_nocreate"));
 	}
 }
 

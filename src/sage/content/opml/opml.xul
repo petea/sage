@@ -8,6 +8,10 @@
 <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"></script>
 <script type="application/x-javascript" src="chrome://sage/content/opml/opml.js"></script>
 
+<stringbundleset>
+	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+</stringbundleset>
+
 <wizardpage pageid="pageStart" next="pageImport"
 		label="&pageStart.label;" description="&pageStart.desc;">
 	<spacer height="40px"/>

@@ -21,6 +21,9 @@ treechildren::-moz-tree-image(rss, error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
 }
+treechildren::-moz-tree-cell-text(rss, updated) {
+  font-weight: bold !important;
+}
 
 #bookmarksTreeBox,
 #rssItemListBoxBox {
@@ -28,10 +31,11 @@ treechildren::-moz-tree-image(rss, error) {
 }
 
 #rssItemListBox > listitem {
+	font-weight:  bold;
 }
 
 #rssItemListBox > listitem[visited="true"] {
-  color: #39A;
+  font-weight:  normal;
 }
 
 
