@@ -1,0 +1,46 @@
+<!ENTITY sage.label "Sage">
+<!ENTITY sage.version "1.2">
+<!ENTITY sage.version.label "versió">
+<!ENTITY sage.toolbarLabel "Sage">
+<!ENTITY sage.sidebarTitle "Sage">
+<!ENTITY sage.tooltip "Visualitza Sage">
+<!ENTITY menu.view "Visualització">
+<!ENTITY menu.showSearchBar "Mostra la barra de cerca de fonts">
+<!ENTITY menu.showFeedItemList "Mostra la llista de fonts">
+<!ENTITY menu.showDescTooltip "Mostra els rètols de descripció">
+<!ENTITY menu.openHTML "Obre les fonts a l'àrea de continguts">
+<!ENTITY menu.tools "Opcions">
+<!ENTITY menu.checkUpdate "Comprova les fonts">
+<!ENTITY menu.manageRSSList "Gestiona la llista de fonts">
+<!ENTITY menu.opmlImportExport "Importa/Exporta OPML...">
+<!ENTITY menu.setting "Paràmetres...">
+<!ENTITY menu.sageProjectFeed "Notícies del projecte Sage">
+<!ENTITY menu.discoverFeeds "Descobreix fonts">
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching "Cercant la pàgina actual">
+<!ENTITY discovery.button.addFeed "Afegeix font">
+<!ENTITY discovery.button.close "Tanca">
+<!ENTITY discovery.header.title "Títol">
+<!ENTITY discovery.header.format "Format">
+<!ENTITY discovery.header.lastPubDate "Última Actualització">
+<!ENTITY discovery.header.itemCount "Elements">
+<!ENTITY discovery.header.url "URL">
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption "General">
+<!ENTITY settings.autoFeedTitle.label "Actualitza automàticament els títols de fonts">
+<!ENTITY settings.renderFeeds.label "Representa les fonts a l'àrea de continguts">
+<!ENTITY settings.twelveHourClock.label "Utilitza el rellotge de 12 hores">
+<!ENTITY settings.feedItemOrder.label "Ordre de la llista fonts">
+<!ENTITY settings.feedItemOrder.chrono "Cronològic">
+<!ENTITY settings.feedItemOrder.source "Font">
+<!ENTITY settings.feedDiscoveryMode.label "Mode descobriment de fonts">
+<!ENTITY settings.feedDiscoveryMode.exhaustive "Exhaustiu">
+<!ENTITY settings.feedDiscoveryMode.conservative "Conservatiu">
+<!ENTITY settingWindow.title "Paràmetres de Sage">
+<!ENTITY selectFolder.label "Seleccioneu la carpeta de fonts">
+<!ENTITY openInContentsArea.caption "Representació">
+<!ENTITY enableUserCss.label "Utilitza CSS personalitzat">
+<!ENTITY browseCss.label "Vés a...">
+<!ENTITY allowEContent.label "Permet etiquetes HTML">
+<!ENTITY openSageSidebar.commandkey "S">
+<!ENTITY openSageSidebar.modifiersKey "alt">

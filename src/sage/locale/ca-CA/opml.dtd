@@ -1,0 +1,9 @@
+<!ENTITY pageStart.label "Auxiliar d'importació/exportació OPML">
+<!ENTITY pageStart.desc "Escolliu una acció">
+<!ENTITY pageImport.label "Importa OPML">
+<!ENTITY pageImport.desc "Seleccioneu el fitxer d'importació OPML">
+<!ENTITY pageExport.label "Exporta OPML">
+<!ENTITY pageExport.desc "Selecciona el fitxer d'exportació OPML">
+<!ENTITY rdoImport.label "Importa OPML">
+<!ENTITY rdoExport.label "Exporta OPML">
+<!ENTITY browseButton.label "Vés a...">
