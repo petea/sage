@@ -144,7 +144,7 @@ Feed.prototype.parseATOM = function() {
 				}
 			}
 		}
-		/*
+
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
 		if(issuedNodes.length) {
 			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
@@ -157,7 +157,7 @@ Feed.prototype.parseATOM = function() {
 			tmp_date.setUTCSeconds(tmp_str.substring(17,19));
 			item.pubDate = new Date(tmp_date);
 		}
-
+		/*
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
