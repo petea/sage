@@ -159,14 +159,20 @@ function updateCheck(aCheckFolderId) {
 	}
 }
 
-function BookmarkResource(aRes, aDB){
+function BookmarkResource(aRes, aDB) {
 	this.res = aRes;
 	this.db = aDB;
 	this.name = BookmarksUtils.getProperty(this.res, NC_NS + "Name", this.db);
-	this.url = BookmarksUtils.getProperty(this.res, NC_NS + "URL", this.db);
+	if(BookmarksUtils.getProperty(this.res, RDF_NS + "type", this.db) == NC_NS + "Bookmark") {
+		this.url = BookmarksUtils.getProperty(this.res, NC_NS + "URL", this.db);
+	}
+	if(BookmarksUtils.getProperty(this.res, RDF_NS + "type", this.db) == NC_NS + "Livemark") {
+		this.url = BookmarksUtils.getProperty(this.res, NC_NS + "FeedURL", this.db);
+	}
+
 }
 
-function bookmarksOpen(){
+function bookmarksOpen() {
 	lastResource = new BookmarkResource(bookmarksTree.currentResource, bookmarksTree.db);
 	setStatusLoading();
 	httpGet(lastResource.url);
@@ -198,7 +204,7 @@ function createTreeContextMenu2(aEvent) {
 	}
 }
 
-function bookmarksTreeClick(aEvent){
+function bookmarksTreeClick(aEvent) {
 	if(aEvent.type == "click") {
 		if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {
 			return;
@@ -219,7 +225,7 @@ function bookmarksTreeClick(aEvent){
 	const BOOKMARK_TYPE = RDF_NS + "type";
 	const BOOKMARK_SEPARATOR = NC_NS + "BookmarkSeparator";
 	const BOOKMARK_FOLDER = NC_NS + "Folder"
-	var bookmarkType = (BookmarksUtils.getProperty(bookmarksTree.currentResource, BOOKMARK_TYPE , bookmarksTree.db))
+	var bookmarkType = BookmarksUtils.getProperty(bookmarksTree.currentResource, BOOKMARK_TYPE , bookmarksTree.db)
 	if(bookmarkType == BOOKMARK_SEPARATOR || bookmarkType == BOOKMARK_FOLDER) {
 		return;
 	}

@@ -6,53 +6,61 @@
 ]>
 
 <bindings id="bookmarksBindings"	
-		  xmlns="http://www.mozilla.org/xbl"	
-		  xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
-		  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-		  xmlns:xbl="http://www.mozilla.org/xbl">
+		xmlns="http://www.mozilla.org/xbl"	
+		xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:xbl="http://www.mozilla.org/xbl">
 
-  <binding id="bookmarks-tree-name" extends="chrome://browser/content/bookmarks/bookmarksTree.xml#bookmarks-tree">
+	<binding id="bookmarks-tree-name" extends="chrome://browser/content/bookmarks/bookmarksTree.xml#bookmarks-tree">
 	<xbl:content xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"	
-				 xmlns:xbl="http://www.mozilla.org/xbl" contextmenu="_child">
-	  <!-- context menu -->
-	  <menupopup xbl:inherits="onpopupshowing"
-				 onpopupshowing="this.parentNode.createTreeContextMenu(event);createTreeContextMenu2(event)"
-				 onpopuphidden="if (content) content.focus()"
-				 onclick="event.preventBubble();"
-				 onkeypress="event.preventBubble();"/>
-	  <tree anonid="bookmarks-tree" flex="1" class="plain" hidecolumnpicker="true"
+			xmlns:xbl="http://www.mozilla.org/xbl" contextmenu="_child">
+		<!-- context menu -->
+		<menupopup xbl:inherits="onpopupshowing"
+				onpopupshowing="this.parentNode.createTreeContextMenu(event);createTreeContextMenu2(event)"
+				onpopuphidden="if (content) content.focus()"
+				onclick="event.preventBubble();"
+				onkeypress="event.preventBubble();"/>
+		<tree anonid="bookmarks-tree" flex="1" class="plain" hidecolumnpicker="true"
 				datasources="rdf:bookmarks rdf:internetsearch rdf:localsearch" ref="NC:BookmarksRoot" flags="dont-build-content"
 				onselect="this.parentNode.treeBoxObject.view.selectionChanged();" seltype="single">
 		<template xmlns:nc="http://home.netscape.com/NC-rdf#">
-		  <rule rdf:type="http://home.netscape.com/NC-rdf#BookmarkSeparator">
+			<rule rdf:type="http://home.netscape.com/NC-rdf#BookmarkSeparator">
 			<treechildren>
-			  <treeitem uri="rdf:*">
+				<treeitem uri="rdf:*">
 				<treerow properties="rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#type separator">
-				  <treecell properties="separator" label="rdf:http://home.netscape.com/NC-rdf#Name"/>
+					<treecell properties="separator" label="rdf:http://home.netscape.com/NC-rdf#Name"/>
 				</treerow>
-			  </treeitem>
+				</treeitem>
 			</treechildren>
-		  </rule>
-		  <rule>
+			</rule>
+			<rule rdf:type="http://home.netscape.com/NC-rdf#Livemark">
 			<treechildren>
-			  <treeitem uri="rdf:*">
+				<treeitem uri="rdf:*">
 				<treerow properties="rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#type rdf:http://home.netscape.com/NC-rdf#loading rdf:http://home.netscape.com/WEB-rdf#status">
-				  <treecell	label="rdf:http://home.netscape.com/NC-rdf#Name"
-							properties="rdf:http://home.netscape.com/NC-rdf#Description rss"/>
+					<treecell	label="rdf:http://home.netscape.com/NC-rdf#Name" properties="rdf:http://home.netscape.com/NC-rdf#Description rss"/>
 				</treerow>
-			  </treeitem>
+				</treeitem>
 			</treechildren>
-		  </rule>
+			</rule>
+			<rule>
+			<treechildren>
+				<treeitem uri="rdf:*">
+				<treerow properties="rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#type rdf:http://home.netscape.com/NC-rdf#loading rdf:http://home.netscape.com/WEB-rdf#status">
+					<treecell	label="rdf:http://home.netscape.com/NC-rdf#Name" properties="rdf:http://home.netscape.com/NC-rdf#Description rss"/>
+				</treerow>
+				</treeitem>
+			</treechildren>
+			</rule>
 		</template>
 		<treecols anonid="treecols">
-		  <treecol id="Name" flex="1" primary="true" hideheader="true"
-				   sort="rdf:http://home.netscape.com/NC-rdf#Name"
-				   sortActive="true" sortDirection="none"/>
+			<treecol id="Name" flex="1" primary="true" hideheader="true"
+					sort="rdf:http://home.netscape.com/NC-rdf#Name"
+					sortActive="true" sortDirection="none"/>
 		</treecols>
-	  </tree>
+		</tree>
 	</xbl:content>
 	<implementation>
-	  <field name="clickCount">1</field>
+		<field name="clickCount">1</field>
 	</implementation>
-  </binding>
+	</binding>
 </bindings>

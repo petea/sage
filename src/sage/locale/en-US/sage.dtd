@@ -43,7 +43,7 @@
 <!ENTITY settingWindow.title                    "Sage Settings">
 <!ENTITY selectFolder.label			"Select Feed Folder">
 <!ENTITY openInContentsArea.caption		"Feed Rendering">
-<!ENTITY enableUserCss.label			"Use custom CSS">
+<!ENTITY enableUserCss.label			"Use custom style sheet">
 <!ENTITY browseCss.label			"Browse...">
 <!ENTITY allowEContent.label			"Allow HTML tags">
 

@@ -10,7 +10,7 @@ var UpdateChecker = {
 		var resourceList = CommonFunc.getBMDSCChildren(aCheckFolderId);
 		this.checkList = new Array();
 
-			// Delete separator and updeed resource
+		// select feeds to be checked, exclude separators and updated feeds
 		for(var i = 0; i < resourceList.length; i++) {
 			var url = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_URL);
 			var desc = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_DESCRIPTION);
