@@ -230,8 +230,11 @@ function rssItemListBoxClick(aEvent) {
 		}
 	}
 
+	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+
 	var selectedItem = rssItemListBox.selectedItem;
-	var link = currentFeed.getItem(selectedItem.value).getLink();
+	var items = currentFeed.getItems(feedItemOrder);
+	var link = items[selectedItem.value].getLink();
 	var tabbed = false;
 
 	if(aEvent.button == 1) { tabbed = true; } // click middle button
@@ -327,8 +330,12 @@ function setRssItemListBox() {
 		rssItemListBox.removeItemAt(0);
 	}
 
-	for(var i = 0; currentFeed.getItemCount() > i; i++) {
-		var item = currentFeed.getItem(i);
+	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+
+	var items = currentFeed.getItems(feedItemOrder);
+
+	for(var i = 0; items.length > i; i++) {
+		var item = items[i];
 		var itemLabel = item.getTitle();
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
@@ -363,8 +370,12 @@ function showRssItemListPopup(aEvent) {
 		rssItemListPopup.hidePopup();
 		return;
 	}
+
+	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
 	
-	var description = htmlToText(currentFeed.getItem(aEvent.originalTarget.value).getContent());
+	var items = currentFeed.getItems(feedItemOrder);
+
+	var description = htmlToText(items[aEvent.originalTarget.value].getContent());
 	if(description.indexOf("/") != -1) {
 		description = description.replace(/\//gm, "/\u200B");
 	}

@@ -276,6 +276,44 @@ Feed.prototype.getItem = function(itemIndex) {
 	return this.items[itemIndex];
 }
 
+Feed.prototype.getItems = function(sort) {
+	if(sort == "chrono" && !this.hasLastPubDate()) {  // if the feed doesn't have pub dates, we're going to do a source sort
+		sort = "source";
+	}
+	var items_array;
+	switch(sort) {
+		case "chrono":
+			var items = new Array();
+			for(var c = 0; c < this.items.length; c++) {
+				items.push(this.items[c]);
+			}
+			function chronoSort(a, b) {
+				var a_ts, b_ts;
+				if(a.hasPubDate()) {
+					a_ts = a.getPubDate().getTime();
+				} else {
+					a_ts = 0;
+				}
+				if(b.hasPubDate()) {
+					b_ts = b.getPubDate().getTime();
+				} else {
+					b_ts = 0;
+				}
+				return (a_ts < b_ts ? 1 : (b_ts < a_ts ? -1 : 0));
+			}
+			items.sort(chronoSort);
+			items_array = items;
+			break;
+		case "source":
+			items_array = this.items;
+			break;
+		default:
+			items_array = this.items;
+			break;
+	}
+	return items_array;
+}
+
 Feed.prototype.getFormat = function() {
 	return this.feedFormat;
 }

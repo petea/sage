@@ -69,6 +69,7 @@ var CreateHTML = {
 	createHTMLSource: function(feed) {
 		var allowEContent = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
 		var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
+		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
 
 		var htmlSource = this.HTML_SOURCE;
 		var cssUrl	= this.getUserCssURL();
@@ -83,19 +84,20 @@ var CreateHTML = {
 		htmlSource = htmlSource.replace("**DESCRIPTION**", feed.getDescription());
 
 		var itemsSource = "";
-		for(var i = 0; i < feed.getItemCount(); i++) {
-			var link = feed.getItem(i).getLink();
-			var title = feed.getItem(i).getTitle();
+		var items = feed.getItems(feedItemOrder);
+		for(var i = 0; i < items.length; i++) {
+			var link = items[i].getLink();
+			var title = items[i].getTitle();
 			var description = "";
 			var pubDate = "";
 
-			if(feed.getItem(i).hasContent()) {
-				description = allowEContent ? feed.getItem(i).getContent() : htmlToText(feed.getItem(i).getContent());
+			if(items[i].hasContent()) {
+				description = allowEContent ? items[i].getContent() : htmlToText(items[i].getContent());
 				description = "<div class=\"item-desc\">" + description + "</div>";
 			}
 
-			if(feed.getItem(i).hasPubDate()) {
-				pubDate = "<div class=\"item-pubDate\">" + dateFormat(feed.getItem(i).getPubDate(), twelveHourClock) + "</div>";
+			if(items[i].hasPubDate()) {
+				pubDate = "<div class=\"item-pubDate\">" + dateFormat(items[i].getPubDate(), twelveHourClock) + "</div>";
 			}
 
 			var itemSource = this.ITEM_SOURCE;

@@ -52,9 +52,8 @@ function init() {
 
 	document_host = current_document.location.host;
 	if(document_host.match(/^www\./i)) {
-		document_host = document_host.substring(4, document_host.length - 1);
+		document_host = document_host.substring(4, document_host.length);
 	}
-	logMessage("host: " + document_host);
 
 	possibleFeeds = new Array();
 
@@ -63,17 +62,15 @@ function init() {
 	if(discoveryMode == "exhaustive") {
 		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
-			if(links[c].href.match(/xml$|rss|rdf|atom/i)) {
+			if(links[c].href.match(/xml$|rss|rdf|atom|feed/i)) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
-				logMessage("Found: " + links[c].href);
 			}
 		}
 	} else {
 		links = current_document.getElementsByTagName("a");
 		for(c = 0; c < links.length; c++) {
-			if(links[c].href.match(/xml$|rss|rdf|atom/i) && links[c].href.match(new RegExp(document_host, "i"))) {
+			if(links[c].href.match(/xml$|rss|rdf|atom|feed/i) && links[c].href.match(new RegExp(document_host, "i"))) {
 				possibleFeeds[links[c].href] = Array(links[c].href, "implicit");
-				logMessage("Found: " + links[c].href);
 			}
 		}
 	}
@@ -82,7 +79,6 @@ function init() {
 	for(c = 0; c < links.length; c++) {
 		if(links[c].rel == "alternate" && (links[c].type == "text/xml" || links[c].type == "application/atom+xml" || links[c].type == "application/rss+xml")) {
 			possibleFeeds[links[c].href] = Array(links[c].href, "explicit");
-			logMessage("Found: " + links[c].href);
 		}
 	}
 
