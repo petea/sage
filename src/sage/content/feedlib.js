@@ -77,9 +77,10 @@ Feed.prototype.parseRSS = function() {
 	}
 
 	var itemNodes = feedXML.getElementsByTagName("item");
+	var item, guid;
 	for(i = 0; itemNodes.length > i; i++) {
-		var item = {title:"", link:"", content:"", pubDate:""};
-		var guid;
+		item = {title:"", link:"", content:"", pubDate:""};
+		guid = null;
 
 		for(var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
 			if(j.nodeType != j.ELEMENT_NODE) continue;

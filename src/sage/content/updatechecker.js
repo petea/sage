@@ -66,8 +66,10 @@ var UpdateChecker = {
 		}
 	},
 
-	httpError: function() {
-		logMessage("HTTP Error");
+	httpError: function(e) {
+		logMessage("HTTP Error: " + e.target.status + " - " + e.target.statusText);
+		UpdateChecker.httpReq.abort();
+		UpdateChecker.checkResult(false, 0);
 	},
 
 	httpReadyStateChange: function() {

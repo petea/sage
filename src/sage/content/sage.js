@@ -485,7 +485,8 @@ function httpGet(aURL) {
 }
 
 function httpError(e) {
-	logMessage("HTTP Error");
+	logMessage("HTTP Error: " + e.target.status + " - " + e.target.statusText);
+	httpGetResult(RESULT_NOT_AVAILABLE);
 }
 
 function httpReadyStateChange() {
