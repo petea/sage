@@ -338,7 +338,7 @@ function setRssItemListBox() {
 	for(var i = 0; items.length > i; i++) {
 		var item = items[i];
 		var itemLabel = item.getTitle();
-		//itemLabel = (i+1) + ". " + itemLabel;
+		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
 		if(linkVisitor.getVisited(item.getLink())) {
 			listItem.setAttribute("visited", "true");
