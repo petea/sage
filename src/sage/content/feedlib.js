@@ -79,6 +79,7 @@ Feed.prototype.parseRSS = function() {
 	var itemNodes = feedXML.getElementsByTagName("item");
 	for(i = 0; itemNodes.length > i; i++) {
 		var item = {title:"", link:"", content:"", pubDate:""};
+		var guid;
 
 		for(var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
 			if(j.nodeType != j.ELEMENT_NODE) continue;
@@ -92,8 +93,8 @@ Feed.prototype.parseRSS = function() {
 					}
 					break;
 				case "guid":
-					if(!item.link) {
-						item.link = CommonFunc.getInnerText(j);
+					if(!guid) {
+						guid = CommonFunc.getInnerText(j);
 					}
 					break;
 				case "description":
@@ -118,6 +119,10 @@ Feed.prototype.parseRSS = function() {
 					}
 					break;
 			}
+		}
+
+		if(!item.link && guid) {
+			item.link = guid;
 		}
 
 		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
