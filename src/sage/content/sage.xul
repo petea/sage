@@ -42,6 +42,7 @@
 
 <stringbundleset>
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+	<stringbundle id="bmStrRes" src="chrome://browser/locale/bookmarks/bookmarks.properties"/>
 </stringbundleset>
 
 <toolbox class="plain">
@@ -105,6 +106,7 @@
 
 	<listbox id="rssItemListBox" class="plain" flex="1"
 		tooltip="rssItemToolTip"
+		contextmenu="rssItemListBoxContextMenu"
 		onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
 		onclick="rssItemListBoxClick(event)"/>
 </vbox>
@@ -121,6 +123,18 @@
 				image="rdf:http://sage.mozdev.org/#icon"/>
 		</template>
 	</popup>
+
+	<popup id="rssItemListBoxContextMenu"
+		   onpopupshowing="updateItemContextMenu(event)">
+		<menuitem id="rssOpenItem" default="true" oncommand="openListItem()"/>
+		<menuitem id="rssOpenNewTabItem" oncommand="openListItem('tab')"/>
+		<menuitem id="rssOpenNewWindowItem" oncommand="openListItem('window')"/>
+		<menuseparator/>
+		<menuitem id="rssMarkAsReadItem" oncommand="toggleMarkAsRead(event)"/>
+		<menuitem id="rssMarkAllAsReadItem" oncommand="markAllAsRead(event)"/>
+		<menuitem id="rssMarkAllAsUnreadItem" oncommand="markAllAsUnread(event)"/>
+	</popup>
+
 </popupset>
 
-</page> 
+</page>
