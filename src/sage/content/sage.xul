@@ -123,8 +123,8 @@
 		<template>
 			<menuitem type="checkbox" uri="..." value="..."
 				oncommand="FeedSearch.popSearchEngineClick(event)"
-				label="rdf:http://fls.moo.jp/moz/rssreader/#name"
-				image="rdf:http://fls.moo.jp/moz/rssreader/#icon"/>
+				label="rdf:http://sage.mozdev.org/#name"
+				image="rdf:http://sage.mozdev.org/#icon"/>
 		</template>
 	</popup>
 </popupset>

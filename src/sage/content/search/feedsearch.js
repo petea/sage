@@ -1,5 +1,5 @@
 var FeedSearch = {
-	RRP_NS: "http://fls.moo.jp/moz/rssreader/#",
+	RRP_NS: "http://sage.mozdev.org/#",
 	SEARCH_ENGINE_RDF: "chrome://sage/content/search/searchEngine.rdf",
 
 	RDF:Components.classes['@mozilla.org/rdf/rdf-service;1']
