@@ -202,7 +202,14 @@ var CommonFunc = {
 
 
 	getInnerText: function(aNode) {
-		return aNode.textContent.replace(/^\s+|\s+$/g, "");
+		if(!aNode.hasChildNodes()) return "";
+	
+		var resultArray = new Array();
+		var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
+		while(walker.nextNode()) {
+			resultArray.push(walker.currentNode.nodeValue);
+		}
+		return resultArray.join('').replace(/^\s+|\s+$/g, "");
 	},
 
 
