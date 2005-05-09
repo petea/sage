@@ -3,7 +3,19 @@ var UpdateChecker = {
 	checkList: null,
 	httpReq: null,
 	lastResource: null,
-
+	
+	getURL: function(resource) {
+		var type = CommonFunc.getBMDSProperty(resource, CommonFunc.RDF_TYPE);
+		var url;
+		if(type == NC_NS + "Bookmark") {
+			url = CommonFunc.getBMDSProperty(resource, CommonFunc.BM_URL);
+		}
+		if(type == NC_NS + "Livemark") {
+			url = CommonFunc.getBMDSProperty(resource, CommonFunc.BM_FEEDURL);
+		}
+		return url;
+	},
+	
 	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
 
@@ -12,7 +24,7 @@ var UpdateChecker = {
 
 		// select feeds to be checked, exclude separators and updated feeds
 		for(var i = 0; i < resourceList.length; i++) {
-			var url = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_URL);
+			var url = this.getURL(resourceList[i]);
 			var desc = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_DESCRIPTION);
 			var status = desc.split(" ")[0];
 			if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
@@ -38,13 +50,7 @@ var UpdateChecker = {
 		this.lastResource = this.checkList.shift();
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var type = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.RDF_TYPE);
-		var url;
-		if(type == NC_NS + "Bookmark") {
-			url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
-		}
-		if(type == NC_NS + "Livemark") {
-			url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_FEEDURL);
-		}
+		var url = this.getURL(this.lastResource);
 
 		if(!url) {
 			this.checkResult(false, 0);
