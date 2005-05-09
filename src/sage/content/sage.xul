@@ -21,6 +21,7 @@
 
 <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/feedlib.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/sha1.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
