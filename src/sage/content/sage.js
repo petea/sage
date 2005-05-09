@@ -138,6 +138,9 @@ function done() {
 		rssLoading = false;
 	}
 	UpdateChecker.done();
+	
+	logMessage("flushing bookmark data store..");
+	BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
 
 	logMessage("shutdown");
 }
