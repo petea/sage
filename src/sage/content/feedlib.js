@@ -417,8 +417,7 @@ FeedItem.prototype.getPubDate = function() {
  */
  
 // Parses an RFC 822 formatted date string and returns a JavaScript Date object, returns null on parse error
-// Example inputs:  Sun, 08 May 2005 20:45:02 GMT
-
+// Example inputs:  "Sun, 08 May 05 15:19:37 GMT"  "Mon, 09 May 2005 00:50:19 GMT"
 function rfc822ToJSDate(date_str) {
 	date_array = date_str.split(" ");
 	// check for two digit year
@@ -440,8 +439,7 @@ function rfc822ToJSDate(date_str) {
 }
 
 // Parses an ISO 8601 formatted date string and returns a JavaScript Date object, returns null on parse error
-// Example inputs:  2004-06-17T18:00Z 2004-06-17T18:34:12+02:00
-
+// Example inputs:  "2004-06-17T18:00Z" "2004-06-17T18:34:12+02:00"
 function iso8601ToJSDate(date_str) {
 	var tmp = date_str.split("T");
 	var date = tmp[0];
