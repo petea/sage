@@ -91,7 +91,7 @@ function init() {
 	// set feed folder location
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
-	bookmarksTree.treeBoxObject.selection.select(0);
+	bookmarksTree.treeBoxObject.view.selection.select(0);
 
 	FeedSearch.init();
 	toggleShowSearchBar();
@@ -125,7 +125,7 @@ function sageFolderChanged(subject, topic, prefName) {
 		// observe Preference
 	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
-	bookmarksTree.treeBoxObject.selection.select(0);
+	bookmarksTree.treeBoxObject.view.selection.select(0);
 }
 
 function done() {
@@ -247,13 +247,13 @@ function bookmarksTreeClick(aEvent) {
 	var selectedItemType = BookmarksUtils.getProperty(bookmarksTree.currentResource, RDF_NS + "type", bookmarksTree.db);
 	switch(aEvent.type) {
 		case "click":
-			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {
-				return;
-			}
 			var obj = {};
 			var row = {};
 			bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, row, {}, obj);
 			row = row.value;
+			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren" || row == -1) {
+				return;
+			}
 			if(obj.value == "twisty") return;
 			if(selectedItemType == NC_NS + "Folder") {
 				bookmarksTree.treeBoxObject.view.toggleOpenState(row);
