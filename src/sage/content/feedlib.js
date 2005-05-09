@@ -111,8 +111,8 @@ Feed.prototype.parseRSS = function() {
 					break;
 				case "pubDate":
 					tmp_str = CommonFunc.getInnerText(j);
-					tmp_date = new Date(tmp_str);
-					if(tmp_date != "Invalid Date") {
+					tmp_date = rfc822ToJSDate(tmp_str);
+					if(tmp_date) {
 						item.pubDate = tmp_date;
 					} else {
 						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
@@ -327,12 +327,11 @@ Feed.prototype.getFormat = function() {
 }
 
 Feed.prototype.getSignature = function() {
-	var sig = "[";
+	var hashText = "";
 	for(var c = 0; c < this.getItemCount(); c++) {
-		if(c != 0) sig += ",";
-		sig += this.getItem(c).getTitle().length;
+		hashText += this.getItem(c).getTitle();
 	}
-	sig += "]";
+	sig ="[" + b64_sha1(hashText) + "]";
 	return sig;
 }
 
@@ -416,6 +415,29 @@ FeedItem.prototype.getPubDate = function() {
  * Utility functions
  *
  */
+ 
+// Parses an RFC 822 formatted date string and returns a JavaScript Date object, returns null on parse error
+// Example inputs:  Sun, 08 May 2005 20:45:02 GMT
+
+function rfc822ToJSDate(date_str) {
+	date_array = date_str.split(" ");
+	// check for two digit year
+	if(date_array[3].length == 2) {
+		// convert to four digit year with a pivot of 70
+		if(date_array[3] < 70) {
+			date_array[3] = "20" + date_array[3];
+		} else {
+			date_array[3] = "19" + date_array[3];
+		}
+	}
+	date_str = date_array.join(" ");
+	date = new Date(date_str);
+	if(date != "Invalid Date") {
+		return date;
+	} else {
+		return null
+	}
+}
 
 // Parses an ISO 8601 formatted date string and returns a JavaScript Date object, returns null on parse error
 // Example inputs:  2004-06-17T18:00Z 2004-06-17T18:34:12+02:00
@@ -424,7 +446,7 @@ function iso8601ToJSDate(date_str) {
 	var tmp = date_str.split("T");
 	var date = tmp[0];
 
-  date = date.split("-");
+	date = date.split("-");
 	var year = date[0];
 	var month = date[1];
 	var day = date[2];
