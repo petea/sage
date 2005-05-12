@@ -421,7 +421,7 @@ FeedItem.prototype.getPubDate = function() {
 function rfc822ToJSDate(date_str) {
 	date_array = date_str.split(" ");
 	// check for two digit year
-	if(date_array[3].length == 2) {
+	if(date_array.length == 6 && date_array[3].length == 2) {
 		// convert to four digit year with a pivot of 70
 		if(date_array[3] < 70) {
 			date_array[3] = "20" + date_array[3];
