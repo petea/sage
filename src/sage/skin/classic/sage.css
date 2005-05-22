@@ -101,6 +101,10 @@ treechildren::-moz-tree-image(feed, unknown) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
+treechildren::-moz-tree-image(checking) {
+  -moz-image-region: auto !important;
+  list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
+}
 treechildren::-moz-tree-image(feed, error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
@@ -144,18 +148,6 @@ treechildren::-moz-tree-separator {
 #sage-splitter {
   border: none;
   border-bottom: 1px solid ThreeDLightShadow;
-}
-
-#rssStatusImage {
-  margin-left: 4px;
-  width: 16px;
-  height: 16px;
-}
-#rssStatusImage[loading="true"] {
-  list-style-image: url("chrome://sage/skin/icon/checking.gif");
-}
-#rssStatusImage[loading="error"] {
-  list-style-image: url("chrome://sage/skin/icon/error.gif");
 }
 
 #rssTitleLabel[href]:hover{

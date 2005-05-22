@@ -137,6 +137,7 @@ var CommonFunc = {
 	STATUS_UNKNOWN: "unknown",
 	STATUS_ERROR: "error",
 	STATUS_NO_CHECK: "no-check",
+	STATUS_CHECKING: "checking",
 
 	setBMDSProperty: function(aInput, aArcURI, aNewValue) {
 		var changed = false;

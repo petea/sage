@@ -146,13 +146,6 @@
 	</toolbar>
 </toolbox>
 
-<sidebarheader id="rssStatusBar" align="center">
-	<hbox align="center" flex="1">
-		<image id="rssStatusImage" loading="false"/>
-		<label id="rssStatusLabel" flex="1" crop="end" value=""/>
-	</hbox>
-  </sidebarheader>
-
 <vbox flex="1">
 
 	<vbox id="bookmarksTreeBox" flex="1" persist="height">

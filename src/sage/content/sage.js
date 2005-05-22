@@ -51,8 +51,6 @@ var resultStrArray = null;
 var strRes, bmStrRes; // stringbundle Object
 var bookmarksTree;
 var rssItemListBox;
-var rssStatusImage;
-var rssStatusLabel;
 var rssTitleLabel;
 var rssItemToolTip;
 
@@ -70,8 +68,6 @@ var popupTimeoutId=0;
 function init() {
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
-	rssStatusImage = document.getElementById("rssStatusImage");
-	rssStatusLabel = document.getElementById("rssStatusLabel");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemToolTip = document.getElementById("rssItemToolTip");
 
@@ -206,8 +202,7 @@ function manageRSSList() {
 
 function updateCheck(aCheckFolderId) {
 	UpdateChecker.onCheck = function(aName, aURL) {
-			rssStatusImage.setAttribute("loading", "true");
-			rssStatusLabel.value = strRes.getString("RESULT_CHECKING") + ": " + aName;
+		// TODO: Remove
 	}
 	UpdateChecker.onChecked = function(aName, aURL) {
 		setStatusDone();
@@ -349,18 +344,12 @@ function rssTitleLabelClick(aNode, aEvent){
 }
 
 function setStatusLoading(label) {
-	rssStatusImage.setAttribute("loading", "true");
-	if(label) {
-		rssStatusLabel.value = strRes.getString("RESULT_LOADING") + ": " + label;
-	} else {
-		rssStatusLabel.value = strRes.getString("RESULT_LOADING") + ": " + lastResource.name;
-	}
+	// TODO: Remove?
+	UpdateChecker.setCheckingFlag(lastResource.res, true, false);
 }
 
 function setStatusDone() {
-	rssStatusImage.setAttribute("loading", "false");
-	rssStatusLabel.value = "";
-
+	UpdateChecker.setCheckingFlag(lastResource.res, false, false);
 	if(currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
 		if(currentFeed.getLink()) {
@@ -374,8 +363,8 @@ function setStatusDone() {
 }
 
 function setStatusError(aStatus) {
-	rssStatusImage.setAttribute("loading", "error");
-	rssStatusLabel.value = "Error: " + aStatus;
+	CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_ERROR + " " + CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+	UpdateChecker.setCheckingFlag(lastResource.res, false, false);
 }
 
 function getContentBrowser() {
