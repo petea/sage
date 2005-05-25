@@ -42,8 +42,6 @@ var resultStrArray = null;
 var strRes, bmStrRes; // stringbundle Object
 var bookmarksTree;
 var rssItemListBox;
-var rssStatusImage;
-var rssStatusLabel;
 var rssTitleLabel;
 var rssItemToolTip;
 
@@ -63,8 +61,6 @@ XUL_NS    = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 function init() {
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
-	rssStatusImage = document.getElementById("rssStatusImage");
-	rssStatusLabel = document.getElementById("rssStatusLabel");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemToolTip = document.getElementById("rssItemToolTip");
 
@@ -196,8 +192,7 @@ function manageRSSList() {
 
 function updateCheck(aCheckFolderId) {
 	UpdateChecker.onCheck = function(aName, aURL) {
-			rssStatusImage.setAttribute("loading", "true");
-			rssStatusLabel.value = strRes.getFormattedString("RESULT_CHECKING", [aName]);
+		// TODO: Remove
 	}
 	UpdateChecker.onChecked = function(aName, aURL) {
 		setStatusDone();
@@ -345,15 +340,12 @@ function rssTitleLabelClick(aNode, aEvent){
 }
 
 function setStatusLoading(label) {
-	rssStatusImage.setAttribute("loading", "true");
-	rssStatusLabel.value = strRes.getFormattedString("RESULT_LOADING", [label || lastResource.name]);
-
+	// TODO: Remove?
+	UpdateChecker.setCheckingFlag(lastResource.res, true, false);
 }
 
 function setStatusDone() {
-	rssStatusImage.setAttribute("loading", "false");
-	rssStatusLabel.value = "";
-
+	UpdateChecker.setCheckingFlag(lastResource.res, false, false);
 	if(currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
 		if(currentFeed.getLink()) {
@@ -367,8 +359,8 @@ function setStatusDone() {
 }
 
 function setStatusError(aStatus) {
-	rssStatusImage.setAttribute("loading", "error");
-	rssStatusLabel.value = strRes.getFormattedString("RESULT_ERROR", [aStatus]);;
+	CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_ERROR + " " + CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+	UpdateChecker.setCheckingFlag(lastResource.res, false, false);
 }
 
 function getContentBrowser() {
@@ -518,7 +510,6 @@ var feedLoader = new FeedLoader;
 feedLoader.addLoadListener(onFeedLoaded);
 feedLoader.addErrorListener(onFeedLoadError);
 
-
 // This takes a list item from the rss list box and returns the uri it represents
 // this seems a bit inefficient. Shouldn't there be a direct mapping between these?
 
@@ -633,10 +624,12 @@ var linkVisitor = {
 		if (fixupURI == null)
 			return;
 		if (bRead) {
-			if (this._ff08)
+			if (this._ff08) {
 				this._globalHistory.addPage(fixupURI);
-			else
-				this._globalHistory.addURI(fixupURI, false, true);
+			} else {
+				// Firefox 1.1 added a forth argument used for the referrer
+				this._globalHistory.addURI(fixupURI, false, true, null);
+			}
 		}
 		else
 			this._browserHistory.removePage(fixupURI);

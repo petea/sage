@@ -150,22 +150,6 @@ treechildren::-moz-tree-separator {
   border-bottom: 1px solid ThreeDLightShadow;
 }
 
-#rssStatusBar {
-	display:	none;
-}
-
-#rssStatusImage {
-  margin-left: 4px;
-  width: 16px;
-  height: 16px;
-}
-#rssStatusImage[loading="true"] {
-  list-style-image: url("chrome://sage/skin/icon/checking.gif");
-}
-#rssStatusImage[loading="error"] {
-  list-style-image: url("chrome://sage/skin/icon/error.gif");
-}
-
 #rssTitleLabel[href]:hover{
   text-decoration: underline;
   cursor: pointer;

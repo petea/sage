@@ -194,7 +194,7 @@ var UpdateChecker = {
 		}
 	},
 
-	setCheckingFlag: function(aRes, aSet) {
+	setCheckingFlag: function(aRes, aSet, aRecursive) {
 		if (!aSet) {
 			// Clear the "checking" indicator on lastResource if it is set
 			var desc = CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION);
@@ -210,19 +210,18 @@ var UpdateChecker = {
 									   CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
 		}
 
-		// Go to parent folder
-		var predicate = BMDS.ArcLabelsIn(aRes).getNext();
-		if (predicate instanceof Components.interfaces.nsIRDFResource) {
-			var parent = BMDS.GetSource(predicate, aRes, true);
-			if (parent.Value != sageFolderID) {
-				this.setCheckingFlag(parent, aSet);
+		if (aRecursive || aRecursive === undefined) {
+			// Go to parent folder
+			var predicate = BMDS.ArcLabelsIn(aRes).getNext();
+			if (predicate instanceof Components.interfaces.nsIRDFResource) {
+				var parent = BMDS.GetSource(predicate, aRes, true);
+				if (parent.Value != sageFolderID) {
+					this.setCheckingFlag(parent, aSet);
+				}
 			}
 		}
 	},
-
+	
 	onCheck: function(aName, aURL) {},
 	onChecked: function(aName, aURL) {}
-
 }
-
-
