@@ -64,6 +64,11 @@ var sageFolderID = "";
 var enableTooltip = true;
 var popupTimeoutId=0;
 
+// This is a bit ugly but to support 1.1 and 1.0 we need to redefine these
+NC_NS     = "http://home.netscape.com/NC-rdf#";
+WEB_NS    = "http://home.netscape.com/WEB-rdf#";
+RDF_NS    = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+XUL_NS    = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 function init() {
 	bookmarksTree = document.getElementById("bookmarksTree");
@@ -657,10 +662,12 @@ var linkVisitor = {
 		if (fixupURI == null)
 			return;
 		if (bRead) {
-			if (this._ff08)
+			if (this._ff08) {
 				this._globalHistory.addPage(fixupURI);
-			else
-				this._globalHistory.addURI(fixupURI, false, true);
+			} else {
+				// Firefox 1.1 added a forth argument used for the referrer
+				this._globalHistory.addURI(fixupURI, false, true, null);
+			}
 		}
 		else
 			this._browserHistory.removePage(fixupURI);
