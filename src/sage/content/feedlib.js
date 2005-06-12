@@ -216,9 +216,14 @@ Feed.prototype.parseAtom = function() {
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
 		var contentArray = new Array();
+		var xmlSerializer = new XMLSerializer();
 		for(j = 0; j < contentNodes.length; j++) {
 			var contType = contentNodes[j].getAttribute("type");
-			contentArray[contType] = CommonFunc.getInnerText(contentNodes[j]);
+			if(contType == "application/xhtml+xml") {
+				contentArray[contType] = xmlSerializer.serializeToString(contentNodes[j]);
+			} else {
+				contentArray[contType] = CommonFunc.getInnerText(contentNodes[j]);
+			}
 		}
 
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
