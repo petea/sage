@@ -86,14 +86,16 @@ var CommonFunc = {
 
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
 
-	BM_LAST_VISIT: 		"http://home.netscape.com/WEB-rdf#LastVisitDate",
+	NC_NS:				"http://home.netscape.com/NC-rdf#",
+	BM_LAST_VISIT:		"http://home.netscape.com/WEB-rdf#LastVisitDate",
 	BM_LAST_MODIFIED:	"http://home.netscape.com/WEB-rdf#LastModifiedDate",
 	BM_DESCRIPTION:		"http://home.netscape.com/NC-rdf#Description",
-	BM_NAME:					"http://home.netscape.com/NC-rdf#Name",
-	BM_URL:						"http://home.netscape.com/NC-rdf#URL",
-	BM_FEEDURL:				"http://home.netscape.com/NC-rdf#FeedURL",
+	BM_NAME:				"http://home.netscape.com/NC-rdf#Name",
+	BM_URL:				"http://home.netscape.com/NC-rdf#URL",
+	BM_FEEDURL:			"http://home.netscape.com/NC-rdf#FeedURL",
 
-	RDF_TYPE:					"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+	RDF_NS:				"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+	RDF_TYPE:			"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
 
 	STATUS_UPDATE: "updated",
 	STATUS_NO_UPDATE: "no-updated",

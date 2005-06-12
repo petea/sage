@@ -7,10 +7,10 @@ var UpdateChecker = {
 	getURL: function(resource) {
 		var type = CommonFunc.getBMDSProperty(resource, CommonFunc.RDF_TYPE);
 		var url;
-		if(type == NC_NS + "Bookmark") {
+		if(type == CommonFunc.NC_NS + "Bookmark") {
 			url = CommonFunc.getBMDSProperty(resource, CommonFunc.BM_URL);
 		}
-		if(type == NC_NS + "Livemark") {
+		if(type == CommonFunc.NC_NS + "Livemark") {
 			url = CommonFunc.getBMDSProperty(resource, CommonFunc.BM_FEEDURL);
 		}
 		return url;
