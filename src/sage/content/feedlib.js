@@ -216,14 +216,19 @@ Feed.prototype.parseAtom = function() {
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
 		var contentArray = new Array();
+		var contentString;
 		var xmlSerializer = new XMLSerializer();
 		for(j = 0; j < contentNodes.length; j++) {
 			var contType = contentNodes[j].getAttribute("type");
 			if(contType == "application/xhtml+xml") {
-				contentArray[contType] = xmlSerializer.serializeToString(contentNodes[j]);
+				contentString = "";
+				for(z = 0; z < contentNodes[j].childNodes.length; z++) {
+					contentString += xmlSerializer.serializeToString(contentNodes[j].childNodes[z]);
+				}
 			} else {
-				contentArray[contType] = CommonFunc.getInnerText(contentNodes[j]);
+				contentString = CommonFunc.getInnerText(contentNodes[j]);
 			}
+			contentArray[contType] = contentString;
 		}
 
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
