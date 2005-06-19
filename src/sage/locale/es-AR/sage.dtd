@@ -75,7 +75,7 @@
 <!ENTITY markAllAsRead.command.modifiers	"accel shift">
 
 <!ENTITY markAllAsUnread.command.label		"Marcar todos como no leídos">
-<!ENTITY markAllAsUnread.command.tooltip	"Marcar todos como leídos">
+<!ENTITY markAllAsUnread.command.tooltip	"Marcar todos como no leídos">
 <!ENTITY markAllAsUnread.command.accesskey	"N">
 
 <!ENTITY toggleReadState.command.key		"M">
