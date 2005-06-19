@@ -51,6 +51,8 @@ var resultStrArray = null;
 var strRes, bmStrRes; // stringbundle Object
 var bookmarksTree;
 var rssItemListBox;
+var rssStatusImage;
+var rssStatusLabel;
 var rssTitleLabel;
 var rssItemToolTip;
 
@@ -64,15 +66,11 @@ var sageFolderID = "";
 var enableTooltip = true;
 var popupTimeoutId=0;
 
-// This is a bit ugly but to support 1.1 and 1.0 we need to redefine these
-NC_NS     = "http://home.netscape.com/NC-rdf#";
-WEB_NS    = "http://home.netscape.com/WEB-rdf#";
-RDF_NS    = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-XUL_NS    = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-
 function init() {
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
+	rssStatusImage = document.getElementById("rssStatusImage");
+	rssStatusLabel = document.getElementById("rssStatusLabel");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemToolTip = document.getElementById("rssItemToolTip");
 
@@ -86,7 +84,7 @@ function init() {
 		strRes.getString("RESULT_NOT_AVAILABLE_STR"),
 		strRes.getString("RESULT_ERROR_FAILURE_STR")
 	);
-
+	
 	// get the version string from the last release used
 	var lastVersion = CommonFunc.getPrefValue(CommonFunc.LAST_VERSION, "str", null);
 	if(lastVersion) {
@@ -130,9 +128,7 @@ function init() {
 	// set feed folder location
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
-	if (bookmarksTree.treeBoxObject.selection) {
-		bookmarksTree.treeBoxObject.selection.select(0);
-	}
+	bookmarksTree.treeBoxObject.view.selection.select(0);
 
 	FeedSearch.init();
 	toggleShowSearchBar();
@@ -166,7 +162,7 @@ function sageFolderChanged(subject, topic, prefName) {
 		// observe Preference
 	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
-	bookmarksTree.treeBoxObject.selection.select(0);
+	bookmarksTree.treeBoxObject.view.selection.select(0);
 }
 
 function done() {
@@ -179,6 +175,9 @@ function done() {
 		rssLoading = false;
 	}
 	UpdateChecker.done();
+	
+	logMessage("flushing bookmark data store..");
+	BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
 
 	logMessage("shutdown");
 }
@@ -223,12 +222,12 @@ function updateCheck(aCheckFolderId) {
 function BookmarkResource(aRes, aDB) {
 	this.res = aRes;
 	this.db = aDB;
-	this.name = BookmarksUtils.getProperty(this.res, NC_NS + "Name", this.db);
-	if(BookmarksUtils.getProperty(this.res, RDF_NS + "type", this.db) == NC_NS + "Bookmark") {
-		this.url = BookmarksUtils.getProperty(this.res, NC_NS + "URL", this.db);
+	this.name = BookmarksUtils.getProperty(this.res, CommonFunc.NC_NS + "Name", this.db);
+	if(BookmarksUtils.getProperty(this.res, CommonFunc.RDF_NS + "type", this.db) == CommonFunc.NC_NS + "Bookmark") {
+		this.url = BookmarksUtils.getProperty(this.res, CommonFunc.NC_NS + "URL", this.db);
 	}
-	if(BookmarksUtils.getProperty(this.res, RDF_NS + "type", this.db) == NC_NS + "Livemark") {
-		this.url = BookmarksUtils.getProperty(this.res, NC_NS + "FeedURL", this.db);
+	if(BookmarksUtils.getProperty(this.res, CommonFunc.RDF_NS + "type", this.db) == CommonFunc.NC_NS + "Livemark") {
+		this.url = BookmarksUtils.getProperty(this.res, CommonFunc.NC_NS + "FeedURL", this.db);
 	}
 
 }
@@ -240,9 +239,9 @@ function bookmarksOpen() {
 	if(predicate instanceof Components.interfaces.nsIRDFResource) {
 		var parent = lastResource.db.GetSource(predicate, lastResource.res, true);
 	}
-	var parentType = BookmarksUtils.getProperty(parent, RDF_NS + "type", lastResource.db);
+	var parentType = BookmarksUtils.getProperty(parent, CommonFunc.RDF_NS + "type", lastResource.db);
 	// if this is a livemark child, open as a web page, otherwise process it as a feed
-	if(parentType == NC_NS + "Livemark") {
+	if(parentType == CommonFunc.NC_NS + "Livemark") {
 		getContentBrowser().loadURI(lastResource.url);
 	} else {
 		setStatusLoading();
@@ -264,9 +263,9 @@ function createTreeContextMenu2(aEvent) {
 	if(predicate instanceof Components.interfaces.nsIRDFResource) {
 		var parent = bookmarksTree.db.GetSource(predicate, bookmarksTree.currentResource, true);
 	}
-	var parentType = BookmarksUtils.getProperty(parent, RDF_NS + "type", bookmarksTree.db);
+	var parentType = BookmarksUtils.getProperty(parent, CommonFunc.RDF_NS + "type", bookmarksTree.db);
 
-	if((selection.type == "Bookmark" && parentType != NC_NS + "Livemark") || selection.type == "Livemark") {
+	if((selection.type == "Bookmark" && parentType != CommonFunc.NC_NS + "Livemark") || selection.type == "Livemark") {
 		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
 		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));
@@ -284,18 +283,18 @@ function createTreeContextMenu2(aEvent) {
 }
 
 function bookmarksTreeClick(aEvent) {
-	var selectedItemType = BookmarksUtils.getProperty(bookmarksTree.currentResource, RDF_NS + "type", bookmarksTree.db);
+	var selectedItemType = BookmarksUtils.getProperty(bookmarksTree.currentResource, CommonFunc.RDF_NS + "type", bookmarksTree.db);
 	switch(aEvent.type) {
 		case "click":
-			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren") {
-				return;
-			}
 			var obj = {};
 			var row = {};
 			bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, row, {}, obj);
 			row = row.value;
+			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren" || row == -1) {
+				return;
+			}
 			if(obj.value == "twisty") return;
-			if(selectedItemType == NC_NS + "Folder") {
+			if(selectedItemType == CommonFunc.NC_NS + "Folder") {
 				bookmarksTree.treeBoxObject.view.toggleOpenState(row);
 			}
 			break;
@@ -311,8 +310,8 @@ function bookmarksTreeClick(aEvent) {
 	if(aEvent.button == 1) { CreateHTML.tabbed = true; } // click middle button
 	if(aEvent.ctrlKey) { CreateHTML.tabbed = true; } // press Ctrl Key
 
-	const BOOKMARK_SEPARATOR = NC_NS + "BookmarkSeparator";
-	const BOOKMARK_FOLDER = NC_NS + "Folder";
+	const BOOKMARK_SEPARATOR = CommonFunc.NC_NS + "BookmarkSeparator";
+	const BOOKMARK_FOLDER = CommonFunc.NC_NS + "Folder";
 	if(selectedItemType == BOOKMARK_SEPARATOR || selectedItemType == BOOKMARK_FOLDER) {
 		return;
 	}

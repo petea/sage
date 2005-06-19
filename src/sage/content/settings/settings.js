@@ -60,8 +60,8 @@ function init() {
 	var header = document.getElementById("header");
 	header.setAttribute("description", header.getAttribute("description") + " " + CommonFunc.versionString(CommonFunc.VERSION, 1));
 
-  sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
-	gNameArc = RDF.GetResource(NC_NS + "Name");
+	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
+	gNameArc = RDF.GetResource(CommonFunc.NC_NS + "Name");
 	gList = document.getElementById("select-menu");
 
 	chkUserCssEnable = document.getElementById("chkUserCssEnable");

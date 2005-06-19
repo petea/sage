@@ -1,0 +1,83 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version.label				"verze">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Zobrazí Sage">
+
+<!ENTITY menu.view				"Ukázat">
+<!ENTITY menu.showSearchBar			"Ukáže vyhledávací panel">
+<!ENTITY menu.showFeedItemList			"Ukáže seznam položek v kanálu">
+<!ENTITY menu.showFeedItemListToolbar	"Ukáže panel pro seznam položek">
+<!ENTITY menu.showDescTooltip			"Ukáže nápovědy k popisům">
+<!ENTITY menu.openHTML				"Otevře kanál v hlavním okně">
+<!ENTITY menu.tools				"Nastavení">
+<!ENTITY menu.checkUpdate			"Zkontrolovat kanály">
+<!ENTITY menu.manageRSSList			"Upravit seznam kanálů">
+<!ENTITY menu.opmlImportExport			"OPML Import/Export...">
+<!ENTITY menu.setting				"Nastavení...">
+<!ENTITY menu.sageProjectFeed				"Novinky o Sage">
+<!ENTITY menu.discoverFeeds				"Vyhledat kanály">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Prohledává se aktuální stránka">
+<!ENTITY discovery.button.addFeed    "Přidat kanál">
+<!ENTITY discovery.button.close			 "Zavřít">
+<!ENTITY discovery.header.title			 "Nadpis">
+<!ENTITY discovery.header.format     "Formát">
+<!ENTITY discovery.header.lastPubDate     "Poslední aktualizace">
+<!ENTITY discovery.header.itemCount     "Počet záznamů">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Obecné">
+<!ENTITY settings.autoFeedTitle.label     "Automaticky aktualizovat nadpisy kanálů">
+<!ENTITY settings.renderFeeds.label     "Zobrazovat kanály v hlavním okně">
+<!ENTITY settings.twelveHourClock.label     "PM/AM zobrazování času (12 hodin a postfix)">
+<!ENTITY settings.feedItemOrder.label     "Pořadí kanálů">
+<!ENTITY settings.feedItemOrder.chrono     "Podle data">
+<!ENTITY settings.feedItemOrder.source     "Podle zdroje">
+<!ENTITY settings.feedDiscoveryMode.label     "Režim vyhledávání kanálů">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Důkladný">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Opatrný">
+<!ENTITY settingWindow.title                    "Nastavení Sage">
+<!ENTITY selectFolder.label			"Vyberte záložku s kanály">
+<!ENTITY openInContentsArea.caption		"Zobrazování kanálů">
+<!ENTITY enableUserCss.label			"Používat uživatelský soubor se styly">
+<!ENTITY browseCss.label			"Vyhledat...">
+<!ENTITY allowEContent.label			"Povolit HTML v kanálech">
+
+
+<!ENTITY openSageSidebar.commandkey		"R">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
+
+<!-- These are taken from history.dtd -->
+<!ENTITY openLinkInWindow.label "Otevřít">
+<!ENTITY openLinkInWindow.accesskey "O">
+<!ENTITY openInNewTab.label "Otevřít v novém panelu">
+<!ENTITY openInNewTab.accesskey "T">
+<!ENTITY openInNewWindow.label "Otevřít v novém okně">
+<!ENTITY openInNewWindow.accesskey "W">
+
+<!-- Read State -->
+<!ENTITY markAsRead.command.label			"Označit jako přečtené">
+<!ENTITY markAsRead.command.tooltip			"Označí položku jako přečtenou">
+<!ENTITY markAsRead.command.accesskey		"R">
+
+<!ENTITY markAsUnread.command.label			"Označit jako nepřečtené">
+<!ENTITY markAsUnread.command.tooltip		"Označí položku jako nepřečtenou">
+<!ENTITY markAsUnread.command.accesskey		"U">
+
+<!ENTITY markAllAsRead.command.label		"Označit vše jako přečtené">
+<!ENTITY markAllAsRead.command.tooltip		"Označí všechny položky jako přečtené">
+<!ENTITY markAllAsRead.command.accesskey	"A">
+<!ENTITY markAllAsRead.command.key			"C">
+<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+
+<!ENTITY markAllAsUnread.command.label		"Označit vše jako nepřečtené">
+<!ENTITY markAllAsUnread.command.tooltip	"Označí všechny položky jako nepřečtené">
+<!ENTITY markAllAsUnread.command.accesskey	"n">
+
+<!ENTITY toggleReadState.command.key		"M">
+
+

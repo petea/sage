@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"Βοηθός εισαγωγής/εξαγωγής OPML">
+<!ENTITY pageStart.desc				"Επιλέξτε μια ενέργεια">
+<!ENTITY pageImport.label			"Εισαγωγή OPML">
+<!ENTITY pageImport.desc			"Επιλογή αρχείου εισαγωγής OPML">
+<!ENTITY pageExport.label			"Εξαγωγή OPML">
+<!ENTITY pageExport.desc			"Επιλογή αρχείου εξαγωγής OPML">
+
+<!ENTITY rdoImport.label			"Εισαγωγή OPML">
+<!ENTITY rdoExport.label			"Εξαγωγή OPML">
+
+<!ENTITY browseButton.label			"Εξερεύνηση...">
+
+<!ENTITY pageImportFinished.label	"Εισαγωγή OPML">
+<!ENTITY pageImportFinished.desc	"Η εισαγωγή ολοκληρώθηκε">
+<!ENTITY pageExportFinished.label	"Εξαγωγή OPML">
+<!ENTITY pageExportFinished.desc	"Η Εξαγωγή ολοκληρώθηκε">

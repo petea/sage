@@ -1,0 +1,83 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version.label				"Versão">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Exibir o Sage">
+
+<!ENTITY menu.view				"Visualizar">
+<!ENTITY menu.showSearchBar			"Exibir Barra de Pesquisa">
+<!ENTITY menu.showFeedItemList			"Exibir Lista de Ítens">
+<!ENTITY menu.showFeedItemListToolbar	"Exibir Ferramenta Lista de Ítens">
+<!ENTITY menu.showDescTooltip			"Exibir Descrição Ferramenta de Dicas">
+<!ENTITY menu.openHTML				"Abrir Fontes na Área de Conteúdo">
+<!ENTITY menu.tools				"Opções">
+<!ENTITY menu.checkUpdate			"Verificar Fontes">
+<!ENTITY menu.manageRSSList			"Organizar Lista de Fontes...">
+<!ENTITY menu.opmlImportExport			"Importar/Exportar OPML...">
+<!ENTITY menu.setting				"Configurações...">
+<!ENTITY menu.sageProjectFeed				"Noticias do Projeto Sage">
+<!ENTITY menu.discoverFeeds				"Descobrir Fontes">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Pesquisando Página Atual">
+<!ENTITY discovery.button.addFeed    "Adicionar Fontes">
+<!ENTITY discovery.button.close			 "Fechar">
+<!ENTITY discovery.header.title			 "Título">
+<!ENTITY discovery.header.format     "Formato">
+<!ENTITY discovery.header.lastPubDate     "Última Atualização">
+<!ENTITY discovery.header.itemCount     "Items">
+<!ENTITY discovery.header.url     "Endereço">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Geral">
+<!ENTITY settings.autoFeedTitle.label     "Atualização Automatica dos Titulos">
+<!ENTITY settings.renderFeeds.label     "Renderizar Fontes na Área de Conteúdo">
+<!ENTITY settings.twelveHourClock.label     "Usar Formato de 12 horas">
+<!ENTITY settings.feedItemOrder.label     "Ordenar Fontes">
+<!ENTITY settings.feedItemOrder.chrono     "Cronológico">
+<!ENTITY settings.feedItemOrder.source     "Fonte">
+<!ENTITY settings.feedDiscoveryMode.label     "Descobrir Fontes">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Completo">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Conservador">
+<!ENTITY settingWindow.title                    "Configurações do Sage">
+<!ENTITY selectFolder.label			"Selecionar Pasta da Fonte">
+<!ENTITY openInContentsArea.caption		"Processando Fonte">
+<!ENTITY enableUserCss.label			"Usar Folha de estilo CSS Personalizada">
+<!ENTITY browseCss.label			"Procurar...">
+<!ENTITY allowEContent.label			"Permitir tags HTML">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
+
+<!-- These are taken from history.dtd -->
+<!ENTITY openLinkInWindow.label "Abrir">
+<!ENTITY openLinkInWindow.accesskey "O">
+<!ENTITY openInNewTab.label "Abrir em nova aba">
+<!ENTITY openInNewTab.accesskey "T">
+<!ENTITY openInNewWindow.label "Abrir em nova janela">
+<!ENTITY openInNewWindow.accesskey "W">
+
+<!-- Read State -->
+<!ENTITY markAsRead.command.label			"Marcar como Lida">
+<!ENTITY markAsRead.command.tooltip			"Marcar como Lida">
+<!ENTITY markAsRead.command.accesskey		"R">
+
+<!ENTITY markAsUnread.command.label			"Marcar como Não Lida">
+<!ENTITY markAsUnread.command.tooltip		"Marcar como Não Lida">
+<!ENTITY markAsUnread.command.accesskey		"U">
+
+<!ENTITY markAllAsRead.command.label		"Marcar Todas como Lidas">
+<!ENTITY markAllAsRead.command.tooltip		"Marcar Todas como Lidas">
+<!ENTITY markAllAsRead.command.accesskey	"A">
+<!ENTITY markAllAsRead.command.key			"C">
+<!ENTITY markAllAsRead.command.modifiers	"Acelerar...">
+
+<!ENTITY markAllAsUnread.command.label		"Marcar Todas como Não Lidas">
+<!ENTITY markAllAsUnread.command.tooltip	"Marcar Todas como Não Lidas">
+<!ENTITY markAllAsUnread.command.accesskey	"n">
+
+<!ENTITY toggleReadState.command.key		"M">
+
+

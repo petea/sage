@@ -76,6 +76,12 @@
 			<em:locale>locale/sr-YU@Latn/</em:locale>
 			<em:locale>locale/es-AR/</em:locale>
 			<em:locale>locale/fi-FI/</em:locale>
+			<em:locale>locale/cs-CZ/</em:locale>
+			<em:locale>locale/el-GR/</em:locale>
+			<em:locale>locale/pl-PL/</em:locale>
+			<em:locale>locale/pt-BR/</em:locale>
+			<em:locale>locale/sl-SI/</em:locale>
+			<em:locale>locale/zh-CN/</em:locale>
 		</Description>
 	</em:file>
 
