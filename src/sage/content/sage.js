@@ -631,10 +631,14 @@ var linkVisitor = {
 		if (fixupURI == null)
 			return;
 		if (bRead) {
-			if (this._ff08)
+			if (this._ff08) {
 				this._globalHistory.addPage(fixupURI);
-			else
-				this._globalHistory.addURI(fixupURI, false, true);
+			} else {
+				if (this._globalHistory.addURI.length == 4)  // a fourth argumenth was added in Firefox 1.1 for the referrer URI
+					this._globalHistory.addURI(fixupURI, false, true, fixupURI);
+				else
+					this._globalHistory.addURI(fixupURI, false, true);
+			}
 		}
 		else
 			this._browserHistory.removePage(fixupURI);
