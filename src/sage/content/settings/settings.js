@@ -99,7 +99,7 @@ function fillSelectFolderMenupopup () {
 	}
 
 	// to be removed once I checkin the top folder
-	var element = document.createElementNS(XUL_NS, "menuitem");
+	var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
 	element.setAttribute("label", "Bookmarks");
 	element.setAttribute("id", "NC:BookmarksRoot");
 	popup.appendChild(element);
@@ -119,7 +119,7 @@ function fillFolder(aPopup, aFolder, aDepth) {
 		var curr = children.getNext();
 		if (RDFCU.IsContainer(BMDS, curr)) {
 			curr = curr.QueryInterface(Components.interfaces.nsIRDFResource);
-			var element = document.createElementNS(XUL_NS, "menuitem");
+			var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
 			var name = BMDS.GetTarget(curr, gNameArc, true).QueryInterface(kRDFLITIID).Value;
 			var indentation = new Array(aDepth + 1).join("   ");
 			element.setAttribute("label", indentation + name);
