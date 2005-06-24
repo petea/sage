@@ -141,8 +141,14 @@ function progressUpdate() {
 function doAddFeed() {
 	var index = feedTree.view.selection.currentIndex;
 	if(index != -1) {
-		var url = feedTree.view.getCellText(index, "url");
-		var title = feedTree.view.getCellText(index, "title");
+		var url, title;
+		if (feedTree.columns) { // columns property introduced in Firefox 1.1
+			url = feedTree.view.getCellText(index, feedTree.columns.getNamedColumn("url"));
+			title = feedTree.view.getCellText(index, feedTree.columns.getNamedColumn("title"));
+		} else {
+			url = feedTree.view.getCellText(index, "url");
+			title = feedTree.view.getCellText(index, "title");
+		}
 		if(url) {
 			if(title == "") {
 				title = "No Title";
@@ -158,7 +164,7 @@ function doAddFeed() {
 			// select new feed in sibebar
 			var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
 			bookmarksTree.treeBoxObject.ensureRowIsVisible(bm_index);
-			bookmarksTree.treeBoxObject.selection.select(bm_index);
+			bookmarksTree.treeBoxObject.view.selection.select(bm_index);
 		}
 	}
   return true;
