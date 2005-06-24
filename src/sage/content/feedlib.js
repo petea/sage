@@ -162,7 +162,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 						item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(CommonFunc.getInnerText(j)) : CommonFunc.getInnerText(j);
 					}
 					break;
-				case "author":
+				case "creator":
 					item.author = entityDecode(CommonFunc.getInnerText(j));
 					break;
 				case "guid":
