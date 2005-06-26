@@ -133,6 +133,8 @@ var CommonFunc = {
 
 	RDF_NS:				"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
 	RDF_TYPE:			"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+	
+	XUL_NS:				"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
 
 	STATUS_UPDATE: "updated",
 	STATUS_NO_UPDATE: "no-updated",
