@@ -1,6 +1,6 @@
 <!ENTITY sage.label				"Sage">
 <!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label				"">
+<!ENTITY sage.version.label				"Verzió">
 
 <!ENTITY sage.toolbarLabel			"Sage">
 <!ENTITY sage.sidebarTitle			"Sage">
@@ -34,7 +34,7 @@
 <!ENTITY settings.general.caption     "Általános">
 <!ENTITY settings.autoFeedTitle.label     "Címek automatikus frissítése">
 <!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
-<!ENTITY settings.twelveHourClock.label     "">
+<!ENTITY settings.twelveHourClock.label     "12 órás idő">
 <!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
 <!ENTITY settings.feedItemOrder.label     "Adagoló elemeinek sorrendje">
 <!ENTITY settings.feedItemOrder.chrono     "Idõrendben">
@@ -75,7 +75,7 @@
 <!ENTITY markAllAsRead.command.key			"C">
 <!ENTITY markAllAsRead.command.modifiers	"accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Olvasatkannak jelöli az összeset">
+<!ENTITY markAllAsUnread.command.label		"Olvasatlannak jelöli az összeset">
 <!ENTITY markAllAsUnread.command.tooltip	"Olvasatlannak jelöli az összeset">
 <!ENTITY markAllAsUnread.command.accesskey	"n">
 
