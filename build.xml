@@ -37,20 +37,26 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
-<!-- project used to build xpi -->
 <project name="sage" default="build-local">
 	
-	<property name="build"      location="build"/>
-	<property name="src"        location="src"/>
-	<property name="tag"        value="HEAD"/>
+	<property name="build"		location="build"/>
+	<property name="src"			location="src"/>
+	<property name="tools"		location="tools"/>
+	<property name="xpcom"		location="${build}/xpcom"/>
+	<property name="tag"			value="HEAD"/>
 
 	<!-- create build directories -->
-	<target name="init" depends="clean">  
+	<target name="init" depends="clean">
+		<echo>The operating system is ${os.name}</echo>
+		<condition property="isWin"><os family="windows"/></condition>
+		<condition property="isMac"><os family="mac"/></condition>
 		<mkdir dir="${build}"/>
+		<mkdir dir="${build}/xpcom"/>
 		<mkdir dir="${build}/src"/>
 		<mkdir dir="${build}/tmp"/>
 		<mkdir dir="${build}/xpi"/>
 		<mkdir dir="${build}/xpi/chrome"/>
+		<mkdir dir="${build}/xpi/components"/>
 	</target>
 
 	<!-- build from local source files -->
@@ -58,6 +64,12 @@
 		<copy todir="${build}/src">
 			<fileset dir="${src}">
 				<include name="**"/>
+			</fileset>
+		</copy>
+		<copy todir="${build}/xpcom">
+			<fileset dir="${tools}">
+				<include name="xpcom_win.zip"/>
+				<include name="xpcom_mac.tar.gz"/>
 			</fileset>
 		</copy>
 		<property name="version" value="sage-local"/>
@@ -77,10 +89,60 @@
 		<ant target="xpi"/>
 	</target>
 
+	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac"/>
+	<target name="xpcom-tools-win" if="isWin">
+		<unzip src="${xpcom}/xpcom_win.zip" dest="${xpcom}"/>
+	</target>
+	<target name="xpcom-tools-mac" if="isMac">
+		<exec dir="${xpcom}" executable="tar" failonerror="true">
+			<arg line="xzf xpcom_mac.tar.gz"/>
+		</exec>
+	</target>
+	
+	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac">
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
+		</exec>
+	</target>
+	<target name="compile-idl-win" if="isWin">
+	    <property name="xpidl_executable" value="xpidl.exe"/>
+	</target>
+	<target name="compile-idl-mac" if="isMac">
+	    <property name="xpidl_executable" value="xpidl"/>
+	</target>
+
+	<!-- generate XPConnect typelib files -->
+	<target name="generate-xpt">
+		<ant target="xpcom-tools"/>
+		<!-- copy interfaces to xpcom compile dir -->
+	    <copy todir="${xpcom}/base">
+			<fileset dir="${build}/src/components">
+				<include name="*.idl"/>    
+			</fileset>
+		</copy>
+	    
+		<!-- compile interfaces -->
+		<ant target="compile-idl"/>
+		
+		<!-- copy XPT files to build directory -->
+		<copy todir="${build}/src/components">
+			<fileset dir="${xpcom}/base">
+				<include name="sageIDateFormatter.xpt"/>  
+			</fileset>
+		</copy>
+	</target>
+	
 	<!-- assemeble extension structure -->
-	<target name="assemble">
+	<target name="assemble" depends="generate-xpt">
 		<!-- create main jar file -->
-		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/> 
+		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
+		
+		<!-- copy JS and XPT component files -->
+		<copy todir="${build}/xpi/components">
+			<fileset dir="${build}/src/components">
+				<exclude name="*.idl"/>
+			</fileset>
+		</copy>
 		
 		<!-- copy install meta files -->
 		<copy todir="${build}/xpi">
@@ -97,7 +159,7 @@
 
 	<!-- remove build output -->
 	<target name="clean">
-		<delete dir="${build}"/>    
+		<delete dir="${build}"/>
 	</target>
 
 </project>
