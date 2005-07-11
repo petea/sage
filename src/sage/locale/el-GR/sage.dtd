@@ -1,0 +1,81 @@
+<!ENTITY sage.label				"Sage">
+<!ENTITY sage.version.label				"έκδοση">
+
+<!ENTITY sage.toolbarLabel			"Sage">
+<!ENTITY sage.sidebarTitle			"Sage">
+<!ENTITY sage.tooltip				"Εμφανίζει το Sage">
+
+<!ENTITY menu.view				"Προβολή">
+<!ENTITY menu.showSearchBar			"Εμφάνιση μπάρας αναζήτησης αρχείων ροής">
+<!ENTITY menu.showFeedItemList			"Εμφάνιση λίστας αρχείων ροής">
+<!ENTITY menu.showFeedItemListToolbar	"Εμφάνιση εργαλειοθήκης λίστας αρχείων ροής">
+<!ENTITY menu.showDescTooltip			"Εμφάνιση σχολίων περιγραφής">
+<!ENTITY menu.openHTML				"Άνοιγμα Ροής στην περιοχή περιεχομένων">
+<!ENTITY menu.tools				"Επιλογές">
+<!ENTITY menu.checkUpdate			"Έλεγχος αρχείων ροής">
+<!ENTITY menu.manageRSSList			"Διαχείριση λίστας αρχείων ροής...">
+<!ENTITY menu.opmlImportExport			"OPML Εισαγωγή/Εξαγωγή...">
+<!ENTITY menu.setting				"Ρυθμίσεις...">
+<!ENTITY menu.sageProjectFeed				"Νέα του Sage Project">
+<!ENTITY menu.discoverFeeds				"Ανακάλυψη αρχείων ροής">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Αναζήτηση τρέχουσας σελίδας">
+<!ENTITY discovery.button.addFeed    "Προσθήκη Ροής">
+<!ENTITY discovery.button.close			 "Κλείσιμο">
+<!ENTITY discovery.header.title			 "Τίτλος">
+<!ENTITY discovery.header.format     "Μορφή">
+<!ENTITY discovery.header.lastPubDate     "Τελευταία ενημέρωση">
+<!ENTITY discovery.header.itemCount     "Στοιχεία">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Γενικά">
+<!ENTITY settings.autoFeedTitle.label     "Αυτόματη ενημέρωση τίτλων Ροών">
+<!ENTITY settings.renderFeeds.label     "Απεικόνιση Ροών στην περιοχή περιεχομένων">
+<!ENTITY settings.twelveHourClock.label     "Χρήση ρολογιού 12 ωρών">
+<!ENTITY settings.feedItemOrder.label     "Σειρά στοιχείων Ροής">
+<!ENTITY settings.feedItemOrder.chrono     "Χρονολογική">
+<!ENTITY settings.feedItemOrder.source     "Πηγή">
+<!ENTITY settings.feedDiscoveryMode.label     "Μέθοδος ανακάλυψης Ροών">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Εξαντλητική">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Συντηρητική">
+<!ENTITY settingWindow.title                    "Ρυθμίσεις του Sage ">
+<!ENTITY selectFolder.label			"Επιλογή φακέλου Ροών">
+<!ENTITY openInContentsArea.caption		"Απεικόνιση Ροής">
+<!ENTITY enableUserCss.label			"Χρήση προσαρμοσμένου style sheet">
+<!ENTITY browseCss.label			"Εξερεύνηση...">
+<!ENTITY allowEContent.label			"Να επιτρέπονται HTML tags">
+
+
+<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
+
+<!-- These are taken from history.dtd -->
+<!ENTITY openLinkInWindow.label "Άνοιγμα">
+<!ENTITY openLinkInWindow.accesskey "ν">
+<!ENTITY openInNewTab.label "Άνοιγμα σε νέα καρτέλα">
+<!ENTITY openInNewTab.accesskey "κ">
+<!ENTITY openInNewWindow.label "Άνοιγμα σε νέο παράθυρο">
+<!ENTITY openInNewWindow.accesskey "π">
+
+<!-- Read State -->
+<!ENTITY markAsRead.command.label			"Σημείωση ως αναγνωσμένο">
+<!ENTITY markAsRead.command.tooltip			"Σημείωση ως αναγνωσμένο">
+<!ENTITY markAsRead.command.accesskey		"μ">
+
+<!ENTITY markAsUnread.command.label			"Σημείωση ως μη αναγνωσμένο">
+<!ENTITY markAsUnread.command.tooltip		"Σημείωση ως μη αναγνωσμένο">
+<!ENTITY markAsUnread.command.accesskey		"μ">
+
+<!ENTITY markAllAsRead.command.label		"Σημείωση όλων ως αναγνωσμένα">
+<!ENTITY markAllAsRead.command.tooltip		"Σημείωση όλων ως αναγνωσμένα">
+<!ENTITY markAllAsRead.command.accesskey	"λ">
+<!ENTITY markAllAsRead.command.key			"C">
+<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+
+<!ENTITY markAllAsUnread.command.label		"Σημείωση όλων ως μη αναγνωσμένα">
+<!ENTITY markAllAsUnread.command.tooltip	"Σημείωση όλων ως μη αναγνωσμένα">
+<!ENTITY markAllAsUnread.command.accesskey	"μ">
+
+<!ENTITY toggleReadState.command.key		"M">

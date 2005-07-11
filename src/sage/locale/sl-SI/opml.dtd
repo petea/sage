@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"OPML Čarovnik za izvoz/uvoz">
+<!ENTITY pageStart.desc				"Izberi možnost">
+<!ENTITY pageImport.label			"Uvozi OPML">
+<!ENTITY pageImport.desc			"Izberi OPML Datoteko">
+<!ENTITY pageExport.label			"Izvozi OPML">
+<!ENTITY pageExport.desc			"Izberi izvozno OPML Datoteko">
+
+<!ENTITY rdoImport.label			"Uvozi OPML">
+<!ENTITY rdoExport.label			"Izvozi OPML">
+
+<!ENTITY browseButton.label			"Razišci...">
+
+<!ENTITY pageImportFinished.label	"Uvozi OPML">
+<!ENTITY pageImportFinished.desc	"Uvoz Končan">
+<!ENTITY pageExportFinished.label	"Izvozi OPML">
+<!ENTITY pageExportFinished.desc	"Izvoz Končan">

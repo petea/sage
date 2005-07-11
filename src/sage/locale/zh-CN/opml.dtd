@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label			"OPML 导入/导出 向导">
+<!ENTITY pageStart.desc				"选择动作">
+<!ENTITY pageImport.label			"导入 OPML">
+<!ENTITY pageImport.desc			"选择要导入的 OPML 文件">
+<!ENTITY pageExport.label			"导出 OPML">
+<!ENTITY pageExport.desc			"选择要导出的 OPML 文件">
+
+<!ENTITY rdoImport.label			"导入 OPML">
+<!ENTITY rdoExport.label			"导出 OPML">
+
+<!ENTITY browseButton.label			"浏览...">
+
+<!ENTITY pageImportFinished.label	"导入 OPML">
+<!ENTITY pageImportFinished.desc	"导入完成">
+<!ENTITY pageExportFinished.label	"导出 OPML">
+<!ENTITY pageExportFinished.desc	"导出完成">
