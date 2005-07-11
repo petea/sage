@@ -248,7 +248,9 @@ function addDiscoveredFeed(uri, feed) {
 	var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 	lastPubDate = "N/A";
 	if(feed.hasLastPubDate()) {
-		lastPubDate = dateFormat(feed.getLastPubDate(), twelveHourClock, 1);
+		var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
+		formatter.setFormat(formatter.FORMAT_SHORT, formatter.ABBREVIATED_TRUE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
+		lastPubDate = formatter.formatDate(feed.getLastPubDate().getTime());
 	}
 	itemCount = feed.getItemCount();
 
