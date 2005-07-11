@@ -178,8 +178,14 @@ function progressUpdate() {
 function doAddFeed() {
 	var index = feedTree.view.selection.currentIndex;
 	if(index != -1) {
-		var url = feedTree.view.getCellText(index, "url");
-		var title = feedTree.view.getCellText(index, "title");
+		var url, title;
+		if (feedTree.columns) { // columns property introduced in Firefox 1.1
+			url = feedTree.view.getCellText(index, feedTree.columns.getNamedColumn("url"));
+			title = feedTree.view.getCellText(index, feedTree.columns.getNamedColumn("title"));
+		} else {
+			url = feedTree.view.getCellText(index, "url");
+			title = feedTree.view.getCellText(index, "title");
+		}
 		if(url) {
 			if(title == "") {
 				title = "No Title";
@@ -195,7 +201,7 @@ function doAddFeed() {
 			// select new feed in sibebar
 			var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
 			bookmarksTree.treeBoxObject.ensureRowIsVisible(bm_index);
-			bookmarksTree.treeBoxObject.selection.select(bm_index);
+			bookmarksTree.treeBoxObject.view.selection.select(bm_index);
 		}
 	}
   return true;
@@ -242,7 +248,9 @@ function addDiscoveredFeed(uri, feed) {
 	var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 	lastPubDate = "N/A";
 	if(feed.hasLastPubDate()) {
-		lastPubDate = dateFormat(feed.getLastPubDate(), twelveHourClock, 1);
+		var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
+		formatter.setFormat(formatter.FORMAT_SHORT, formatter.ABBREVIATED_TRUE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
+		lastPubDate = formatter.formatDate(feed.getLastPubDate().getTime());
 	}
 	itemCount = feed.getItemCount();
 

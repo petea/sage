@@ -42,14 +42,14 @@
  */
 
 function Feed(feedXML, aURI) {
-	this.uri = aURI;
-	this.logo = {link:"", alt:""};
-	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
-	this.items = new Array();
-
 	if (!feedXML) {
 		throw "Empty Feed";
 	}
+
+	this.uri = aURI;
+	this.logo = {link:"", alt:""};
+	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
+	this.items = [];
 
 	var rootNodeName = feedXML.documentElement.localName.toLowerCase();
 	if (rootNodeName == "feed") {
@@ -67,7 +67,6 @@ Feed.prototype.link =
 Feed.prototype.description =
 Feed.prototype.author =
 Feed.prototype.lastPubDate = null;
-
 
 Feed.prototype.parseRSS = function(feedXML) {
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
@@ -180,8 +179,8 @@ Feed.prototype.parseRSS = function(feedXML) {
 					break;
 				case "pubDate":
 					tmp_str = CommonFunc.getInnerText(j);
-					tmp_date = new Date(tmp_str);
-					if (tmp_date != "Invalid Date") {
+					tmp_date = rfc822ToJSDate(tmp_str);
+					if(tmp_date) {
 						item.pubDate = tmp_date;
 					} else {
 						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
@@ -230,8 +229,8 @@ Feed.prototype.parseAtom = function(feedXML) {
 		this.feedFormat = "Atom (?)";
 	}
 
-	for(var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
-		if(i.nodeType != i.ELEMENT_NODE) continue;
+	for (var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
+		if (i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
 				this.title = entityDecode(CommonFunc.getInnerText(i));
@@ -298,10 +297,20 @@ Feed.prototype.parseAtom = function(feedXML) {
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
-		var contentArray = new Array();
-		for (j = 0; j < contentNodes.length; j++) {
+		var contentArray = [];
+		var contentString;
+		var xmlSerializer = new XMLSerializer();
+		for(j = 0; j < contentNodes.length; j++) {
 			var contType = contentNodes[j].getAttribute("type");
-			contentArray[contType] = CommonFunc.getInnerText(contentNodes[j]);
+			if(contType == "application/xhtml+xml") {
+				contentString = "";
+				for(z = 0; z < contentNodes[j].childNodes.length; z++) {
+					contentString += xmlSerializer.serializeToString(contentNodes[j].childNodes[z]);
+				}
+			} else {
+				contentString = CommonFunc.getInnerText(contentNodes[j]);
+			}
+			contentArray[contType] = contentString;
 		}
 
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
@@ -406,12 +415,11 @@ Feed.prototype.getFormat = function() {
 }
 
 Feed.prototype.getSignature = function() {
-	var sig = "[";
-	for (var c = 0; c < this.getItemCount(); c++) {
-		if (c != 0) sig += ",";
-		sig += this.getItem(c).getTitle().length;
+	var hashText = "";
+	for(var c = 0; c < this.getItemCount(); c++) {
+		hashText += this.getItem(c).getTitle();
 	}
-	sig += "]";
+	sig ="[" + b64_sha1(hashText) + "]";
 	return sig;
 }
 
@@ -532,6 +540,23 @@ FeedItemEnclosure.prototype.getLength = function() {
 	return this.hasLength() ? this.length : null;
 }
 
+// TODO: This is not used anywhere
+FeedItemEnclosure.prototype.getSize = function() {
+	if (this.hasLength()) {
+		if (this.length > 1048576) {
+			return Math.round(this.length / 1048576) + "M";
+            }
+		else if (this.length > 1024) {
+			return Math.round(this.length / 1024) + "K";
+		}
+		else {
+			return this.length + "B";
+		}
+	} else {
+		return null;
+	}
+}
+
 FeedItemEnclosure.prototype.hasMimeType = function() {
 	return Boolean(this.mimeType);
 }
@@ -579,15 +604,36 @@ FeedItemEnclosure.prototype.getDescription = function() {
  * Utility functions
  *
  */
+ 
+// Parses an RFC 822 formatted date string and returns a JavaScript Date object, returns null on parse error
+// Example inputs:  "Sun, 08 May 05 15:19:37 GMT"  "Mon, 09 May 2005 00:50:19 GMT"
+function rfc822ToJSDate(date_str) {
+	date_array = date_str.split(" ");
+	// check for two digit year
+	if(date_array.length == 6 && date_array[3].length == 2) {
+		// convert to four digit year with a pivot of 70
+		if(date_array[3] < 70) {
+			date_array[3] = "20" + date_array[3];
+		} else {
+			date_array[3] = "19" + date_array[3];
+		}
+	}
+	date_str = date_array.join(" ");
+	date = new Date(date_str);
+	if(date != "Invalid Date") {
+		return date;
+	} else {
+		return null
+	}
+}
 
 // Parses an ISO 8601 formatted date string and returns a JavaScript Date object, returns null on parse error
-// Example inputs:  2004-06-17T18:00Z 2004-06-17T18:34:12+02:00
-
+// Example inputs:  "2004-06-17T18:00Z" "2004-06-17T18:34:12+02:00"
 function iso8601ToJSDate(date_str) {
 	var tmp = date_str.split("T");
 	var date = tmp[0];
 
-  date = date.split("-");
+	date = date.split("-");
 	var year = date[0];
 	var month = date[1];
 	var day = date[2];

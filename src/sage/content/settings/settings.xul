@@ -39,79 +39,125 @@
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css"?>
+<?xml-stylesheet href="chrome://sage/skin/settings.css" type="text/css"?>
 
 <!DOCTYPE window SYSTEM "chrome://sage/locale/sage.dtd">
 <dialog id="winMain" title="&settingWindow.title;" style="min-width:400px;"
 		onload="init();" ondialogaccept="accept()"
 		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		xmlns:x="http://www.w3.org/1999/xhtml"
 		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 
+
 <script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
+<script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
+<script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/settings/settings.js"/>
 
-
+<!--
 <dialogheader id="header" title="&sage.label;" description="&sage.version.label;"/>
+-->
 
 <stringbundleset>
 	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
 </stringbundleset>
 
-<hbox style="padding:5px 0px 10px 0px">
-<groupbox flex="1">
-	<caption label="&selectFolder.label;"/>
-	<menulist id="select-menu" oncommand="selectFolder(event);">
-		<menupopup id="select-folder">
-			<menuitem label=" "/>
-		</menupopup>
-	</menulist>
-</groupbox>
-</hbox>
 
-<groupbox>
-	<caption label="&settings.general.caption;"/>
-	<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
-	<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
-	<grid>
-		<columns>
-			<column/>
-			<column/>
-		</columns>
-		<rows>
-			<row align="center">
-				<label value="&settings.feedItemOrder.label;:"/>
-				<menulist id="feedItemOrder">
-					<menupopup>
-						<menuitem label="&settings.feedItemOrder.chrono;" value="chrono"/>
-						<menuitem label="&settings.feedItemOrder.source;" value="source"/>
-					</menupopup>
-				</menulist>
-			</row>
-			<row align="center">
-				<label value="&settings.feedDiscoveryMode.label;:"/>
-				<menulist id="feedDiscoveryMode">
-					<menupopup>
-						<menuitem label="&settings.feedDiscoveryMode.exhaustive;" value="exhaustive"/>
-						<menuitem label="&settings.feedDiscoveryMode.conservative;" value="conservative"/>
-					</menupopup>
-				</menulist>
-			</row>
-		</rows>
-	</grid>
-</groupbox>
+<tabbox>
+	<tabs>
+		<tab label="General"/>
+		<tab label="Feed Summary"/>
+	</tabs>
 
-<groupbox>
-	<caption label="&openInContentsArea.caption;"/>
-	<checkbox id="chkRenderFeeds" label="&settings.renderFeeds.label;"/>
-	<checkbox id="chkAllowEContent" label="&allowEContent.label;"/>
-	<vbox flex="1">
-		<checkbox id="chkUserCssEnable" label="&enableUserCss.label;" oncommand="setDisabled()"/>
-		<hbox align="center">
-			<spacer width="30"/>
-			<textbox id="txtUserCssPath" flex="1"/>
-			<button id="btnBrowseCss" oncommand="browseCss()" label="&browseCss.label;"/>
-		</hbox>
-	</vbox>
-</groupbox>
+	<tabpanels>
+
+		<!-- General -->
+		<tabpanel orient="vertical">
+			<label value="Feed Folder"/>
+			<menulist id="select-menu" oncommand="selectFolder(event);">
+				<menupopup id="select-folder">
+					<menuitem label=" "/>
+				</menupopup>
+			</menulist>
+
+			<spacer style="height:2em"/>
+
+			<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
+			<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
+			<grid>
+				<columns>
+					<column/>
+					<column/>
+				</columns>
+				<rows>
+					<row align="top">
+						<label value="&settings.feedItemOrder.label;:"/>
+						<menulist id="feedItemOrder">
+							<menupopup>
+								<menuitem label="&settings.feedItemOrder.chrono;" value="chrono"/>
+								<menuitem label="&settings.feedItemOrder.source;" value="source"/>
+							</menupopup>
+						</menulist>
+					</row>
+					<row align="center">
+						<label value="&settings.feedDiscoveryMode.label;:"/>
+						<menulist id="feedDiscoveryMode">
+							<menupopup>
+								<menuitem label="&settings.feedDiscoveryMode.exhaustive;" value="exhaustive"/>
+								<menuitem label="&settings.feedDiscoveryMode.conservative;" value="conservative"/>
+							</menupopup>
+						</menulist>
+					</row>
+				</rows>
+			</grid>
+		</tabpanel>
+
+		<!-- feed summary tab page -->
+		<tabpanel orient="vertical">
+			<checkbox id="chkRenderFeeds" label="Render feed in contents area"
+					  oncommand="setDisabled()"/>
+			<checkbox id="chkAllowEContent" label="Allow HTML"/>
+
+			<groupbox flex="1">
+				<caption label="Theme"/>
+				<description>
+					You can browse for more themes or drag files onto
+					the list below
+				</description>
+				<listbox id="file-list" flex="1"
+						 ondragover="nsDragAndDrop.dragOver(event,dropObserver)"
+						 ondragdrop="nsDragAndDrop.drop(event,dropObserver)"
+						 contextmenu="themeMenu"/>
+				<hbox align="start">
+					<label id="moreThemesLink"
+                           onclick="getMoreThemes(event)" onkeypress="getMoreThemes(event)"
+                           value="Get more themes..."/>
+					<spacer flex="1"/>
+					<button id="btnBrowseCss" oncommand="browseForTheme()" label="&browseCss.label;"/>
+				</hbox>
+			</groupbox>
+
+			<!--
+			<vbox flex="1">
+				<checkbox id="chkUserCssEnable" label="&enableUserCss.label;" oncommand="setDisabled()"/>
+				<hbox align="center">
+					<spacer width="30"/>
+					<textbox id="txtUserCssPath" flex="1"/>
+					<button id="btnBrowseCss" oncommand="browseCss()" label="&browseCss.label;"/>
+				</hbox>
+			</vbox>
+			-->
+		</tabpanel>
+	</tabpanels>
+</tabbox>
+
+<popupset>
+	<popup id="themeMenu">
+		<menuitem label="Open theme folder" oncommand="openThemeFolder()"/>
+		<menuitem label="Refresh" oncommand="populateList()"/>
+		<menuitem label="Remove" oncommand="onThemeRemove()"/>
+	</popup>
+</popupset>
 
 </dialog>

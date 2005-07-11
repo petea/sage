@@ -42,68 +42,6 @@ function logMessage(message) {
 	aConsoleService.logStringMessage("Sage: " + message);
 }
 
-function dateFormat(date, twelveHourClock, format) {
-	function padout(number) { return (number < 10) ? '0' + number : number; }
-
-	if(!format) {
-		format = 0;
-	}
-
-	var dayOfMonth = date.getDate();
-
-	var day;
-	switch (date.getDay()) {
-		case 0: day = strRes.getString("date_sunday_short"); break
-		case 1: day = strRes.getString("date_monday_short"); break
-		case 2: day = strRes.getString("date_tuesday_short"); break
-		case 3: day = strRes.getString("date_wednesday_short"); break
-		case 4: day = strRes.getString("date_thursday_short"); break
-		case 5: day = strRes.getString("date_friday_short"); break
-		case 6: day = strRes.getString("date_saturday_short"); break
-	}
-
-	var month, monthNum;
-	monthNum = date.getMonth() + 1;
-	switch (monthNum) {
-		case 1: month = strRes.getString("date_january_short"); break
-		case 2: month = strRes.getString("date_february_short"); break
-		case 3: month = strRes.getString("date_march_short"); break
-		case 4: month = strRes.getString("date_april_short"); break
-		case 5: month = strRes.getString("date_may_short"); break
-		case 6: month = strRes.getString("date_june_short"); break
-		case 7: month = strRes.getString("date_july_short"); break
-		case 8: month = strRes.getString("date_august_short"); break
-		case 9: month = strRes.getString("date_september_short"); break
-		case 10: month = strRes.getString("date_october_short"); break
-		case 11: month = strRes.getString("date_november_short"); break
-		case 12: month = strRes.getString("date_december_short"); break
-	}
-
-	var year = date.getYear() + 1900;
-
-	var date_str;
-	switch(format) {
-		case 0:
-			date_str = day + ", " + month + " " + dayOfMonth + ", " + year;
-			break
-		case 1:
-			date_str = monthNum + "/" + dayOfMonth + "/" + year;
-			break
-	}
-
-	var hours = date.getHours(), minutes = padout(date.getMinutes()), seconds = padout(date.getSeconds());
-	var adjhours, time_str;
-	if(twelveHourClock) {
-		adjhours = (hours == 0) ? 12 : ((hours < 13) ? hours : hours-12);
-		time_str = adjhours + ":" + minutes + ((hours < 12) ? " AM" : " PM");
-	} else {
-		time_str = hours + ":" + minutes;
-	}
-	return date_str + " " + time_str;
-}
-
-
-
 var CommonFunc = {
 
 	VERSION: Array(1,4,0),
@@ -132,14 +70,18 @@ var CommonFunc = {
 
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
 
-	BM_LAST_VISIT: 		"http://home.netscape.com/WEB-rdf#LastVisitDate",
+	NC_NS:				"http://home.netscape.com/NC-rdf#",
+	BM_LAST_VISIT:		"http://home.netscape.com/WEB-rdf#LastVisitDate",
 	BM_LAST_MODIFIED:	"http://home.netscape.com/WEB-rdf#LastModifiedDate",
 	BM_DESCRIPTION:		"http://home.netscape.com/NC-rdf#Description",
-	BM_NAME:					"http://home.netscape.com/NC-rdf#Name",
-	BM_URL:						"http://home.netscape.com/NC-rdf#URL",
-	BM_FEEDURL:				"http://home.netscape.com/NC-rdf#FeedURL",
+	BM_NAME:				"http://home.netscape.com/NC-rdf#Name",
+	BM_URL:				"http://home.netscape.com/NC-rdf#URL",
+	BM_FEEDURL:			"http://home.netscape.com/NC-rdf#FeedURL",
 
-	RDF_TYPE:					"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+	RDF_NS:				"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+	RDF_TYPE:			"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+	
+	XUL_NS:				"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
 
 	STATUS_UPDATE: "updated",
 	STATUS_NO_UPDATE: "no-updated",
@@ -249,7 +191,14 @@ var CommonFunc = {
 
 
 	getInnerText: function(aNode) {
-		return aNode.textContent.replace(/^\s+|\s+$/g, "");
+		if(!aNode.hasChildNodes()) return "";
+	
+		var resultArray = new Array();
+		var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
+		while(walker.nextNode()) {
+			resultArray.push(walker.currentNode.nodeValue);
+		}
+		return resultArray.join('').replace(/^\s+|\s+$/g, "");
 	},
 
 

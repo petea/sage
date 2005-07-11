@@ -38,8 +38,8 @@
 
 var sageFolderID;
 
-var chkUserCssEnable;
-var txtUserCssPath;
+//var chkUserCssEnable;
+//var txtUserCssPath;
 var chkAllowEContent;
 var chkAutoFeedTitle;
 var chkRenderFeeds;
@@ -57,18 +57,18 @@ function init() {
 
 	strRes = document.getElementById("strRes");
 
-	var header = document.getElementById("header");
-	header.setAttribute("description", header.getAttribute("description") + " " + CommonFunc.versionString(CommonFunc.VERSION, 1));
+	//var header = document.getElementById("header");
+	//header.setAttribute("description", header.getAttribute("description") + " " + CommonFunc.versionString(CommonFunc.VERSION, 1));
 
-  sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
-	gNameArc = RDF.GetResource(NC_NS + "Name");
+	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
+	gNameArc = RDF.GetResource(CommonFunc.NC_NS + "Name");
 	gList = document.getElementById("select-menu");
 
-	chkUserCssEnable = document.getElementById("chkUserCssEnable");
-	chkUserCssEnable.checked = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
+	//chkUserCssEnable = document.getElementById("chkUserCssEnable");
+	//chkUserCssEnable.checked = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
 
-	txtUserCssPath = document.getElementById("txtUserCssPath");
-	txtUserCssPath.value = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
+	//txtUserCssPath = document.getElementById("txtUserCssPath");
+	//txtUserCssPath.value = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
 
 	chkAllowEContent = document.getElementById("chkAllowEContent");
 	chkAllowEContent.checked = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
@@ -90,19 +90,25 @@ function init() {
 
 	setDisabled();
 
+	populateList();
+
 	setTimeout(fillSelectFolderMenupopup, 0);
 }
 
 function accept() {
 	CommonFunc.setPrefValue(CommonFunc.FEED_FOLDER_ID, "str", sageFolderID);
-	CommonFunc.setPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
-	CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", txtUserCssPath.value);
+	//CommonFunc.setPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
+	//CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", txtUserCssPath.value);
 	CommonFunc.setPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
 	CommonFunc.setPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", chkAutoFeedTitle.checked);
 	CommonFunc.setPrefValue(CommonFunc.RENDER_FEEDS, "bool", chkRenderFeeds.checked);
 	CommonFunc.setPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", chkTwelveHourClock.checked);
 	CommonFunc.setPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", feedItemOrder.value);
 	CommonFunc.setPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", feedDiscoveryMode.value);
+
+	var list = document.getElementById("file-list");
+	if (list.selectedItem)
+		setTheme(list.selectedItem.value);
 }
 
 function selectFolder(aEvent){
@@ -110,20 +116,26 @@ function selectFolder(aEvent){
 }
 
 function setDisabled() {
-	txtUserCssPath.disabled = !chkUserCssEnable.checked;
-	document.getElementById("btnBrowseCss").disabled = !chkUserCssEnable.checked;
+	chkAllowEContent.disabled = !chkRenderFeeds.checked;
+	//txtUserCssPath.disabled = !chkUserCssEnable.checked;
+	document.getElementById("file-list").disabled = !chkRenderFeeds.checked;
+	document.getElementById("btnBrowseCss").disabled = !chkRenderFeeds.checked;
 }
 
-function browseCss() {
+function browseForTheme() {
 	var fpicker = Components.classes["@mozilla.org/filepicker;1"]
 					.createInstance(Components.interfaces.nsIFilePicker);
 	fpicker.init(window, strRes.getString("css_select_file"), fpicker.modeOpen);
-	fpicker.appendFilter(strRes.getString("css_css_file") + " (*.css)", "*.css");
+	//fpicker.appendFilter(strRes.getString("css_css_file") + " (*.css)", "*.css");
+	fpicker.appendFilter("Theme files" + " (*.css; *.zip; *.jar)", "*.css;*.zip;*.jar");
 	fpicker.appendFilters(fpicker.filterAll);
 
 	var showResult = fpicker.show();
 	if(showResult == fpicker.returnOK) {
-		txtUserCssPath.value = fpicker.file.path;
+		addThemeFile(fpicker.file);
+		populateList();
+		//txtUserCssPath.value = fpicker.file.path;
+		// we need to copy the file to the theme directory and update the list
 	}
 }
 
@@ -136,7 +148,7 @@ function fillSelectFolderMenupopup () {
 	}
 
 	// to be removed once I checkin the top folder
-	var element = document.createElementNS(XUL_NS, "menuitem");
+	var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
 	element.setAttribute("label", "Bookmarks");
 	element.setAttribute("id", "NC:BookmarksRoot");
 	popup.appendChild(element);
@@ -156,7 +168,7 @@ function fillFolder(aPopup, aFolder, aDepth) {
 		var curr = children.getNext();
 		if (RDFCU.IsContainer(BMDS, curr)) {
 			curr = curr.QueryInterface(Components.interfaces.nsIRDFResource);
-			var element = document.createElementNS(XUL_NS, "menuitem");
+			var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
 			var name = BMDS.GetTarget(curr, gNameArc, true).QueryInterface(kRDFLITIID).Value;
 			var indentation = new Array(aDepth + 1).join("   ");
 			element.setAttribute("label", indentation + name);
@@ -168,5 +180,186 @@ function fillFolder(aPopup, aFolder, aDepth) {
 			fillFolder(aPopup, curr, ++aDepth);
 			--aDepth;
 		}
+	}
+}
+
+
+// Logic for theme list
+
+
+//const // @mozilla.org/file/directory_service;1
+
+
+function getSageThemeDir()
+{
+	var dirService = Components.classes["@mozilla.org/file/directory_service;1"]
+						.getService(Components.interfaces.nsIProperties);
+	var dir = dirService.get("ProfD", Components.interfaces.nsILocalFile);
+	dir.append("SageThemes");
+	if (!dir.exists())
+		dir.create(dir.DIRECTORY_TYPE, 0770);
+	return dir;
+}
+
+function populateList()
+{
+	var list = document.getElementById("file-list");
+
+	while (list.getRowCount() != 0)
+	{
+		list.removeItemAt(0);
+	}
+
+		var dir = getSageThemeDir();
+
+	var file;
+	var files = dir.directoryEntries;
+
+	var icon, listItem;
+
+	while (files.hasMoreElements()) {
+		// we should only display css and jars (zips?)
+		file = files.getNext();
+
+		if (isThemeFileSupported(file)) {
+			icon = ("moz-icon://" + file.path + "?size=16").replace(/\//g, "/");
+			listItem = list.appendItem(file.leafName, file.path);
+			listItem.setAttribute("style", "list-style-image: url(\"" + icon + "\")");
+			listItem.setAttribute("class", "listitem-iconic");
+			if (isThemeSelected(file.path)) {
+				list.selectItem(listItem);
+			}
+		}
+	}
+}
+function isThemeFileSupported(aFile) {
+	var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+						.getService(Components.interfaces.nsIIOService);
+	var uriFixup = Components.classes["@mozilla.org/docshell/urifixup;1"]
+						.createInstance(Components.interfaces.nsIURIFixup);
+	aFile.QueryInterface(Components.interfaces.nsIFile);
+	var uri = uriFixup.createFixupURI(aFile.path, 0);
+	var contentType = ioService.newChannelFromURI(uri)
+						.QueryInterface(Components.interfaces.nsIChannel)
+						.contentType;
+	return contentType == "text/css" || isJarPath(aFile.path);
+}
+
+function setTheme(sPath)
+{
+	var uriFixup = Components.classes["@mozilla.org/docshell/urifixup;1"]
+						.createInstance(Components.interfaces.nsIURIFixup);
+
+	var uri = uriFixup.createFixupURI(sPath, 0).spec;
+
+	// check if sPath is a jar file
+	if (isJarPath(sPath))
+	{
+		uri = "jar:" + uri + "!/summary.css";
+	}
+
+	CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", uri);
+	//alert(uri);
+}
+
+function isJarPath(sPath)
+{
+	return /\.(jar|zip)$/i.test(sPath);
+}
+
+function addThemeFile(aFile) {
+	// need to check that file is css, jar or zip
+	if (isThemeFileSupported(aFile)) {
+		var dst = getSageThemeDir();
+		try {
+			aFile.copyTo(dst, null);
+			populateList();
+		} catch (ex) {
+			alert("Failed to copy " + aFile.leafName);
+		}
+	} else {
+		alert(aFile.leafName + " is not a supported theme file format");
+	}
+}
+
+function removeThemeFile(aFile) {
+	try {
+		aFile.remove(false);
+		populateList();
+	} catch (ex) {
+		alert("Failed to remove " + aFile.leafName);
+	}
+}
+
+function onThemeRemove() {
+	var list = document.getElementById("file-list");
+	var listItem = list.selectedItem;
+	if (listItem) {
+		var file = Components.classes["@mozilla.org/file/local;1"].
+			createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(listItem.value);
+		removeThemeFile(file);
+	}
+}
+
+// This is used when the list is populated so that we can select the item
+// according to the setting
+function isThemeSelected(aPath) {
+	var sel = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
+	var uriFixup = Components.classes["@mozilla.org/docshell/urifixup;1"]
+						.createInstance(Components.interfaces.nsIURIFixup);
+	var uri = uriFixup.createFixupURI(aPath, 0).spec;
+	if (isJarPath(aPath)) {
+		uri = "jar:" + uri + "!/summary.css"
+	}
+	return uri == sel;
+}
+
+
+// drag and drop
+
+var dropObserver = {
+	getSupportedFlavours : function () {
+		var flavours = new FlavourSet();
+		//flavours.appendFlavour("text/unicode");
+		flavours.appendFlavour("application/x-moz-file","nsIFile");
+		return flavours;
+	},
+	onDragOver: function (e, flavour, session) {},
+	onDrop: function (e, dropdata, session) {
+		if (dropdata.data) {
+			addThemeFile(dropdata.data);
+		}
+	}
+};
+
+// based on code from Firefox Download manager
+function openThemeFolder() {
+	var dir = getSageThemeDir();
+	try {
+		dir.reveal();
+	} catch (ex) {
+		// if nsILocalFile::Reveal failed (eg it currently just returns an
+		// error on unix), just open the folder in a browser window
+		openExternal(dir.path);
+	}
+}
+
+function openExternal(aPath) {
+	var uri = Components.classes["@mozilla.org/network/standard-url;1"]
+				.createInstance(Components.interfaces.nsIURI);
+	uri.spec = "file:///" + aPath;
+	var protocolSvc = Components.classes
+				["@mozilla.org/uriloader/external-protocol-service;1"]
+				.getService(Components.interfaces.nsIExternalProtocolService);
+	protocolSvc.loadUrl(uri);
+}
+
+function getMoreThemes(e) {
+	if (e.type == "click" || e.type == "keypress" &&
+		(e.keyCode == Event.DOM_VK_ENTER || e.keyCode == Event.DOM_VK_RETURN)) {
+		e.preventDefault();
+		e.stopPropagation();
+		alert("Go to theme site");
 	}
 }

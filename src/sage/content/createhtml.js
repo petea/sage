@@ -252,9 +252,10 @@ var CreateHTML = {
 			case "**PUBDATE**":
 				if (item.hasPubDate()) {
 					var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
-					return "<div class=\"item-pubDate\">" +
-						dateFormat(item.getPubDate(), twelveHourClock) +
-						"</div>";
+					var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
+					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
+					var dateString = formatter.formatDate(item.getPubDate().getTime());
+					return "<div class=\"item-pubDate\">" + dateString + "</div>";
 				}
 				return "";
 
