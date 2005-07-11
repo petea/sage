@@ -85,6 +85,12 @@
 				<include name="**"/>
 			</fileset>
 		</copy>
+		<copy todir="${build}/xpcom">
+			<fileset dir="${build}/tmp/sage/tools">
+				<include name="xpcom_win.zip"/>
+				<include name="xpcom_mac.tar.gz"/>
+			</fileset>
+		</copy>
 		<property name="version" value="${tag}"/>
 		<ant target="xpi"/>
 	</target>
