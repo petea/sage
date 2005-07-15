@@ -113,7 +113,6 @@ SimpleHtmlParser.prototype = {
 
 			if (treatAsChars) {
 				index = s.indexOf("<");
-				debugger;
 				if (index == -1) {
 					 this.contentHandler.characters(s);
 					s = "";
