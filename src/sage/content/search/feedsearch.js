@@ -96,7 +96,7 @@ var FeedSearch = {
 			url: this.query + searchValue
 		};
 		setStatusLoading();
-		httpGet(lastResource.url);
+		feedLoader.loadURI(lastResource.url);
 	},
 	
 	setSearchEngine: function(aSearchEngine) {
