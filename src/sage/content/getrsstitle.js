@@ -58,7 +58,7 @@ var GetRssTitle = {
 		this.httpReq.onload = this.httpLoaded;
 		this.httpReq.onreadystatechange = this.httpReadyStateChange;
 		this.httpReq.open("GET", this.url);
-		this.httpReq.setRequestHeader("User-Agent", USER_AGENT);
+		this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
 		this.httpReq.overrideMimeType("application/xml");
 		try {
 			this.httpReq.send(null);
