@@ -157,7 +157,10 @@ var CreateHTML = {
 				break;
 
 			case "**AUTHOR**":
-				return feed.getAuthor();
+				if (feed.hasAuthor()) {
+					return "<div class=\"feed-author\">" + feed.getAuthor() + "</div>";
+				}
+				return "";
 
 			case "**DESCRIPTION**":
 				return feed.getDescription();
@@ -232,7 +235,10 @@ var CreateHTML = {
 				return item.getTitle();
 
 			case "**AUTHOR**":
-				return item.getAuthor();
+				if (item.hasAuthor()) {
+					return "<div class=\"item-author\">" + item.getAuthor() + "</div>";
+				}
+				return "";
 
 			case "**DESCRIPTION**":
 				if (item.hasContent()) {
@@ -269,7 +275,7 @@ var CreateHTML = {
 							(enc.hasMimeType() ?
 								"moz-icon://dummy?size=16&contentType=" + enc.getMimeType() :
 								"chrome://sage/skin/enclosure.png") +
-						"\"> " +
+						"\">" +
 						(enc.getDescription() ? enc.getDescription() + ", " : "") +
 						(enc.hasLength() ? this.formatFileSize(enc.getLength()) : "") +
 						"</a></div>";
