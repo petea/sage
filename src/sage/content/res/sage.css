@@ -66,6 +66,7 @@ div.item {
 	margin: 0px 0px 8px 2%;
 	padding: 0px;
 	float: left;
+	overflow: hidden;
 }
 
 h2.item-title {
