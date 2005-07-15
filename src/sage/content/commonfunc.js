@@ -44,7 +44,7 @@ function logMessage(message) {
 
 var CommonFunc = {
 
-	VERSION: Array(1,4,0),
+	VERSION: [1, 4, 0],
 	USER_AGENT: "Mozilla/5.0 (Sage)",
 
 	FEED_FOLDER_ID: "sage.folder_id",
@@ -58,6 +58,15 @@ var CommonFunc = {
 	FEED_ITEM_ORDER: "sage.feed_item_order",
 	FEED_DISCOVERY_MODE: "sage.feed_discovery_mode",
 
+
+	RESULT_OK:	 			0,
+	RESULT_PARSE_ERROR:		1,
+	RESULT_NOT_RSS:			2,
+	RESULT_NOT_FOUND:		3,
+	RESULT_NOT_AVAILABLE:	4,
+	RESULT_ERROR_FAILURE:	5,
+
+	FEED_SUMMARY_URI:		"chrome://sage/content/feedsummary.html",
 
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
 
