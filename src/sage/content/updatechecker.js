@@ -109,7 +109,7 @@ var UpdateChecker = {
 		this.httpReq.onreadystatechange = this.httpReadyStateChange;
 
 		try {
-			this.httpReq.setRequestHeader("User-Agent", USER_AGENT);
+			this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
 			this.httpReq.overrideMimeType("application/xml");
 			this.httpReq.send(null);
 			this.setCheckingFlag(this.lastResource, true);
@@ -188,7 +188,7 @@ var UpdateChecker = {
 			status = CommonFunc.STATUS_ERROR;
 		}
 
-		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + (CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/) || ""));
 		this.setCheckingFlag(this.lastResource, false);
 		
 		if(this.checkList.length == 0) {
@@ -206,14 +206,14 @@ var UpdateChecker = {
 			var desc = CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION);
 			var status = desc.split(" ")[0];
 			if (status == CommonFunc.STATUS_CHECKING) {
+				var re = new RegExp("(^|\\s)" + CommonFunc.STATUS_CHECKING + "(\\s|$)", "g");
 				CommonFunc.setBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION,
-										   CommonFunc.STATUS_UNKNOWN + " " +
-										   CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+										   desc.replace(re, ""));
 			}
 		} else {
 			CommonFunc.setBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION,
 									   CommonFunc.STATUS_CHECKING + " " +
-									   CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
+									   (CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/) || ""));
 		}
 
 		if (aRecursive || aRecursive === undefined) {
