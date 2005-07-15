@@ -58,6 +58,7 @@
 
 <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/feedlib.js"/>
+<script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/sha1.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
 <script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
@@ -69,9 +70,9 @@
 
 	<!-- bookmarks & edit commands -->
 <commandset id="editMenuCommands">
-	<command id="cmd_bm_open" 		   oncommand="goDoCommand('cmd_bm_open');"/>
-	<command id="cmd_bm_openinnewwindow" disabled="true"/>
-	<command id="cmd_bm_openinnewtab"	 disabled="true"/>
+	<command id="cmd_bm_open" 		   oncommand="bookmarksOpen();"/>
+	<command id="cmd_bm_openinnewwindow" oncommand="bookmarksOpen('window');"/>
+	<command id="cmd_bm_openinnewtab"	 oncommand="bookmarksOpen('tab');"/>
 	<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
 	<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
 	<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
