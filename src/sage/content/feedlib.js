@@ -42,23 +42,14 @@
  */
 
 function Feed(feedXML, aURI) {
-	this.feedXML = feedXML;
-	this.uri = aURI;
-
-	this.feedFormat = null;
-	this.title = null;
-	this.link = null;
-	this.description = null;
-	this.items = new Array();
-	this.lastPubDate = null;
-	this.author = null;
-
-	this.logo = {link:"", alt:""};
-	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
-
 	if (!feedXML) {
 		throw "Empty Feed";
 	}
+
+	this.uri = aURI;
+	this.logo = {link:"", alt:""};
+	this.footer = {copyright:"", generator:"", editor:"", webmaster:""};
+	this.items = [];
 
 	var rootNodeName = feedXML.documentElement.localName.toLowerCase();
 	if (rootNodeName == "feed") {
@@ -69,6 +60,13 @@ function Feed(feedXML, aURI) {
 		throw "Feed has invalid root element";
 	}
 }
+
+Feed.prototype.feedFormat =
+Feed.prototype.title =
+Feed.prototype.link =
+Feed.prototype.description =
+Feed.prototype.author =
+Feed.prototype.lastPubDate = null;
 
 Feed.prototype.parseRSS = function(feedXML) {
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
@@ -299,7 +297,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
-		var contentArray = new Array();
+		var contentArray = [];
 		var contentString;
 		var xmlSerializer = new XMLSerializer();
 		for(j = 0; j < contentNodes.length; j++) {
@@ -522,7 +520,7 @@ FeedItem.prototype.getEnclosure = function() {
 
 function FeedItemEnclosure(link, length, mimeType) {
 	this.link = link;
-	this.length = length;
+	this.length = Number(length);
 	this.mimeType = mimeType;
 }
 
@@ -597,6 +595,7 @@ FeedItemEnclosure.prototype.getDescription = function() {
 
 		//return navigator.mimeTypes[this.mimeType].description;
 	} else {
+		// Can we return something here?
 		return null;
 	}
 }
