@@ -36,32 +36,18 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const USER_AGENT = CommonFunc.USER_AGENT;
-
-const RESULT_OK = 0;
-const RESULT_PARSE_ERROR = 1;
-const RESULT_NOT_RSS = 2;
-const RESULT_NOT_FOUND = 3;
-const RESULT_NOT_AVAILABLE = 4;
-const RESULT_ERROR_FAILURE = 5;
-
 var resultStrArray = null;
 
 	// XUL Object
 var strRes, bmStrRes; // stringbundle Object
 var bookmarksTree;
 var rssItemListBox;
-var rssStatusImage;
-var rssStatusLabel;
 var rssTitleLabel;
 var rssItemToolTip;
 
 var currentFeed;
-var httpReq;
 var prefObserverSageFolder;
-var responseXML;
 var lastResource;
-var rssLoading = false;
 var sageFolderID = "";
 var enableTooltip = true;
 var popupTimeoutId=0;
@@ -69,8 +55,6 @@ var popupTimeoutId=0;
 function init() {
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
-	rssStatusImage = document.getElementById("rssStatusImage");
-	rssStatusLabel = document.getElementById("rssStatusLabel");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemToolTip = document.getElementById("rssItemToolTip");
 
@@ -128,7 +112,9 @@ function init() {
 	// set feed folder location
 	bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
-	bookmarksTree.treeBoxObject.view.selection.select(0);
+	if (bookmarksTree.treeBoxObject.selection) {
+		bookmarksTree.treeBoxObject.selection.select(0);
+	}
 
 	FeedSearch.init();
 	toggleShowSearchBar();
@@ -170,9 +156,8 @@ function done() {
 		CommonFunc.removePrefListener(prefObserverSageFolder);
 	}
 
-	if(rssLoading) {
-		httpReq.abort();
-		rssLoading = false;
+	if (feedLoader) {
+		feedLoader.abort();
 	}
 	UpdateChecker.done();
 	
@@ -194,9 +179,7 @@ function openSettingDialog() {
 
 function openSageProjectFeed() {
 	lastResource = null;
-	var feedURL = "http://sage.mozdev.org/rss.xml";
-	setStatusLoading("Sage Project News");
-	httpGet(feedURL);
+	loadFeed("http://sage.mozdev.org/rss.xml", "", "Sage Project News");
 }
 
 function manageRSSList() {
@@ -232,7 +215,7 @@ function BookmarkResource(aRes, aDB) {
 
 }
 
-function bookmarksOpen() {
+function bookmarksOpen(aEvent) {
 	lastResource = new BookmarkResource(bookmarksTree.currentResource, bookmarksTree.db);
 	// get type of parent node
 	var predicate = lastResource.db.ArcLabelsIn(lastResource.res).getNext();
@@ -244,8 +227,7 @@ function bookmarksOpen() {
 	if(parentType == CommonFunc.NC_NS + "Livemark") {
 		getContentBrowser().loadURI(lastResource.url);
 	} else {
-		setStatusLoading();
-		httpGet(lastResource.url);
+		loadFeed(lastResource.url, aEvent);
 	}
 }
 
@@ -280,6 +262,17 @@ function createTreeContextMenu2(aEvent) {
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
 	}
+
+	// if we are not rendering the summary we should disable the open new window and tab
+	var cmdWin = document.getElementById("cmd_bm_openinnewwindow");
+	var cmdTab = document.getElementById("cmd_bm_openinnewtab");
+	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
+		cmdWin.removeAttribute("disabled");
+		cmdTab.removeAttribute("disabled");
+	} else {
+		cmdWin.setAttribute("disabled", "true");
+		cmdTab.setAttribute("disabled", "true");
+	}
 }
 
 function bookmarksTreeClick(aEvent) {
@@ -306,17 +299,13 @@ function bookmarksTreeClick(aEvent) {
 			break;
 	}
 
-	CreateHTML.tabbed = false;
-	if(aEvent.button == 1) { CreateHTML.tabbed = true; } // click middle button
-	if(aEvent.ctrlKey) { CreateHTML.tabbed = true; } // press Ctrl Key
-
 	const BOOKMARK_SEPARATOR = CommonFunc.NC_NS + "BookmarkSeparator";
 	const BOOKMARK_FOLDER = CommonFunc.NC_NS + "Folder";
 	if(selectedItemType == BOOKMARK_SEPARATOR || selectedItemType == BOOKMARK_FOLDER) {
 		return;
 	}
 
-	bookmarksOpen();
+	bookmarksOpen(aEvent);
 }
 
 function rssItemListBoxClick(aEvent) {
@@ -353,7 +342,9 @@ function setStatusLoading(label) {
 }
 
 function setStatusDone() {
-	UpdateChecker.setCheckingFlag(lastResource.res, false, false);
+	if (lastResource) {
+		UpdateChecker.setCheckingFlag(lastResource.res, false, false);
+	}
 	if(currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
 		if(currentFeed.getLink()) {
@@ -478,109 +469,52 @@ function htmlToText(aStr) {
 	return aStr;
 }
 
+function onFeedLoaded(aFeed)
+{
+	currentFeed = aFeed;
 
-
-// ++++++++++ +++++++++  HTTP	++++++++++ +++++++++
-
-function httpGet(aURL) {
-	if(rssLoading) {
-		httpReq.abort();
-		rssLoading = false;
-	}
-
-	responseXML = null;
-
-	httpReq = new XMLHttpRequest();
-
-	httpReq.open("GET", aURL);
-
-	httpReq.onload = httpLoaded;
-	httpReq.onerror = httpError;
-	httpReq.onreadystatechange = httpReadyStateChange;
-
-	try {
-		httpReq.setRequestHeader("User-Agent", USER_AGENT);
-		httpReq.overrideMimeType("application/xml");
-	} catch(e) {
-		httpGetResult(RESULT_ERROR_FAILURE);
-	}
-
-	try {
-		httpReq.send(null);
-		rssLoading = true;
-	} catch(e) {
-		httpGetResult(RESULT_ERROR_FAILURE);
-	}
-}
-
-function httpError(e) {
-	logMessage("HTTP Error: " + e.target.status + " - " + e.target.statusText);
-	httpGetResult(RESULT_NOT_AVAILABLE);
-}
-
-function httpReadyStateChange() {
-
-	if(httpReq.readyState == 2) {
-		try {
-			if(httpReq.status == 404) {
-				httpGetResult(RESULT_NOT_FOUND);
+	if (lastResource && lastResource.res) {
+		if (CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
+			var title = aFeed.getTitle()
+			if (CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != title) {
+				CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, title);
 			}
-		} catch(e) {
-			httpGetResult(RESULT_NOT_AVAILABLE);
-			return;
 		}
-	} else if(httpReq.readyState == 3) {}
+
+		BMSVC.updateLastVisitedDate(lastResource.url, "UTF-8");
+		CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE + " " + currentFeed.getSignature());
+	}
+
+	setStatusDone();
+	setRssItemListBox();
+
+	//if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true))
+	//{
+	//	CreateHTML.openHTML(currentFeed);
+	//}
 }
 
-function httpLoaded(e) {
-	responseXML = httpReq.responseXML;
-	var rootNodeName = responseXML.documentElement.localName.toLowerCase();
+function onFeedLoadError(aErrorCode) {
+	setStatusError(resultStrArray[aErrorCode]);
+}
 
-	switch(rootNodeName) {
-		case "parsererror":
-			// XML Parse Error
-			httpGetResult(RESULT_PARSE_ERROR);
-			break;
-		case "rss":
-		case "rdf":
-		case "feed":
-			httpGetResult(RESULT_OK);
-			break;
-		default:
-			// Not RSS or Atom
-			httpGetResult(RESULT_NOT_RSS);
-			break;
+function onFeedAbort(sUri) {
+	// BM_FEEDURL
+	var urlLiteral = RDF.GetLiteral(sUri);
+	// don't do anything if this URI isn't bookmarked
+	var bmResource = BMSVC.GetSource(RDF.GetResource(CommonFunc.BM_URL), urlLiteral, true);
+	if (!bmResource) {	// try live mark as wll
+		bmResource = BMSVC.GetSource(RDF.GetResource(CommonFunc.BM_FEEDURL), urlLiteral, true);
+	}
+	if (bmResource) {
+		UpdateChecker.setCheckingFlag(bmResource, false, false);
 	}
 }
 
-function httpGetResult(aResultCode) {
-	httpReq.abort();
-	rssLoading = false;
-
-	if(aResultCode == RESULT_OK) {
-		currentFeed = new Feed(responseXML);
-
-		if(lastResource && lastResource.res, httpReq.channel.originalURI) {
-			if(CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
-				if(CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != currentFeed.getTitle()) {
-					CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, currentFeed.getTitle());
-				}
-			}
-
-			BMSVC.updateLastVisitedDate(lastResource.url, "UTF-8");
-			CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE + " " + currentFeed.getSignature());
-		}
-
-		setStatusDone();
-		setRssItemListBox();
-
-		if(CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
-			CreateHTML.openHTML(currentFeed);
-		}
-	} else {
-		setStatusError(resultStrArray[aResultCode]);
-	}
-}
+var feedLoader = new FeedLoader;
+feedLoader.addListener("load", onFeedLoaded);
+feedLoader.addListener("error", onFeedLoadError);
+feedLoader.addListener("abort", onFeedAbort);
 
 // This takes a list item from the rss list box and returns the uri it represents
 // this seems a bit inefficient. Shouldn't there be a direct mapping between these?
@@ -596,6 +530,46 @@ function getFeedItemFromListItem( oListItem ) {
 	return items[oListItem.value];
 }
 
+/**
+ * Starts the loading of a feed. This will open up the feed summary if needed
+ * @param	aURI : String	The URI to the feed
+ * @param	oType : Object	If this is an Event object we check the modifiers.
+ * 							Otherwise we assume it is a string describing the
+ *                          window type.
+ * @param	aStatus : String	Optional status text
+ * @returns	void
+ */
+function loadFeed(aURI, oType, aStatus) {
+	var wType = getWindowType(oType);
+	if (wType != "tab" && wType != "window") {
+		setStatusLoading(aStatus);
+		feedLoader.loadURI(aURI);
+	}
+
+	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
+		openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(aURI), wType);
+	}
+}
+
+/**
+ * Returns "tab", "window" or other describing where to open the URI
+ *
+ * @param	oType : Object	If this is an Event object we check the modifiers.
+ * 							Otherwise we assume it is a string describing the
+ *                          window type.
+ * @returns	String
+ */
+function getWindowType(oType) {
+	var windowType;
+	if (oType instanceof Event) {
+		// figure out what kind of open we want
+		if (oType.button == 1 || oType.ctrlKey) // click middle button or ctrl click
+			return "tab";
+		else if (oType.shiftKey)
+			return "window";
+	}
+	return oType;
+}
 
 /**
  * Opens a link in the same window, a new tab or a new window
@@ -607,23 +581,12 @@ function getFeedItemFromListItem( oListItem ) {
  * @returns	void
  */
 function openURI(sURI, oType) {
-	var windowType;
-	if (oType instanceof Event) {
-		// figure out what kind of open we want
-		if (oType.button == 1 || oType.ctrlKey) // click middle button or ctrl click
-			windowType = "tab";
-		else if (oType.shiftKey)
-			windowType = "window";
-	}
-	else {
-		windowType = oType;
-	}
-
-	switch (windowType) {
+	switch (getWindowType(oType)) {
 		case "tab":
 			getContentBrowser().addTab(sURI);
 			break;
 		case "window":
+			// XXX: This opens the window in the background if using the context menu
 			document.commandDispatcher.focusedWindow.open(sURI);
 			break;
 
