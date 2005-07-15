@@ -107,7 +107,9 @@ div.item-enclosure {
 }
 
 .item-enclosure img {
+	vertical-align: middle;
 	border:	0;
+	margin-right: 5px;
 }
 
 div.item-author {
