@@ -297,7 +297,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
-		var contentArray = [];
+		var contentHash = {};
 		var contentString;
 		var xmlSerializer = new XMLSerializer();
 		for(j = 0; j < contentNodes.length; j++) {
@@ -310,17 +310,17 @@ Feed.prototype.parseAtom = function(feedXML) {
 			} else {
 				contentString = CommonFunc.getInnerText(contentNodes[j]);
 			}
-			contentArray[contType] = contentString;
+			contentHash[contType] = contentString;
 		}
 
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
 
-		if ("application/xhtml+xml" in contentArray) {
-			item.content = contentArray["application/xhtml+xml"];
-		} else if ("text/html" in contentArray) {
-			item.content = contentArray["text/html"];
-		} else if ("text/plain" in contentArray) {
-			item.content = contentArray["text/plain"];
+		if ("application/xhtml+xml" in contentHash) {
+			item.content = contentHash["application/xhtml+xml"];
+		} else if ("text/html" in contentHash) {
+			item.content = contentHash["text/html"];
+		} else if ("text/plain" in contentHash) {
+			item.content = contentHash["text/plain"];
 		}	else if (summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
