@@ -321,7 +321,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 			item.content = contentHash["text/html"];
 		} else if ("text/plain" in contentHash) {
 			item.content = contentHash["text/plain"];
-		}	else if (summaryNodes.length) {
+		} else if (summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
 
