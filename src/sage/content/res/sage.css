@@ -10,7 +10,7 @@ html {
 body {
 	margin: 0px;
 	color: #222;
-	font-family: verdana;
+	font-family: Verdana, Sans-Serif;
 }
 
 a:link		{ text-decoration: none; color: #436976; font-weight: bold; }
