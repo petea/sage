@@ -127,6 +127,29 @@ function init() {
 	logMessage("initialized");
 }
 
+function loadFavIcon(aUri) {
+	if (aUri != null) {
+		var uri;
+		if (typeof aUri == "string") {
+			uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
+			uri.spec = lastResource.url;
+		} else {
+			uri = aUri;
+		}
+		var iconUri = buildFavIconString(uri);
+		// Firefox raises this exception even though the bookmark icon is updated
+		// Error: [Exception... "'Component does not have requested interface' when calling method: [nsIInterfaceRequestor::getInterface]"  nsresult: "0x80004002 (NS_NOINTERFACE)"  location: "JS frame :: chrome://browser/content/bookmarks/bookmarks.js :: anonymous :: line 1662"  data: no]
+		// Source File: chrome://browser/content/bookmarks/bookmarks.js
+		// Line: 1662
+		BookmarksUtils.loadFavIcon(uri.spec, iconUri);
+	}
+}
+	
+function buildFavIconString(aUri) {
+	var end = (aUri.port == -1) ? "/favicon.ico" : (":" + aUri.port + "/favicon.ico");
+	return aUri.scheme + "://" + aUri.host + end;
+}
+	
 function discoverFeeds() {
 	window.openDialog("chrome://sage/contents/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close", bookmarksTree);
 }
@@ -487,6 +510,9 @@ function onFeedLoaded(aFeed)
 
 	setStatusDone();
 	setRssItemListBox();
+	if (lastResource) {
+		loadFavIcon(lastResource.url);
+	}
 
 	//if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true))
 	//{

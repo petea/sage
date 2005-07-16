@@ -190,6 +190,7 @@ var UpdateChecker = {
 
 		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + (CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/) || ""));
 		this.setCheckingFlag(this.lastResource, false);
+		loadFavIcon(UpdateChecker.httpReq.channel.originalURI);
 		
 		if(this.checkList.length == 0) {
 			this.checking = false;

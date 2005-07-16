@@ -39,7 +39,7 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 toolbarbutton.sage_button {
-	list-style-image:	url("chrome://sage/skin/toolbar.png") !important;
+	list-style-image:	url("chrome://sage/skin/toolbar-small.png") !important;
 }
 
 toolbarbutton.sage_button2 > .toolbarbutton-text {
@@ -60,58 +60,65 @@ toolbarbutton.sage_button2 > .toolbarbutton-text {
 }
 
 #checkFeeds {
-	-moz-image-region: rect(0px 26px 24px 0px) !important;
+	-moz-image-region: rect(0px 16px 16px 0px) !important;
 }
 
-#checkFeeds:active {
-	-moz-image-region: rect(24px 26px 48px 0px) !important;
+#checkFeeds:hover {
+	-moz-image-region: rect(16px 16px 32px 0px) !important;
 }
 
 #checkFeeds[disabled="true"] {
-	-moz-image-region: rect(48px 26px 72px 0px) !important;
+	-moz-image-region: rect(32px 16px 48px 0px) !important;
+}
+
+#checkFeeds:active {
+	-moz-image-region: rect(48px 16px 64px 0px) !important;
 }
 
 #discoverFeeds {
-	-moz-image-region: rect(0px 52px 24px 26px) !important;
+	-moz-image-region: rect(0px 32px 16px 16px) !important;
 }
 
-#discoverFeeds:active {
-	-moz-image-region: rect(24px 52px 48px 26px) !important;
+#discoverFeeds:hover {
+	-moz-image-region: rect(16px 32px 32px 16px) !important;
 }
 
 #discoverFeeds[disabled="true"] {
-	-moz-image-region: rect(48px 52px 72px 26px) !important;
+	-moz-image-region: rect(32px 32px 48px 16px) !important;
+}
+
+#discoverFeeds:active {
+	-moz-image-region: rect(48px 32px 64px 16px) !important;
 }
 
 #bookmarksTree {
-  -moz-binding: url("chrome://sage/content/bookmarksTree.xml#bookmarks-tree-name");
+	-moz-binding: url("chrome://sage/content/bookmarksTree.xml#bookmarks-tree-name");
 }
 
-treechildren::-moz-tree-image(feed),
-treechildren::-moz-tree-image(feed, no-updated),
-treechildren::-moz-tree-image(feed, no-check) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
+treechildren::-moz-tree-cell(checking),
+treechildren::-moz-tree-cell(feed, error),
+treechildren::-moz-tree-cell(feed, unknown) {
+	background-position: right center;
+	background-repeat: no-repeat;
+	padding-right: 20px;
 }
-treechildren::-moz-tree-image(feed, updated) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
+
+treechildren::-moz-tree-cell(checking) {
+	background-image: url("chrome://sage/skin/icon/checking.gif") !important;
 }
-treechildren::-moz-tree-image(feed, unknown) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
+
+treechildren::-moz-tree-cell(feed, error) {
+	background-image: url("chrome://sage/skin/icon/error.gif") !important;
 }
-treechildren::-moz-tree-image(checking) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
+
+treechildren::-moz-tree-cell(feed, unknown) {
+	background-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
-treechildren::-moz-tree-image(feed, error) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
-}
+
 treechildren::-moz-tree-cell-text(feed, updated) {
-  font-weight: bold !important;
+	font-weight: bold !important;
 }
+
 
 /* If this is removed, please remove next rule as well */
 treechildren::-moz-tree-twisty {
@@ -127,14 +134,14 @@ treechildren::-moz-tree-cell-text(Name, separator) {
 }
 
 treechildren::-moz-tree-separator {
-  -moz-appearance: separator !important;
-  border-top: 1px solid ThreeDShadow !important;
-  border-bottom: 1px solid ThreeDHighlight !important;
+	-moz-appearance: separator !important;
+	border-top: 1px solid ThreeDShadow !important;
+	border-bottom: 1px solid ThreeDHighlight !important;
 }
 
 #bookmarksTreeBox,
 #rssItemListBoxBox {
-  min-height: 90px;
+	min-height: 90px;
 }
 
 #rssItemListBox > listitem {
@@ -142,17 +149,17 @@ treechildren::-moz-tree-separator {
 }
 
 #rssItemListBox > listitem[visited="true"] {
-  font-weight:  normal;
+	font-weight:  normal;
 }
 
 #sage-splitter {
-  border: none;
-  border-bottom: 1px solid ThreeDLightShadow;
+	border: none;
+	border-bottom: 1px solid ThreeDLightShadow;
 }
 
 #rssTitleLabel[href]:hover{
-  text-decoration: underline;
-  cursor: pointer;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 
@@ -232,40 +239,40 @@ toolbarbutton#markAllAsUnreadButton {
 
 /* ++++++++++ Search ++++++++++ */
 #barSearch {
-  padding-bottom: 2px;
+	padding-bottom: 2px;
 }
 
 #imgSearchEngine {
-  width: 16px;
-  height: 16px;
+	width: 16px;
+	height: 16px;
 }
 
 #btnSearchSubmit {
-  margin: 2px 2px 2px 0px;
-  min-width: 0px;
-  min-height: 0px;
-  list-style-image: url("chrome://sage/skin/icon/search-submit.gif");
+	margin: 2px 2px 2px 0px;
+	min-width: 0px;
+	min-height: 0px;
+	list-style-image: url("chrome://sage/skin/icon/search-submit.gif");
 }
 
 /* ++++++++++ popupEX ++++++++++ */
 
 #rssItemToolTip {
-  -moz-binding: url(chrome://sage/content/popupex.xml#popupex);
-  padding: 0px !important;
+	-moz-binding: url(chrome://sage/content/popupex.xml#popupex);
+	padding: 0px !important;
 }
 
 .popupex-title {
-  font-weight: bold;
-  margin: 0px !important;
-  padding: 3px !important;
+	font-weight: bold;
+	margin: 0px !important;
+	padding: 3px !important;
 }
 
 .popupex-description {
-  padding: 5px 5px 5px 20px !important;
-  max-width: 26em;
+	padding: 5px 5px 5px 20px !important;
+	max-width: 26em;
 }
 
 .popupex-internal-box {
-  margin: 2px;
-  padding: 2px;
+	margin: 2px;
+	padding: 2px;
 }
