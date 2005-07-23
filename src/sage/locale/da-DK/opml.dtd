@@ -1,0 +1,13 @@
+<!ENTITY pageStart.label			"OPML Import-/eksport-guide">
+<!ENTITY pageStart.desc				"Vælg en handling">
+<!ENTITY pageImport.label			"Importer OPML">
+<!ENTITY pageImport.desc			"Vælg Importer OPML-fil">
+<!ENTITY pageExport.label			"Eksporter OPML">
+<!ENTITY pageExport.desc			"Vælg Eksporter OPML-fil">
+<!ENTITY rdoImport.label			"Importer OPML">
+<!ENTITY rdoExport.label			"Eksporter OPML">
+<!ENTITY browseButton.label			"Gennemse...">
+<!ENTITY pageImportFinished.label	"Importer OPML">
+<!ENTITY pageImportFinished.desc	"Importering færdig">
+<!ENTITY pageExportFinished.label	"Eksporter OPML">
+<!ENTITY pageExportFinished.desc	"Eksportering færdig">

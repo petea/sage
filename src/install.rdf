@@ -81,6 +81,7 @@
 			<em:locale>locale/pt-BR/</em:locale>
 			<em:locale>locale/sl-SI/</em:locale>
 			<em:locale>locale/zh-CN/</em:locale>
+			<em:locale>locale/da-DK/</em:locale>
 		</Description>
 	</em:file>
 
