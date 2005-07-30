@@ -90,6 +90,7 @@
 			<fileset dir="${build}/tmp/sage/tools">
 				<include name="xpcom_win.zip"/>
 				<include name="xpcom_mac.tar.gz"/>
+				<include name="xpcom_linux.tar.gz"/>
 			</fileset>
 		</copy>
 		<property name="version" value="${tag}"/>
