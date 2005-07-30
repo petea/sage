@@ -49,7 +49,8 @@
 	<target name="init" depends="clean">
 		<echo>The operating system is ${os.name}</echo>
 		<condition property="isWin"><os family="windows"/></condition>
-		<condition property="isMac"><os family="mac"/></condition>
+		<condition property="isMac"><and><os family="mac"/><os family="unix"/></and></condition>
+		<condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not></and></condition>
 		<mkdir dir="${build}"/>
 		<mkdir dir="${build}/xpcom"/>
 		<mkdir dir="${build}/src"/>
@@ -95,7 +96,7 @@
 		<ant target="xpi"/>
 	</target>
 
-	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac"/>
+	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac, xpcom-tools-linux"/>
 	<target name="xpcom-tools-win" if="isWin">
 		<unzip src="${xpcom}/xpcom_win.zip" dest="${xpcom}"/>
 	</target>
@@ -104,8 +105,14 @@
 			<arg line="xzf xpcom_mac.tar.gz"/>
 		</exec>
 	</target>
+	<target name="xpcom-tools-linux" if="isLinux">
+		<exec dir="${xpcom}" executable="tar" failonerror="true">
+			<arg line="xzf xpcom_linux.tar.gz"/>
+		</exec>
+	</target>
+
 	
-	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac">
+	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-linux">
 		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
 		</exec>
@@ -114,6 +121,9 @@
 	    <property name="xpidl_executable" value="xpidl.exe"/>
 	</target>
 	<target name="compile-idl-mac" if="isMac">
+	    <property name="xpidl_executable" value="xpidl"/>
+	</target>
+	<target name="compile-idl-linux" if="isLinux">
 	    <property name="xpidl_executable" value="xpidl"/>
 	</target>
 
