@@ -146,6 +146,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 
 	var itemNodes = feedXML.getElementsByTagName("item");
 	var item, guid;
+	var dateParser = Components.classes["@sage.mozdev.org/sage/dateparser;1"].getService(Components.interfaces.sageIDateParser);
 	for (i = 0; itemNodes.length > i; i++) {
 		item = {title:"", link:"", content:"", author:"", pubDate:"", enclosure:""};
 		guid = null;
@@ -179,20 +180,18 @@ Feed.prototype.parseRSS = function(feedXML) {
 					break;
 				case "pubDate":
 					tmp_str = CommonFunc.getInnerText(j);
-					tmp_date = rfc822ToJSDate(tmp_str);
-					if(tmp_date) {
-						item.pubDate = tmp_date;
-					} else {
-						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
+					try {
+						item.pubDate = new Date(dateParser.parseRFC822(tmp_str));
+					} catch(e) {
+						logMessage("unable to parse RFC 822 date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
 				case "date":
 					tmp_str = CommonFunc.getInnerText(j);
-					tmp_date = iso8601ToJSDate(tmp_str);
-					if (tmp_date) {
-						item.pubDate = tmp_date;
-					} else {
-						logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
+					try {
+						item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
+					} catch(e) {
+						logMessage("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
 				case "enclosure":
@@ -260,6 +259,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 	}
 
 	var entryNodes = feedXML.getElementsByTagName("entry");
+	var dateParser = Components.classes["@sage.mozdev.org/sage/dateparser;1"].getService(Components.interfaces.sageIDateParser);
 	for (i = 0; entryNodes.length > i; i++) {
 		var item = {title:"", link:"", author:"", content:"", pubDate:"", enclosure:""};
 
@@ -286,11 +286,10 @@ Feed.prototype.parseAtom = function(feedXML) {
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
 		if (issuedNodes.length) {
 			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
-			tmp_date = iso8601ToJSDate(tmp_str);
-			if (tmp_date) {
-				item.pubDate = tmp_date;
-			} else {
-				logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
+			try {
+				item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
+			} catch(e) {
+				logMessage("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
 			}
 		}
 
@@ -606,90 +605,6 @@ FeedItemEnclosure.prototype.getDescription = function() {
  *
  */
  
-// Parses an RFC 822 formatted date string and returns a JavaScript Date object, returns null on parse error
-// Example inputs:  "Sun, 08 May 05 15:19:37 GMT"  "Mon, 09 May 2005 00:50:19 GMT"
-function rfc822ToJSDate(date_str) {
-	date_array = date_str.split(" ");
-	// check for two digit year
-	if(date_array.length == 6 && date_array[3].length == 2) {
-		// convert to four digit year with a pivot of 70
-		if(date_array[3] < 70) {
-			date_array[3] = "20" + date_array[3];
-		} else {
-			date_array[3] = "19" + date_array[3];
-		}
-	}
-	date_str = date_array.join(" ");
-	date = new Date(date_str);
-	if(date != "Invalid Date") {
-		return date;
-	} else {
-		return null
-	}
-}
-
-// Parses an ISO 8601 formatted date string and returns a JavaScript Date object, returns null on parse error
-// Example inputs:  "2004-06-17T18:00Z" "2004-06-17T18:34:12+02:00"
-function iso8601ToJSDate(date_str) {
-	var tmp = date_str.split("T");
-	var date = tmp[0];
-
-	date = date.split("-");
-	var year = date[0];
-	var month = date[1];
-	var day = date[2];
-
-	var hours = 0;
-	var minutes = 0;
-	var seconds = 0;
-	var tz_mark = "Z";
-	var tz_hours = 0;
-	var tz_minutes = 0;
-	var time, whole_time, tz;
-
-	if (tmp.length == 2) {
-		whole_time = tmp[1];
-		tz_mark = whole_time.match("[Z+-]{1}");
-		if (tz_mark) {
-			tmp = whole_time.split(tz_mark);
-			time = tmp[0];
-			if (tz_mark == "+" || tz_mark == "-") {
-				tz = tmp[1];
-				tmp = tz.split(":");
-				tz_hours = tmp[0];
-				tz_minutes = tmp[1];
-			}
-		} else {
-			tz_mark = "Z";
-			time = whole_time;
-		}
-		tmp = time.split(":");
-		hours = tmp[0];
-		minutes = tmp[1];
-		if (tmp.length == 3) {
-			seconds = tmp[2];
-		}
-	}
-
-	var utc = Date.UTC(year, month - 1, day, hours, minutes, seconds);
-	var tmp_date;
-	if (tz_mark == "Z") {
-		tmp_date = new Date(utc);
-	} else if (tz_mark == "+") {
-		tmp_date = new Date(utc - tz_hours*3600000 - tz_minutes*60000);
-	} else if (tz_mark == "-") {
-		tmp_date = new Date(utc + tz_hours*3600000 + tz_minutes*60000);
-	} else {
-		tmp_date = "Invalid Date";
-	}
-
-	if (tmp_date == "Invalid Date") {
-		return null;
-	} else {
-		return tmp_date;
-	}
-}
-
 function entityDecode(aStr) {
 	var	formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Components.interfaces.nsIFormatConverter);
 	var fromStr = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
