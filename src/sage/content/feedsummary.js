@@ -38,7 +38,8 @@
 
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
-var strRes = new StringBundle("chrome://sage/locale/sage.properties");
+var strBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+var strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
 
 var feedSummary = {
 
@@ -101,12 +102,12 @@ var feedSummary = {
 	{
 		// populate the error array
 		resultStrArray = [
-			strRes.getString("RESULT_OK_STR"),
-			strRes.getString("RESULT_PARSE_ERROR_STR"),
-			strRes.getString("RESULT_NOT_RSS_STR"),
-			strRes.getString("RESULT_NOT_FOUND_STR"),
-			strRes.getString("RESULT_NOT_AVAILABLE_STR"),
-			strRes.getString("RESULT_ERROR_FAILURE_STR")
+			strRes.GetStringFromName("RESULT_OK_STR"),
+			strRes.GetStringFromName("RESULT_PARSE_ERROR_STR"),
+			strRes.GetStringFromName("RESULT_NOT_RSS_STR"),
+			strRes.GetStringFromName("RESULT_NOT_FOUND_STR"),
+			strRes.GetStringFromName("RESULT_NOT_AVAILABLE_STR"),
+			strRes.GetStringFromName("RESULT_ERROR_FAILURE_STR")
 		];
 
 		this.findSageSideBar();
@@ -116,7 +117,7 @@ var feedSummary = {
 		var p = document.createElement("p");
 		p.setAttribute("id", "loading-text");
 		var title = this._getFeedTitle(uri);
-		p.textContent = strRes.getFormattedString("RESULT_LOADING", [title]);
+		p.textContent = strRes.formatStringFromName("RESULT_LOADING", [title], 1);
 		document.body.appendChild(p);
 
 		var pb = document.createElementNS(XUL_NS, "progressmeter");
