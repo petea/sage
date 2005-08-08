@@ -118,6 +118,9 @@
 		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
 		</exec>
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIDateParser.idl"/>
+		</exec>
 	</target>
 	<target name="compile-idl-win" if="isWin">
 	    <property name="xpidl_executable" value="xpidl.exe"/>
@@ -145,7 +148,8 @@
 		<!-- copy XPT files to build directory -->
 		<copy todir="${build}/src/components">
 			<fileset dir="${xpcom}/base">
-				<include name="sageIDateFormatter.xpt"/>  
+				<include name="sageIDateFormatter.xpt"/>
+				<include name="sageIDateParser.xpt"/>
 			</fileset>
 		</copy>
 	</target>
