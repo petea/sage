@@ -192,7 +192,7 @@ var CreateHTML = {
 				footer = feed.getFooter();
 				if (footer.webmaster) {
 					return "<a href=\"mailto:" + footer.webmaster + "\">" +
-						strRes.getString("feed_summary_webmaster") +
+						strRes.GetStringFromName("feed_summary_webmaster") +
 						"</a>";
 				}
 				return "";
@@ -270,7 +270,7 @@ var CreateHTML = {
 					var enc = item.getEnclosure();
 					return "<div class=\"item-enclosure\">" +
 						"<a href=\"" + enc.getLink() + "\" title=\"" +
-						strRes.getString("feed_summary_enclosure") +
+						strRes.GetStringFromName("feed_summary_enclosure") +
 						"\"><img src=\"" +
 							(enc.hasMimeType() ?
 								"moz-icon://dummy?size=16&contentType=" + enc.getMimeType() :
