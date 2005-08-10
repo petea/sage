@@ -84,8 +84,10 @@ Feed.prototype.parseRSS = function(feedXML) {
 		}
 	}
 
+	var i, j;
+
 	var channelNode;
-	for (var i = firstElement.firstChild; i != null; i = i.nextSibling) {
+	for (i = firstElement.firstChild; i != null; i = i.nextSibling) {
 		if (i.nodeType != i.ELEMENT_NODE) continue;
 		if (i.localName.toLowerCase() == "channel") {
 			channelNode = i;
@@ -129,7 +131,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 				this.footer.editor = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "image":
-				for (var j = i.firstChild; j!=null; j=j.nextSibling) {
+				for (j = i.firstChild; j!=null; j=j.nextSibling) {
 					if (j.nodeType != j.ELEMENT_NODE) continue;
 					switch(j.localName) {
 						case "url":
@@ -151,7 +153,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 		item = {title:"", link:"", content:"", author:"", pubDate:"", enclosure:""};
 		guid = null;
 
-		for (var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
+		for (j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
 			if (j.nodeType != j.ELEMENT_NODE) continue;
 			switch(j.localName) {
 				case "title":
@@ -227,8 +229,10 @@ Feed.prototype.parseAtom = function(feedXML) {
 	} else {
 		this.feedFormat = "Atom (?)";
 	}
+	
+	var i, j, z;
 
-	for (var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
+	for (i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
 		if (i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
@@ -270,7 +274,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
 		if (linkNodes.length) {
-			for (var j = 0; j < linkNodes.length; j++) {
+			for (j = 0; j < linkNodes.length; j++) {
 				if (linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
 					item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
 					break;
@@ -389,15 +393,18 @@ Feed.prototype.getItems = function(sort) {
 		case "chrono":
 			var items = new Array();
 			for (var c = 0; c < this.items.length; c++) {
-				items.push(this.items[c]);
+				items.push(new Array(this.items[c], c));
 			}
 			function chronoSort(a, b) {
-				var a_ts = a.hasPubDate() ? a.getPubDate() : 0;
-				var b_ts = b.hasPubDate() ? b.getPubDate() : 0;
+				var a_ts = a[0].hasPubDate() ? ((a[0].getPubDate().getTime() * 1000) - a[1]) : (0 - a[1]);
+				var b_ts = b[0].hasPubDate() ? ((b[0].getPubDate().getTime() * 1000) - b[1]) : (0 - b[1]);
 				return b_ts - a_ts;
 			}
 			items.sort(chronoSort);
-			items_array = items;
+			items_array = new Array();
+			for (var c = 0; c < items.length; c++) {
+				items_array.push(items[c][0]);
+			}
 			break;
 		case "source":
 			items_array = this.items;
