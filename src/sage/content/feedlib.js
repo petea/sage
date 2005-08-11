@@ -224,7 +224,9 @@ Feed.prototype.parseAtom = function(feedXML) {
 
 	var firstElement = feedXML.documentElement;
 
-	if (firstElement.hasAttribute("version")) {
+	if (firstElement.hasAttribute("xmlns") && firstElement.getAttribute("xmlns") == "http://www.w3.org/2005/Atom") {
+		this.feedFormat = "Atom (1.0)";
+	} else if (firstElement.hasAttribute("version")) {
 		this.feedFormat = "Atom (" + firstElement.getAttribute("version") + ")";
 	} else {
 		this.feedFormat = "Atom (?)";
@@ -239,12 +241,12 @@ Feed.prototype.parseAtom = function(feedXML) {
 				this.title = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "link":
-				if (this.link) {
-					if (i.getAttribute("rel").toLowerCase() == "alternate") {
+				if ((i.hasAttribute("rel") && i.getAttribute("rel").toLowerCase() == "alternate") || !i.hasAttribute("rel")) {
+					if (firstElement.hasAttribute("xml:base")) {
+						this.link = URIFixup.createFixupURI(firstElement.getAttribute("xml:base"), nsIURIFixup.FIXUP_FLAG_NONE).resolve(i.getAttribute("href"));
+					} else {
 						this.link = i.getAttribute("href");
 					}
-				} else {
-					this.link = i.getAttribute("href");
 				}
 				break;
 			case "tagline":
@@ -275,7 +277,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
 		if (linkNodes.length) {
 			for (j = 0; j < linkNodes.length; j++) {
-				if (linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
+				if (!linkNodes[j].hasAttribute("rel") || linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
 					item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
 					break;
 				}
@@ -287,8 +289,18 @@ Feed.prototype.parseAtom = function(feedXML) {
 			item.author = entityDecode(CommonFunc.getInnerText(authorNodes[0]));
 		}
 
+		var updatedNodes = entryNodes[i].getElementsByTagName("updated");
+		if (updatedNodes.length) {
+			tmp_str = CommonFunc.getInnerText(updatedNodes[0]);
+			try {
+				item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
+			} catch(e) {
+				logMessage("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
+			}
+		}
+
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
-		if (issuedNodes.length) {
+		if (issuedNodes.length && !updatedNodes.length) {
 			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
 			try {
 				item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
@@ -305,7 +317,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 		var xmlSerializer = new XMLSerializer();
 		for(j = 0; j < contentNodes.length; j++) {
 			var contType = contentNodes[j].getAttribute("type");
-			if(contType == "application/xhtml+xml") {
+			if(contType == "application/xhtml+xml" || contType == "xhtml") {
 				contentString = "";
 				for(z = 0; z < contentNodes[j].childNodes.length; z++) {
 					contentString += xmlSerializer.serializeToString(contentNodes[j].childNodes[z]);
@@ -320,10 +332,16 @@ Feed.prototype.parseAtom = function(feedXML) {
 
 		if ("application/xhtml+xml" in contentHash) {
 			item.content = contentHash["application/xhtml+xml"];
+		} else if ("xhtml" in contentHash) {
+			item.content = contentHash["xhtml"];
 		} else if ("text/html" in contentHash) {
 			item.content = contentHash["text/html"];
+		} else if ("html" in contentHash) {
+			item.content = contentHash["html"];
 		} else if ("text/plain" in contentHash) {
 			item.content = contentHash["text/plain"];
+		} else if ("text" in contentHash) {
+			item.content = contentHash["text"];	
 		} else if (summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
@@ -392,7 +410,8 @@ Feed.prototype.getItems = function(sort) {
 	switch(sort) {
 		case "chrono":
 			var items = new Array();
-			for (var c = 0; c < this.items.length; c++) {
+			var c;
+			for (c = 0; c < this.items.length; c++) {
 				items.push(new Array(this.items[c], c));
 			}
 			function chronoSort(a, b) {
@@ -402,7 +421,7 @@ Feed.prototype.getItems = function(sort) {
 			}
 			items.sort(chronoSort);
 			items_array = new Array();
-			for (var c = 0; c < items.length; c++) {
+			for (c = 0; c < items.length; c++) {
 				items_array.push(items[c][0]);
 			}
 			break;
