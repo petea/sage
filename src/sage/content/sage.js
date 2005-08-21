@@ -161,6 +161,9 @@ function done() {
 	}
 	UpdateChecker.done();
 	
+	// remove observer
+	linkVisitor.uninit();
+	
 	logMessage("flushing bookmark data store..");
 	BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
 
@@ -322,7 +325,13 @@ function rssItemListBoxClick(aEvent) {
 	var listItem = rssItemListBox.selectedItem;
 	var feedItem = getFeedItemFromListItem( listItem );
 
-	listItem.setAttribute("visited", "true");
+	// If we are using Gecko 1.8+ we are using an observer to listen to
+	// changes to the history and therefore we should not the item as visited
+	// here in case we failed to load it
+	var rv = navigator.userAgent.match(/rv\:([^)]+)/)[1];
+	if (rv < "1.8") {
+		listItem.setAttribute("visited", "true");
+	}
 	openURI(feedItem.getLink(), aEvent);
 }
 
@@ -397,6 +406,7 @@ function setRssItemListBox() {
 		rssItemListBox.removeItemAt(0);
 	}
 
+	linkVisitor.clearItems();
 	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
 
 	var items = currentFeed.getItems(feedItemOrder);
@@ -406,6 +416,7 @@ function setRssItemListBox() {
 		var itemLabel = item.getTitle();
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
+		linkVisitor.addItem(item.getLink(), listItem);
 		if(linkVisitor.getVisited(item.getLink())) {
 			listItem.setAttribute("visited", "true");
 		}
@@ -498,9 +509,9 @@ function onFeedLoadError(aErrorCode) {
 	setStatusError(resultStrArray[aErrorCode]);
 }
 
-function onFeedAbort(sUri) {
+function onFeedAbort(sURI) {
 	// BM_FEEDURL
-	var urlLiteral = RDF.GetLiteral(sUri);
+	var urlLiteral = RDF.GetLiteral(sURI);
 	// don't do anything if this URI isn't bookmarked
 	var bmResource = BMSVC.GetSource(RDF.GetResource(CommonFunc.BM_URL), urlLiteral, true);
 	if (!bmResource) {	// try live mark as wll
@@ -610,19 +621,24 @@ function openListItem(oType) {
 }
 
 // link visit code based on LinkVisitor.mozdev.org
-
-
+/*
+ * This observes to the link-visited broadcast topic and calls onURIChanged when
+ * an URI changed its visited state.
+ */
 var linkVisitor = {
 	_uriFixup : Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup),
-
+	_topic: "link-visited",
+	
 	setVisited:	function (sURI, bRead) {
-		if (!sURI)
+		if (!sURI) {
 			return;
+		}
 
 		// why do we need to fixup the URI?
 		var fixupURI = this._getFixupURI(sURI);
-		if (fixupURI == null)
+		if (fixupURI == null) {
 			return;
+		}
 		if (bRead) {
 			if (this._ff08) {
 				this._globalHistory.addPage(fixupURI);
@@ -630,9 +646,9 @@ var linkVisitor = {
 				// Firefox 1.1 added a forth argument used for the referrer
 				this._globalHistory.addURI(fixupURI, false, true, null);
 			}
-		}
-		else
+		} else {
 			this._browserHistory.removePage(fixupURI);
+		}
 	},
 
 	getVisited : function (sURI) {
@@ -660,12 +676,56 @@ var linkVisitor = {
 		if (this._ff08) {
 			gh = Components.classes["@mozilla.org/browser/global-history;1"];
 			linkVisitor._globalHistory = gh.getService(Components.interfaces.nsIGlobalHistory);
-		}
-		else {
+		} else {
 			gh = Components.classes["@mozilla.org/browser/global-history;2"];
 			linkVisitor._globalHistory = gh.getService(Components.interfaces.nsIGlobalHistory2);
 		}
 		linkVisitor._browserHistory = gh.getService(Components.interfaces.nsIBrowserHistory);
+		
+		// add observer
+		var os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+		os.addObserver(this, this._topic, false);		
+	},
+	
+	uninit: function () {
+		this.clearItems();
+		var os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+		os.removeObserver(this, this._topic);
+		
+	},
+	
+	// nsIObserver
+	observe: function (aSubject, aTopic, aData) {
+		// subject is an URI
+		// data is null
+		if (aTopic != this._topic) {
+			return;
+		}
+		
+		var uri = aSubject.QueryInterface(Components.interfaces.nsIURI);
+		this.onURIChanged(uri.spec)
+	},
+	
+	// mapping from the observer to the rss list items
+	_items: {},
+	
+	clearItems: function () {
+		this._items = {};
+	},
+	
+	addItem: function (aURI, aListItem) {
+		this._items[aURI] = aListItem;
+	},
+	
+	onURIChanged: function (aURI) {
+		if (aURI in this._items) {
+			var listItem = this._items[aURI];
+			if (this.getVisited(aURI)) {
+				listItem.setAttribute("visited", "true");
+			} else {
+				listItem.removeAttribute("visited");
+			}
+		}
 	}
 };
 linkVisitor.init();
