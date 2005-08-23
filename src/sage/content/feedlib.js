@@ -206,7 +206,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 			item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, null);
 
 		if (tmpFeedItem.hasPubDate()) {
 			if (tmpFeedItem.getPubDate() > this.lastPubDate) {
@@ -232,6 +232,12 @@ Feed.prototype.parseAtom = function(feedXML) {
 		this.feedFormat = "Atom (?)";
 	}
 	
+	// xml:base support for <feed> element
+	var baseURI;
+	if (firstElement.hasAttribute("xml:base")) {
+		baseURI = firstElement.getAttribute("xml:base");
+	}
+	
 	var i, j, z;
 
 	for (i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
@@ -242,13 +248,14 @@ Feed.prototype.parseAtom = function(feedXML) {
 				break;
 			case "link":
 				if ((i.hasAttribute("rel") && i.getAttribute("rel").toLowerCase() == "alternate") || !i.hasAttribute("rel")) {
-					if (firstElement.hasAttribute("xml:base")) {
-						this.link = URIFixup.createFixupURI(firstElement.getAttribute("xml:base"), nsIURIFixup.FIXUP_FLAG_NONE).resolve(i.getAttribute("href"));
+					if (baseURI) {
+						this.link = URIFixup.createFixupURI(baseURI, nsIURIFixup.FIXUP_FLAG_NONE).resolve(i.getAttribute("href"));
 					} else {
 						this.link = i.getAttribute("href");
 					}
 				}
 				break;
+			case "subtitle":
 			case "tagline":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
@@ -267,7 +274,16 @@ Feed.prototype.parseAtom = function(feedXML) {
 	var entryNodes = feedXML.getElementsByTagName("entry");
 	var dateParser = Components.classes["@sage.mozdev.org/sage/dateparser;1"].getService(Components.interfaces.sageIDateParser);
 	for (i = 0; entryNodes.length > i; i++) {
-		var item = {title:"", link:"", author:"", content:"", pubDate:"", enclosure:""};
+		var item = {title:"", link:"", author:"", content:"", pubDate:"", enclosure:"", baseURI:""};
+		
+		// xml:base support for <entry> element
+		if (entryNodes[i].hasAttribute("xml:base")) {
+			if (baseURI) {
+				item.baseURI = URIFixup.createFixupURI(baseURI, nsIURIFixup.FIXUP_FLAG_NONE).resolve(entryNodes[i].getAttribute("xml:base"));
+			} else {
+				item.baseURI = entryNodes[i].getAttribute("xml:base");
+			}
+		}
 
 		var titleNodes = entryNodes[i].getElementsByTagName("title");
 		if (titleNodes.length) {
@@ -278,7 +294,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 		if (linkNodes.length) {
 			for (j = 0; j < linkNodes.length; j++) {
 				if (!linkNodes[j].hasAttribute("rel") || linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
-					item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
+					item.link = item.baseURI ? URIFixup.createFixupURI(item.baseURI, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
 					break;
 				}
 			}
@@ -346,7 +362,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, item.baseURI);
 
 		if (tmpFeedItem.hasPubDate()) {
 			if (tmpFeedItem.getPubDate() > this.lastPubDate) {
@@ -470,13 +486,14 @@ Feed.prototype.getLogo = function() {
  *
  */
 
-function FeedItem(title, link, author, content, pubDate, enclosure) {
+function FeedItem(title, link, author, content, pubDate, enclosure, baseURI) {
 	this.title = title;
 	this.link = link;
 	this.author = author;
 	this.content = content;
 	this.pubDate = pubDate;
 	this.enclosure = enclosure;
+	this.baseURI = baseURI;
 }
 
 FeedItem.prototype.hasTitle = function() {
@@ -536,7 +553,13 @@ FeedItem.prototype.getEnclosure = function() {
 	return this.hasEnclosure() ? this.enclosure : null;
 }
 
+FeedItem.prototype.hasBaseURI = function() {
+	return Boolean(this.baseURI);
+}
 
+FeedItem.prototype.getBaseURI = function() {
+	return this.hasBaseURI() ? this.baseURI : null;
+}
 
 /**
  * FeedItemEnclosure class
