@@ -76,6 +76,7 @@
 		</copy>
 		<property name="version" value="sage-local"/>
 		<ant target="xpi"/>
+		<condition property="hasComponents"><available file="${build}/src/components" type="dir"/></condition>
 	</target>
 	
 	<!-- build from cvs source files -->
@@ -133,7 +134,7 @@
 	</target>
 
 	<!-- generate XPConnect typelib files -->
-	<target name="generate-xpt">
+	<target name="build-components" if="hasComponents">
 		<ant target="xpcom-tools"/>
 		<!-- copy interfaces to xpcom compile dir -->
 	    <copy todir="${xpcom}/base">
@@ -152,19 +153,19 @@
 				<include name="sageIDateParser.xpt"/>
 			</fileset>
 		</copy>
-	</target>
-	
-	<!-- assemeble extension structure -->
-	<target name="assemble" depends="generate-xpt">
-		<!-- create main jar file -->
-		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
 		
-		<!-- copy JS and XPT component files -->
+		<!-- copy JS and XPT component files to XPI directory -->
 		<copy todir="${build}/xpi/components">
 			<fileset dir="${build}/src/components">
 				<exclude name="*.idl"/>
 			</fileset>
 		</copy>
+	</target>
+	
+	<!-- assemeble extension structure -->
+	<target name="assemble" depends="build-components">
+		<!-- create main jar file -->
+		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
 		
 		<!-- copy install meta files -->
 		<copy todir="${build}/xpi">
