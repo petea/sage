@@ -57,7 +57,6 @@
 		<mkdir dir="${build}/tmp"/>
 		<mkdir dir="${build}/xpi"/>
 		<mkdir dir="${build}/xpi/chrome"/>
-		<mkdir dir="${build}/xpi/components"/>
 	</target>
 
 	<!-- build from local source files -->
@@ -153,6 +152,8 @@
 				<include name="sageIDateParser.xpt"/>
 			</fileset>
 		</copy>
+
+		<mkdir dir="${build}/xpi/components"/>
 		
 		<!-- copy JS and XPT component files to XPI directory -->
 		<copy todir="${build}/xpi/components">
