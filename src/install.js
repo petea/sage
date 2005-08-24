@@ -1,6 +1,6 @@
 const APP_NAME			= "Sage";
 const APP_CHROME_NAME		= "sage";
-const APP_VERSION		= "1.3.5";
+const APP_VERSION		= "1.3.6";
 const APP_FILE 			= "sage.jar";
 const APP_CONTENTS_PATH		= "content/";
 const APP_SKIN_CLASSIC_PATH	= "skin/classic/";
@@ -29,6 +29,7 @@ const APP_LOCALE_PLPL_PATH	= "locale/pl-PL/";
 const APP_LOCALE_PTBR_PATH	= "locale/pt-BR/";
 const APP_LOCALE_SLSI_PATH	= "locale/sl-SI/";
 const APP_LOCALE_ZHCN_PATH	= "locale/zh-CN/";
+const APP_LOCALE_DADK_PATH	= "locale/da-DK/";
 
 initInstall(APP_NAME, APP_CHROME_NAME, APP_VERSION); 
 
@@ -64,6 +65,7 @@ registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_PLPL_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_PTBR_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_SLSI_PATH);
 registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_ZHCN_PATH);
+registerChrome(LOCALE | PROFILE_CHROME, jarFolder, APP_LOCALE_DADK_PATH);
 
 var result = getLastError(); 
 if(result == SUCCESS) {
