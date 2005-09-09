@@ -261,6 +261,43 @@ var feedSummary = {
 
 	findSageSideBar:	function ()
 	{
+		////var cid = "@mozilla.org/embedding/browser/nsWebBrowser;1";
+		//var cid = "@mozilla.org/webshell;1";
+		//var ti;
+		////ti = Components.classes[cid].createInstance(Components.interfaces.nsIDocShell)
+		//ti = Components.classes[cid].createInstance(Components.interfaces.nsIDocShellTreeItem)
+		////ti.QueryInterface(Components.interfaces.nsIDocShellTreeItem);
+		//alert(ti.name);
+		////var tmp = ti;//.rootTreeItem;
+		////tmp.QueryInterface(Components.interfaces.nsIDOMWindow);
+		////ti.QueryInterface(Components.interfaces.nsIWebBrowser);
+		////alert(ti.contentDOMWindow );
+		////ti = ti.rootTreeItem;
+		//ti.QueryInterface(Components.interfaces.nsIDocShell);
+		//alert(ti);
+		////ti.QueryInterface(Components.interfaces.nsI
+		////alert(ti.contentDOMWindow);
+		//alert(ti.contentViewer);
+		//
+		
+		/*
+		var basewin = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			.getInterface(Components.interfaces.nsIWebNavigation)
+			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+			.treeOwner
+			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+			.getInterface(Components.interfaces.nsIBaseWindow);
+		alert(basewin);
+		*/
+		
+		////var cid = "@mozilla.org/embedding/browser/nsWebBrowser;1";
+		//var cid = "@mozilla.org/webshell;1";
+		//var wb = new Components.classes[cid];
+		//wb.QueryInterface(Components.interfaces.nsIDocShell);
+		//wb.QueryInterface(Components.interfaces.nsIDocShellTreeItem);
+		//wb.QueryInterface(Components.interfaces.nsIDOMWindow);
+		//alert(wb);
+		
 		var win = this.findCurrentWindow();
 		if (win)
 		{
@@ -283,7 +320,7 @@ var feedSummary = {
 		var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
 		var windowManagerInterface = windowManager.QueryInterface( Components.interfaces.nsIWindowMediator);
 
-		var topWindowOfType = windowManagerInterface.getMostRecentWindow( "navigator:browser" );
+		//var topWindowOfType = windowManagerInterface.getMostRecentWindow( "navigator:browser" );
 		var wins = windowManagerInterface.getEnumerator( "navigator:browser" );
 		var win, res;
 		while (wins.hasMoreElements())
