@@ -74,8 +74,8 @@
 			</fileset>
 		</copy>
 		<property name="version" value="sage-local"/>
-		<ant target="xpi"/>
 		<condition property="hasComponents"><available file="${build}/src/components" type="dir"/></condition>
+		<ant target="xpi"/>		
 	</target>
 	
 	<!-- build from cvs source files -->
