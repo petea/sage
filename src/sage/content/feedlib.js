@@ -37,9 +37,9 @@ Feed.prototype.parseRSS = function() {
 
 	var firstElement = feedXML.documentElement;
 
-	if(firstElement.localName.toLowerCase() == "rdf") {
+	if (firstElement.localName.toLowerCase() == "rdf") {
 		this.feedFormat = "RSS (1.0)";
-	} else if(firstElement.localName.toLowerCase() == "rss") {
+	} else if (firstElement.localName.toLowerCase() == "rss") {
 		if(firstElement.hasAttribute("version")) {
 			this.feedFormat = "RSS (" + firstElement.getAttribute("version") + ")";
 		} else {
@@ -47,25 +47,27 @@ Feed.prototype.parseRSS = function() {
 		}
 	}
 
+	var i, j;
+
 	var channelNode;
-	for(var i = firstElement.firstChild; i != null; i = i.nextSibling) {
+	for (i = firstElement.firstChild; i != null; i = i.nextSibling) {
 		if(i.nodeType != i.ELEMENT_NODE) continue;
 		if(i.localName.toLowerCase() == "channel") {
 			channelNode = i;
 		}
 	}
-	if(!channelNode) {
+	if (!channelNode) {
 		throw "No channel element where expected";
 	}
 
-	if(feedXML.getElementsByTagName("channel").length != 0) {
+	if (feedXML.getElementsByTagName("channel").length != 0) {
 		channelNode = feedXML.getElementsByTagName("channel")[0];
 	} else {
 		throw "No elements in channel tag";
 	}
 
-	for(i = channelNode.firstChild; i != null; i = i.nextSibling) {
-		if(i.nodeType != i.ELEMENT_NODE) continue;
+	for (i = channelNode.firstChild; i != null; i = i.nextSibling) {
+		if (i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
 				this.title = entityDecode(CommonFunc.getInnerText(i));
@@ -85,14 +87,14 @@ Feed.prototype.parseRSS = function() {
 		item = {title:"", link:"", content:"", pubDate:""};
 		guid = null;
 
-		for(var j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
-			if(j.nodeType != j.ELEMENT_NODE) continue;
+		for (j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
+			if (j.nodeType != j.ELEMENT_NODE) continue;
 			switch(j.localName) {
 				case "title":
 					item.title = entityDecode(CommonFunc.getInnerText(j));
 					break;
 				case "link":
-					if(!item.link) {
+					if (!item.link) {
 						item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(CommonFunc.getInnerText(j)) : CommonFunc.getInnerText(j);
 					}
 					break;
@@ -102,7 +104,7 @@ Feed.prototype.parseRSS = function() {
 					}
 					break;
 				case "description":
-					if(!item.content) {
+					if (!item.content) {
 						item.content = CommonFunc.getInnerText(j);
 					}
 					break;
@@ -130,14 +132,14 @@ Feed.prototype.parseRSS = function() {
 			}
 		}
 
-		if(!item.link && guid) {
+		if (!item.link && guid) {
 			item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate, null);
 
-		if(tmpFeedItem.hasPubDate()) {
-			if(tmpFeedItem.getPubDate() > this.lastPubDate) {
+		if (tmpFeedItem.hasPubDate()) {
+			if (tmpFeedItem.getPubDate() > this.lastPubDate) {
 				this.lastPubDate = tmpFeedItem.getPubDate();
 			}
 		}
@@ -155,27 +157,38 @@ Feed.prototype.parseAtom = function() {
 
 	var firstElement = feedXML.documentElement;
 
-	if(firstElement.hasAttribute("version")) {
+	if (firstElement.hasAttribute("xmlns") && firstElement.getAttribute("xmlns") == "http://www.w3.org/2005/Atom") {
+		this.feedFormat = "Atom (1.0)";
+	} else if (firstElement.hasAttribute("version")) {
 		this.feedFormat = "Atom (" + firstElement.getAttribute("version") + ")";
 	} else {
 		this.feedFormat = "Atom (?)";
 	}
 
-	for(var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
-		if(i.nodeType != i.ELEMENT_NODE) continue;
+	// xml:base support for <feed> element
+	var baseURI;
+	if (firstElement.hasAttribute("xml:base")) {
+		baseURI = firstElement.getAttribute("xml:base");
+	}
+	
+	var i, j, z;
+
+	for (var i = feedXML.documentElement.firstChild; i != null; i = i.nextSibling) {
+		if (i.nodeType != i.ELEMENT_NODE) continue;
 		switch(i.localName) {
 			case "title":
 				this.title = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "link":
-				if(this.link) {
-					if(i.getAttribute("rel").toLowerCase() == "alternate") {
+				if ((i.hasAttribute("rel") && i.getAttribute("rel").toLowerCase() == "alternate") || !i.hasAttribute("rel")) {
+					if (baseURI) {
+						this.link = URIFixup.createFixupURI(baseURI, nsIURIFixup.FIXUP_FLAG_NONE).resolve(i.getAttribute("href"));
+					} else {
 						this.link = i.getAttribute("href");
 					}
-				} else {
-					this.link = i.getAttribute("href");
 				}
 				break;
+			case "subtitle":
 			case "tagline":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
 				break;
@@ -183,29 +196,49 @@ Feed.prototype.parseAtom = function() {
 	}
 
 	var entryNodes = feedXML.getElementsByTagName("entry");
-	for(i = 0; entryNodes.length > i; i++) {
-		var item = {title:"", link:"", content:"", pubDate:""};
+	for (i = 0; entryNodes.length > i; i++) {
+		var item = {title:"", link:"", content:"", pubDate:"", baseURI:""};
+
+		// xml:base support for <entry> element
+		if (entryNodes[i].hasAttribute("xml:base")) {
+			if (baseURI) {
+				item.baseURI = URIFixup.createFixupURI(baseURI, nsIURIFixup.FIXUP_FLAG_NONE).resolve(entryNodes[i].getAttribute("xml:base"));
+			} else {
+				item.baseURI = entryNodes[i].getAttribute("xml:base");
+			}
+		}
 
 		var titleNodes = entryNodes[i].getElementsByTagName("title");
-		if(titleNodes.length) {
+		if (titleNodes.length) {
 			item.title = entityDecode(CommonFunc.getInnerText(titleNodes[0]));
 		}
 
 		var linkNodes = entryNodes[i].getElementsByTagName("link");
-		if(linkNodes.length) {
-			for (var j = 0; j < linkNodes.length; j++) {
-				if (linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
-					item.link = this.link ? URIFixup.createFixupURI(this.link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
+		if (linkNodes.length) {
+			for (j = 0; j < linkNodes.length; j++) {
+				if (!linkNodes[j].hasAttribute("rel") || linkNodes[j].getAttribute("rel").toLowerCase() == "alternate") {
+					item.link = item.baseURI ? URIFixup.createFixupURI(item.baseURI, nsIURIFixup.FIXUP_FLAG_NONE).resolve(linkNodes[j].getAttribute("href")) : linkNodes[j].getAttribute("href");
 					break;
 				}
 			}
 		}
 
+		var updatedNodes = entryNodes[i].getElementsByTagName("updated");
+		if (updatedNodes.length) {
+			tmp_str = CommonFunc.getInnerText(updatedNodes[0]);
+			tmp_date = iso8601ToJSDate(tmp_str);
+			if (tmp_date) {
+				item.pubDate = tmp_date;
+			} else {
+				logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
+			}
+		}
+
 		var issuedNodes = entryNodes[i].getElementsByTagName("issued");
-		if(issuedNodes.length) {
+		if (issuedNodes.length) {
 			tmp_str = CommonFunc.getInnerText(issuedNodes[0]);
 			tmp_date = iso8601ToJSDate(tmp_str);
-			if(tmp_date) {
+			if (tmp_date) {
 				item.pubDate = tmp_date;
 			} else {
 				logMessage("unable to parse date string: " + tmp_str + " feed: " + this.title);
@@ -215,12 +248,12 @@ Feed.prototype.parseAtom = function() {
 		var aEntryNode = entryNodes[i];
 
 		var contentNodes = aEntryNode.getElementsByTagName("content");
-		var contentArray = new Array();
+		var contentHash = {};
 		var contentString;
 		var xmlSerializer = new XMLSerializer();
-		for(j = 0; j < contentNodes.length; j++) {
+		for (j = 0; j < contentNodes.length; j++) {
 			var contType = contentNodes[j].getAttribute("type");
-			if(contType == "application/xhtml+xml") {
+			if (contType == "application/xhtml+xml" || contType == "xhtml") {
 				contentString = "";
 				for(z = 0; z < contentNodes[j].childNodes.length; z++) {
 					contentString += xmlSerializer.serializeToString(contentNodes[j].childNodes[z]);
@@ -228,25 +261,31 @@ Feed.prototype.parseAtom = function() {
 			} else {
 				contentString = CommonFunc.getInnerText(contentNodes[j]);
 			}
-			contentArray[contType] = contentString;
+			contentHash[contType] = contentString;
 		}
 
 		var summaryNodes = aEntryNode.getElementsByTagName("summary");
 
-		if("application/xhtml+xml" in contentArray) {
-			item.content = contentArray["application/xhtml+xml"];
-		} else if("text/html" in contentArray) {
-			item.content = contentArray["text/html"];
-		} else if("text/plain" in contentArray) {
-			item.content = contentArray["text/plain"];
-		}	else if(summaryNodes.length) {
+		if ("application/xhtml+xml" in contentHash) {
+			item.content = contentHash["application/xhtml+xml"];
+		} else if ("xhtml" in contentHash) {
+			item.content = contentHash["xhtml"];
+		} else if ("text/html" in contentHash) {
+			item.content = contentHash["text/html"];
+		} else if ("html" in contentHash) {
+			item.content = contentHash["html"];
+		} else if ("text/plain" in contentHash) {
+			item.content = contentHash["text/plain"];
+		} else if ("text" in contentHash) {
+			item.content = contentHash["text"];	
+		} else if (summaryNodes.length) {
 			item.content = CommonFunc.getInnerText(summaryNodes[0]);
 		}
 
-		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate);
+		var tmpFeedItem = new FeedItem(item.title, item.link, item.content, item.pubDate, item.baseURI);
 
-		if(tmpFeedItem.hasPubDate()) {
-			if(tmpFeedItem.getPubDate() > this.lastPubDate) {
+		if (tmpFeedItem.hasPubDate()) {
+			if (tmpFeedItem.getPubDate() > this.lastPubDate) {
 				this.lastPubDate = tmpFeedItem.getPubDate();
 			}
 		}
@@ -352,11 +391,12 @@ Feed.prototype.getSignature = function() {
  *
  */
 
-function FeedItem(title, link, content, pubDate) {
+function FeedItem(title, link, content, pubDate, baseURI) {
 	this.title = title;
 	this.link = link;
 	this.content = content;
 	this.pubDate = pubDate;
+	this.baseURI = baseURI;
 }
 
 FeedItem.prototype.hasTitle = function() {
@@ -369,10 +409,10 @@ FeedItem.prototype.hasTitle = function() {
 
 FeedItem.prototype.getTitle = function() {
 	var title;
-	if(this.hasTitle()) {
+	if (this.hasTitle()) {
 		title = this.title.replace(/<.*?>/g,'');
 	} else {
-		if(this.hasContent()) {
+		if (this.hasContent()) {
 			temp = this.getContent();
 			temp = temp.replace(/<.*?>/g,'');
 			title = temp.substring(0, 30) + "...";
@@ -419,6 +459,13 @@ FeedItem.prototype.getPubDate = function() {
 	}
 }
 
+FeedItem.prototype.hasBaseURI = function() {
+	return Boolean(this.baseURI);
+}
+
+FeedItem.prototype.getBaseURI = function() {
+	return this.hasBaseURI() ? this.baseURI : null;
+}
 
 
 /**
