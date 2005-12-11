@@ -44,7 +44,7 @@
 	<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
 	<em:name>Sage</em:name>
 	<em:version>1.4</em:version>
-	<em:description>A lightweight RSS and Atom feed aggregator.</em:description>
+	<em:description>A lightweight RSS and Atom feed reader.</em:description>
 	<em:creator>The Sage Team</em:creator>
 	<em:contributor>Peter Andrews</em:contributor>
 	<em:contributor>Erik Arvidsson</em:contributor>
