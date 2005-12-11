@@ -37,30 +37,20 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
-<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-		 xmlns:chrome="http://www.mozilla.org/rdf/chrome#">
+<RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:chrome="http://www.mozilla.org/rdf/chrome#">
 
-  <RDF:Seq about="urn:mozilla:package:root">
-	<RDF:li resource="urn:mozilla:package:sage"/>
-  </RDF:Seq>
+	<RDF:Seq about="urn:mozilla:package:root">
+		<RDF:li resource="urn:mozilla:package:sage"/>
+	</RDF:Seq>
 
-  <RDF:Description about="urn:mozilla:package:sage"
-		chrome:displayName="Sage"
-		chrome:author="sage.mozdev.org"
-		chrome:authorURL="http://sage.mozdev.org"
-		chrome:name="sage"
-		chrome:extension="true"
-		chrome:settingsURL="chrome://sage/content/settings/settings.xul"
-		chrome:description="A lightweight RSS and Atom feed aggregator.">
-  </RDF:Description>
-
+	<RDF:Description about="urn:mozilla:package:sage" chrome:extension="true" chrome:name="sage"/>
 
 	<RDF:Seq about="urn:mozilla:overlays">
 		<RDF:li resource="chrome://browser/content/browser.xul"/>
 	</RDF:Seq>
 
-	<!-- overlay information for Mozilla Firebird-->
 	<RDF:Seq about="chrome://browser/content/browser.xul">
 		<RDF:li>chrome://sage/content/sage-Overlay.xul</RDF:li>
 	</RDF:Seq>
+	
 </RDF:RDF>
