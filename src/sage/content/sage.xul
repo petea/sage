@@ -50,168 +50,160 @@
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	onload="init();" onunload="done()">
 
-<script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
-<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
-<script type="application/x-javascript" src="chrome://browser/content/utilityOverlay.js"/>
-<script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
-<script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
+	<script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
+	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
+	<script type="application/x-javascript" src="chrome://browser/content/utilityOverlay.js"/>
+	<script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
+	<script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
+	
+	<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/feedlib.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/sha1.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/simplehtmlparser.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/filterhtmlhandler.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/getrsstitle.js"/>
+	<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
 
-<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/feedlib.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/sha1.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/simplehtmlparser.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/filterhtmlhandler.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/getrsstitle.js"/>
-<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
+		<!-- bookmarks & edit commands -->
+	<commandset id="editMenuCommands">
+		<command id="cmd_bm_open" 		   oncommand="bookmarksOpen();"/>
+		<command id="cmd_bm_openinnewwindow" oncommand="bookmarksOpen('window');"/>
+		<command id="cmd_bm_openinnewtab"	 oncommand="bookmarksOpen('tab');"/>
+		<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
+		<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
+		<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
+		<command id="cmd_bm_newfolder"	   oncommand="goDoCommand('cmd_bm_newfolder');"/>
+		<command id="cmd_bm_newbookmark"	   oncommand="goDoCommand('cmd_bm_newbookmark');"/>
+		<command id="cmd_bm_newseparator"	 oncommand="goDoCommand('cmd_bm_newseparator');"/>
+		<command id="cmd_bm_find" 		   oncommand="goDoCommand('cmd_bm_find');"/>
+		<command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
+		<command id="cmd_bm_sortbyname"	   oncommand="goDoCommand('cmd_bm_sortbyname');"/>
+	</commandset>
 
-	<!-- bookmarks & edit commands -->
-<commandset id="editMenuCommands">
-	<command id="cmd_bm_open" 		   oncommand="bookmarksOpen();"/>
-	<command id="cmd_bm_openinnewwindow" oncommand="bookmarksOpen('window');"/>
-	<command id="cmd_bm_openinnewtab"	 oncommand="bookmarksOpen('tab');"/>
-	<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
-	<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
-	<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
-	<command id="cmd_bm_newfolder"	   oncommand="goDoCommand('cmd_bm_newfolder');"/>
-	<command id="cmd_bm_newbookmark"	   oncommand="goDoCommand('cmd_bm_newbookmark');"/>
-	<command id="cmd_bm_newseparator"	 oncommand="goDoCommand('cmd_bm_newseparator');"/>
-	<command id="cmd_bm_find" 		   oncommand="goDoCommand('cmd_bm_find');"/>
-	<command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
-	<command id="cmd_bm_sortbyname"	   oncommand="goDoCommand('cmd_bm_sortbyname');"/>
-</commandset>
+	<keyset>
+	  <key id="key_toggleread" key="&toggleReadState.command.key;" command="cmd_toggleread"/>
+	  <key id="key_markallasread" modifiers="&markAllAsRead.command.modifiers;"
+		   key="&markAllAsRead.command.key;" command="cmd_markallasread"/>
+	</keyset>
 
-<keyset>
-  <key id="key_toggleread" key="&toggleReadState.command.key;" command="cmd_toggleread"/>
-  <key id="key_markallasread" modifiers="&markAllAsRead.command.modifiers;"
-	   key="&markAllAsRead.command.key;" command="cmd_markallasread"/>
-</keyset>
+	<commandset id="readCommands">
+		<command id="cmd_markasread" oncommand="readStateController.doCommand('cmd_markasread')"
+				 tooltiptext="&markAsRead.command.tooltip;"
+				 label="&markAsRead.command.label;"
+				 accesskey="&markAsRead.command.accesskey;"/>
+		<command id="cmd_markasunread" oncommand="readStateController.doCommand('cmd_markasunread')"
+				 label="&markAsUnread.command.label;"
+				 tooltiptext="&markAsUnread.command.tooltip;"
+				 accesskey="&markAsUnread.command.accesskey;"/>
+		<command id="cmd_toggleread" oncommand="readStateController.doCommand('cmd_toggleread')"/>
+		<command id="cmd_markallasread" oncommand="readStateController.doCommand('cmd_markallasread')"
+				 label="&markAllAsRead.command.label;"
+				 tooltiptext="&markAllAsRead.command.tooltip;"
+				 accesskey="&markAllAsRead.command.accesskey;"/>
+		<command id="cmd_markallasunread" oncommand="readStateController.doCommand('cmd_markallasunread')"
+				 label="&markAllAsUnread.command.label;"
+				 tooltiptext="&markAllAsUnread.command.tooltip;"
+				 accesskey="&markAllAsUnread.command.accesskey;"/>
+	</commandset>
 
-<commandset id="readCommands">
-	<command id="cmd_markasread" oncommand="readStateController.doCommand('cmd_markasread')"
-			 tooltiptext="&markAsRead.command.tooltip;"
-			 label="&markAsRead.command.label;"
-			 accesskey="&markAsRead.command.accesskey;"/>
-	<command id="cmd_markasunread" oncommand="readStateController.doCommand('cmd_markasunread')"
-			 label="&markAsUnread.command.label;"
-			 tooltiptext="&markAsUnread.command.tooltip;"
-			 accesskey="&markAsUnread.command.accesskey;"/>
-	<command id="cmd_toggleread" oncommand="readStateController.doCommand('cmd_toggleread')"/>
-	<command id="cmd_markallasread" oncommand="readStateController.doCommand('cmd_markallasread')"
-			 label="&markAllAsRead.command.label;"
-			 tooltiptext="&markAllAsRead.command.tooltip;"
-			 accesskey="&markAllAsRead.command.accesskey;"/>
-	<command id="cmd_markallasunread" oncommand="readStateController.doCommand('cmd_markallasunread')"
-			 label="&markAllAsUnread.command.label;"
-			 tooltiptext="&markAllAsUnread.command.tooltip;"
-			 accesskey="&markAllAsUnread.command.accesskey;"/>
-</commandset>
+	<stringbundleset>
+		<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+		<stringbundle id="bmStrRes" src="chrome://browser/locale/bookmarks/bookmarks.properties"/>
+	</stringbundleset>
 
-<stringbundleset>
-	<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
-	<stringbundle id="bmStrRes" src="chrome://browser/locale/bookmarks/bookmarks.properties"/>
-</stringbundleset>
+	<toolbox class="plain">
+		<toolbar>
+			<toolbarbutton id="checkFeeds" class="sage_button toolbarbutton-1" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
+			<toolbarbutton id="discoverFeeds" class="sage_button toolbarbutton-1" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
+			<spacer flex="1"/>
+			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.tools;" class="sage_button toolbarbutton-1">
+				<menupopup>
+					<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
+					<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
+					<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
+					<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
+					<menuseparator/>
+					<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
+					<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>
+					<menuseparator/>
+					<menuitem label="&menu.sageProjectFeed;" oncommand="openSageProjectFeed()"/>
+					<menuseparator/>
+					<menuitem label="&menu.setting;" oncommand="openSettingDialog()"/>
+				</menupopup>
+			</toolbarbutton>
+		</toolbar>
+		<toolbar id="barSearch" align="center">
+			<textbox id="txtSearchValue" type="autocomplete" flex="1"
+				ontextentered="FeedSearch.search()"
+				autocompletesearch="form-history"
+				autocompletesearchparam="q"
+				searchengine="" persist="searchengine">
+				<image id="imgSearchEngine" popup="popSearchEngine"/>
+			</textbox>
+			<toolbarbutton id="btnSearchSubmit" oncommand="FeedSearch.search()"/>
+		</toolbar>
+	</toolbox>
 
-<toolbox class="plain">
-	<toolbar>
-		<toolbarbutton id="checkFeeds" class="sage_button toolbarbutton-1" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
-		<toolbarbutton id="discoverFeeds" class="sage_button toolbarbutton-1" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
-		<spacer flex="1"/>
-		<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.tools;" class="sage_button toolbarbutton-1">
-			<menupopup>
-				<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
-				<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
-				<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
-				<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
-				<menuseparator/>
-				<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
-				<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>
-				<menuseparator/>
-				<menuitem label="&menu.sageProjectFeed;" oncommand="openSageProjectFeed()"/>
-				<menuseparator/>
-				<menuitem label="&menu.setting;" oncommand="openSettingDialog()"/>
-			</menupopup>
-		</toolbarbutton>
-	</toolbar>
-	<toolbar id="barSearch" align="center">
-		<textbox id="txtSearchValue" type="autocomplete" flex="1"
-			ontextentered="FeedSearch.search()"
-			autocompletesearch="form-history"
-			autocompletesearchparam="q"
-			searchengine="" persist="searchengine">
-			<image id="imgSearchEngine" popup="popSearchEngine"/>
-		</textbox>
-		<toolbarbutton id="btnSearchSubmit" oncommand="FeedSearch.search()"/>
-	</toolbar>
-</toolbox>
-
-<vbox flex="1">
-
-	<vbox id="bookmarksTreeBox" flex="1" persist="height">
-		<bookmarks-tree id="bookmarksTree" type="single-column" flex="1"
-			onkeypress="if(event.keyCode == 13) bookmarksTreeClick(event)"
-			ondraggesture="if(event.originalTarget.localName == 'treechildren') nsDragAndDrop.startDrag(event, this.DNDObserver);"
-			onclick="bookmarksTreeClick(event)"/>
+	<vbox flex="1">
+		<vbox id="bookmarksTreeBox" flex="1" persist="height">
+			<bookmarks-tree id="bookmarksTree" type="single-column" flex="1"
+				onkeypress="if(event.keyCode == 13) bookmarksTreeClick(event)"
+				ondraggesture="if(event.originalTarget.localName == 'treechildren') nsDragAndDrop.startDrag(event, this.DNDObserver);"
+				onclick="bookmarksTreeClick(event)"/>
+		</vbox>
+		<splitter id="sage-splitter"/>
+		<vbox id="rssItemListBoxBox" flex="1" persist="height">
+			<sidebarheader id="feedTitleBar" align="center">
+				<hbox align="center" flex="1">
+					<label id="rssTitleLabel" flex="1" crop="end" value="" onclick="rssTitleLabelClick(this, event)"/>
+				</hbox>
+			</sidebarheader>
+			<toolbox class="plain">
+				<toolbar id="itemListToolbar" iconsize="small" mode="icons">
+					<toolbarbutton id="markAsReadButton" class="sage_button toolbarbutton-1" command="cmd_markasread"/>
+					<toolbarbutton id="markAsUnreadButton" class="sage_button toolbarbutton-1" command="cmd_markasunread"/>
+					<toolbarbutton id="markAllAsReadButton" class="sage_button toolbarbutton-1" command="cmd_markallasread"/>
+					<toolbarbutton id="markAllAsUnreadButton" class="sage_button toolbarbutton-1" command="cmd_markallasunread"/>
+				</toolbar>
+			</toolbox>
+			<listbox id="rssItemListBox" class="plain" flex="1"
+				tooltip="rssItemToolTip"
+				contextmenu="rssItemListBoxContextMenu"
+				onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
+				onclick="rssItemListBoxClick(event)"
+				onselect="readStateController.onCommandUpdate()"
+				disableKeyNavigation="true"/>
+		</vbox>
 	</vbox>
 
-	<splitter id="sage-splitter"/>
-
-	<vbox id="rssItemListBoxBox" flex="1" persist="height">
-		<sidebarheader id="feedTitleBar" align="center">
-			<hbox align="center" flex="1">
-				<label id="rssTitleLabel" flex="1" crop="end" value="" onclick="rssTitleLabelClick(this, event)"/>
-			</hbox>
-		</sidebarheader>
-
-		<toolbox class="plain">
-			<toolbar id="itemListToolbar" iconsize="small" mode="icons">
-				<toolbarbutton id="markAsReadButton" class="sage_button toolbarbutton-1" command="cmd_markasread"/>
-				<toolbarbutton id="markAsUnreadButton" class="sage_button toolbarbutton-1" command="cmd_markasunread"/>
-				<toolbarbutton id="markAllAsReadButton" class="sage_button toolbarbutton-1" command="cmd_markallasread"/>
-				<toolbarbutton id="markAllAsUnreadButton" class="sage_button toolbarbutton-1" command="cmd_markallasunread"/>
-			</toolbar>
-		</toolbox>
-
-		<listbox id="rssItemListBox" class="plain" flex="1"
-			tooltip="rssItemToolTip"
-			contextmenu="rssItemListBoxContextMenu"
-			onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
-			onclick="rssItemListBoxClick(event)"
-			onselect="readStateController.onCommandUpdate()"
-			disableKeyNavigation="true"/>
-	</vbox>
-
-</vbox>
-
-<popupset>
-	<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)" noautohide="true"/>
-	<popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
-		<template>
-			<menuitem type="checkbox" uri="..." value="..."
-				oncommand="FeedSearch.popSearchEngineClick(event)"
-				label="rdf:http://sage.mozdev.org/#name"
-				image="rdf:http://sage.mozdev.org/#icon"/>
-		</template>
-	</popup>
-
-	<popup id="rssItemListBoxContextMenu"
-		   onpopupshowing="updateItemContextMenu()">
-		<menuitem id="rssOpenItem" default="true" oncommand="openListItem()"
-				  label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
-		<menuitem id="rssOpenNewTabItem" oncommand="openListItem('tab')"
-				  label="&openInNewTab.label;" accesskey="&openInNewTab.accesskey;"/>
-		<menuitem id="rssOpenNewWindowItem" oncommand="openListItem('window')"
-				  label="&openInNewWindow.label;" accesskey="&openInNewWindow.accesskey;"/>
-		<menuseparator/>
-		<menuitem id="rssMarkAsReadItem" command="cmd_markasread"/>
-		<menuitem id="rssMarkAsUnreadItem" command="cmd_markasunread"/>
-		<menuitem id="rssMarkAllAsReadItem" command="cmd_markallasread"/>
-		<menuitem id="rssMarkAllAsUnreadItem" command="cmd_markallasunread"/>
-	</popup>
-
-</popupset>
+	<popupset>
+		<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)" noautohide="true"/>
+		<popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
+			<template>
+				<menuitem type="checkbox" uri="..." value="..."
+					oncommand="FeedSearch.popSearchEngineClick(event)"
+					label="rdf:http://sage.mozdev.org/#name"
+					image="rdf:http://sage.mozdev.org/#icon"/>
+			</template>
+		</popup>
+		<popup id="rssItemListBoxContextMenu"
+			   onpopupshowing="updateItemContextMenu()">
+			<menuitem id="rssOpenItem" default="true" oncommand="openListItem()"
+					  label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
+			<menuitem id="rssOpenNewTabItem" oncommand="openListItem('tab')"
+					  label="&openInNewTab.label;" accesskey="&openInNewTab.accesskey;"/>
+			<menuitem id="rssOpenNewWindowItem" oncommand="openListItem('window')"
+					  label="&openInNewWindow.label;" accesskey="&openInNewWindow.accesskey;"/>
+			<menuseparator/>
+			<menuitem id="rssMarkAsReadItem" command="cmd_markasread"/>
+			<menuitem id="rssMarkAsUnreadItem" command="cmd_markasunread"/>
+			<menuitem id="rssMarkAllAsReadItem" command="cmd_markallasread"/>
+			<menuitem id="rssMarkAllAsUnreadItem" command="cmd_markallasunread"/>
+		</popup>
+	</popupset>
 
 </page>
