@@ -587,7 +587,6 @@ function getWindowType(oType) {
  * @returns	void
  */
 function openURI(sURI, oType) {
-	logMessage(getWindowType(oType));
 	switch (getWindowType(oType)) {
 		case "tab":
 			getContentBrowser().addTab(sURI);
@@ -599,7 +598,6 @@ function openURI(sURI, oType) {
 		default:
 			getContentBrowser().loadURI(sURI);
 	}
-
 	readStateController.onCommandUpdate();
 }
 
