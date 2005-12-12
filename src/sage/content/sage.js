@@ -336,13 +336,10 @@ function rssItemListBoxClick(aEvent) {
 }
 
 function rssTitleLabelClick(aNode, aEvent){
-	var tabbed = false;
-	if(!aNode.hasAttribute("href") || aEvent.button == 2) {
+	if(aEvent.button == 2) {
 		return;
 	}
-
-	var link = aNode.getAttribute("href");
-	openURI( link, aEvent );
+	openURI(currentFeed.getLink(), aEvent);
 }
 
 function setStatusLoading(label) {
@@ -357,10 +354,8 @@ function setStatusDone() {
 	if(currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
 		if(currentFeed.getLink()) {
-			rssTitleLabel.setAttribute("href", currentFeed.getLink());
 			rssTitleLabel.tooltipText = currentFeed.getLink();
 		} else {
-			rssTitleLabel.removeAttribute("href");
 			rssTitleLabel.tooltipText = "";
 		}
 	}
@@ -592,6 +587,7 @@ function getWindowType(oType) {
  * @returns	void
  */
 function openURI(sURI, oType) {
+	logMessage(getWindowType(oType));
 	switch (getWindowType(oType)) {
 		case "tab":
 			getContentBrowser().addTab(sURI);
@@ -600,7 +596,6 @@ function openURI(sURI, oType) {
 			// XXX: This opens the window in the background if using the context menu
 			document.commandDispatcher.focusedWindow.open(sURI);
 			break;
-
 		default:
 			getContentBrowser().loadURI(sURI);
 	}

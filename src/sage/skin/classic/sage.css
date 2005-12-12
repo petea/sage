@@ -158,7 +158,7 @@ treechildren::-moz-tree-separator {
 	border-bottom: 1px solid ThreeDLightShadow;
 }
 
-#rssTitleLabel[href]:hover{
+#rssTitleLabel:hover{
 	text-decoration: underline;
 	cursor: pointer;
 }
