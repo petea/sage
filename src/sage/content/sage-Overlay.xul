@@ -38,9 +38,12 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://sage/skin/sage-button.css" type="text/css"?>
+<?xml-stylesheet href="chrome://sage/skin/sage-button-mac.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://sage/locale/sage.dtd">
 <overlay id="sageOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript" src="chrome://sage/content/sage_main.js"/>
 
 	<menupopup id="viewSidebarMenu">
 		<menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>

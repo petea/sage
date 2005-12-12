@@ -36,12 +36,26 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-
-#sage-button {
-  list-style-image: url("chrome://sage/skin/sage_leaf_24.png");
+function init() {
+	var stylesheets = document.stylesheets;
+	var platform = new String(navigator.platform);
+	if (platform.search(/^Mac/) == 0) {
+		for (var c = 0; c < stylesheets.length; c++) {
+			if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
+				stylesheets[c].disabled = true;
+			} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
+				stylesheets[c].disabled = false;
+			}
+		}
+	} else {
+		for (var c = 0; c < stylesheets.length; c++) {
+			if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
+				stylesheets[c].disabled = false;
+			} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
+				stylesheets[c].disabled = true;
+			}
+		}
+	}
 }
 
-toolbar[iconsize="small"] #sage-button {
-  list-style-image: url("chrome://sage/skin/sage_leaf_16.png");
-}
+window.addEventListener("load", init, false);

@@ -50,7 +50,7 @@
 	<em:contributor>Erik Arvidsson</em:contributor>
 	<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
 	<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
-	<em:iconURL>chrome://sage/skin/sage_icon.png</em:iconURL>
+	<em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
 
 	<em:file>
 		<Description about="urn:mozilla:extension:file:sage.jar">
