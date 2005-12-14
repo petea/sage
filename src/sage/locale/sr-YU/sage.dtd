@@ -11,7 +11,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Прикажи алат за приказ списка новости">
 <!ENTITY menu.showDescTooltip			"Прикажи облачиће са описима">
 <!ENTITY menu.openHTML				"Отвори изворе у садржају">
-<!ENTITY menu.tools				"Поставке">
+<!ENTITY menu.options				"Поставке">
 <!ENTITY menu.checkUpdate			"Провери изворе">
 <!ENTITY menu.manageRSSList			"Уреди списак извора...">
 <!ENTITY menu.opmlImportExport			"OPML увоз/извоз...">

@@ -11,7 +11,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Mostrar barra de herramientas">
 <!ENTITY menu.showDescTooltip			"Mostrar sugerencias de descripción">
 <!ENTITY menu.openHTML				"Abrir fuentes en área de contenidos">
-<!ENTITY menu.tools				"Opciones">
+<!ENTITY menu.options				"Opciones">
 <!ENTITY menu.checkUpdate			"Comprobar Fuentes">
 <!ENTITY menu.manageRSSList			"Gestionar lista de fuentes...">
 <!ENTITY menu.opmlImportExport			"Importación/Exportación OPML...">

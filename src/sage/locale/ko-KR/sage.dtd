@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"글 목록 도구막대 표시">
 <!ENTITY menu.showDescTooltip			"글 내용을 꼬리말로 보여주기">
 <!ENTITY menu.openHTML				"피드를 내용 영역에 열기">
-<!ENTITY menu.tools				"기능">
+<!ENTITY menu.options				"기능">
 <!ENTITY menu.checkUpdate			"업데이트 검사">
 <!ENTITY menu.manageRSSList			"피드 목록 관리">
 <!ENTITY menu.opmlImportExport			"OPML 가져오기/내보내기...">

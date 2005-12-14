@@ -10,7 +10,7 @@
 <!ENTITY menu.showFeedItemListToolbar "Mostra la barra del llistat de fonts">
 <!ENTITY menu.showDescTooltip "Mostra els rètols indicadors de funció">
 <!ENTITY menu.openHTML "Obri les fonts a l'àrea de continguts">
-<!ENTITY menu.tools "Opcions">
+<!ENTITY menu.options "Opcions">
 <!ENTITY menu.checkUpdate "Comprova les fonts">
 <!ENTITY menu.manageRSSList "Gestiona la llista de fonts...">
 <!ENTITY menu.opmlImportExport "Importació/exportació OPML">

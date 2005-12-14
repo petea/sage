@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Pokaż pasek narzędzi dla listy artykułów">
 <!ENTITY menu.showDescTooltip			"Pokaż dymki z opisami">
 <!ENTITY menu.openHTML				"Otwórz kanał w oknie zawartości">
-<!ENTITY menu.tools				"Opcje">
+<!ENTITY menu.options				"Opcje">
 <!ENTITY menu.checkUpdate			"Aktualizuj kanały">
 <!ENTITY menu.manageRSSList			"Zarządzaj listą kanałów...">
 <!ENTITY menu.opmlImportExport		"OPML Import/Eksport...">

@@ -6,18 +6,19 @@
 <!ENTITY sage.tooltip				"Displays Sage">
 
 <!ENTITY menu.view				"View">
-<!ENTITY menu.showSearchBar			"Show Feed Search Bar">
-<!ENTITY menu.showFeedItemList			"Show Feed Item List">
-<!ENTITY menu.showFeedItemListToolbar	"Show Feed Item List Toolbar">
-<!ENTITY menu.showDescTooltip			"Show Description Tooltips">
+<!ENTITY menu.showSearchBar			"Feed Search Bar">
+<!ENTITY menu.showFeedItemList			"Feed Item List">
+<!ENTITY menu.showFeedItemListToolbar	"Feed Item List Toolbar">
+<!ENTITY menu.showDescTooltip			"Description Tooltips">
 <!ENTITY menu.openHTML				"Open Feeds In Contents Area">
-<!ENTITY menu.tools				"Options">
+<!ENTITY menu.options				"Options">
 <!ENTITY menu.checkUpdate			"Check Feeds">
 <!ENTITY menu.manageRSSList			"Manage Feed List...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">
 <!ENTITY menu.setting				"Settings...">
 <!ENTITY menu.sageProjectFeed				"Sage Project News">
 <!ENTITY menu.discoverFeeds				"Discover Feeds">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Searching current page">

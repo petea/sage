@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Mostra la Barra degli Strumenti della Lista dei Feed">
 <!ENTITY menu.showDescTooltip			"Mostra Descrizione Suggerimenti">
 <!ENTITY menu.openHTML				"Mostra i Feed nel Browser">
-<!ENTITY menu.tools				"Opzioni">
+<!ENTITY menu.options				"Opzioni">
 <!ENTITY menu.checkUpdate			"Controlla i Feed">
 <!ENTITY menu.manageRSSList			"Gestione Lista dei Feed...">
 <!ENTITY menu.opmlImportExport			"Importazione/Esportazione File OPML...">

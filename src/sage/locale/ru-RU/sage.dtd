@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar   "Показывать панель элементов">
 <!ENTITY menu.showDescTooltip                   "Показывать всплывающие описания">
 <!ENTITY menu.openHTML                          "Открывать ленты в основном окне">
-<!ENTITY menu.tools                             "Настройки">
+<!ENTITY menu.options                             "Настройки">
 <!ENTITY menu.checkUpdate                       "Проверить обновления">
 <!ENTITY menu.manageRSSList                     "Управлять лентами...">
 <!ENTITY menu.opmlImportExport                  "Импорт/Экспорт OPML...">

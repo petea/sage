@@ -9,7 +9,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Vis feed-værktøjslinjen">
 <!ENTITY menu.showDescTooltip			"Vis popop-hjælp">
 <!ENTITY menu.openHTML				"Vis feeds i hovedvinduet">
-<!ENTITY menu.tools				"Indstillinger">
+<!ENTITY menu.options				"Indstillinger">
 <!ENTITY menu.checkUpdate			"Opdater feeds">
 <!ENTITY menu.manageRSSList			"Håndter feeds...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Eksport...">

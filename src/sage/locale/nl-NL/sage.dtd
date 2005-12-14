@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar					"Show Feed Item List Toolbar">
 <!ENTITY menu.showDescTooltip								"Toon beschrijvende tooltips">
 <!ENTITY menu.openHTML										"Open feeds in Contents Area">
-<!ENTITY menu.tools											"Opties">
+<!ENTITY menu.options											"Opties">
 <!ENTITY menu.checkUpdate									"Controleer feeds">
 <!ENTITY menu.manageRSSList								"Beheer feedlijst...">
 <!ENTITY menu.opmlImportExport							"OPML Importeren/Exporteren...">

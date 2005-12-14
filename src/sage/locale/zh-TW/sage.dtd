@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"顯示 Feed 項目列表工具列">
 <!ENTITY menu.showDescTooltip			"顯示描述提示">
 <!ENTITY menu.openHTML				"在內容區域開啟Feeds">
-<!ENTITY menu.tools				"選項">
+<!ENTITY menu.options				"選項">
 <!ENTITY menu.checkUpdate			"檢查更新">
 <!ENTITY menu.manageRSSList			"管理 Feed 列表...">
 <!ENTITY menu.opmlImportExport			"OPML 匯入/匯出...">

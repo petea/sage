@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Gelesen/Ungelesen-Optionsleiste anzeigen">
 <!ENTITY menu.showDescTooltip			"Mouseover-Effekte aktivieren">
 <!ENTITY menu.openHTML				"Nachrichtenkanäle im Hauptfenster anzeigen">
-<!ENTITY menu.tools				"Optionen">
+<!ENTITY menu.options				"Optionen">
 <!ENTITY menu.checkUpdate			"Nachrichtenkanäle auf Aktualisierungen prüfen">
 <!ENTITY menu.manageRSSList			"Liste der Nachrichtenkanäle verwalten...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">

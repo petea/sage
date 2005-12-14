@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Visa flödens innehållslista verktygsfält">
 <!ENTITY menu.showDescTooltip		"Visa beskrivningstips">
 <!ENTITY menu.openHTML			"Öppna flöden i innehållsrutan">
-<!ENTITY menu.tools			"Inställningar">
+<!ENTITY menu.options			"Inställningar">
 <!ENTITY menu.checkUpdate		"Uppdatera flöden">
 <!ENTITY menu.manageRSSList		"Hantera flödeslista...">
 <!ENTITY menu.opmlImportExport		"Importera/Exportera OPML...">

@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Mutassa a letöltött elemek listáját az Eszköztárban">
 <!ENTITY menu.showDescTooltip       "Leírás-tooltip megjelenítése">
 <!ENTITY menu.openHTML              "Megnyitás a tartalmi részben">
-<!ENTITY menu.tools                 "Eszközök">
+<!ENTITY menu.options                 "Eszközök">
 <!ENTITY menu.checkUpdate           "Frissülések ellenõrzése">
 <!ENTITY menu.manageRSSList         "RSS lista menedzselése...">
 <!ENTITY menu.opmlImportExport      "OPML import/export...">

@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar		"Näytä syötteiden aihelistan työkalupalkki">
 <!ENTITY menu.showDescTooltip			"Näytä selitevihjeet">
 <!ENTITY menu.openHTML				"Avaa syötteet sisältöalueella">
-<!ENTITY menu.tools				"Asetukset">
+<!ENTITY menu.options				"Asetukset">
 <!ENTITY menu.checkUpdate			"Tarkista syötteet...">
 <!ENTITY menu.manageRSSList			"Hallinnoi syötelistaa...">
 <!ENTITY menu.opmlImportExport			"OPML-tuonti/vienti...">

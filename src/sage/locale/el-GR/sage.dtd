@@ -11,7 +11,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Εμφάνιση εργαλειοθήκης λίστας αρχείων ροής">
 <!ENTITY menu.showDescTooltip			"Εμφάνιση σχολίων περιγραφής">
 <!ENTITY menu.openHTML				"Άνοιγμα Ροής στην περιοχή περιεχομένων">
-<!ENTITY menu.tools				"Επιλογές">
+<!ENTITY menu.options				"Επιλογές">
 <!ENTITY menu.checkUpdate			"Έλεγχος αρχείων ροής">
 <!ENTITY menu.manageRSSList			"Διαχείριση λίστας αρχείων ροής...">
 <!ENTITY menu.opmlImportExport			"OPML Εισαγωγή/Εξαγωγή...">

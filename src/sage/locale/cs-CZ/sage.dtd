@@ -11,7 +11,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Ukáže panel pro seznam položek">
 <!ENTITY menu.showDescTooltip			"Ukáže nápovědy k popisům">
 <!ENTITY menu.openHTML				"Otevře kanál v hlavním okně">
-<!ENTITY menu.tools				"Nastavení">
+<!ENTITY menu.options				"Nastavení">
 <!ENTITY menu.checkUpdate			"Zkontrolovat kanály">
 <!ENTITY menu.manageRSSList			"Upravit seznam kanálů">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">

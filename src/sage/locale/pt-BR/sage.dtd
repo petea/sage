@@ -11,7 +11,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Exibir Ferramenta Lista de Ítens">
 <!ENTITY menu.showDescTooltip			"Exibir Descrição Ferramenta de Dicas">
 <!ENTITY menu.openHTML				"Abrir Fontes na Área de Conteúdo">
-<!ENTITY menu.tools				"Opções">
+<!ENTITY menu.options				"Opções">
 <!ENTITY menu.checkUpdate			"Verificar Fontes">
 <!ENTITY menu.manageRSSList			"Organizar Lista de Fontes...">
 <!ENTITY menu.opmlImportExport			"Importar/Exportar OPML...">

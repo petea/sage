@@ -12,7 +12,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"項目リストツールバーの表示">
 <!ENTITY menu.showDescTooltip		"概要のツールチップの表示">
 <!ENTITY menu.openHTML				"コンテンツエリアで開く">
-<!ENTITY menu.tools					"ツール">
+<!ENTITY menu.options					"ツール">
 <!ENTITY menu.checkUpdate			"更新チェック">
 <!ENTITY menu.manageRSSList			"フィードリストの管理">
 <!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">

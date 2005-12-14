@@ -120,12 +120,16 @@
 			<toolbarbutton id="checkFeeds" class="sage_button toolbarbutton-1" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
 			<toolbarbutton id="discoverFeeds" class="sage_button toolbarbutton-1" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
 			<spacer flex="1"/>
-			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.tools;" class="sage_button toolbarbutton-1">
+			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.options;" class="sage_button toolbarbutton-1">
 				<menupopup>
-					<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
-					<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
-					<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
-					<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
+					<menu label="&menu.sidebarLayout;">
+						<menupopup>
+							<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
+							<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
+							<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
+							<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
+						</menupopup>
+					</menu>
 					<menuseparator/>
 					<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
 					<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>

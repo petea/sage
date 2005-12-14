@@ -11,7 +11,7 @@
 <!ENTITY menu.showFeedItemListToolbar	"Pokaži orodno vrstico seznama dnevniških elementov">
 <!ENTITY menu.showDescTooltip			"Pokaži namige">
 <!ENTITY menu.openHTML				"Odpri dnevnik v polju za vsebino">
-<!ENTITY menu.tools				"Nastavitve">
+<!ENTITY menu.options				"Nastavitve">
 <!ENTITY menu.checkUpdate			"Preveri dnevnike">
 <!ENTITY menu.manageRSSList			"Opravljanje z dnevniki...">
 <!ENTITY menu.opmlImportExport			"OPML Uvoz/Izvoz...">
