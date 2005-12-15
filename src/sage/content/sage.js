@@ -52,7 +52,13 @@ var sageFolderID = "";
 var enableTooltip = true;
 var popupTimeoutId=0;
 
+var logger;
+
 function init() {
+	
+	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+	logger = new Logger();
+
 	bookmarksTree = document.getElementById("bookmarksTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
@@ -80,7 +86,7 @@ function init() {
 
 	// if feed folder has not been set, assume new user and install default feed folder and demo feeds
 	if(!CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", null)) { // check for new user
-		logMessage("new user, creating feed folder and setting default preferences...");
+		logger.info("new user, creating feed folder and setting default preferences...");
 		var new_folder = BMSVC.createFolderInContainer("Sage Feeds", RDF.GetResource("NC:BookmarksRoot"), null);
 		CommonFunc.setPrefValue(CommonFunc.FEED_FOLDER_ID, "str", new_folder.Value);
 		if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
@@ -97,7 +103,7 @@ function init() {
 		setCheckbox("chkShowFeedItemList", "true");
 		setCheckbox("chkShowFeedItemListToolbar", "true");
 	} else if(CommonFunc.versionCompare(currentVersion, lastVersion)) {  // check for upgrade
-		logMessage("upgrade (last version: " + CommonFunc.versionString(lastVersion, 0) + ", current version: " + CommonFunc.versionString(currentVersion, 0) + "), setting new default preferences...");
+		logger.info("upgrade (last version: " + CommonFunc.versionString(lastVersion, 0) + ", current version: " + CommonFunc.versionString(currentVersion, 0) + "), setting new default preferences...");
 		if(CommonFunc.versionCompare(Array(1,3,0), lastVersion)) {
 			setCheckbox("chkShowFeedItemListToolbar", "true");
 		}
@@ -124,7 +130,7 @@ function init() {
 	document.documentElement.controllers.appendController(readStateController);
 	readStateController.onCommandUpdate();
 
-	logMessage("initialized");
+	logger.info("sidebar open");
 }
 
 function discoverFeeds() {
@@ -164,10 +170,10 @@ function done() {
 	// remove observer
 	linkVisitor.uninit();
 	
-	logMessage("flushing bookmark data store..");
+	logger.info("flushing bookmark data store..");
 	BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
 
-	logMessage("shutdown");
+	logger.info("sidebar closed");
 }
 
 function openOPMLWizard() {
@@ -656,7 +662,7 @@ var linkVisitor = {
 			return this._uriFixup.createFixupURI(sURI, 0);
 		}
 		catch (e) {
-			logMessage("Could not fixup URI: " + sURI);
+			logger.warn("Could not fixup URI: " + sURI);
 			return null;
 		}
 	},

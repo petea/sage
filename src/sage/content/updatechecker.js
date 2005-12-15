@@ -41,6 +41,7 @@ var UpdateChecker = {
 	checkList: null,
 	httpReq: null,
 	lastResource: null,
+	logger: null,
 	
 	getURL: function(resource) {
 		var type = CommonFunc.getBMDSProperty(resource, CommonFunc.RDF_TYPE);
@@ -56,6 +57,9 @@ var UpdateChecker = {
 	
 	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
+		
+		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+		this.logger = new Logger();
 
 		var resourceList = CommonFunc.getBMDSCChildren(aCheckFolderId);
 		this.checkList = new Array();
@@ -70,7 +74,7 @@ var UpdateChecker = {
 			}
 		}
 
-		logMessage("checking " + this.checkList.length + " feed(s)");
+		this.logger.info("checking " + this.checkList.length + " feed(s)");
 
 		if (this.checkList.length > 0) {
 			this.checking = true;
@@ -122,7 +126,7 @@ var UpdateChecker = {
 	},
 
 	httpError: function(e) {
-		logMessage("HTTP Error: " + e.target.status + " - " + e.target.statusText);
+		this.logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
 		UpdateChecker.httpReq.abort();
 		UpdateChecker.checkResult(false, 0);
 	},
@@ -178,7 +182,7 @@ var UpdateChecker = {
 				}
 			} else {
 				if(sig != feed.getSignature()) {
-					//logMessage("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
+					//this.logger.warn("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
 					status = CommonFunc.STATUS_UPDATE;
 				} else {
 					status = CommonFunc.STATUS_NO_UPDATE;

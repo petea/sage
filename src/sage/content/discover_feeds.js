@@ -54,7 +54,13 @@ var feeds_found_local;
 var feeds_found_external;
 var possibleFeeds;
 
+var logger;
+
 function init() {
+
+	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+	logger = new Logger();
+
 	var discoveryMode = CommonFunc.getPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", "exhaustive");
 
 	initServices();
@@ -137,7 +143,7 @@ function init() {
 		progressUpdate();
 	}
 
-	logMessage("found " + fetch_total + " potential feed URI(s) in " + current_document.location);
+	logger.info("found " + fetch_total + " potential feed URI(s) in " + current_document.location);
 
 	var httpReq;
 	for(entry in possibleFeeds) {
@@ -196,7 +202,7 @@ function doAddFeed() {
 			} else {
 				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, null, sage_folder, null);
 			}
-			logMessage("added feed: '" + title + "' " + url);
+			logger.info("added feed: '" + title + "' " + url);
 
 			// select new feed in sibebar
 			var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
@@ -271,5 +277,5 @@ function addDiscoveredFeed(uri, feed) {
 
 	feedTree.builder.rebuild();
 
-	logMessage("discovered feed: " + uri.spec);
+	logger.info("discovered feed: " + uri.spec);
 }

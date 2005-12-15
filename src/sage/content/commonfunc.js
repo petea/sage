@@ -36,12 +36,6 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var aConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
-
-function logMessage(message) {
-	aConsoleService.logStringMessage("Sage: " + message);
-}
-
 var CommonFunc = {
 
 	VERSION: [1, 4, 0],

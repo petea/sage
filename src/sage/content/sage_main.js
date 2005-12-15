@@ -36,26 +36,33 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-function init() {
-	var stylesheets = document.stylesheets;
-	var platform = new String(navigator.platform);
-	if (platform.search(/^Mac/) == 0) {
-		for (var c = 0; c < stylesheets.length; c++) {
-			if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
-				stylesheets[c].disabled = true;
-			} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
-				stylesheets[c].disabled = false;
+var sageMain = {
+	init: function() {
+		var stylesheets = document.styleSheets;
+		var platform = new String(navigator.platform);
+		if (platform.search(/^Mac/) == 0) {
+			for (var c = 0; c < stylesheets.length; c++) {
+				if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
+					stylesheets[c].disabled = true;
+				} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
+					stylesheets[c].disabled = false;
+				}
+			}
+		} else {
+			for (var c = 0; c < stylesheets.length; c++) {
+				if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
+					stylesheets[c].disabled = false;
+				} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
+					stylesheets[c].disabled = true;
+				}
 			}
 		}
-	} else {
-		for (var c = 0; c < stylesheets.length; c++) {
-			if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
-				stylesheets[c].disabled = false;
-			} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
-				stylesheets[c].disabled = true;
-			}
-		}
+		
+		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+		var logger = new Logger();
+		
+		logger.info("initialized");
 	}
 }
 
-window.addEventListener("load", init, false);
+window.addEventListener("load", sageMain.init, false);

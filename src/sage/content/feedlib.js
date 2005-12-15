@@ -69,6 +69,10 @@ Feed.prototype.author =
 Feed.prototype.lastPubDate = null;
 
 Feed.prototype.parseRSS = function(feedXML) {
+
+	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+	var logger = new Logger();
+
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
 	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
@@ -185,7 +189,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 					try {
 						item.pubDate = new Date(dateParser.parseRFC822(tmp_str));
 					} catch(e) {
-						logMessage("unable to parse RFC 822 date string: " + tmp_str + " feed: " + this.title);
+						logger.warn("unable to parse RFC 822 date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
 				case "date":
@@ -193,7 +197,7 @@ Feed.prototype.parseRSS = function(feedXML) {
 					try {
 						item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
 					} catch(e) {
-						logMessage("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
+						logger.warn("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
 					}
 					break;
 				case "enclosure":
@@ -219,6 +223,10 @@ Feed.prototype.parseRSS = function(feedXML) {
 }
 
 Feed.prototype.parseAtom = function(feedXML) {
+
+	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+	var logger = new Logger();
+
 	const nsIURIFixup = Components.interfaces.nsIURIFixup;
 	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
 
@@ -311,7 +319,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 			try {
 				item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
 			} catch(e) {
-				logMessage("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
+				logger.warn("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
 			}
 		}
 
@@ -321,7 +329,7 @@ Feed.prototype.parseAtom = function(feedXML) {
 			try {
 				item.pubDate = new Date(dateParser.parseISO8601(tmp_str));
 			} catch(e) {
-				logMessage("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
+				logger.warn("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + this.title);
 			}
 		}
 

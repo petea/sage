@@ -131,7 +131,10 @@ FeedLoader.prototype = {
 
 	onHttpError:	function (e)
 	{
-		logMessage("HTTP Error: " + e.target.status + " - " + e.target.statusText);
+		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+		var logger = new Logger();
+
+		logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
 		this.httpGetResult(CommonFunc.RESULT_NOT_AVAILABLE);
 	},
 
