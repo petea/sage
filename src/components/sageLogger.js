@@ -46,7 +46,7 @@ const sageILogger = Components.interfaces.sageILogger;
  ******************************************************************************/
 function sageLogger() {};
 sageLogger.prototype = {
-	_level: sageILogger.LEVEL_INFO,
+	_level: sageILogger.LEVEL_WARN,
 	_consoleService: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
 	
 	init: function()
