@@ -74,7 +74,7 @@ var UpdateChecker = {
 			}
 		}
 
-		this.logger.info("checking " + this.checkList.length + " feed(s)");
+		this.logger.info("found " + this.checkList.length + " feed(s) to check");
 
 		if (this.checkList.length > 0) {
 			this.checking = true;
@@ -94,6 +94,8 @@ var UpdateChecker = {
 		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
 		var type = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.RDF_TYPE);
 		var url = this.getURL(this.lastResource);
+		
+		this.logger.info("checking: " + name);
 
 		if(!url) {
 			this.checkResult(false, 0);
