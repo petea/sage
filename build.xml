@@ -124,6 +124,21 @@
 		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageILogger.idl"/>
 		</exec>
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIFeedItemEnclosure.idl"/>
+		</exec>
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIFeedItem.idl"/>
+		</exec>
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIFeed.idl"/>
+		</exec>
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIFeedParser.idl"/>
+		</exec>
+		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I -o sageIFeedParserFactory.idl"/>
+		</exec>
 	</target>
 	<target name="compile-idl-win" if="isWin">
 	    <property name="xpidl_executable" value="xpidl.exe"/>
@@ -154,6 +169,11 @@
 				<include name="sageIDateFormatter.xpt"/>
 				<include name="sageIDateParser.xpt"/>
 				<include name="sageILogger.xpt"/>
+				<include name="sageIFeedItemEnclosure.xpt"/>
+				<include name="sageIFeedItem.xpt"/>
+				<include name="sageIFeed.xpt"/>
+				<include name="sageIFeedParser.xpt"/>
+				<include name="sageIFeedParserFactory.xpt"/>
 			</fileset>
 		</copy>
 

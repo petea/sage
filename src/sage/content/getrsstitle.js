@@ -84,7 +84,12 @@ var GetRssTitle = {
 	httpLoaded: function() {
 		this.checking = false;
 
-		var feed = new Feed(GetRssTitle.httpReq.responseXML, GetRssTitle.httpReq.channel.originalURI);
+		var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+		var feedParserFactory = new FeedParserFactory();
+		var feedParser = feedParserFactory.createFeedParser(GetRssTitle.httpReq.responseXML);
+		var feed = feedParser.parse(GetRssTitle.httpReq.responseXML);
+		feed.setFeedURI(GetRssTitle.httpReq.channel.originalURI);
+
 		var rssTitle = feed.getTitle();
 
 		if(!rssTitle) return;

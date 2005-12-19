@@ -182,7 +182,7 @@ var feedSummary = {
 
 		// in case the sidebar started loading some other feed.
 		// This should be handled in a better way.
-		if (aFeed.getURI() == feedSummary.uri)
+		if (aFeed.getFeedURI() == feedSummary.uri)
 		{
 			feedSummary.displayFeed(aFeed);
 

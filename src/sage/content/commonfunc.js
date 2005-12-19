@@ -186,6 +186,8 @@ var CommonFunc = {
 
 	getInnerText: function(aNode) {
 		if(!aNode.hasChildNodes()) return "";
+		
+		var NodeFilter = Components.interfaces.nsIDOMNodeFilter;
 	
 		var resultArray = new Array();
 		var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);

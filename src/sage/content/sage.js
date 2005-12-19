@@ -409,11 +409,13 @@ function setRssItemListBox() {
 
 	linkVisitor.clearItems();
 	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+	switch (feedItemOrder) {
+		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
+		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
+	}
 
-	var items = currentFeed.getItems(feedItemOrder);
-
-	for(var i = 0; items.length > i; i++) {
-		var item = items[i];
+	for(var i = 0; currentFeed.getItemCount() > i; i++) {
+		var item = currentFeed.getItem(i);
 		var itemLabel = item.getTitle();
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
@@ -450,15 +452,17 @@ function populateToolTip(e) {
 	}
 	var listItem = document.tooltipNode;
 	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-	var items = currentFeed.getItems(feedItemOrder);
-	var description = htmlToText(items[listItem.value].getContent());
-  if(description.indexOf("/") != -1) {
-    description = description.replace(/\//gm, "/\u200B");
-  }
-  if(description.length > 400) {
-    description = description.substring(0,400) + "...";
-  }
-
+	switch (feedItemOrder) {
+		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
+		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
+	}
+	var description = htmlToText(currentFeed.getItem(listItem.value).getContent());
+	if(description.indexOf("/") != -1) {
+		description = description.replace(/\//gm, "/\u200B");
+	}
+	if(description.length > 400) {
+		description = description.substring(0,400) + "...";
+	}
 	rssItemToolTip.title = listItem.label;
 	rssItemToolTip.description = description;
 }
@@ -494,7 +498,7 @@ function onFeedLoaded(aFeed)
 		}
 
 		BMSVC.updateLastVisitedDate(lastResource.url, "UTF-8");
-		CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE + " " + currentFeed.getSignature());
+		CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE + " [" + currentFeed.getSignature() + "]");
 	}
 
 	setStatusDone();
@@ -538,8 +542,11 @@ feedLoader.addListener("abort", onFeedAbort);
  */
 function getFeedItemFromListItem( oListItem ) {
 	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-	var items = currentFeed.getItems(feedItemOrder);
-	return items[oListItem.value];
+	switch (feedItemOrder) {
+		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
+		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
+	}
+	return currentFeed.getItem(oListItem.value);
 }
 
 /**
@@ -755,14 +762,17 @@ function updateItemContextMenu() {
 function markAllReadState(bRead) {
 	if (currentFeed) {
 		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-		var feedItems = currentFeed.getItems(feedItemOrder);
+		switch (feedItemOrder) {
+			case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
+			case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
+		}
 
-		for (var i = 0; i < feedItems.length; i++)
-			linkVisitor.setVisited(feedItems[i].getLink(), bRead);
+		for (var i = 0; i < currentFeed.getItemCount(); i++) {
+			linkVisitor.setVisited(currentFeed.getItem(i).getLink(), bRead);
+		}
 
 		var listItem;
-		for (var y = 0; y < rssItemListBox.getRowCount(); y++)
-		{
+		for (var y = 0; y < rssItemListBox.getRowCount(); y++) {
 			listItem = rssItemListBox.getItemAtIndex(y);
 			if (bRead)
 				listItem.setAttribute("visited", "true");

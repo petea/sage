@@ -225,9 +225,13 @@ function httpLoaded(e) {
 	var httpReq = e.target;
 	var uri = httpReq.channel.originalURI;
 	try {
-		var feed = new Feed(httpReq.responseXML, uri);
+		var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+		var feedParserFactory = new FeedParserFactory();
+		var feedParser = feedParserFactory.createFeedParser(httpReq.responseXML);
+		var feed = feedParser.parse(httpReq.responseXML);
+		feed.setFeedURI(uri);
 		addDiscoveredFeed(uri, feed);
-	} catch(e) { }
+	} catch(e) {	}
 	progressUpdate();
 }
 
@@ -256,7 +260,7 @@ function addDiscoveredFeed(uri, feed) {
 	if(feed.hasLastPubDate()) {
 		var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
 		formatter.setFormat(formatter.FORMAT_SHORT, formatter.ABBREVIATED_TRUE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
-		lastPubDate = formatter.formatDate(feed.getLastPubDate().getTime());
+		lastPubDate = formatter.formatDate(feed.getLastPubDate());
 	}
 	itemCount = feed.getItemCount();
 

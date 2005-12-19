@@ -149,14 +149,18 @@ var UpdateChecker = {
 		var lastModified = 0;
 
 		try {
-			var feed = new Feed(UpdateChecker.httpReq.responseXML, UpdateChecker.httpReq.channel.originalURI);
+			var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+			var feedParserFactory = new FeedParserFactory();
+			var feedParser = feedParserFactory.createFeedParser(UpdateChecker.httpReq.responseXML);
+			var feed = feedParser.parse(UpdateChecker.httpReq.responseXML);
+			feed.setFeedURI(UpdateChecker.httpReq.channel.originalURI);
 		} catch(e) {
 			UpdateChecker.checkResult(false, 0);
 			return;
 		}
 
 		if(feed.hasLastPubDate()) {
-			lastModified = feed.getLastPubDate().getTime();
+			lastModified = feed.getLastPubDate();
 		}
 
 		UpdateChecker.checkResult(true, lastModified, feed);
@@ -175,7 +179,10 @@ var UpdateChecker = {
 		}
 
 		if(aSucceed) {
-			var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/);
+			var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[(.*)\]/);
+			if (sig) {
+				sig = sig[1];
+			}
 			if(aLastModified) {
 				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
 					status = CommonFunc.STATUS_UPDATE;
@@ -184,7 +191,6 @@ var UpdateChecker = {
 				}
 			} else {
 				if(sig != feed.getSignature()) {
-					//this.logger.warn("signature mismatch: " + feed.getTitle() + "; old sig: " + sig + "  new sig: " + feed.getSignature());
 					status = CommonFunc.STATUS_UPDATE;
 				} else {
 					status = CommonFunc.STATUS_NO_UPDATE;

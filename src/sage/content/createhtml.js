@@ -165,6 +165,7 @@ var CreateHTML = {
 			case "**DESCRIPTION**":
 				return feed.getDescription();
 
+/*
 			case "**LOGOLINK**":
 				return feed.getLogo().link;
 
@@ -196,7 +197,7 @@ var CreateHTML = {
 						"</a>";
 				}
 				return "";
-
+*/
 			case "**ITEMS**":
 				return this.getItemsHtml(feed);
 		}
@@ -206,10 +207,13 @@ var CreateHTML = {
 
 	getItemsHtml:	function (feed) {
 		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
-		var items = feed.getItems(feedItemOrder);
+		switch (feedItemOrder) {
+			case "chrono": feed.setSort(feed.SORT_CHRONO); break;
+			case "source": feed.setSort(feed.SORT_SOURCE); break;
+		}
 		var sb = [];
-		for (var i = 0; i < items.length; i++) {
-			sb.push(this.getItemHtml(feed, items[i], i));
+		for (var i = 0; i < feed.getItemCount(); i++) {
+			sb.push(this.getItemHtml(feed, feed.getItem(i), i));
 		}
 		return sb.join("");
 	},
@@ -260,7 +264,7 @@ var CreateHTML = {
 					var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
 					var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
 					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
-					var dateString = formatter.formatDate(item.getPubDate().getTime());
+					var dateString = formatter.formatDate(item.getPubDate());
 					return "<div class=\"item-pubDate\">" + dateString + "</div>";
 				}
 				return "";

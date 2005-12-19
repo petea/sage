@@ -188,8 +188,11 @@ FeedLoader.prototype = {
 
 		if (aResultCode == CommonFunc.RESULT_OK)
 		{
-
-			this.currentFeed = new Feed(this.responseXML, this.uri);
+			var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+			var feedParserFactory = new FeedParserFactory();
+			var feedParser = feedParserFactory.createFeedParser(this.responseXML);
+			this.currentFeed = feedParser.parse(this.responseXML);
+			this.currentFeed.setFeedURI(this.uri);
 
 			this._callListeners("load", this.currentFeed);
 
