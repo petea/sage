@@ -204,7 +204,7 @@ var feedSummary = {
 		fl.removeListener("abort", feedSummary.onFeedAbort);
 
 		var p = document.getElementById("loading-text");
-		p.textContent = strRes.getFormattedString("RESULT_ERROR", [resultStrArray[aErrorCode]]);
+		p.textContent = strRes.formatStringFromName("RESULT_ERROR", [resultStrArray[aErrorCode]], 1);
 
 		var pb = document.getElementById("loading-progress-meter");
 		pb.setAttribute("mode", "determined");
