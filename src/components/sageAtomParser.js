@@ -102,7 +102,11 @@ sageAtomParser.prototype = {
 			if (i.nodeType != i.ELEMENT_NODE) continue;
 			switch(i.localName) {
 				case "title":
-					title = this._entityDecode(this._getInnerText(i));
+					if (i.hasAttribute("type") && (i.getAttribute("type").toLowerCase() == "html" || i.getAttribute("type").toLowerCase() == "xhtml")) {
+						title = this._entityDecode(this._getInnerText(i));
+					} else {
+						title = this._getInnerText(i);
+					}
 					break;
 				case "link":
 					if ((i.hasAttribute("rel") && i.getAttribute("rel").toLowerCase() == "alternate") || !i.hasAttribute("rel")) {
@@ -115,10 +119,18 @@ sageAtomParser.prototype = {
 					break;
 				case "subtitle":
 				case "tagline":
-					description = this._entityDecode(this._getInnerText(i));
+					if (i.hasAttribute("type") && (i.getAttribute("type").toLowerCase() == "html" || i.getAttribute("type").toLowerCase() == "xhtml")) {
+						description = this._entityDecode(this._getInnerText(i));
+					} else {
+						description = this._getInnerText(i);
+					}
 					break;
 				case "name":
-					author = this._entityDecode(this._getInnerText(i));
+					if (i.hasAttribute("type") && (i.getAttribute("type").toLowerCase() == "html" || i.getAttribute("type").toLowerCase() == "xhtml")) {
+						author = this._entityDecode(this._getInnerText(i));
+					} else {
+						author = this._getInnerText(i);
+					}
 					break;
 /*
 				case "copyright":
@@ -134,6 +146,7 @@ sageAtomParser.prototype = {
 		feed = new Feed(title, link, description, author, feedURI, format);
 	
 		var entryNodes = feedDocument.getElementsByTagName("entry");
+		var node;
 		for (i = 0; entryNodes.length > i; i++) {
 			var item = {title:"", link:"", author:"", content:"", pubDate:"", enclosure: null, baseURI:""};
 			
@@ -148,7 +161,12 @@ sageAtomParser.prototype = {
 	
 			var titleNodes = entryNodes[i].getElementsByTagName("title");
 			if (titleNodes.length) {
-				item.title = this._entityDecode(this._getInnerText(titleNodes[0]));
+				node = titleNodes[0];
+				if (node.hasAttribute("type") && (node.getAttribute("type").toLowerCase() == "html" || node.getAttribute("type").toLowerCase() == "xhtml")) {
+					item.title = this._entityDecode(this._getInnerText(node));
+				} else {
+					item.title = this._getInnerText(node);
+				}
 			}
 	
 			var linkNodes = entryNodes[i].getElementsByTagName("link");
@@ -163,7 +181,12 @@ sageAtomParser.prototype = {
 	
 			var authorNodes = entryNodes[i].getElementsByTagName("author");
 			if (authorNodes.length) {
-				item.author = this._entityDecode(this._getInnerText(authorNodes[0]));
+				node = authorNodes[0];
+				if (node.hasAttribute("type") && (node.getAttribute("type").toLowerCase() == "html" || node.getAttribute("type").toLowerCase() == "xhtml")) {
+					item.author = this._entityDecode(this._getInnerText(node));
+				} else {
+					item.author = this._getInnerText(node);
+				}
 			}
 	
 			var updatedNodes = entryNodes[i].getElementsByTagName("updated");
@@ -215,11 +238,11 @@ sageAtomParser.prototype = {
 			} else if ("html" in contentHash) {
 				item.content = contentHash["html"];
 			} else if ("text/plain" in contentHash) {
-				item.content = contentHash["text/plain"];
+				item.content = this._entityEncode(contentHash["text/plain"]);
 			} else if ("text" in contentHash) {
-				item.content = contentHash["text"];	
+				item.content = this._entityEncode(contentHash["text"]);
 			} else if (summaryNodes.length) {
-				item.content = this._getInnerText(summaryNodes[0]);
+				item.content = this._entityEncode(this._getInnerText(summaryNodes[0]));
 			}
 			
 			var feedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, item.baseURI);
@@ -261,6 +284,25 @@ sageAtomParser.prototype = {
 			resultArray.push(walker.currentNode.nodeValue);
 		}
 		return resultArray.join('').replace(/^\s+|\s+$/g, "");
+	},
+	
+	_entityEncode: function(aStr)
+	{
+		function replacechar(match) {
+			if (match=="<")
+				return "&lt;";
+			else if (match==">")
+				return "&gt;";
+			else if (match=="\"")
+				return "&quot;";
+			else if (match=="'")
+				return "&#039;";
+			else if (match=="&")
+				return "&amp;";
+		}
+		
+		var re = /[<>"'&]/g;
+		return aStr.replace(re, function(m){return replacechar(m)});
 	},
 	
 	// nsISupports

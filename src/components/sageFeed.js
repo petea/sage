@@ -97,7 +97,7 @@ sageFeed.prototype = {
 	
 	getTitle: function()
 	{
-		return this._title.replace(/<.*?>/g,'');
+		return this._title;
 	},
 	
 	hasDescription: function()
@@ -107,7 +107,7 @@ sageFeed.prototype = {
 	
 	getDescription: function()
 	{
-		return this.hasDescription() ? this._description : "";
+		return this.hasDescription() ? this._description : null;
 	},
 	
 	getLink: function()
@@ -122,7 +122,7 @@ sageFeed.prototype = {
 	
 	getAuthor: function()
 	{
-		return this.hasAuthor() ? this._author : "";
+		return this.hasAuthor() ? this._author : null;
 	},
 	
 	hasLastPubDate: function()

@@ -74,13 +74,14 @@ sageFeedItem.prototype = {
 	{
 		var title;
 		if (this.hasTitle()) {
-			title = this._title.replace(/<.*?>/g,'');
+			title = this._title;
 		} else {
 			if (this.hasContent()) {
 				temp = this.getContent();
 				temp = temp.replace(/<.*?>/g,'');
 				title = temp.substring(0, 30) + "...";
 			} else {
+				// TODO: Localize
 				title = "No Title";
 			}
 		}
@@ -94,7 +95,7 @@ sageFeedItem.prototype = {
 	
 	getAuthor: function()
 	{
-		return this.hasAuthor() ? this._author : "";
+		return this.hasAuthor() ? this._author : null;
 	},
 	
 	getLink: function()

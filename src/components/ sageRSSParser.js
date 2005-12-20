@@ -113,16 +113,16 @@ sageRSSParser.prototype = {
 			if (i.nodeType != i.ELEMENT_NODE) continue;
 			switch(i.localName) {
 				case "title":
-					title = this._entityDecode(this._getInnerText(i));
+					title = this._getInnerText(i);
 					break;
 				case "link":
 					link = this._getInnerText(i);
 					break;
 				case "description":
-					description = this._entityDecode(this._getInnerText(i));
+					description = this._getInnerText(i);
 					break;
 				case "author":
-					author = this._entityDecode(this._getInnerText(i));
+					author = this._getInnerText(i);
 					break;
 /*
 				case "copyright":
@@ -166,7 +166,7 @@ sageRSSParser.prototype = {
 				if (j.nodeType != j.ELEMENT_NODE) continue;
 				switch(j.localName) {
 					case "title":
-						item.title = this._entityDecode(this._getInnerText(j));
+						item.title = this._getInnerText(j);
 						break;
 					case "link":
 						if (!item.link) {
@@ -174,7 +174,7 @@ sageRSSParser.prototype = {
 						}
 						break;
 					case "creator":
-						item.author = this._entityDecode(this._getInnerText(j));
+						item.author = this._getInnerText(j);
 						break;
 					case "guid":
 						if(!guid) {

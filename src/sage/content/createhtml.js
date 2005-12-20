@@ -150,7 +150,7 @@ var CreateHTML = {
 
 			case "**HTMLTITLE**":
 			case "**TITLE**":
-				return feed.getTitle();
+				return this.entityEncode(feed.getTitle());
 
 			case "**LINK**":
 				return feed.getLink();
@@ -158,7 +158,7 @@ var CreateHTML = {
 
 			case "**AUTHOR**":
 				if (feed.hasAuthor()) {
-					return "<div class=\"feed-author\">" + feed.getAuthor() + "</div>";
+					return "<div class=\"feed-author\">" + this.entityEncode(feed.getAuthor()) + "</div>";
 				}
 				return "";
 
@@ -236,11 +236,11 @@ var CreateHTML = {
 				return encodeURIComponent(item.getLink());
 
 			case "**TITLE**":
-				return item.getTitle();
+				return this.entityEncode(item.getTitle());
 
 			case "**AUTHOR**":
 				if (item.hasAuthor()) {
-					return "<div class=\"item-author\">" + item.getAuthor() + "</div>";
+					return "<div class=\"item-author\">" + this.entityEncode(item.getAuthor()) + "</div>";
 				}
 				return "";
 
@@ -293,6 +293,25 @@ var CreateHTML = {
 	getSpecialDir: function(aProp) {
 		var dirService = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties);
 		return dirService.get(aProp, Components.interfaces.nsILocalFile);
+	},
+	
+	entityEncode: function(aStr)
+	{
+		function replacechar(match) {
+			if (match=="<")
+				return "&lt;";
+			else if (match==">")
+				return "&gt;";
+			else if (match=="\"")
+				return "&quot;";
+			else if (match=="'")
+				return "&#039;";
+			else if (match=="&")
+				return "&amp;";
+		}
+		
+		var re = /[<>"'&]/g;
+		return aStr.replace(re, function(m){return replacechar(m)});
 	},
 
 	simpleHtmlParser:	new SimpleHtmlParser,
