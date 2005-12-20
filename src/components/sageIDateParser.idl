@@ -42,8 +42,8 @@
 interface sageIDateParser: nsISupports {
 
 	// parse RFC 822 date string, return milliseconds since 1970
-	PRInt64 parseRFC822(in AString aDateString);
+	PRTime parseRFC822(in AString aDateString);
   
 	// parse ISO 8601 date string, return milliseconds since 1970
-	PRInt64 parseISO8601(in AString aDateString);
+	PRTime parseISO8601(in AString aDateString);
 };
