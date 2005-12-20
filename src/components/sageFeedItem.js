@@ -77,12 +77,11 @@ sageFeedItem.prototype = {
 			title = this._title;
 		} else {
 			if (this.hasContent()) {
-				temp = this.getContent();
-				temp = temp.replace(/<.*?>/g,'');
-				title = temp.substring(0, 30) + "...";
+				var temp = this.getContent();
+				temp = temp.replace(/<.*?>/g, "");
+				title = this._smartTrim(temp, 30, " ...");
 			} else {
-				// TODO: Localize
-				title = "No Title";
+				title = null;
 			}
 		}
 		return title;
@@ -110,8 +109,7 @@ sageFeedItem.prototype = {
 	
 	getContent: function()
 	{
-		// TODO: Localize
-		return this.hasContent() ? this._content : "No content";
+		return this.hasContent() ? this._content : null;
 	},
 	
 	hasPubDate: function()
@@ -142,6 +140,30 @@ sageFeedItem.prototype = {
 	getBaseURI: function()
 	{
 		return this.hasBaseURI() ? this._baseURI : null;
+	},
+	
+	_smartTrim: function(s, l, p) {
+		var words = s.split(" ");
+		var numWords = words.length;
+		var output = [];
+		var cwl, ol, cWord, w;
+		ol = 0;
+		for(w = 0; w < numWords; ++w) {
+			cWord = words[w];
+			cwl = cWord.length;
+			if((ol + cwl) <= l) {
+				output.push(cWord);
+				ol += cwl + 1;
+			} else {
+				break;
+			}
+		}
+		var trimmedString = output.join(" ");
+		if (trimmedString == s) {
+			return s;
+		} else {
+			return trimmedString + p;
+		}
 	},
 	
 	// nsISupports

@@ -416,7 +416,14 @@ function setRssItemListBox() {
 
 	for(var i = 0; currentFeed.getItemCount() > i; i++) {
 		var item = currentFeed.getItem(i);
-		var itemLabel = item.getTitle();
+		var itemLabel;
+		if (item.hasTitle()) {
+			itemLabel = item.getTitle();
+		} else if (item.getTitle()) {
+			itemLabel = item.getTitle();
+		} else {
+			itemLabel = strRes.getString("feed_item_no_title")
+		}
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
 		linkVisitor.addItem(item.getLink(), listItem);
@@ -456,12 +463,16 @@ function populateToolTip(e) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
 	}
-	var description = htmlToText(currentFeed.getItem(listItem.value).getContent());
-	if(description.indexOf("/") != -1) {
-		description = description.replace(/\//gm, "/\u200B");
-	}
-	if(description.length > 400) {
-		description = description.substring(0,400) + "...";
+	if (currentFeed.getItem(listItem.value).hasContent()) {
+		var description = htmlToText(currentFeed.getItem(listItem.value).getContent());
+		if (description.indexOf("/") != -1) {
+			description = description.replace(/\//gm, "/\u200B");
+		}
+		if (description.length > 400) {
+			description = description.substring(0,400) + "...";
+		}
+	} else {
+		description = "";
 	}
 	rssItemToolTip.title = listItem.label;
 	rssItemToolTip.description = description;

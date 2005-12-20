@@ -236,7 +236,13 @@ var CreateHTML = {
 				return encodeURIComponent(item.getLink());
 
 			case "**TITLE**":
-				return this.entityEncode(item.getTitle());
+				if (item.hasTitle()) {
+					return this.entityEncode(item.getTitle());
+				} else if (item.getTitle()) {
+					return this.entityEncode(item.getTitle());
+				} else {
+					return this.entityEncode(strRes.GetStringFromName("feed_item_no_title"));
+				}
 
 			case "**AUTHOR**":
 				if (item.hasAuthor()) {
