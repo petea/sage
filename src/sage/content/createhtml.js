@@ -163,7 +163,10 @@ var CreateHTML = {
 				return "";
 
 			case "**DESCRIPTION**":
-				return feed.getDescription();
+				if (feed.hasDescription()) {
+					return feed.getDescription();
+				}
+				return "";
 
 /*
 			case "**LOGOLINK**":
