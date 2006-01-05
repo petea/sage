@@ -57,6 +57,7 @@
 		<mkdir dir="${build}/tmp"/>
 		<mkdir dir="${build}/xpi"/>
 		<mkdir dir="${build}/xpi/chrome"/>
+		<mkdir dir="${build}/xpi/defaults"/>
 	</target>
 
 	<!-- build from local source files -->
@@ -191,6 +192,13 @@
 	<target name="assemble" depends="build-components">
 		<!-- create main jar file -->
 		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
+		
+		<!-- copy defaults -->
+		<copy todir="${build}/xpi/defaults">
+			<fileset dir="${build}/src/defaults">
+				<include name="**"/>
+			</fileset>
+		</copy>
 		
 		<!-- copy install meta files -->
 		<copy todir="${build}/xpi">
