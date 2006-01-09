@@ -111,7 +111,7 @@ sageRSSParser.prototype = {
 	
 		for (i = channelNode.firstChild; i != null; i = i.nextSibling) {
 			if (i.nodeType != i.ELEMENT_NODE) continue;
-			switch(i.localName) {
+			switch(i.nodeName) {
 				case "title":
 					title = this._getInnerText(i);
 					break;
@@ -159,18 +159,24 @@ sageRSSParser.prototype = {
 		var itemNodes = feedDocument.getElementsByTagName("item");
 		var item, guid;
 		for (i = 0; itemNodes.length > i; i++) {
+			if (itemNodes[i].prefix) continue;  // skip elements with namespaces
+		
 			item = {title:"", link:"", content:"", author:"", pubDate:"", enclosure: null};
 			guid = null;
 	
 			for (j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
 				if (j.nodeType != j.ELEMENT_NODE) continue;
-				switch(j.localName) {
+				switch(j.nodeName) {
 					case "title":
 						item.title = this._getInnerText(j);
 						break;
 					case "link":
 						if (!item.link) {
-							item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(this._getInnerText(j)) : this._getInnerText(j);
+							try {
+								item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(this._getInnerText(j)) : this._getInnerText(j);
+							} catch (e) {
+								logger.warn("unable to resolve URI: " + this._getInnerText(j) + " feed: " + title);
+							}
 						}
 						break;
 					case "creator":
@@ -186,7 +192,7 @@ sageRSSParser.prototype = {
 							item.content = this._getInnerText(j);
 						}
 						break;
-					case "encoded":
+					case "content:encoded":
 						item.content = this._getInnerText(j);
 						break;
 					case "pubDate":
@@ -197,7 +203,7 @@ sageRSSParser.prototype = {
 							logger.warn("unable to parse RFC 822 date string: " + tmp_str + " feed: " + title);
 						}
 						break;
-					case "date":
+					case "dc:date":
 						tmp_str = this._getInnerText(j);
 						try {
 							item.pubDate = dateParser.parseISO8601(tmp_str);
@@ -212,7 +218,11 @@ sageRSSParser.prototype = {
 			}
 	
 			if (!item.link && guid) {
-				item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
+				try {
+					item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
+				} catch (e) {
+					logger.warn("unable to resolve URI: " + guid + " feed: " + title);
+				}
 			}
 			
 			var feedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, null);

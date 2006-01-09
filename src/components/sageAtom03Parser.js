@@ -36,21 +36,21 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const CLASS_ID = Components.ID("{C48B7642-5C72-45C7-AA88-1AB550B0AB9B}");
-const CLASS_NAME = "Sage Atom Parser Component";
-const CONTRACT_ID = "@sage.mozdev.org/sage/atomparser;1";
+const CLASS_ID = Components.ID("{B315E9D2-7300-4C70-A2A3-B2BE328813AE}");
+const CLASS_NAME = "Sage Atom 0.3 Parser Component";
+const CONTRACT_ID = "@sage.mozdev.org/sage/atom03parser;1";
 const sageIFeedParser = Components.interfaces.sageIFeedParser;
 
 /******************************************************************************
- * sageAtomParser Component
+ * sageAtom03Parser Component
  ******************************************************************************/
-function sageAtomParser() {};
-sageAtomParser.prototype = {
+function sageAtom03Parser() {};
+sageAtom03Parser.prototype = {
 
 	discover: function(feedDocument)
 	{
 		var rootNode = feedDocument.documentElement;
-		if (rootNode.localName.toLowerCase() == "feed"  && rootNode.namespaceURI == "http://www.w3.org/2005/Atom") {
+		if (rootNode.localName.toLowerCase() == "feed"  && rootNode.namespaceURI == "http://purl.org/atom/ns#") {
 			return true;
 		} else {
 			return false;
@@ -80,12 +80,14 @@ sageAtomParser.prototype = {
 		var feedURI;
 		var format;
 		
-		const ATOM_NS = "http://www.w3.org/2005/Atom";
+		const ATOM_NS = "http://purl.org/atom/ns#";
 		
 		var firstElement = feedDocument.documentElement;
 	
-		if (firstElement.hasAttribute("xmlns") && firstElement.getAttribute("xmlns") == "http://www.w3.org/2005/Atom") {
-			format = "Atom (1.0)";
+		if (firstElement.hasAttribute("version")) {
+			format = "Atom (" + firstElement.getAttribute("version") + ")";
+		} else {
+			format = "Atom (?)";
 		}
 		
 		// xml:base support for <feed> element
@@ -120,7 +122,7 @@ sageAtomParser.prototype = {
 						}
 					}
 					break;
-				case "subtitle":
+				case "tagline":
 					if (i.hasAttribute("type") && (i.getAttribute("type").toLowerCase() == "html" || i.getAttribute("type").toLowerCase() == "xhtml")) {
 						description = this._entityDecode(this._getInnerText(i));
 					} else {
@@ -201,9 +203,9 @@ sageAtomParser.prototype = {
 				}
 			}
 	
-			var updatedNodes = entryNodes[i].getElementsByTagNameNS(ATOM_NS, "updated");
-			if (updatedNodes.length) {
-				tmp_str = this._getInnerText(updatedNodes[0]);
+			var issuedNodes = entryNodes[i].getElementsByTagNameNS(ATOM_NS, "issued");
+			if (issuedNodes.length) {
+				tmp_str = this._getInnerText(issuedNodes[0]);
 				try {
 					item.pubDate = dateParser.parseISO8601(tmp_str);
 				} catch(e) {
@@ -228,7 +230,7 @@ sageAtomParser.prototype = {
 				}
 				contentHash[contType] = contentString;
 			}
-			
+	
 			if ("application/xhtml+xml" in contentHash) {
 				item.content = contentHash["application/xhtml+xml"];
 			} else if ("xhtml" in contentHash) {
@@ -352,7 +354,7 @@ var Factory = {
 	{
 		if (aOuter != null)
 			throw Components.results.NS_ERROR_NO_AGGREGATION;
-		return (new sageAtomParser()).QueryInterface(aIID);
+		return (new sageAtom03Parser()).QueryInterface(aIID);
 	}
 };
 

@@ -56,6 +56,8 @@ sageFeedParserFactory.prototype = {
 		var parsers = new Array();
 		parsers.push("@sage.mozdev.org/sage/rssparser;1");
 		parsers.push("@sage.mozdev.org/sage/atomparser;1");
+		parsers.push("@sage.mozdev.org/sage/atom03parser;1");
+		
 		
 		var FeedParser;
 		var feedParser;
