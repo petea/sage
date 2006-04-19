@@ -48,8 +48,10 @@
 	<!-- create build directories -->
 	<target name="init" depends="clean">
 		<echo>The operating system is ${os.name}</echo>
+		<echo>The architecture is ${os.arch}</echo>
 		<condition property="isWin"><os family="windows"/></condition>
-		<condition property="isMac"><and><os family="mac"/><os family="unix"/></and></condition>
+		<condition property="isMac"><and><os family="mac"/><os family="unix"/><not><equals arg1="${os.arch}" arg2="i386"/></not></and></condition>
+		<condition property="isMacx86"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="i386"/></and></condition>
 		<condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not></and></condition>
 		<mkdir dir="${build}"/>
 		<mkdir dir="${build}/xpcom"/>
@@ -71,6 +73,7 @@
 			<fileset dir="${tools}">
 				<include name="xpcom_win.zip"/>
 				<include name="xpcom_mac.tar.gz"/>
+				<include name="xpcom_mac_x86.tar.gz"/>
 				<include name="xpcom_linux.tar.gz"/>
 			</fileset>
 		</copy>
@@ -92,6 +95,7 @@
 			<fileset dir="${build}/tmp/sage/tools">
 				<include name="xpcom_win.zip"/>
 				<include name="xpcom_mac.tar.gz"/>
+				<include name="xpcom_mac_x86.tar.gz"/>
 				<include name="xpcom_linux.tar.gz"/>
 			</fileset>
 		</copy>
@@ -99,13 +103,18 @@
 		<ant target="xpi"/>
 	</target>
 
-	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac, xpcom-tools-linux"/>
+	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac, xpcom-tools-mac-x86, xpcom-tools-linux"/>
 	<target name="xpcom-tools-win" if="isWin">
 		<unzip src="${xpcom}/xpcom_win.zip" dest="${xpcom}"/>
 	</target>
 	<target name="xpcom-tools-mac" if="isMac">
 		<exec dir="${xpcom}" executable="tar" failonerror="true">
 			<arg line="xzf xpcom_mac.tar.gz"/>
+		</exec>
+	</target>
+	<target name="xpcom-tools-mac-x86" if="isMacx86">
+		<exec dir="${xpcom}" executable="tar" failonerror="true">
+			<arg line="xzf xpcom_mac_x86.tar.gz"/>
 		</exec>
 	</target>
 	<target name="xpcom-tools-linux" if="isLinux">
@@ -115,7 +124,7 @@
 	</target>
 
 	
-	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-linux">
+	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-mac-x86, compile-idl-linux">
 		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
 		</exec>
@@ -145,6 +154,9 @@
 	    <property name="xpidl_executable" value="xpidl.exe"/>
 	</target>
 	<target name="compile-idl-mac" if="isMac">
+	    <property name="xpidl_executable" value="xpidl"/>
+	</target>
+	<target name="compile-idl-mac-x86" if="isMacx86">
 	    <property name="xpidl_executable" value="xpidl"/>
 	</target>
 	<target name="compile-idl-linux" if="isLinux">
