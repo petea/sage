@@ -206,7 +206,7 @@
 		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
 		
 		<!-- copy defaults -->
-		<copy todir="${build}/xpi/defaults">
+		<copy todir="${build}/xpi/defaults" failonerror="false">
 			<fileset dir="${build}/src/defaults">
 				<include name="**"/>
 			</fileset>
