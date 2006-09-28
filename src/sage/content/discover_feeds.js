@@ -82,8 +82,6 @@ function init() {
 
 	schema = "http://sage.mozdev.org/FeedData#";
 
-	ds = feedTree.database.GetDataSources();
-	ds = ( ds.getNext(), ds.getNext() );
 	ds = ds.QueryInterface(Components.interfaces.nsIRDFDataSource);
 
 	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
