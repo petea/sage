@@ -59,7 +59,6 @@
 		<mkdir dir="${build}/tmp"/>
 		<mkdir dir="${build}/xpi"/>
 		<mkdir dir="${build}/xpi/chrome"/>
-		<mkdir dir="${build}/xpi/defaults"/>
 	</target>
 
 	<!-- build from local source files -->
