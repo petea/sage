@@ -92,7 +92,14 @@ var CreateHTML = {
 			var pubDate = "";
 
 			if(items[i].hasContent()) {
-				description = allowEContent ? items[i].getContent() : htmlToText(items[i].getContent());
+				if (allowEContent) {
+					description = items[i].getContent();
+				} else {
+					description = htmlToText(items[i].getContent());
+				}
+				this.filterHtmlHandler.clear();
+				this.simpleHtmlParser.parse(description);
+				description = this.filterHtmlHandler.toString();
 				description = "<div class=\"item-desc\">" + description + "</div>";
 			}
 
@@ -117,5 +124,10 @@ var CreateHTML = {
 	getSpecialDir: function(aProp) {
 		var dirService = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties);
 		return dirService.get(aProp, Components.interfaces.nsILocalFile);
-	}
+	},
+	
+	simpleHtmlParser:	new SimpleHtmlParser,
+	filterHtmlHandler:	new FilterHtmlHandler
 }
+
+CreateHTML.simpleHtmlParser.contentHandler = CreateHTML.filterHtmlHandler;

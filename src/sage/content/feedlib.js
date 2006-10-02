@@ -308,7 +308,7 @@ Feed.prototype.hasDescription = function() {
 
 Feed.prototype.getDescription = function() {
 	if(this.hasDescription()) {
-		return this.description;
+		return this.description.replace(/<.*?>/g,'');
 	} else {
 		return "";
 	}

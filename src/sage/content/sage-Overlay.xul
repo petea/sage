@@ -4,6 +4,8 @@
 <!DOCTYPE overlay SYSTEM "chrome://sage/locale/sage.dtd">
 <overlay id="sageOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+	<script type="application/x-javascript" src="chrome://sage/content/sage-Overlay.js" />
+
 	<menupopup id="viewSidebarMenu">
 		<menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
 	</menupopup>
@@ -32,4 +34,5 @@
 	<toolbarpalette id="BrowserToolbarPalette">
 		<toolbarbutton id="sage-button" tooltiptext="&sage.tooltip;" observes="viewSageSidebar" class="toolbarbutton-1"/>
 	</toolbarpalette>
+	
 </overlay>

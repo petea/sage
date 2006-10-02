@@ -4,8 +4,8 @@ toolbarbutton.sage_button {
 	list-style-image:	url("chrome://sage/skin/toolbar.png") !important;
 }
 
-toolbarbutton.sage_button2 > .toolbarbutton-text {
-	display: none !important;
+toolbarbutton.sage_button .toolbarbutton-text {
+	display: none;
 }
 
 /* Override to hide icon and show text */
