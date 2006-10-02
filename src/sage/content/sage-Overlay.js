@@ -58,7 +58,6 @@ function sageInit() {
 		prefBranch.setCharPref("last_version", "1.3.7");
 	} else { // check for upgrade
 		var lastVersion = prefBranch.getCharPref("last_version");
-		alert(lastVersion);
 		if (lastVersion != "1.3.7") { // upgrade
 			addSageButton();
 			prefBranch.setCharPref("last_version", "1.3.7");
@@ -66,4 +65,4 @@ function sageInit() {
 	}
 }
 
-window.addEventListener("load", function() { setTimeout(sageInit, 500); }, false);
+window.addEventListener("load", function() { setTimeout(sageInit, 250); }, false);
