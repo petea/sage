@@ -70,6 +70,7 @@ FilterHtmlHandler.prototype = {
 			case "meta":
 			case "applet":
 			case "object":
+			case "param":
 			case "frame":
 			case "frameset":
 			case "iframe":
@@ -100,6 +101,7 @@ FilterHtmlHandler.prototype = {
 			case "embed":
 			case "applet":
 			case "object":
+			case "param":
 			case "frame":
 			case "frameset":
 			case "iframe":
