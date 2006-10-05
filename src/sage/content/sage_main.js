@@ -62,7 +62,8 @@ var sageMain = {
 		var logger = new Logger();
 		
 		logger.info("initialized");
-		
+
+		var localstore = RDF.GetDataSource("rdf:local-store");
 		var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
 		var prefBranch = prefService.getBranch("sage.");
 		if (!prefBranch.prefHasUserValue("last_version")) {  // new user
@@ -72,10 +73,18 @@ var sageMain = {
 			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, null, new_folder, null);
 			BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, null, new_folder, null);
 			addSageButton();
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowSearchBar"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowSearchBar"), RDF.GetResource("checked"), RDF.GetLiteral("false"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowTooltip"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowTooltip"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), true);
+			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
 			prefBranch.setCharPref("last_version", "1.4.0");
 		} else { // check for upgrade
 			var lastVersion = prefBranch.getCharPref("last_version");
-			if (lastVersion != "1.3.7" && lastVersion != "1.4.0") { // upgrade
+			if (lastVersion != "1.3.7" && lastVersion != "1.3.8" && lastVersion != "1.4.0") { // upgrade
 				addSageButton();
 				prefBranch.setCharPref("last_version", "1.4.0");
 			}

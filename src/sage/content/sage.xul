@@ -122,10 +122,10 @@
 				<menupopup>
 					<menu label="&menu.sidebarLayout;">
 						<menupopup>
-							<menuitem id="chkShowSearchBar" type="checkbox" checked="false" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
-							<menuitem id="chkShowTooltip" type="checkbox" checked="true" persist="checked" label="&menu.showDescTooltip;"/>
-							<menuitem id="chkShowFeedItemList" type="checkbox" checked="true" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
-							<menuitem id="chkShowFeedItemListToolbar" type="checkbox" checked="true" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
+							<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
+							<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
+							<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
+							<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
 						</menupopup>
 					</menu>
 					<menuseparator/>
