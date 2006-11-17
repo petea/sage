@@ -267,12 +267,13 @@ function rssItemListBoxClick(aEvent) {
 
 function rssTitleLabelClick(aNode, aEvent){
 	var tabbed = false;
-	if(!aNode.hasAttribute("href") || aEvent.button == 2) {
+	if(!currentFeed || aEvent.button == 2) {
 		return;
 	}
 
-	var link = aNode.getAttribute("href");
-	openURI( link, aEvent );
+	//var link = aNode.getAttribute("href");
+	var link = currentFeed.getLink();
+	openURI(link, aEvent);
 }
 
 function setStatusLoading(label) {
@@ -291,10 +292,10 @@ function setStatusDone() {
 	if(currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
 		if(currentFeed.getLink()) {
-			rssTitleLabel.setAttribute("href", currentFeed.getLink());
+			rssTitleLabel.setAttribute("class", "link");
 			rssTitleLabel.tooltipText = currentFeed.getLink();
 		} else {
-			rssTitleLabel.removeAttribute("href");
+			rssTitleLabel.removeAttribute("class");
 			rssTitleLabel.tooltipText = "";
 		}
 	}

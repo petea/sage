@@ -120,7 +120,7 @@ treechildren::-moz-tree-separator {
   list-style-image: url("chrome://sage/skin/icon/error.gif");
 }
 
-#rssTitleLabel[href]:hover{
+#rssTitleLabel.link:hover{
   text-decoration: underline;
   cursor: pointer;
 }
