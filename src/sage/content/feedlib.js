@@ -315,7 +315,19 @@ Feed.prototype.getDescription = function() {
 }
 
 Feed.prototype.getLink = function() {
-	return this.link;
+	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup);
+	var urlString;
+	try {
+		var uri = URIFixup.createFixupURI(this.link, URIFixup.FIXUP_FLAG_NONE);
+		if (uri.scheme != "javascript") {
+			urlString = uri.spec;
+		} else {
+			urlString = "";
+		}
+	} catch (e) {
+		urlString = "";
+	}
+	return urlString;
 }
 
 Feed.prototype.hasLastPubDate = function() {
@@ -424,7 +436,19 @@ FeedItem.prototype.getTitle = function() {
 }
 
 FeedItem.prototype.getLink = function() {
-	return this.link;
+	const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup);
+	var urlString;
+	try {
+		var uri = URIFixup.createFixupURI(this.link, URIFixup.FIXUP_FLAG_NONE);
+		if (uri.scheme != "javascript") {
+			urlString = uri.spec;
+		} else {
+			urlString = "";
+		}
+	} catch (e) {
+		urlString = "";
+	}
+	return urlString;
 }
 
 FeedItem.prototype.hasContent = function() {
