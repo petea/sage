@@ -271,7 +271,6 @@ function rssTitleLabelClick(aNode, aEvent){
 		return;
 	}
 
-	//var link = aNode.getAttribute("href");
 	var link = currentFeed.getLink();
 	openURI(link, aEvent);
 }
