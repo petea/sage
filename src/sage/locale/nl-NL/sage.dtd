@@ -49,7 +49,7 @@
 <!ENTITY allowEContent.label								"HTML tags toestaan">
 
 
-<!ENTITY openSageSidebar.commandkey						"S">
+<!ENTITY openSageSidebar.commandkey						"Z">
 <!ENTITY openSageSidebar.modifiersKey					"alt">
 
 <!-- These are taken from history.dtd -->

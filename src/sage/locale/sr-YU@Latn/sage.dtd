@@ -48,7 +48,7 @@
 <!ENTITY allowEContent.label			"Dozvoli HTML oznake">
 
 
-<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.commandkey		"Z">
 <!ENTITY openSageSidebar.modifiersKey		"alt">
 
 <!-- These are taken from history.dtd -->

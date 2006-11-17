@@ -48,7 +48,7 @@
 <!ENTITY allowEContent.label			"允许 HTML 标签">
 
 
-<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.commandkey		"Z">
 <!ENTITY openSageSidebar.modifiersKey		"alt">
 
 <!-- These are taken from history.dtd -->

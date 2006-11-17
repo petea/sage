@@ -48,7 +48,7 @@
 <!ENTITY browseCss.label			"Bläddra...">
 <!ENTITY allowEContent.label			"Tillåt HTML-taggar">
 
-<!ENTITY openSageSidebar.commandkey		"S">
+<!ENTITY openSageSidebar.commandkey		"Z">
 <!ENTITY openSageSidebar.modifiersKey		"alt">
 
 <!-- These are taken from history.dtd -->
