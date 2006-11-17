@@ -73,7 +73,10 @@ Feed.prototype.parseRSS = function() {
 				this.title = entityDecode(CommonFunc.getInnerText(i));
 				break;
 			case "link":
-				this.link = CommonFunc.getInnerText(i);
+				dump("link node: " + i.namespaceURI + "\n");
+				if (i.namespaceURI != "http://www.w3.org/2005/Atom") {
+					this.link = CommonFunc.getInnerText(i);
+				}
 				break;
 			case "description":
 				this.description = entityDecode(CommonFunc.getInnerText(i));
