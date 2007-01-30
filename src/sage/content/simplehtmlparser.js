@@ -52,8 +52,7 @@ SimpleHtmlParser.prototype = {
 	handler:	null,
 
 	// regexps
-
-	startTagRe:	/^<([^>\s\/]+)((\s+[^=>\s]+(\s*=\s*((\"[^"]*\")|(\'[^']*\')|[^>\s]+))?)*)\s*\/?\s*>/m,
+	startTagRe:	/^<([^<>\s\/]+)((\s+[^=<>\s]+(\s*=\s*((\"[^"]*\")|(\'[^']*\')|[^>\s]+))?)*)\s*\/?.*?>/m,
 	endTagRe:	/^<\/([^>\s]+)[^>]*>/m,
 	attrRe:		/([^=\s]+)(\s*=\s*((\"([^"]*)\")|(\'([^']*)\')|[^>\s]+))?/gm,
 
@@ -114,7 +113,7 @@ SimpleHtmlParser.prototype = {
 			if (treatAsChars) {
 				index = s.indexOf("<");
 				if (index == -1) {
-					 this.contentHandler.characters(s);
+					this.contentHandler.characters(s);
 					s = "";
 				} else {
 					if (index == 0) {	// in case we got a < in the character stream
