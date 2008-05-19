@@ -131,42 +131,42 @@
 
 	
 	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-mac-x86, compile-idl-linux, compile-idl-solaris">
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIDateParser.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageILogger.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIFeedItemEnclosure.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIFeedItem.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIFeed.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIFeedParser.idl"/>
 		</exec>
-		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
+		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIFeedParserFactory.idl"/>
 		</exec>
 	</target>
 	<target name="compile-idl-win" if="isWin">
-	    <property name="xpidl_executable" value="xpidl.exe"/>
+	    <property name="xpidl_executable" value="base/xpidl.exe"/>
 	</target>
 	<target name="compile-idl-mac" if="isMac">
-	    <property name="xpidl_executable" value="xpidl"/>
+	    <property name="xpidl_executable" value="base/xpidl"/>
 	</target>
 	<target name="compile-idl-mac-x86" if="isMacx86">
-	    <property name="xpidl_executable" value="xpidl"/>
+	    <property name="xpidl_executable" value="base/xpidl"/>
 	</target>
 	<target name="compile-idl-linux" if="isLinux">
-	    <property name="xpidl_executable" value="xpidl"/>
+	    <property name="xpidl_executable" value="base/xpidl"/>
 	</target>
 	<target name="compile-idl-solaris" if="isSolaris">
 	    <property name="xpidl_executable" value="gecko-sdk/bin/xpidl"/>
@@ -176,7 +176,7 @@
 	<target name="build-components" if="hasComponents">
 		<ant target="xpcom-tools"/>
 		<!-- copy interfaces to xpcom compile dir -->
-	    <copy todir="${xpcom}/base">
+	    <copy todir="${xpcom}">
 			<fileset dir="${build}/src/components">
 				<include name="*.idl"/>    
 			</fileset>
@@ -187,7 +187,7 @@
 		
 		<!-- copy XPT files to build directory -->
 		<copy todir="${build}/src/components">
-			<fileset dir="${xpcom}/base">
+			<fileset dir="${xpcom}">
 				<include name="sageIDateFormatter.xpt"/>
 				<include name="sageIDateParser.xpt"/>
 				<include name="sageILogger.xpt"/>
