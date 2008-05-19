@@ -52,7 +52,8 @@
 		<condition property="isWin"><os family="windows"/></condition>
 		<condition property="isMac"><and><os family="mac"/><os family="unix"/><not><equals arg1="${os.arch}" arg2="i386"/></not></and></condition>
 		<condition property="isMacx86"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="i386"/></and></condition>
-		<condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not></and></condition>
+		<condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not><not><os name="SunOS"/></not></and></condition>
+		<condition property="isSolaris"><os name="SunOS"/></condition>
 		<mkdir dir="${build}"/>
 		<mkdir dir="${build}/xpcom"/>
 		<mkdir dir="${build}/src"/>
@@ -102,7 +103,7 @@
 		<ant target="xpi"/>
 	</target>
 
-	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac, xpcom-tools-mac-x86, xpcom-tools-linux"/>
+	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac, xpcom-tools-mac-x86, xpcom-tools-linux, xpcom-tools-solaris"/>
 	<target name="xpcom-tools-win" if="isWin">
 		<unzip src="${xpcom}/xpcom_win.zip" dest="${xpcom}"/>
 	</target>
@@ -121,9 +122,14 @@
 			<arg line="xzf xpcom_linux.tar.gz"/>
 		</exec>
 	</target>
+	<target name="xpcom-tools-solaris" if="isSolaris">
+		<exec dir="${xpcom}" executable="tar" failonerror="true">
+			<arg line="xzf xpcom_solaris.tar.gz"/>
+		</exec>
+	</target>
 
 	
-	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-mac-x86, compile-idl-linux">
+	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-mac-x86, compile-idl-linux, compile-idl-solaris">
 		<exec dir="${xpcom}/base" executable="${xpcom}/base/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
 		</exec>
@@ -160,6 +166,9 @@
 	</target>
 	<target name="compile-idl-linux" if="isLinux">
 	    <property name="xpidl_executable" value="xpidl"/>
+	</target>
+	<target name="compile-idl-solaris" if="isSolaris">
+	    <property name="xpidl_executable" value="bin/xpidl"/>
 	</target>
 
 	<!-- generate XPConnect typelib files -->
