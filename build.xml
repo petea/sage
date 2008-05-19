@@ -75,6 +75,7 @@
 				<include name="xpcom_mac.tar.gz"/>
 				<include name="xpcom_mac_x86.tar.gz"/>
 				<include name="xpcom_linux.tar.gz"/>
+				<include name="xpcom_solaris.tar.gz"/>
 			</fileset>
 		</copy>
 		<property name="version" value="sage-local"/>
