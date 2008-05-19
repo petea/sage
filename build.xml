@@ -123,7 +123,7 @@
 		</exec>
 	</target>
 	<target name="xpcom-tools-solaris" if="isSolaris">
-		<exec dir="${xpcom}" executable="tar" failonerror="true">
+		<exec dir="${xpcom}" executable="gtar" failonerror="true">
 			<arg line="xzf xpcom_solaris.tar.gz"/>
 		</exec>
 	</target>
@@ -168,7 +168,7 @@
 	    <property name="xpidl_executable" value="xpidl"/>
 	</target>
 	<target name="compile-idl-solaris" if="isSolaris">
-	    <property name="xpidl_executable" value="bin/xpidl"/>
+	    <property name="xpidl_executable" value="gecko-sdk/bin/xpidl"/>
 	</target>
 
 	<!-- generate XPConnect typelib files -->
