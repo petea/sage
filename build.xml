@@ -50,8 +50,8 @@
 		<echo>The operating system is ${os.name}</echo>
 		<echo>The architecture is ${os.arch}</echo>
 		<condition property="isWin"><os family="windows"/></condition>
-		<condition property="isMac"><and><os family="mac"/><os family="unix"/><not><equals arg1="${os.arch}" arg2="i386"/></not></and></condition>
-		<condition property="isMacx86"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="i386"/></and></condition>
+		<condition property="isMacPPC"><and><os family="mac"/><os family="unix"/><not><equals arg1="${os.arch}" arg2="i386"/></not></and></condition>
+		<condition property="isMacX86"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="i386"/></and></condition>
 		<condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not><not><os name="SunOS"/></not></and></condition>
 		<condition property="isSolaris"><os name="SunOS"/></condition>
 		<mkdir dir="${build}"/>
@@ -78,13 +78,13 @@
 		<unzip src="${tools}/gecko-sdk-win.zip" dest="${build}"/>
 		<property name="xpidl_executable" value="xpidl.exe"/>
 	</target>
-	<target name="gecko-sdk-mac" if="isMac">
+	<target name="gecko-sdk-mac" if="isMacPPC">
 		<exec dir="${build}" executable="tar" failonerror="true">
 			<arg line="xjf ${tools}/gecko-sdk-mac-ppc.tar.bz2"/>
 		</exec>
 		<property name="xpidl_executable" value="xpidl"/>
 	</target>
-	<target name="gecko-sdk-mac-x86" if="isMacx86">
+	<target name="gecko-sdk-mac-x86" if="isMacX86">
 		<exec dir="${build}" executable="tar" failonerror="true">
 			<arg line="xjf ${tools}/gecko-sdk-mac-x86.tar.bz2"/>
 		</exec>
