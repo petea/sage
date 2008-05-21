@@ -72,6 +72,7 @@
 		<ant target="xpi"/>		
 	</target>
 
+	<!-- configure Gecko SDK -->
 	<target name="gecko-sdk" depends="gecko-sdk-win, gecko-sdk-mac, gecko-sdk-mac-x86, gecko-sdk-linux, gecko-sdk-solaris"/>
 	<target name="gecko-sdk-win" if="isWin">
 		<unzip src="${tools}/gecko-sdk-win.zip" dest="${build}"/>
@@ -102,6 +103,7 @@
 		<property name="xpidl_executable" value="xpidl"/>
 	</target>
 	
+	<!-- compile XPCOM typelib files -->
 	<target name="compile-idl" depends="gecko-sdk">
 		<apply dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
 			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl"/>
@@ -111,15 +113,13 @@
 		</apply>
 	</target>
 
-	<!-- generate XPConnect typelib files -->
+	<!-- copy component files to XPI directory -->
 	<target name="build-components" depends="compile-idl" if="hasComponents">
-	    
 		<mkdir dir="${build}/xpi/components"/>
-		
-		<!-- copy JS and XPT component files to XPI directory -->
 		<copy todir="${build}/xpi/components">
 			<fileset dir="${build}/src/components">
-				<exclude name="*.idl"/>
+				<include name="*.xpt"/>
+				<include name="*.js"/>
 			</fileset>
 		</copy>
 	</target>
