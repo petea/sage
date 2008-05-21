@@ -99,35 +99,16 @@
 		<exec dir="${build}" executable="gtar" failonerror="true">
 			<arg line="xjf ${tools}/gecko-sdk-solaris-x86.tar.bz2"/>
 		</exec>
-		<property name="xpidl_executable" value="gecko-sdk/bin/xpidl"/>
+		<property name="xpidl_executable" value="xpidl"/>
 	</target>
-
 	
 	<target name="compile-idl" depends="gecko-sdk">
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIDateFormatter.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIDateParser.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageILogger.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedItemEnclosure.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedItem.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeed.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedParser.idl"/>
-		</exec>
-		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedParserFactory.idl"/>
-		</exec>
+		<apply dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl"/>
+			<fileset dir="${build}/src/components">
+				<include name="*.idl"/>
+			</fileset>
+		</apply>
 	</target>
 
 	<!-- generate XPConnect typelib files -->
