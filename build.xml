@@ -43,8 +43,7 @@
 	<property name="src"		location="src"/>
 	<property name="tools"		location="tools"/>
 	<property name="gecko-sdk"	location="${build}/gecko-sdk"/>
-	<property name="tag"		value="HEAD"/>
-
+	
 	<!-- create build directories -->
 	<target name="init" depends="clean">
 		<echo>The operating system is ${os.name}</echo>
