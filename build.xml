@@ -40,10 +40,10 @@
 <project name="sage" default="build-local">
 	
 	<property name="build"		location="build"/>
-	<property name="src"			location="src"/>
+	<property name="src"		location="src"/>
 	<property name="tools"		location="tools"/>
-	<property name="xpcom"		location="${build}/xpcom"/>
-	<property name="tag"			value="HEAD"/>
+	<property name="gecko-sdk"	location="${build}/gecko-sdk"/>
+	<property name="tag"		value="HEAD"/>
 
 	<!-- create build directories -->
 	<target name="init" depends="clean">
@@ -55,9 +55,7 @@
 		<condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not><not><os name="SunOS"/></not></and></condition>
 		<condition property="isSolaris"><os name="SunOS"/></condition>
 		<mkdir dir="${build}"/>
-		<mkdir dir="${build}/xpcom"/>
 		<mkdir dir="${build}/src"/>
-		<mkdir dir="${build}/tmp"/>
 		<mkdir dir="${build}/xpi"/>
 		<mkdir dir="${build}/xpi/chrome"/>
 	</target>
@@ -69,136 +67,72 @@
 				<include name="**"/>
 			</fileset>
 		</copy>
-		<copy todir="${build}/xpcom">
-			<fileset dir="${tools}">
-				<include name="xpcom_win.zip"/>
-				<include name="xpcom_mac.tar.gz"/>
-				<include name="xpcom_mac_x86.tar.gz"/>
-				<include name="xpcom_linux.tar.gz"/>
-				<include name="xpcom_solaris.tar.gz"/>
-			</fileset>
-		</copy>
 		<property name="version" value="sage-local"/>
 		<condition property="hasComponents"><available file="${build}/src/components" type="dir"/></condition>
 		<ant target="xpi"/>		
 	</target>
-	
-	<!-- build from cvs source files -->
-	<target name="build-cvs" depends="init">
-		<cvspass cvsRoot=":pserver:guest@mozdev.org:/cvs" password="guest" passfile="${build}/.cvspass"/>
-		<cvs cvsRoot=":pserver:guest@mozdev.org:/cvs" package="sage" dest="${build}/tmp" command="export -r ${tag}" passfile="${build}/.cvspass"/>
-		<copy todir="${build}/src">
-			<fileset dir="${build}/tmp/sage/src">
-				<include name="**"/>
-			</fileset>
-		</copy>
-		<copy todir="${build}/xpcom">
-			<fileset dir="${build}/tmp/sage/tools">
-				<include name="xpcom_win.zip"/>
-				<include name="xpcom_mac.tar.gz"/>
-				<include name="xpcom_mac_x86.tar.gz"/>
-				<include name="xpcom_linux.tar.gz"/>
-			</fileset>
-		</copy>
-		<property name="version" value="${tag}"/>
-		<ant target="xpi"/>
-	</target>
 
-	<target name="xpcom-tools" depends="xpcom-tools-win, xpcom-tools-mac, xpcom-tools-mac-x86, xpcom-tools-linux, xpcom-tools-solaris"/>
-	<target name="xpcom-tools-win" if="isWin">
-		<unzip src="${xpcom}/xpcom_win.zip" dest="${xpcom}"/>
+	<target name="gecko-sdk" depends="gecko-sdk-win, gecko-sdk-mac, gecko-sdk-mac-x86, gecko-sdk-linux, gecko-sdk-solaris"/>
+	<target name="gecko-sdk-win" if="isWin">
+		<unzip src="${tools}/gecko-sdk-win.zip" dest="${build}"/>
+		<property name="xpidl_executable" value="xpidl.exe"/>
 	</target>
-	<target name="xpcom-tools-mac" if="isMac">
-		<exec dir="${xpcom}" executable="tar" failonerror="true">
-			<arg line="xzf xpcom_mac.tar.gz"/>
+	<target name="gecko-sdk-mac" if="isMac">
+		<exec dir="${build}" executable="tar" failonerror="true">
+			<arg line="xjf ${tools}/gecko-sdk-mac-ppc.tar.bz2"/>
 		</exec>
+		<property name="xpidl_executable" value="xpidl"/>
 	</target>
-	<target name="xpcom-tools-mac-x86" if="isMacx86">
-		<exec dir="${xpcom}" executable="tar" failonerror="true">
-			<arg line="xzf xpcom_mac_x86.tar.gz"/>
+	<target name="gecko-sdk-mac-x86" if="isMacx86">
+		<exec dir="${build}" executable="tar" failonerror="true">
+			<arg line="xjf ${tools}/gecko-sdk-mac-x86.tar.bz2"/>
 		</exec>
+		<property name="xpidl_executable" value="xpidl"/>
 	</target>
-	<target name="xpcom-tools-linux" if="isLinux">
-		<exec dir="${xpcom}" executable="tar" failonerror="true">
-			<arg line="xzf xpcom_linux.tar.gz"/>
+	<target name="gecko-sdk-linux" if="isLinux">
+		<exec dir="${build}" executable="tar" failonerror="true">
+			<arg line="xjf ${tools}/gecko-sdk-linux-x86.tar.bz2"/>
 		</exec>
+		<property name="xpidl_executable" value="xpidl"/>
 	</target>
-	<target name="xpcom-tools-solaris" if="isSolaris">
-		<exec dir="${xpcom}" executable="gtar" failonerror="true">
-			<arg line="xzf xpcom_solaris.tar.gz"/>
+	<target name="gecko-sdk-solaris" if="isSolaris">
+		<exec dir="${build}" executable="gtar" failonerror="true">
+			<arg line="xjf ${tools}/gecko-sdk-solaris-x86.tar.bz2"/>
 		</exec>
+		<property name="xpidl_executable" value="gecko-sdk/bin/xpidl"/>
 	</target>
 
 	
-	<target name="compile-idl" depends="compile-idl-win, compile-idl-mac, compile-idl-mac-x86, compile-idl-linux, compile-idl-solaris">
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIDateFormatter.idl"/>
+	<target name="compile-idl" depends="gecko-sdk">
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIDateFormatter.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIDateParser.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIDateParser.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageILogger.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageILogger.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIFeedItemEnclosure.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedItemEnclosure.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIFeedItem.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedItem.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIFeed.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeed.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIFeedParser.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedParser.idl"/>
 		</exec>
-		<exec dir="${xpcom}" executable="${xpcom}/${xpidl_executable}" failonerror="true">
-			<arg line="-m typelib -w -v -I -o sageIFeedParserFactory.idl"/>
+		<exec dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
+			<arg line="-m typelib -w -v -I ${gecko-sdk}/idl sageIFeedParserFactory.idl"/>
 		</exec>
-	</target>
-	<target name="compile-idl-win" if="isWin">
-	    <property name="xpidl_executable" value="base/xpidl.exe"/>
-	</target>
-	<target name="compile-idl-mac" if="isMac">
-	    <property name="xpidl_executable" value="base/xpidl"/>
-	</target>
-	<target name="compile-idl-mac-x86" if="isMacx86">
-	    <property name="xpidl_executable" value="base/xpidl"/>
-	</target>
-	<target name="compile-idl-linux" if="isLinux">
-	    <property name="xpidl_executable" value="base/xpidl"/>
-	</target>
-	<target name="compile-idl-solaris" if="isSolaris">
-	    <property name="xpidl_executable" value="gecko-sdk/bin/xpidl"/>
 	</target>
 
 	<!-- generate XPConnect typelib files -->
-	<target name="build-components" if="hasComponents">
-		<ant target="xpcom-tools"/>
-		<!-- copy interfaces to xpcom compile dir -->
-	    <copy todir="${xpcom}">
-			<fileset dir="${build}/src/components">
-				<include name="*.idl"/>    
-			</fileset>
-		</copy>
+	<target name="build-components" depends="compile-idl" if="hasComponents">
 	    
-		<!-- compile interfaces -->
-		<ant target="compile-idl"/>
-		
-		<!-- copy XPT files to build directory -->
-		<copy todir="${build}/src/components">
-			<fileset dir="${xpcom}">
-				<include name="sageIDateFormatter.xpt"/>
-				<include name="sageIDateParser.xpt"/>
-				<include name="sageILogger.xpt"/>
-				<include name="sageIFeedItemEnclosure.xpt"/>
-				<include name="sageIFeedItem.xpt"/>
-				<include name="sageIFeed.xpt"/>
-				<include name="sageIFeedParser.xpt"/>
-				<include name="sageIFeedParserFactory.xpt"/>
-			</fileset>
-		</copy>
-
 		<mkdir dir="${build}/xpi/components"/>
 		
 		<!-- copy JS and XPT component files to XPI directory -->
