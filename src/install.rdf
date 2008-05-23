@@ -52,39 +52,6 @@
 	<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
 	<em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
 
-	<em:file>
-		<Description about="urn:mozilla:extension:file:sage.jar">
-			<em:package>content/</em:package>
-			<em:skin>skin/classic/</em:skin>
-			<em:locale>locale/en-US/</em:locale>
-			<em:locale>locale/ja-JP/</em:locale>
-			<em:locale>locale/fr-FR/</em:locale>
-			<em:locale>locale/hu-HU/</em:locale>
-			<em:locale>locale/it-IT/</em:locale>
-			<em:locale>locale/nl-NL/</em:locale>
-			<em:locale>locale/ca-AD/</em:locale>
-			<em:locale>locale/zh-TW/</em:locale>
-			<em:locale>locale/de-DE/</em:locale>
-			<em:locale>locale/es-ES/</em:locale>
-			<em:locale>locale/ru-RU/</em:locale>
-			<em:locale>locale/de-AT/</em:locale>
-			<em:locale>locale/de-CH/</em:locale>
-			<em:locale>locale/sv-SE/</em:locale>
-			<em:locale>locale/ko-KR/</em:locale>
-			<em:locale>locale/sr-YU/</em:locale>
-			<em:locale>locale/sr-YU@Latn/</em:locale>
-			<em:locale>locale/es-AR/</em:locale>
-			<em:locale>locale/fi-FI/</em:locale>
-			<em:locale>locale/cs-CZ/</em:locale>
-			<em:locale>locale/el-GR/</em:locale>
-			<em:locale>locale/pl-PL/</em:locale>
-			<em:locale>locale/pt-BR/</em:locale>
-			<em:locale>locale/sl-SI/</em:locale>
-			<em:locale>locale/zh-CN/</em:locale>
-			<em:locale>locale/da-DK/</em:locale>
-		</Description>
-	</em:file>
-
 	<!-- Firefox -->
 	<em:targetApplication>
 		<Description>
