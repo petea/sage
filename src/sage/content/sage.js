@@ -98,7 +98,7 @@ function init() {
 }
 
 function discoverFeeds() {
-	window.openDialog("chrome://sage/contents/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close", bookmarksTree);
+	window.openDialog("chrome://sage/content/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close", bookmarksTree);
 }
 
 // TODO: This does not work in 0.9.x since the implementation for smart bookmarks
