@@ -44,7 +44,12 @@
 
 <?xul-overlay href="chrome://global/content/editMenuOverlay.xul"?>
 
+<?xml-stylesheet href="chrome://browser/content/places/places.css"?>
+<?xml-stylesheet href="chrome://browser/skin/places/places.css"?>
+<?xul-overlay href="chrome://browser/content/places/placesOverlay.xul"?>
+
 <!DOCTYPE page SYSTEM "chrome://sage/locale/sage.dtd">
+
 <page id="pageSagePanel" title="&sage.label;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -114,11 +119,11 @@
 	</stringbundleset>
 
 	<toolbox class="plain">
-		<toolbar>
-			<toolbarbutton id="checkFeeds" class="sage_button toolbarbutton-1" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
-			<toolbarbutton id="discoverFeeds" class="sage_button toolbarbutton-1" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
+		<toolbar id="feedListToolbar">
+			<toolbarbutton id="checkFeeds" class="toolbarbutton-1" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
+			<toolbarbutton id="discoverFeeds" class="toolbarbutton-1" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
 			<spacer flex="1"/>
-			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.options;" class="sage_button toolbarbutton-1">
+			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.options;" class="toolbarbutton-1">
 				<menupopup>
 					<menu label="&menu.sidebarLayout;">
 						<menupopup>
@@ -152,10 +157,12 @@
 
 	<vbox flex="1">
 		<vbox id="bookmarksTreeBox" flex="1" persist="height">
-			<bookmarks-tree id="bookmarksTree" type="single-column" flex="1"
-				onkeypress="if(event.keyCode == 13) bookmarksTreeClick(event)"
-				ondraggesture="if(event.originalTarget.localName == 'treechildren') nsDragAndDrop.startDrag(event, this.DNDObserver);"
-				onclick="bookmarksTreeClick(event)"/>
+			<tree id="placesTree" class="sidebar-placesTree" type="places" hidecolumnpicker="true" context="placesContext" flex="1">
+				<treecols>
+					<treecol id="title" flex="1" primary="true" hideheader="true"/>
+				</treecols>
+				<treechildren id="bookmarks-view-children" class="sidebar-placesTreechildren" view="bookmarks-view" flex="1"/>
+			</tree>
 		</vbox>
 		<splitter id="sage-splitter"/>
 		<vbox id="rssItemListBoxBox" flex="1" persist="height">
@@ -166,10 +173,10 @@
 			</sidebarheader>
 			<toolbox class="plain">
 				<toolbar id="itemListToolbar" iconsize="small" mode="icons">
-					<toolbarbutton id="markAsReadButton" class="sage_button toolbarbutton-1" command="cmd_markasread"/>
-					<toolbarbutton id="markAsUnreadButton" class="sage_button toolbarbutton-1" command="cmd_markasunread"/>
-					<toolbarbutton id="markAllAsReadButton" class="sage_button toolbarbutton-1" command="cmd_markallasread"/>
-					<toolbarbutton id="markAllAsUnreadButton" class="sage_button toolbarbutton-1" command="cmd_markallasunread"/>
+					<toolbarbutton id="markAsReadButton" class="toolbarbutton-1" command="cmd_markasread"/>
+					<toolbarbutton id="markAsUnreadButton" class="toolbarbutton-1" command="cmd_markasunread"/>
+					<toolbarbutton id="markAllAsReadButton" class="toolbarbutton-1" command="cmd_markallasread"/>
+					<toolbarbutton id="markAllAsUnreadButton" class="toolbarbutton-1" command="cmd_markallasunread"/>
 				</toolbar>
 			</toolbox>
 			<listbox id="rssItemListBox" class="plain" flex="1"

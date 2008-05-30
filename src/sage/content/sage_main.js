@@ -36,43 +36,34 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var sageMain = {
-	init: function() {
-		var stylesheets = document.styleSheets;
-		var platform = new String(navigator.platform);
-		if (platform.search(/^Mac/) == 0) {
-			for (var c = 0; c < stylesheets.length; c++) {
-				if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
-					stylesheets[c].disabled = true;
-				} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
-					stylesheets[c].disabled = false;
-				}
-			}
-		} else {
-			for (var c = 0; c < stylesheets.length; c++) {
-				if (stylesheets[c].href == "chrome://sage/skin/sage-button.css") {
-					stylesheets[c].disabled = false;
-				} else if (stylesheets[c].href == "chrome://sage/skin/sage-button-mac.css") {
-					stylesheets[c].disabled = true;
-				}
-			}
-		}
-		
+var sageOverlay = {
+
+	init: function() {		
 		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 		var logger = new Logger();
 		
 		logger.info("initialized");
 
+		var RDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
 		var localstore = RDF.GetDataSource("rdf:local-store");
-		var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
 		var prefBranch = prefService.getBranch("sage.");
+		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+		var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+		
 		if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-			var new_folder = BMSVC.createFolderInContainer("Sage Feeds", RDF.GetResource("NC:BookmarksRoot"), null);
-			prefBranch.setCharPref("folder_id", new_folder.Value);
-			BMSVC.createBookmarkInContainer("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml", null, "updated", null, null, new_folder, null);
-			BMSVC.createBookmarkInContainer("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports", null, "updated", null, null, new_folder, null);
-			BMSVC.createBookmarkInContainer("Sage Project News", "http://sage.mozdev.org/rss.xml", null, "updated", null, null, new_folder, null);
-			addSageButton();
+			var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
+			annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+			//prefBranch.setCharPref("folder_id", new_folder.Value);
+			function createBookmark(title, url) {
+				var bookmarkURI = ioService.newURI(url, null, null);
+				bookmarksService.insertBookmark(folderId, bookmarkURI, bookmarksService.DEFAULT_INDEX, title);
+			}
+			createBookmark("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
+			createBookmark("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
+			createBookmark("Sage Project News", "http://sage.mozdev.org/rss.xml");
+			this.addButton();
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowSearchBar"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowSearchBar"), RDF.GetResource("checked"), RDF.GetLiteral("false"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowTooltip"), true);
@@ -81,57 +72,74 @@ var sageMain = {
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
-			prefBranch.setCharPref("last_version", "1.4.0");
 		} else { // check for upgrade
 			var lastVersion = prefBranch.getCharPref("last_version");
-			if (lastVersion != "1.3.7" && lastVersion != "1.3.8" && lastVersion != "1.4.0") { // upgrade
-				addSageButton();
-				prefBranch.setCharPref("last_version", "1.4.0");
+			if (lastVersion != "1.3.7" &&
+				lastVersion != "1.3.8" &&
+				lastVersion != "1.3.9" &&
+				lastVersion != "1.3.10" &&
+				lastVersion != "1.4.0") { // upgrade
+				this.addButton();
 			}
 		}
-	}
-}
+		prefBranch.setCharPref("last_version", "1.4.0");
+	},
+	
+	uninit: function() {},
 
-function addSageButton() {
-	var toolbox = document.getElementById("navigator-toolbox");
-	var toolboxDocument = toolbox.ownerDocument;
-    
-	var hasSageButton = false;
-	for (var i = 0; i < toolbox.childNodes.length; ++i) {
-		var toolbar = toolbox.childNodes[i];
-		if (toolbar.localName == "toolbar" && toolbar.getAttribute("customizable") == "true") {
-			if (toolbar.currentSet.indexOf("sage-button") > -1) {
-				hasSageButton = true;
-			}
-    	}
-    }
-
-	if(!hasSageButton) {
+	hasButton: function() {
+		var toolbox = document.getElementById("navigator-toolbox");
 		for (var i = 0; i < toolbox.childNodes.length; ++i) {
-			toolbar = toolbox.childNodes[i];
-			if (toolbar.localName == "toolbar" &&  toolbar.getAttribute("customizable") == "true" && toolbar.id == "nav-bar") {
-				var newSet = "";
-				var child = toolbar.firstChild;
-				while (child) {
-					if(!hasSageButton && child.id == "urlbar-container") {
-						newSet += "sage-button,";
-						hasSageButton = true;
-					}
-					newSet += child.id + ",";
-					child = child.nextSibling;
+			var toolbar = toolbox.childNodes[i];
+			if (toolbar.localName == "toolbar" && toolbar.getAttribute("customizable") == "true") {
+				if (toolbar.currentSet.indexOf("sage-button") > -1) {
+					return true;
 				}
-				newSet = newSet.substring(0, newSet.length - 1);
-				toolbar.currentSet = newSet;
-				toolbar.setAttribute("currentset", newSet);
-				toolboxDocument.persist(toolbar.id, "currentset");
-				try {
-					BrowserToolboxCustomizeDone(true);
-				} catch (e) {}
-				break;
+	    	}
+	    }
+	},
+	
+	addButton: function() {
+		if (!this.hasButton()) {
+			var toolbox = document.getElementById("navigator-toolbox");
+			for (var i = 0; i < toolbox.childNodes.length; ++i) {
+				toolbar = toolbox.childNodes[i];
+				if (toolbar.localName == "toolbar" &&  toolbar.getAttribute("customizable") == "true" && toolbar.id == "nav-bar") {
+					var newSet = "";
+					var child = toolbar.firstChild;
+					while (child) {
+						if(child.id == "urlbar-container") {
+							newSet += "sage-button,";
+						}
+						newSet += child.id + ",";
+						child = child.nextSibling;
+					}
+					newSet = newSet.substring(0, newSet.length - 1);
+					toolbar.currentSet = newSet;
+					toolbar.setAttribute("currentset", newSet);
+					toolbox.ownerDocument.persist(toolbar.id, "currentset");
+					try {
+						BrowserToolboxCustomizeDone(true);
+					} catch (e) {}
+					break;
+				}
 			}
 		}
+	},
+	
+	// nsIDOMEventListener
+	handleEvent: function(event) {
+		switch(event.type) {
+			case "load":
+				this.init();
+				break;
+			case "unload":
+				this.uninit();
+				break;
+		}
 	}
+
 }
 
-
-window.addEventListener("load", function() { setTimeout(sageMain.init, 250); }, false);
+window.addEventListener("load", sageOverlay, false);
+window.addEventListener("unload", sageOverlay, false);

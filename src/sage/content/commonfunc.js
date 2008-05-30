@@ -364,6 +364,33 @@ var CommonFunc = {
 			formatted = version[0].toString() + '.' + version[1].toString() + '.' + version[2].toString();
 		}
 		return formatted;
+	},
+	
+	getSageRootFolderId: function() {
+		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+		var results = annotationService.getItemsWithAnnotation("sage/root", {});
+		if (results.length == 1) {
+			return results[0];
+		} else if (results.length == 0) {
+			throw "No root folder found";
+		} else if (results.length > 1) {
+			throw "Multiple root folders found";
+		}
+	},
+	
+	setSageRootFolderId: function(folderId) {
+		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+		var results = annotationService.getItemsWithAnnotation("sage/root", {});
+		if (results.length == 1) {
+			if (results[0] != folderId) {
+				annotationService.removeItemAnnotation(results[0], "sage/root");
+				annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+			}
+		} else if (results.length == 0) {
+			annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+		} else if (results.length > 1) {
+			throw "Multiple root folders found";
+		}
 	}
 
 }

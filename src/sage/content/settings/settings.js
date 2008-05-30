@@ -36,6 +36,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+const Cr = Components.results;
+const Cu = Components.utils;
+
 var sageFolderID;
 
 var chkUserCssEnable;
@@ -48,20 +53,20 @@ var feedItemOrder;
 var feedDiscoveryMode;
 
 var gList;
-var gNameArc;
 var strRes;
 
-function init() {
-	initServices();
-	initBMService();
+var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+var historyService = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService);
+var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 
+function init() {
 	strRes = document.getElementById("strRes");
 
 	var header = document.getElementById("header");
 	header.setAttribute("description", header.getAttribute("description") + " " + CommonFunc.versionString(CommonFunc.VERSION, 1));
 
-	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
-	gNameArc = RDF.GetResource(CommonFunc.NC_NS + "Name");
+	sageFolderID = CommonFunc.getSageRootFolderId();
+
 	gList = document.getElementById("select-menu");
 
 	chkUserCssEnable = document.getElementById("chkUserCssEnable");
@@ -94,7 +99,7 @@ function init() {
 }
 
 function accept() {
-	CommonFunc.setPrefValue(CommonFunc.FEED_FOLDER_ID, "str", sageFolderID);
+	CommonFunc.setSageRootFolderId(sageFolderID);
 	CommonFunc.setPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
 	CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", txtUserCssPath.value);
 	CommonFunc.setPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
@@ -138,34 +143,35 @@ function fillSelectFolderMenupopup () {
 	// to be removed once I checkin the top folder
 	var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
 	element.setAttribute("label", "Bookmarks");
-	element.setAttribute("id", "NC:BookmarksRoot");
+	element.setAttribute("id", bookmarksService.bookmarksMenuFolder);
 	popup.appendChild(element);
 
-	var folder = RDF.GetResource("NC:BookmarksRoot");
+	var query = historyService.getNewQuery();
+	query.setFolders([bookmarksService.bookmarksMenuFolder], 1);
+	var result = historyService.executeQuery(query, historyService.getNewQueryOptions());
+
+	var folder = result.root;
 	fillFolder(popup, folder, 1);
 	if(gList.selectedIndex == -1) {
 		gList.selectedIndex = 0;
-		sageFolderID = "NC:BookmarksRoot";
+		sageFolderID = bookmarksService.bookmarksMenuFolder;
 	}
 }
 
 function fillFolder(aPopup, aFolder, aDepth) {
-	RDFC.Init(BMDS, aFolder);
-	var children = RDFC.GetElements();
-	while (children.hasMoreElements()) {
-		var curr = children.getNext();
-		if (RDFCU.IsContainer(BMDS, curr)) {
-			curr = curr.QueryInterface(Components.interfaces.nsIRDFResource);
+	aFolder.containerOpen = true;
+	for (var c = 0; c < aFolder.childCount; c++) {
+		var child = aFolder.getChild(c);
+		if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
+			child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
 			var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
-			var name = BMDS.GetTarget(curr, gNameArc, true).QueryInterface(kRDFLITIID).Value;
-			var indentation = new Array(aDepth + 1).join("   ");
-			element.setAttribute("label", indentation + name);
-			element.setAttribute("id", curr.Value);
+			element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);
+			element.setAttribute("id", child.itemId);
 			aPopup.appendChild(element);
-			if (curr.Value == sageFolderID) {
+			if (child.itemId == sageFolderID) {
 				gList.selectedItem = element;
 			}
-			fillFolder(aPopup, curr, ++aDepth);
+			fillFolder(aPopup, child, ++aDepth);
 			--aDepth;
 		}
 	}

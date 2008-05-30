@@ -139,6 +139,7 @@
 		<copy todir="${build}/xpi">
 			<fileset dir="${build}/src">
 				<include name="install.*"/>
+				<include name="chrome.manifest"/>
 			</fileset>
 		</copy>
 	</target>

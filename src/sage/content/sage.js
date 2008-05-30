@@ -35,7 +35,7 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-
+ 
 var resultStrArray = null;
 
 	// XUL Object
@@ -54,15 +54,42 @@ var popupTimeoutId=0;
 
 var logger;
 
+var annotationService;
+
+var annotationObserver = {
+	onPageAnnotationSet : function(aURI, aName) { },
+	
+	onItemAnnotationSet : function(aItemId, aName) {
+		if (aName == "sage/root") {
+			bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
+		}
+	},
+	
+	onPageAnnotationRemoved : function(aURI, aName) { },
+	
+	onItemAnnotationRemoved: function(aItemId, aName) { }
+}
+
 function init() {
 	
 	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 	logger = new Logger();
+	
+	annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 
-	bookmarksTree = document.getElementById("bookmarksTree");
+	bookmarksTree = document.getElementById("placesTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemToolTip = document.getElementById("rssItemToolTip");
+	
+	try {
+		var sageRootFolderId = CommonFunc.getSageRootFolderId();
+		bookmarksTree.place = "place:queryType=1&folder=" + sageRootFolderId;
+	} catch(e) {
+		logger.error(e);
+	}
+	
+	annotationService.addObserver(annotationObserver);
 
 	strRes = document.getElementById("strRes");
 	bmStrRes = document.getElementById("bmStrRes");
@@ -76,15 +103,15 @@ function init() {
 	);
 	
 	// get feed folder location
-	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
+	//sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
 	// check for changes to the feed folder
-	prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.FEED_FOLDER_ID, sageFolderChanged);
+	//prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.FEED_FOLDER_ID, sageFolderChanged);
 	// set feed folder location
-	bookmarksTree.tree.setAttribute("ref", sageFolderID);
+	//bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
-	if (bookmarksTree.treeBoxObject.selection) {
-		bookmarksTree.treeBoxObject.selection.select(0);
-	}
+	//if (bookmarksTree.treeBoxObject.selection) {
+	//	bookmarksTree.treeBoxObject.selection.select(0);
+	//}
 
 	FeedSearch.init();
 	toggleShowSearchBar();
@@ -134,8 +161,8 @@ function done() {
 	// remove observer
 	linkVisitor.uninit();
 	
-	logger.info("flushing bookmark data store..");
-	BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
+	//logger.info("flushing bookmark data store..");
+	//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
 
 	logger.info("sidebar closed");
 }

@@ -42,12 +42,15 @@
 <Description about="urn:mozilla:install-manifest">
 
 	<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
-	<em:name>Sage</em:name>
 	<em:version>1.4</em:version>
+	<em:type>2</em:type>
+
+	<em:name>Sage</em:name>
 	<em:description>A lightweight RSS and Atom feed reader.</em:description>
 	<em:creator>The Sage Team</em:creator>
 	<em:contributor>Peter Andrews</em:contributor>
 	<em:contributor>Erik Arvidsson</em:contributor>
+
 	<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
 	<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
 	<em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>

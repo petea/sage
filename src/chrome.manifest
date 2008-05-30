@@ -31,4 +31,5 @@ locale	sage	da-DK			jar:chrome/sage.jar!/locale/da-DK/
 
 overlay	chrome://browser/content/browser.xul			chrome://sage/content/sage-Overlay.xul
 style	chrome://browser/content/browser.xul			chrome://sage/skin/sage-button.css
+style	chrome://browser/content/browser.xul			chrome://sage/skin/sage-button-mac.css		os=Darwin
 style	chrome://global/content/customizeToolbar.xul	chrome://sage/skin/sage-button.css

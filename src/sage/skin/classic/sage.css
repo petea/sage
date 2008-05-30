@@ -38,14 +38,6 @@
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-toolbarbutton.sage_button {
-	list-style-image:	url("chrome://sage/skin/toolbar-small.png") !important;
-}
-
-toolbarbutton.sage_button2 > .toolbarbutton-text {
-	display: none !important;
-}
-
 /* Override to hide icon and show text */
 #toolsMenuButton {
 	-moz-box-orient:	horizontal;
@@ -57,6 +49,10 @@ toolbarbutton.sage_button2 > .toolbarbutton-text {
 
 #toolsMenuButton .toolbarbutton-icon {
 	display:	none;
+}
+
+#feedListToolbar toolbarbutton {
+	list-style-image: url("chrome://sage/skin/toolbar-small.png") !important;
 }
 
 #checkFeeds {
@@ -91,38 +87,34 @@ toolbarbutton.sage_button2 > .toolbarbutton-text {
 	-moz-image-region: rect(48px 32px 64px 16px) !important;
 }
 
-#bookmarksTree {
-	-moz-binding: url("chrome://sage/content/bookmarksTree.xml#bookmarks-tree-name");
-}
-
-treechildren::-moz-tree-image(feed),
-treechildren::-moz-tree-image(feed, no-updated),
-treechildren::-moz-tree-image(feed, no-check) {
+#bookmarksTree treechildren::-moz-tree-image(feed),
+#bookmarksTree treechildren::-moz-tree-image(feed, no-updated),
+#bookmarksTree treechildren::-moz-tree-image(feed, no-check) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
 }
-treechildren::-moz-tree-image(feed, updated) {
+#bookmarksTree treechildren::-moz-tree-image(feed, updated) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
 }
-treechildren::-moz-tree-image(feed, unknown) {
+#bookmarksTree treechildren::-moz-tree-image(feed, unknown) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
-treechildren::-moz-tree-image(checking) {
+#bookmarksTree treechildren::-moz-tree-image(checking) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
 }
-treechildren::-moz-tree-image(feed, error) {
+#bookmarksTree treechildren::-moz-tree-image(feed, error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
 }
-treechildren::-moz-tree-cell-text(feed, updated) {
+#bookmarksTree treechildren::-moz-tree-cell-text(feed, updated) {
 	font-weight: bold !important;
 }
 
 /* If this is removed, please remove next rule as well */
-treechildren::-moz-tree-twisty {
+#bookmarksTree treechildren::-moz-tree-twisty {
 	-moz-appearance: none !important;
 	padding-right: 0px !important;
 	padding-top: 0px !important;
@@ -130,11 +122,11 @@ treechildren::-moz-tree-twisty {
 	list-style-image: none !important;
 }
 /* Work around for bug in separators at level 0 when twisty has width 0 */
-treechildren::-moz-tree-cell-text(Name, separator) {
+#bookmarksTree treechildren::-moz-tree-cell-text(Name, separator) {
 	margin-left:	20px;
 }
 
-treechildren::-moz-tree-separator {
+#bookmarksTree treechildren::-moz-tree-separator {
 	-moz-appearance: separator !important;
 	border-top: 1px solid ThreeDShadow !important;
 	border-bottom: 1px solid ThreeDHighlight !important;
@@ -166,11 +158,12 @@ treechildren::-moz-tree-separator {
 
 /* ++++++++++ List Tool Bar ++++++++++++ */
 
-toolbarbutton#markAsReadButton,
-toolbarbutton#markAsUnreadButton,
-toolbarbutton#markAllAsReadButton,
-toolbarbutton#markAllAsUnreadButton {
+#itemListToolbar toolbarbutton {
 	list-style-image: url("chrome://sage/skin/toolbar-small.png") !important;
+}
+
+#itemListToolbar toolbarbutton label {
+	display: none !important;
 }
 
 #markAsReadButton {
