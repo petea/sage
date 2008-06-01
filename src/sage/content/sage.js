@@ -138,22 +138,25 @@ function extendPlaces() {
 			var itemId = node.itemId;
 			if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
 				if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
-					if (PlacesUtils.annotations.itemHasAnnotation(itemId, "sage/state")) {
+					try {
 						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
-						properties.push("sage_state_" + state);
-					}
+						properties.push(this._getAtomFor("sage_state_" + state));
+						logger.info("has sage/state annotation: " + state);
+					} catch (e) {}
 				}
 			} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
 				if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
-					if (PlacesUtils.annotations.itemHasAnnotation(itemId, "sage/state")) {
+					try {
 						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
-						properties.push("sage_state_" + state);
-					}
+						properties.push(this._getAtomFor("sage_state_" + state));
+					} catch (e) {}
 				}
 			}
-		}
-		for (var i = 0; i < properties.length; i++) {
-			aProperties.AppendElement(properties[i]);
+			logger.info("nodeType: " + nodeType + " properties: " + properties.length);
+			for (var i = 0; i < properties.length; i++) {
+				aProperties.AppendElement(properties[i]);
+				this._visibleElements[aRow].properties.push(properties[i]);
+			}
 		}
 	}
 }
@@ -225,7 +228,7 @@ function updateCheck(aCheckFolderId) {
 	if(aCheckFolderId) {
 		UpdateChecker.startCheck(aCheckFolderId);
 	} else {
-		UpdateChecker.startCheck(sageFolderID);
+		UpdateChecker.startCheck(CommonFunc.getSageRootFolderId());
 	}
 }
 

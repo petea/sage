@@ -93,7 +93,7 @@
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
 }
-#bookmarksTree treechildren::-moz-tree-image(feed, updated) {
+#placesTree treechildren::-moz-tree-image(sage_state_updated) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
 }
@@ -101,7 +101,7 @@
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
-#bookmarksTree treechildren::-moz-tree-image(checking) {
+#placesTree treechildren::-moz-tree-image(sage_state_checking) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
 }

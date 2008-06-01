@@ -37,42 +37,61 @@
  * ***** END LICENSE BLOCK ***** */
 
 var UpdateChecker = {
+
 	checking: false,
 	checkList: null,
 	httpReq: null,
-	lastResource: null,
+	lastItemId: -1,
 	logger: null,
-	
-	getURL: function(resource) {
-		var type = CommonFunc.getBMDSProperty(resource, CommonFunc.RDF_TYPE);
-		var url;
-		if(type == CommonFunc.NC_NS + "Bookmark") {
-			url = CommonFunc.getBMDSProperty(resource, CommonFunc.BM_URL);
+	STATE_ANNO: "sage/state",
+	SIG_ANNO: "sage/signature",
+
+	getURL: function(aItemId) {
+		var livemarksvc = Cc["@mozilla.org/browser/livemark-service;2"]
+											.getService(Ci.nsILivemarkService);
+		if (livemarksvc.isLivemark(aItemId)) {
+			return livemarkService.getSiteURI(aItemId).spec;
+		} else {
+			return PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
 		}
-		if(type == CommonFunc.NC_NS + "Livemark") {
-			url = CommonFunc.getBMDSProperty(resource, CommonFunc.BM_FEEDURL);
-		}
-		return url;
 	},
-	
+
 	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
-		
+
+		var hist = PlacesUtils.history;
+		var bmsvc = PlacesUtils.bookmarks;
+		var anno = PlacesUtils.annotations;
+
 		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 		this.logger = new Logger();
 
-		var resourceList = CommonFunc.getBMDSCChildren(aCheckFolderId);
-		this.checkList = new Array();
+		sageRootFolderID = CommonFunc.getSageRootFolderId();
+
+		var query = hist.getNewQuery();
+		var options = hist.getNewQueryOptions();
+		query.setFolders([aCheckFolderId], 1);
+		var result = hist.executeQuery(query, options);
+		this.checkList = [];
 
 		// select feeds to be checked, exclude separators and updated feeds
-		for(var i = 0; i < resourceList.length; i++) {
-			var url = this.getURL(resourceList[i]);
-			var desc = CommonFunc.getBMDSProperty(resourceList[i], CommonFunc.BM_DESCRIPTION);
-			var status = desc.split(" ")[0];
+		var cont = result.root;
+		cont.containerOpen = true;
+		for (var i = 0; i < cont.childCount; i ++) {
+			var node = cont.getChild(i);
+			var url = this.getURL(node.itemId);
+			var itemId = node.itemId;
+			var status = null;
+			try {
+				status = anno.getItemAnnotationString(itemId, this.STATE_ANNO);
+			} catch(e) {
+				// we could check for existence before, but the try/catch is more efficient
+			}
 			if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
-				this.checkList.push(resourceList[i]);
+				this.checkList.push(itemId);
 			}
 		}
+		cont.containerOpen = false;
 
 		this.logger.info("found " + this.checkList.length + " feed(s) to check");
 
@@ -85,15 +104,14 @@ var UpdateChecker = {
 	done: function() {
 		if(this.checking) {
 			this.httpReq.abort();
-			this.setCheckingFlag(this.lastResource, false);
+			this.setStatusFlag(this.lastItemId, CommonFunc.STATUS_NO_UPDATE);
 		}
 	},
 
 	check: function() {
-		this.lastResource = this.checkList.shift();
-		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
-		var type = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.RDF_TYPE);
-		var url = this.getURL(this.lastResource);
+		this.lastItemId = this.checkList.shift();
+		var name = PlacesUtils.bookmarks.getItemTitle(this.lastItemId);
+		var url = this.getURL(this.lastItemId);
 		
 		this.logger.info("checking: " + name);
 
@@ -118,7 +136,7 @@ var UpdateChecker = {
 			this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
 			this.httpReq.overrideMimeType("application/xml");
 			this.httpReq.send(null);
-			this.setCheckingFlag(this.lastResource, true);
+			this.setStatusFlag(this.lastItemId, CommonFunc.STATUS_CHECKING);
 			this.onCheck(name, url);
 		} catch(e) {
 				// FAILURE
@@ -167,11 +185,12 @@ var UpdateChecker = {
 	},
 
 	checkResult: function(aSucceed, aLastModified, feed) {
-		var name = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_NAME);
-		var url = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_URL);
+		var name = PlacesUtils.bookmarks.getItemTitle(this.lastItemId);
+		var url = PlacesUtils.bookmarks.getBookmarkURI(this.lastItemId).spec;
 		var status = 0;
 
-		var lastVisit = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_LAST_VISIT);
+		//var lastVisit = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_LAST_VISIT);
+		var lastVisit;
 		if(!lastVisit) {
 			lastVisit = 0;
 		} else {
@@ -179,9 +198,11 @@ var UpdateChecker = {
 		}
 
 		if(aSucceed) {
-			var sig = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[(.*)\]/);
-			if (sig) {
-				sig = sig[1];
+			var sig = null;
+			try {
+				sig = anno.getItemAnnotationString(this.lastItemId, this.SIG_ANNO);
+			} catch(e) {
+				// we could check for existence before, but the try/catch is more efficient
 			}
 			if(aLastModified) {
 				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
@@ -200,8 +221,7 @@ var UpdateChecker = {
 			status = CommonFunc.STATUS_ERROR;
 		}
 
-		CommonFunc.setBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION, status + " " + (CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/) || ""));
-		this.setCheckingFlag(this.lastResource, false);
+		this.setStatusFlag(this.lastItemId, status);
 		
 		if(this.checkList.length == 0) {
 			this.checking = false;
@@ -212,30 +232,16 @@ var UpdateChecker = {
 		}
 	},
 
-	setCheckingFlag: function(aRes, aSet, aRecursive) {
-		if (!aSet) {
-			// Clear the "checking" indicator on lastResource if it is set
-			var desc = CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION);
-			var status = desc.split(" ")[0];
-			if (status == CommonFunc.STATUS_CHECKING) {
-				var re = new RegExp("(^|\\s)" + CommonFunc.STATUS_CHECKING + "(\\s|$)", "g");
-				CommonFunc.setBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION,
-										   desc.replace(re, ""));
-			}
-		} else {
-			CommonFunc.setBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION,
-									   CommonFunc.STATUS_CHECKING + " " +
-									   (CommonFunc.getBMDSProperty(aRes, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/) || ""));
-		}
+	setStatusFlag: function(aItemId, aState, aRecursive) {
+		logger.info("setting " + this.STATE_ANNO + " => " + aState + " on item " + aItemId);
+		PlacesUtils.annotations.setItemAnnotation(aItemId, this.STATE_ANNO, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
 
 		if (aRecursive || aRecursive === undefined) {
 			// Go to parent folder
-			var predicate = BMDS.ArcLabelsIn(aRes).getNext();
-			if (predicate instanceof Components.interfaces.nsIRDFResource) {
-				var parent = BMDS.GetSource(predicate, aRes, true);
-				if (parent.Value != sageFolderID) {
-					this.setCheckingFlag(parent, aSet);
-				}
+			var parentFolderId = PlacesUtils.bookmarks.getFolderIdForItem(aItemId);
+			if (parentFolderId != -1 &&
+					parentFolderId != sageRootFolderID) {
+				this.setStatusFlag(parentFolderId, aState, true);
 			}
 		}
 	},
