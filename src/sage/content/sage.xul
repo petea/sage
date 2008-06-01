@@ -38,7 +38,6 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css" type="text/css"?>
 <?xml-stylesheet href="chrome://browser/skin/browser.css" type="text/css"?>
 <?xml-stylesheet href="chrome://sage/skin/sage.css" type="text/css"?>
 
@@ -56,8 +55,6 @@
 	onload="init();" onunload="done()">
 
 	<script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
-	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
-	<script type="application/x-javascript" src="chrome://browser/content/utilityOverlay.js"/>
 	<script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
 	<script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
 	
@@ -71,7 +68,7 @@
 	<script type="application/x-javascript" src="chrome://sage/content/getrsstitle.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
 
-		<!-- bookmarks & edit commands -->
+	<!-- bookmarks & edit commands -->
 	<commandset id="editMenuCommands">
 		<command id="cmd_bm_open" 		   oncommand="bookmarksOpen();"/>
 		<command id="cmd_bm_openinnewwindow" oncommand="bookmarksOpen('window');"/>
@@ -115,7 +112,6 @@
 
 	<stringbundleset>
 		<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
-		<stringbundle id="bmStrRes" src="chrome://browser/locale/bookmarks/bookmarks.properties"/>
 	</stringbundleset>
 
 	<toolbox class="plain">

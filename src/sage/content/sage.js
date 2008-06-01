@@ -38,8 +38,7 @@
  
 var resultStrArray = null;
 
-	// XUL Object
-var strRes, bmStrRes; // stringbundle Object
+var strRes; // stringbundle Object
 var bookmarksTree;
 var rssItemListBox;
 var rssTitleLabel;
@@ -54,29 +53,29 @@ var popupTimeoutId=0;
 
 var logger;
 
-var annotationService;
-
 var annotationObserver = {
-	onPageAnnotationSet : function(aURI, aName) { },
 	
-	onItemAnnotationSet : function(aItemId, aName) {
+	onPageAnnotationSet: function(aURI, aName) { },
+	
+	onItemAnnotationSet: function(aItemId, aName) {
 		if (aName == "sage/root") {
 			bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
 		}
 	},
 	
-	onPageAnnotationRemoved : function(aURI, aName) { },
+	onPageAnnotationRemoved: function(aURI, aName) { },
 	
 	onItemAnnotationRemoved: function(aItemId, aName) { }
+	
 }
 
+
 function init() {
-	
 	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 	logger = new Logger();
 	
-	annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-
+	extendPlaces();
+	
 	bookmarksTree = document.getElementById("placesTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
@@ -89,10 +88,9 @@ function init() {
 		logger.error(e);
 	}
 	
-	annotationService.addObserver(annotationObserver);
+	PlacesUtils.annotations.addObserver(annotationObserver);
 
 	strRes = document.getElementById("strRes");
-	bmStrRes = document.getElementById("bmStrRes");
 	resultStrArray = new Array(
 		strRes.getString("RESULT_OK_STR"),
 		strRes.getString("RESULT_PARSE_ERROR_STR"),
@@ -102,12 +100,6 @@ function init() {
 		strRes.getString("RESULT_ERROR_FAILURE_STR")
 	);
 	
-	// get feed folder location
-	//sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
-	// check for changes to the feed folder
-	//prefObserverSageFolder = CommonFunc.addPrefListener(CommonFunc.FEED_FOLDER_ID, sageFolderChanged);
-	// set feed folder location
-	//bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	// select first entry
 	//if (bookmarksTree.treeBoxObject.selection) {
 	//	bookmarksTree.treeBoxObject.selection.select(0);
@@ -121,7 +113,49 @@ function init() {
 	document.documentElement.controllers.appendController(readStateController);
 	readStateController.onCommandUpdate();
 
-	logger.info("sidebar open");
+	logger.info("sidebar initialized");
+}
+
+function extendPlaces() {
+	PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;	
+	PlacesTreeView.prototype.getCellProperties =
+	function sage_getCellProperties(aRow, aColumn, aProperties) {
+		var properties = this._visibleElements[aRow].properties;
+		
+		var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
+		this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
+		for (var i = 0; i < propertiesBase.Count(); i++) {
+			aProperties.AppendElement(propertiesBase.GetElementAt(i));
+		}
+				
+		if (aColumn.id != "title")
+		  return;
+		
+		if (!properties) {
+			properties = [];
+			var node = this._visibleElements[aRow].node;
+			var nodeType = node.type;
+			var itemId = node.itemId;
+			if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
+				if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
+					if (PlacesUtils.annotations.itemHasAnnotation(itemId, "sage/state")) {
+						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
+						properties.push("sage_state_" + state);
+					}
+				}
+			} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
+				if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
+					if (PlacesUtils.annotations.itemHasAnnotation(itemId, "sage/state")) {
+						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
+						properties.push("sage_state_" + state);
+					}
+				}
+			}
+		}
+		for (var i = 0; i < properties.length; i++) {
+			aProperties.AppendElement(properties[i]);
+		}
+	}
 }
 
 function discoverFeeds() {
@@ -139,13 +173,6 @@ function showOnlyUpdated() {
 	} else {
 		bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	}
-}
-
-function sageFolderChanged(subject, topic, prefName) {
-		// observe Preference
-	sageFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
-	bookmarksTree.tree.setAttribute("ref", sageFolderID);
-	bookmarksTree.treeBoxObject.view.selection.select(0);
 }
 
 function done() {
