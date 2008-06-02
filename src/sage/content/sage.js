@@ -49,7 +49,6 @@ var prefObserverSageFolder;
 var lastResource;
 var sageFolderID = "";
 var enableTooltip = true;
-var popupTimeoutId=0;
 
 var logger;
 
@@ -58,8 +57,31 @@ var annotationObserver = {
 	onPageAnnotationSet: function(aURI, aName) { },
 	
 	onItemAnnotationSet: function(aItemId, aName) {
-		if (aName == "sage/root") {
-			bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
+		switch (aName) {
+			case "sage/root":
+				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
+				break;
+			case "sage/state":
+				/* not sure why this doesn't work...
+				function findNode(node) {
+					if (node.itemId == aItemId) {
+						return node;
+					} else if (PlacesUtils.nodeIsContainer(node)) {
+						asContainer(node);
+						var match;
+						for (var child = 0; child < node.childCount; child++) {
+							match = findNode(node.getChild(child));
+							if (match) {
+								return match;
+							}
+						}
+					}
+					return null;
+				}
+				bookmarksTree.getResultView().itemChanged(findNode(bookmarksTree.getResultNode()));
+				*/
+				bookmarksTree.getResultView().invalidateAll();
+				break;
 		}
 	},
 	
@@ -74,7 +96,7 @@ function init() {
 	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 	logger = new Logger();
 	
-	extendPlaces();
+	extendPlacesTreeView();
 	
 	bookmarksTree = document.getElementById("placesTree");
 	rssItemListBox = document.getElementById("rssItemListBox");
@@ -116,7 +138,26 @@ function init() {
 	logger.info("sidebar initialized");
 }
 
-function extendPlaces() {
+function uninit() {
+	if(prefObserverSageFolder) {
+		CommonFunc.removePrefListener(prefObserverSageFolder);
+	}
+
+	if (feedLoader) {
+		feedLoader.abort();
+	}
+	UpdateChecker.done();
+	
+	// remove observer
+	linkVisitor.uninit();
+	
+	//logger.info("flushing bookmark data store..");
+	//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
+
+	logger.info("sidebar closed");
+}
+
+function extendPlacesTreeView() {
 	PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;	
 	PlacesTreeView.prototype.getCellProperties =
 	function sage_getCellProperties(aRow, aColumn, aProperties) {
@@ -141,24 +182,26 @@ function extendPlaces() {
 					try {
 						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
 						properties.push(this._getAtomFor("sage_state_" + state));
-						logger.info("has sage/state annotation: " + state);
-					} catch (e) {}
+					} catch (e) { }
 				}
 			} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
 				if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
 					try {
 						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
 						properties.push(this._getAtomFor("sage_state_" + state));
-					} catch (e) {}
+					} catch (e) { }
 				}
 			}
-			logger.info("nodeType: " + nodeType + " properties: " + properties.length);
 			for (var i = 0; i < properties.length; i++) {
 				aProperties.AppendElement(properties[i]);
 				this._visibleElements[aRow].properties.push(properties[i]);
 			}
 		}
 	}
+	PlacesTreeView.prototype.getImageSrc =
+	function sage_getImageSrc(aRow, aColumn) {
+		return "";
+	}	
 }
 
 function discoverFeeds() {
@@ -176,25 +219,6 @@ function showOnlyUpdated() {
 	} else {
 		bookmarksTree.tree.setAttribute("ref", sageFolderID);
 	}
-}
-
-function done() {
-	if(prefObserverSageFolder) {
-		CommonFunc.removePrefListener(prefObserverSageFolder);
-	}
-
-	if (feedLoader) {
-		feedLoader.abort();
-	}
-	UpdateChecker.done();
-	
-	// remove observer
-	linkVisitor.uninit();
-	
-	//logger.info("flushing bookmark data store..");
-	//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
-
-	logger.info("sidebar closed");
 }
 
 function openOPMLWizard() {

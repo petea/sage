@@ -38,25 +38,23 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/content/places/places.css"?>
+<?xml-stylesheet href="chrome://browser/skin/places/places.css"?>
+<?xul-overlay href="chrome://global/content/editMenuOverlay.xul"?>
+<?xul-overlay href="chrome://browser/content/places/placesOverlay.xul"?>
+
 <?xml-stylesheet href="chrome://browser/skin/browser.css" type="text/css"?>
 <?xml-stylesheet href="chrome://sage/skin/sage.css" type="text/css"?>
 
-<?xul-overlay href="chrome://global/content/editMenuOverlay.xul"?>
-
-<?xml-stylesheet href="chrome://browser/content/places/places.css"?>
-<?xml-stylesheet href="chrome://browser/skin/places/places.css"?>
-<?xul-overlay href="chrome://browser/content/places/placesOverlay.xul"?>
-
 <!DOCTYPE page SYSTEM "chrome://sage/locale/sage.dtd">
 
-<page id="pageSagePanel" title="&sage.label;"
+<page id="sagePanel" title="&sage.label;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	onload="init();" onunload="done()">
+	onload="init();"
+	onunload="uninit();">
 
-	<script type="application/x-javascript" src="chrome://global/content/globalOverlay.js"/>
-	<script type="application/x-javascript" src="chrome://global/content/nsDragAndDrop.js"/>
-	<script type="application/x-javascript" src="chrome://global/content/nsTransferable.js"/>
+	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/sidebarUtils.js"/>	
 	
 	<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
@@ -67,47 +65,35 @@
 	<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/getrsstitle.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
-
-	<!-- bookmarks & edit commands -->
-	<commandset id="editMenuCommands">
-		<command id="cmd_bm_open" 		   oncommand="bookmarksOpen();"/>
-		<command id="cmd_bm_openinnewwindow" oncommand="bookmarksOpen('window');"/>
-		<command id="cmd_bm_openinnewtab"	 oncommand="bookmarksOpen('tab');"/>
-		<command id="cmd_bm_expandfolder"	 oncommand="goDoCommand('cmd_bm_expandfolder');"/>
-		<command id="cmd_bm_openfolder"	   oncommand="goDoCommand('cmd_bm_openfolder');"/>
-		<command id="cmd_bm_managefolder"	 oncommand="goDoCommand('cmd_bm_managefolder');"/>
-		<command id="cmd_bm_newfolder"	   oncommand="goDoCommand('cmd_bm_newfolder');"/>
-		<command id="cmd_bm_newbookmark"	   oncommand="goDoCommand('cmd_bm_newbookmark');"/>
-		<command id="cmd_bm_newseparator"	 oncommand="goDoCommand('cmd_bm_newseparator');"/>
-		<command id="cmd_bm_find" 		   oncommand="goDoCommand('cmd_bm_find');"/>
-		<command id="cmd_bm_properties"	   oncommand="goDoCommand('cmd_bm_properties');"/>
-		<command id="cmd_bm_sortbyname"	   oncommand="goDoCommand('cmd_bm_sortbyname');"/>
-	</commandset>
-
+	
+	<commandset id="placesCommands"/>
+	<commandset id="editMenuCommands"/>
+	<popup id="placesContext"/>
+	
 	<keyset>
-	  <key id="key_toggleread" key="&toggleReadState.command.key;" command="cmd_toggleread"/>
-	  <key id="key_markallasread" modifiers="&markAllAsRead.command.modifiers;"
-		   key="&markAllAsRead.command.key;" command="cmd_markallasread"/>
+		<key id="key_toggleread" key="&toggleReadState.command.key;" command="cmd_toggleread"/>
+		<key id="key_markallasread" modifiers="&markAllAsRead.command.modifiers;"
+			key="&markAllAsRead.command.key;" command="cmd_markallasread"/>
 	</keyset>
 
 	<commandset id="readCommands">
 		<command id="cmd_markasread" oncommand="readStateController.doCommand('cmd_markasread')"
-				 tooltiptext="&markAsRead.command.tooltip;"
-				 label="&markAsRead.command.label;"
-				 accesskey="&markAsRead.command.accesskey;"/>
+			tooltiptext="&markAsRead.command.tooltip;"
+			label="&markAsRead.command.label;"
+			accesskey="&markAsRead.command.accesskey;"/>
 		<command id="cmd_markasunread" oncommand="readStateController.doCommand('cmd_markasunread')"
-				 label="&markAsUnread.command.label;"
-				 tooltiptext="&markAsUnread.command.tooltip;"
-				 accesskey="&markAsUnread.command.accesskey;"/>
+			label="&markAsUnread.command.label;"
+			tooltiptext="&markAsUnread.command.tooltip;"
+			accesskey="&markAsUnread.command.accesskey;"/>
 		<command id="cmd_toggleread" oncommand="readStateController.doCommand('cmd_toggleread')"/>
 		<command id="cmd_markallasread" oncommand="readStateController.doCommand('cmd_markallasread')"
-				 label="&markAllAsRead.command.label;"
-				 tooltiptext="&markAllAsRead.command.tooltip;"
-				 accesskey="&markAllAsRead.command.accesskey;"/>
+			label="&markAllAsRead.command.label;"
+			tooltiptext="&markAllAsRead.command.tooltip;"
+			accesskey="&markAllAsRead.command.accesskey;"/>
 		<command id="cmd_markallasunread" oncommand="readStateController.doCommand('cmd_markallasunread')"
-				 label="&markAllAsUnread.command.label;"
-				 tooltiptext="&markAllAsUnread.command.tooltip;"
-				 accesskey="&markAllAsUnread.command.accesskey;"/>
+			label="&markAllAsUnread.command.label;"
+			tooltiptext="&markAllAsUnread.command.tooltip;"
+			accesskey="&markAllAsUnread.command.accesskey;"/>
 	</commandset>
 
 	<stringbundleset>
@@ -153,7 +139,16 @@
 
 	<vbox flex="1">
 		<vbox id="bookmarksTreeBox" flex="1" persist="height">
-			<tree id="placesTree" class="sidebar-placesTree" type="places" hidecolumnpicker="true" context="placesContext" flex="1">
+			<tree id="placesTree"
+				class="sidebar-placesTree"
+				type="places"
+				hidecolumnpicker="true"
+				context="placesContext"
+				flex="1"
+				onkeypress="SidebarUtils.handleTreeKeyPress(event);"
+				onclick="SidebarUtils.handleTreeClick(this, event, true);"
+				onmousemove="SidebarUtils.handleTreeMouseMove(event);"
+				onmouseout="SidebarUtils.clearURLFromStatusBar();">
 				<treecols>
 					<treecol id="title" flex="1" primary="true" hideheader="true"/>
 				</treecols>
@@ -196,13 +191,13 @@
 			</template>
 		</popup>
 		<popup id="rssItemListBoxContextMenu"
-			   onpopupshowing="updateItemContextMenu()">
+			onpopupshowing="updateItemContextMenu()">
 			<menuitem id="rssOpenItem" default="true" oncommand="openListItem()"
-					  label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
+				label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
 			<menuitem id="rssOpenNewTabItem" oncommand="openListItem('tab')"
-					  label="&openInNewTab.label;" accesskey="&openInNewTab.accesskey;"/>
+				label="&openInNewTab.label;" accesskey="&openInNewTab.accesskey;"/>
 			<menuitem id="rssOpenNewWindowItem" oncommand="openListItem('window')"
-					  label="&openInNewWindow.label;" accesskey="&openInNewWindow.accesskey;"/>
+				label="&openInNewWindow.label;" accesskey="&openInNewWindow.accesskey;"/>
 			<menuseparator/>
 			<menuitem id="rssMarkAsReadItem" command="cmd_markasread"/>
 			<menuitem id="rssMarkAsUnreadItem" command="cmd_markasunread"/>
