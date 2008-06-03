@@ -58,10 +58,10 @@ var annotationObserver = {
 	
 	onItemAnnotationSet: function(aItemId, aName) {
 		switch (aName) {
-			case "sage/root":
+			case CommonFunc.ANNO_ROOT:
 				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
 				break;
-			case "sage/state":
+			case CommonFunc.ANNO_STATUS:
 				/* not sure why this doesn't work...
 				function findNode(node) {
 					if (node.itemId == aItemId) {
@@ -329,37 +329,16 @@ function createTreeContextMenu2(aEvent) {
 	}
 }
 
-function bookmarksTreeClick(aEvent) {
-	var selectedItemType = BookmarksUtils.getProperty(bookmarksTree.currentResource, CommonFunc.RDF_NS + "type", bookmarksTree.db);
-	switch(aEvent.type) {
-		case "click":
-			var obj = {};
-			var row = {};
-			bookmarksTree.treeBoxObject.getCellAt(aEvent.clientX, aEvent.clientY, row, {}, obj);
-			row = row.value;
-			if(aEvent.button == 2 || aEvent.originalTarget.localName != "treechildren" || row == -1) {
-				return;
-			}
-			if(obj.value == "twisty") return;
-			if(selectedItemType == CommonFunc.NC_NS + "Folder") {
-				bookmarksTree.treeBoxObject.view.toggleOpenState(row);
-			}
-			break;
-
-		case "keypress":
-			if(aEvent.originalTarget.localName != "tree") {
-				return;
-			}
-			break;
-	}
-
-	const BOOKMARK_SEPARATOR = CommonFunc.NC_NS + "BookmarkSeparator";
-	const BOOKMARK_FOLDER = CommonFunc.NC_NS + "Folder";
-	if(selectedItemType == BOOKMARK_SEPARATOR || selectedItemType == BOOKMARK_FOLDER) {
+function bookmarksTreeClick(aTarget, aEvent) {
+	if (aEvent.button == 2) {
 		return;
 	}
 
-	bookmarksOpen(aEvent);
+	var itemId = aTarget.selectedNode.itemId;
+	var now = new Date().getTime();
+	PlacesUtils.annotations.setItemAnnotation(itemId, CommonFunc.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+
+	SidebarUtils.handleTreeClick(aTarget, aEvent, true);
 }
 
 function rssItemListBoxClick(aEvent) {

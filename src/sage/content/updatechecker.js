@@ -43,8 +43,6 @@ var UpdateChecker = {
 	httpReq: null,
 	lastItemId: -1,
 	logger: null,
-	STATE_ANNO: "sage/state",
-	SIG_ANNO: "sage/signature",
 
 	getURL: function(aItemId) {
 		var livemarksvc = Cc["@mozilla.org/browser/livemark-service;2"]
@@ -53,6 +51,16 @@ var UpdateChecker = {
 			return livemarkService.getSiteURI(aItemId).spec;
 		} else {
 			return PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
+		}
+	},
+
+	getItemAnnotation: function(aItemId, aName) {
+		var anno = PlacesUtils.annotations;
+		try {
+			return anno.getItemAnnotationString(aItemId, aName);
+		} catch(e) {
+			// we could check for existence before, but the try/catch is more efficient
+			return null;
 		}
 	},
 
@@ -81,12 +89,7 @@ var UpdateChecker = {
 			var node = cont.getChild(i);
 			var url = this.getURL(node.itemId);
 			var itemId = node.itemId;
-			var status = null;
-			try {
-				status = anno.getItemAnnotationString(itemId, this.STATE_ANNO);
-			} catch(e) {
-				// we could check for existence before, but the try/catch is more efficient
-			}
+			var status = this.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
 			if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
 				this.checkList.push(itemId);
 			}
@@ -189,21 +192,14 @@ var UpdateChecker = {
 		var url = PlacesUtils.bookmarks.getBookmarkURI(this.lastItemId).spec;
 		var status = 0;
 
-		//var lastVisit = CommonFunc.getBMDSProperty(this.lastResource, CommonFunc.BM_LAST_VISIT);
-		var lastVisit;
+		var lastVisit = this.getItemAnnotation(this.lastItemId, this.SIG_LASTVISIT);
 		if(!lastVisit) {
 			lastVisit = 0;
-		} else {
-			lastVisit /= 1000;
 		}
 
 		if(aSucceed) {
-			var sig = null;
-			try {
-				sig = anno.getItemAnnotationString(this.lastItemId, this.SIG_ANNO);
-			} catch(e) {
-				// we could check for existence before, but the try/catch is more efficient
-			}
+			var sig = this.getItemAnnotation(this.lastItemId, CommonFunc.ANNO_SIG);
+
 			if(aLastModified) {
 				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
 					status = CommonFunc.STATUS_UPDATE;
@@ -233,8 +229,8 @@ var UpdateChecker = {
 	},
 
 	setStatusFlag: function(aItemId, aState, aRecursive) {
-		logger.info("setting " + this.STATE_ANNO + " => " + aState + " on item " + aItemId);
-		PlacesUtils.annotations.setItemAnnotation(aItemId, this.STATE_ANNO, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		logger.info("setting " + CommonFunc.ANNO_STATUS + " => " + aState + " on item " + aItemId);
+		PlacesUtils.annotations.setItemAnnotation(aItemId, CommonFunc.ANNO_STATUS, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
 
 		if (aRecursive || aRecursive === undefined) {
 			// Go to parent folder

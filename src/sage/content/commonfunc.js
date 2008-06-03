@@ -62,6 +62,11 @@ var CommonFunc = {
 
 	FEED_SUMMARY_URI:		"chrome://sage/content/feedsummary.html",
 
+	ANNO_ROOT: "sage/root", // int, a Places itemId
+	ANNO_STATUS: "sage/status", // string, as defined in CommonFunc (STATUS_*)
+	ANNO_SIG: "sage/signature", // string
+	ANNO_LASTVISIT: "sage/lastvisit", // Epoch seconds
+
 // ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
 
 	NC_NS:				"http://home.netscape.com/NC-rdf#",

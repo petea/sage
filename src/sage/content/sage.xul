@@ -146,7 +146,7 @@
 				context="placesContext"
 				flex="1"
 				onkeypress="SidebarUtils.handleTreeKeyPress(event);"
-				onclick="SidebarUtils.handleTreeClick(this, event, true);"
+				onclick="bookmarksTreeClick(this, event);"
 				onmousemove="SidebarUtils.handleTreeMouseMove(event);"
 				onmouseout="SidebarUtils.clearURLFromStatusBar();">
 				<treecols>
