@@ -46,7 +46,7 @@ var rssItemToolTip;
 
 var currentFeed;
 var prefObserverSageFolder;
-var lastResource;
+var lastItemId;
 var sageFolderID = "";
 var enableTooltip = true;
 
@@ -232,7 +232,7 @@ function openSettingDialog() {
 }
 
 function openSageProjectFeed() {
-	lastResource = null;
+	lastItemId = null;
 	loadFeed("http://sage.mozdev.org/rss.xml", "", "Sage Project News");
 }
 
@@ -334,12 +334,17 @@ function bookmarksTreeClick(aTarget, aEvent) {
 		return;
 	}
 
-	var itemId = aTarget.selectedNode.itemId;
-	var now = new Date().getTime();
-	PlacesUtils.annotations.setItemAnnotation(itemId, CommonFunc.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
-	PlacesUtils.annotations.setItemAnnotation(itemId, CommonFunc.ANNO_STATUS, CommonFunc.STATUS_NO_UPDATE, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+	lastItemId = aTarget.selectedNode.itemId;
 
-	SidebarUtils.handleTreeClick(aTarget, aEvent, true);
+	var wType = getWindowType();
+	if (wType != "tab" && wType != "window") {
+		var uri = PlacesUtils.bookmarks.getBookmarkURI(lastItemId).spec;
+		feedLoader.loadURI(uri);
+	}
+
+	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
+		SidebarUtils.handleTreeClick(aTarget, aEvent, true);
+	}
 }
 
 function rssItemListBoxClick(aEvent) {
@@ -375,12 +380,12 @@ function rssTitleLabelClick(aNode, aEvent){
 
 function setStatusLoading(label) {
 	// TODO: Remove?
-	UpdateChecker.setCheckingFlag(lastResource.res, true, false);
+	UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_CHECKING, false);
 }
 
 function setStatusDone() {
-	if (lastResource) {
-		UpdateChecker.setCheckingFlag(lastResource.res, false, false);
+	if (lastItemId) {
+		UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_UNKNOWN, false);
 	}
 	if(currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
@@ -393,8 +398,7 @@ function setStatusDone() {
 }
 
 function setStatusError(aStatus) {
-	CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_ERROR + " " + CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION).match(/\[.*\]/));
-	UpdateChecker.setCheckingFlag(lastResource.res, false, false);
+	UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_ERROR, false);
 }
 
 function getContentBrowser() {
@@ -525,16 +529,18 @@ function onFeedLoaded(aFeed)
 {
 	currentFeed = aFeed;
 
-	if (lastResource && lastResource.res) {
+	if (lastItemId) {
 		if (CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
-			var title = aFeed.getTitle()
-			if (CommonFunc.getBMDSProperty(lastResource.res, CommonFunc.BM_NAME) != title) {
-				CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_NAME, title);
+			var title = aFeed.getTitle();
+			if (PlacesUtils.bookmarks.getItemTitle(lastItemId) != title) {
+				PlacesUtils.bookmarks.setItemTitle(lastItemId, title);
 			}
 		}
 
-		BMSVC.updateLastVisitedDate(lastResource.url, "UTF-8");
-		CommonFunc.setBMDSProperty(lastResource.res, CommonFunc.BM_DESCRIPTION, CommonFunc.STATUS_NO_UPDATE + " [" + currentFeed.getSignature() + "]");
+		var now = new Date().getTime();
+		PlacesUtils.annotations.setItemAnnotation(lastItemId, CommonFunc.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_NO_UPDATE, false);
+		PlacesUtils.annotations.setItemAnnotation(lastItemId, CommonFunc.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	}
 
 	setStatusDone();
@@ -551,15 +557,10 @@ function onFeedLoadError(aErrorCode) {
 }
 
 function onFeedAbort(sURI) {
-	// BM_FEEDURL
-	var urlLiteral = RDF.GetLiteral(sURI);
-	// don't do anything if this URI isn't bookmarked
-	var bmResource = BMSVC.GetSource(RDF.GetResource(CommonFunc.BM_URL), urlLiteral, true);
-	if (!bmResource) {	// try live mark as wll
-		bmResource = BMSVC.GetSource(RDF.GetResource(CommonFunc.BM_FEEDURL), urlLiteral, true);
-	}
-	if (bmResource) {
-		UpdateChecker.setCheckingFlag(bmResource, false, false);
+	var itemId = PlacesUtils.getMostRecentBookmarkForURI(newURI(sURI));
+
+	if (itemId > -1) {
+		UpdateChecker.setStatusFlag(itemId, CommonFunc.STATUS_UNKNOWN, false);
 	}
 }
 
@@ -624,6 +625,17 @@ function getWindowType(oType) {
 			return "window";
 	}
 	return oType;
+}
+
+
+/**
+ * Create a nsIURI from a string spec
+ *
+ * @param	spec : String
+ * @returns	nsIURI
+ */
+function newURI(spec) {
+	return Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(spec, null, null);
 }
 
 /**
