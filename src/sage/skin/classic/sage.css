@@ -87,24 +87,24 @@
 	-moz-image-region: rect(48px 32px 64px 16px) !important;
 }
 
-#placesTree treechildren::-moz-tree-image,
-#placesTree treechildren::-moz-tree-image(sage_state_no-updated) {
+#placesTree treechildren::-moz-tree-image(leaf),
+#placesTree treechildren::-moz-tree-image(leaf, sage_state_no-updated) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
 }
-#placesTree treechildren::-moz-tree-image(sage_state_updated) {
+#placesTree treechildren::-moz-tree-image(leaf, sage_state_updated) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
 }
-#placesTree treechildren::-moz-tree-image(sage_state_unkown) {
+#placesTree treechildren::-moz-tree-image(leaf, sage_state_unkown) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
-#placesTree treechildren::-moz-tree-image(sage_state_checking) {
+#placesTree treechildren::-moz-tree-image(leaf, sage_state_checking) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
 }
-#placesTree treechildren::-moz-tree-image(sage_state_error) {
+#placesTree treechildren::-moz-tree-image(leaf, sage_state_error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
 }
