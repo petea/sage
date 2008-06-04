@@ -45,7 +45,6 @@
 	onload="init()"	onwizardfinish="return finish()"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"></script>
 <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"></script>
 <script type="application/x-javascript" src="chrome://sage/content/opml/opml.js"></script>
 

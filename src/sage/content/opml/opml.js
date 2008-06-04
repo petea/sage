@@ -36,18 +36,18 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 // XUL Object
 var winMain, txtImportFile, txtExportFile;
 var strRes;
 
+var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 
 var g_errorMesage = "";
 
 function init() {
-	// Bookmarks Service
-	initServices();
-	initBMService();
-
 	strRes = document.getElementById("strRes");
 
 	winMain = document.getElementById("winMain");
@@ -139,7 +139,7 @@ function importOPML() {
 		reportError(strRes.getString("opml_import_badfile"));
 		return false;
 	}
-	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot");
+	var rssReaderFolderID = CommonFunc.getSageRootFolderId();
 
 	var folderName = "OPML Import";
 	var opmlTitles = opmlDoc.getElementsByTagName("title");
@@ -147,25 +147,24 @@ function importOPML() {
 		var opmlTitle = CommonFunc.getInnerText(opmlTitles[0]);
 		folderName += " - " + opmlTitle;
 	}
-	var rootFolder = BMSVC.createFolderInContainer(folderName, RDF.GetResource(rssReaderFolderID), 1);
+	var rootFolderId = bookmarksService.createFolder(rssReaderFolderID, folderName, bookmarksService.DEFAULT_INDEX);
 
 	var treeWalker = opmlDoc.createTreeWalker(opmlDoc, NodeFilter.SHOW_ELEMENT, outlineFilter, true);
 
 	while(treeWalker.nextNode()) {
 		var cNode = treeWalker.currentNode;
 		var pNode = cNode.parentNode;
-		var parentFolder = ("_folder" in pNode) ? pNode._folder : rootFolder;
+		var parentFolderId = ("_folderId" in pNode) ? pNode._folderId : rootFolderId;
 		if(cNode.hasChildNodes()) {
 			var title = cNode.getAttribute("title");
 			if(!title) title = cNode.getAttribute("text");
 			if(!title) title = "folder";
-			cNode._folder = BMSVC.createFolderInContainer(title, parentFolder, null);
+			cNode._folderId = bookmarksService.createFolder(parentFolderId, title, bookmarksService.DEFAULT_INDEX);
+			
 		} else {
-			createRssItem(cNode, parentFolder);
+			createRssItem(cNode, parentFolderId);
 		}
 	}
-
-	BookmarksUtils.flushDataSource();
 
 	return true;
 }
@@ -178,7 +177,7 @@ function outlineFilter(aNode) {
 	}
 }
 
-function createRssItem(aOutlineNode, aRssFolder) {
+function createRssItem(aOutlineNode, aRssFolderId) {
 	var type = aOutlineNode.getAttribute("type");
 	var title = aOutlineNode.getAttribute("title");
 	if(!title) title = aOutlineNode.getAttribute("text");
@@ -190,12 +189,8 @@ function createRssItem(aOutlineNode, aRssFolder) {
 
 	if(type!="rss" && !title && xmlUrl) return;
 
-	if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
-		BMSVC.createBookmarkInContainer(title, xmlUrl, null, "no-updated", null, aRssFolder, null);
-	} else {
-		BMSVC.createBookmarkInContainer(title, xmlUrl, null, "no-updated", null, null, aRssFolder, null);
-	}
-
+	var uri = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(xmlUrl, null, null);
+	bookmarksService.insertBookmark(aRssFolderId, uri, -1, title);
 }
 
 // ********** ********** Export OPML ********** **********
