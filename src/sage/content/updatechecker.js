@@ -57,7 +57,7 @@ var UpdateChecker = {
 	getItemAnnotation: function(aItemId, aName) {
 		var anno = PlacesUtils.annotations;
 		try {
-			return anno.getItemAnnotationString(aItemId, aName);
+			return anno.getItemAnnotation(aItemId, aName);
 		} catch(e) {
 			// we could check for existence before, but the try/catch is more efficient
 			return null;
@@ -192,7 +192,7 @@ var UpdateChecker = {
 		var url = PlacesUtils.bookmarks.getBookmarkURI(this.lastItemId).spec;
 		var status = 0;
 
-		var lastVisit = this.getItemAnnotation(this.lastItemId, this.SIG_LASTVISIT);
+		var lastVisit = this.getItemAnnotation(this.lastItemId, CommonFunc.ANNO_LASTVISIT);
 		if(!lastVisit) {
 			lastVisit = 0;
 		}
