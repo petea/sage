@@ -180,14 +180,14 @@ function extendPlacesTreeView() {
 			if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
 				if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
 					try {
-						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
+						var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
 						properties.push(this._getAtomFor("sage_state_" + state));
 					} catch (e) { }
 				}
 			} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
 				if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
 					try {
-						var state = PlacesUtils.annotations.getItemAnnotation(itemId, "sage/state");
+						var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
 						properties.push(this._getAtomFor("sage_state_" + state));
 					} catch (e) { }
 				}
@@ -337,6 +337,7 @@ function bookmarksTreeClick(aTarget, aEvent) {
 	var itemId = aTarget.selectedNode.itemId;
 	var now = new Date().getTime();
 	PlacesUtils.annotations.setItemAnnotation(itemId, CommonFunc.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+	PlacesUtils.annotations.setItemAnnotation(itemId, CommonFunc.ANNO_STATUS, CommonFunc.STATUS_NO_UPDATE, 0, PlacesUtils.annotations.EXPIRE_NEVER);
 
 	SidebarUtils.handleTreeClick(aTarget, aEvent, true);
 }

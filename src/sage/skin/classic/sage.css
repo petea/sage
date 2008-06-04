@@ -87,9 +87,8 @@
 	-moz-image-region: rect(48px 32px 64px 16px) !important;
 }
 
-#bookmarksTree treechildren::-moz-tree-image(feed),
-#bookmarksTree treechildren::-moz-tree-image(feed, no-updated),
-#bookmarksTree treechildren::-moz-tree-image(feed, no-check) {
+#placesTree treechildren::-moz-tree-image,
+#placesTree treechildren::-moz-tree-image(sage_state_no-updated) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/no-updated.png") !important;
 }
@@ -97,7 +96,7 @@
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
 }
-#bookmarksTree treechildren::-moz-tree-image(feed, unknown) {
+#placesTree treechildren::-moz-tree-image(sage_state_unkown) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
@@ -105,11 +104,11 @@
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
 }
-#bookmarksTree treechildren::-moz-tree-image(feed, error) {
+#placesTree treechildren::-moz-tree-image(sage_state_error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;
 }
-#bookmarksTree treechildren::-moz-tree-cell-text(feed, updated) {
+#placesTree treechildren::-moz-tree-cell-text(sage_state_updated) {
 	font-weight: bold !important;
 }
 
