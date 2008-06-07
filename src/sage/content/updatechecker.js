@@ -64,6 +64,29 @@ var UpdateChecker = {
 		}
 	},
 
+	queueItem: function uc_queueItem(aResultNode) {
+		var itemType = PlacesUtils.bookmarks.getItemType(aResultNode.itemId);
+		switch(itemType) {
+			case PlacesUtils.bookmarks.TYPE_BOOKMARK:
+				var url = this.getURL(aResultNode.itemId);
+				var status = this.getItemAnnotation(aResultNode.itemId, CommonFunc.ANNO_STATUS);
+				if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
+					this.checkList.push(aResultNode.itemId);
+				}
+				break;
+			case PlacesUtils.bookmarks.TYPE_FOLDER:
+				aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+				aResultNode.containerOpen = true;
+				for (var i = 0; i < aResultNode.childCount; i ++) {
+					this.queueItem(aResultNode.getChild(i));
+				}
+				aResultNode.containerOpen = false;
+				break;
+			default:
+				// Separator, do nothing
+		}
+	},
+
 	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
 
@@ -83,18 +106,7 @@ var UpdateChecker = {
 		this.checkList = [];
 
 		// select feeds to be checked, exclude separators and updated feeds
-		var cont = result.root;
-		cont.containerOpen = true;
-		for (var i = 0; i < cont.childCount; i ++) {
-			var node = cont.getChild(i);
-			var url = this.getURL(node.itemId);
-			var itemId = node.itemId;
-			var status = this.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
-			if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
-				this.checkList.push(itemId);
-			}
-		}
-		cont.containerOpen = false;
+		this.queueItem(result.root);
 
 		this.logger.info("found " + this.checkList.length + " feed(s) to check");
 
