@@ -39,20 +39,17 @@
 var GetRssTitle = {
 	checking: false,
 	httpReq: null,
-	res: null,
+	itemId: null,
 	url: "",
 
 	getRssTitle: function(aBookmrkID){
 		if(this.checking) return;
 
-		this.res = RDF.GetResource(aBookmrkID);
-		var type = CommonFunc.getBMDSProperty(this.res, CommonFunc.RDF_TYPE);
-		if(type == CommonFunc.NC_NS + "Bookmark") {
-			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_URL);
-		}
-		if(type == CommonFunc.NC_NS + "Livemark") {
-			this.url = CommonFunc.getBMDSProperty(this.res, CommonFunc.BM_FEEDURL);
-		}
+		this.itemId = aBookmrkID;
+		var bmsvc = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
+	              .getService(Components.interfaces.nsINavBookmarksService);
+
+		var url = bmsvc.getBookmarkURI(aBookmrkID).spec;
 
 		this.httpReq = new XMLHttpRequest();
 		this.httpReq.onload = this.httpLoaded;
@@ -99,7 +96,9 @@ var GetRssTitle = {
 		var result = prompt.prompt(window, "Sage", strRes.getString("get_feed_title"), resultValue, null, {});
 
 		if(result) {
-			CommonFunc.setBMDSProperty(GetRssTitle.res, CommonFunc.BM_NAME, resultValue.value);
+			var bmsvc = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
+			            .getService(Components.interfaces.nsINavBookmarksService);
+			bmsvc.setItemTitle(this.itemId, resultValue.value);
 		}
 	}
 }
