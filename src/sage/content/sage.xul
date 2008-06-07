@@ -139,7 +139,7 @@
 
 	<vbox flex="1">
 		<vbox id="bookmarksTreeBox" flex="1" persist="height">
-			<tree id="placesTree"
+			<tree id="bookmarks-view"
 				class="sidebar-placesTree"
 				type="places"
 				hidecolumnpicker="true"

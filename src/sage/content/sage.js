@@ -98,7 +98,7 @@ function init() {
 	
 	extendPlacesTreeView();
 	
-	bookmarksTree = document.getElementById("placesTree");
+	bookmarksTree = document.getElementById("bookmarks-view");
 	rssItemListBox = document.getElementById("rssItemListBox");
 	rssTitleLabel = document.getElementById("rssTitleLabel");
 	rssItemToolTip = document.getElementById("rssItemToolTip");
@@ -153,6 +153,8 @@ function uninit() {
 	
 	//logger.info("flushing bookmark data store..");
 	//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
+	
+	SidebarUtils.clearURLFromStatusBar();
 
 	logger.info("sidebar closed");
 }
