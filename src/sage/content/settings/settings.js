@@ -55,17 +55,26 @@ var feedDiscoveryMode;
 var gList;
 var strRes;
 
+var logger;
+
 var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 var historyService = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService);
 var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 
 function init() {
+	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+	logger = new Logger();
+
 	strRes = document.getElementById("strRes");
 
 	var header = document.getElementById("header");
 	header.setAttribute("description", header.getAttribute("description") + " " + CommonFunc.versionString(CommonFunc.VERSION, 1));
 
-	sageFolderID = CommonFunc.getSageRootFolderId();
+	try {
+		sageFolderID = CommonFunc.getSageRootFolderId();
+	} catch (e) {
+		logger.error(e);
+	}
 
 	gList = document.getElementById("select-menu");
 
