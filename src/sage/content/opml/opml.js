@@ -226,8 +226,10 @@ function exportOPML() {
 }
 
 function createOpmlSource() {
-	var rssReaderFolderID = CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID,"str", "NC:BookmarksRoot");
-	var rssReaderFolderRes = RDF.GetResource(rssReaderFolderID);
+	var hist = Components.classes["@mozilla.org/browser/nav-history-service;1"]
+             .getService(Components.interfaces.nsINavHistoryService);
+
+	var rssReaderFolderID = CommonFunc.getSageRootFolderId();
 
 	var srcTemplate =  '<?xml version="1.0" encoding="UTF-8"?>';
 	srcTemplate += '<opml version="1.0">';
@@ -237,40 +239,38 @@ function createOpmlSource() {
 	var opmlDoc = new DOMParser().parseFromString(srcTemplate, "text/xml");
 	var opmlBody = opmlDoc.getElementsByTagName("body")[0];
 
-	opmlBody.appendChild(createOpmlOutline(opmlDoc, rssReaderFolderRes));
+	var query = hist.getNewQuery();
+	var options = hist.getNewQueryOptions();
+	query.setFolders([rssReaderFolderID], 1);
+	var result = hist.executeQuery(query, options);
+
+	opmlBody.appendChild(createOpmlOutline(opmlDoc, result.root));
 	xmlIndent(opmlDoc);
 
 	var opmlSource = new XMLSerializer().serializeToString(opmlDoc);
 	return opmlSource;
 }
 
-function createOpmlOutline(aOpmlDoc, aRssItem) {
-	var type = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.RDF_TYPE);
-	var url;
-	if(type == CommonFunc.NC_NS + "Bookmark") {
-		url = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_URL);
-	}
-	if(type == CommonFunc.NC_NS + "Livemark") {
-		url = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_FEEDURL);
-	}
-	var title = CommonFunc.getBMDSProperty(aRssItem, CommonFunc.BM_NAME);
+function createOpmlOutline(aOpmlDoc, aResultNode) {
+	var bmsvc = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
+              .getService(Components.interfaces.nsINavBookmarksService);
+
+	var type = bmsvc.getItemType(aResultNode.itemId);
+	var title = bmsvc.getItemTitle(aResultNode.itemId);
+
 	var outlineNode = aOpmlDoc.createElement("outline");
 
-	if(type == CommonFunc.NC_NS + "Folder") {
+	if (type == bmsvc.TYPE_FOLDER) {
 		outlineNode.setAttribute("text", title);
 
-		var rdfContainer = Components.classes["@mozilla.org/rdf/container;1"].getService(Components.interfaces.nsIRDFContainer);
-		rdfContainer.Init(BMDS, aRssItem);
-		var containerChildren = rdfContainer.GetElements();
-
-		while(containerChildren.hasMoreElements()) {
-			var res = containerChildren.getNext().QueryInterface(kRDFRSCIID);
-			var res_type = CommonFunc.getBMDSProperty(res, CommonFunc.RDF_TYPE);
-			if(res_type == CommonFunc.NC_NS + "Folder" || res_type == CommonFunc.NC_NS + "Bookmark" || res_type == CommonFunc.NC_NS + "Livemark") {
-				outlineNode.appendChild(createOpmlOutline(aOpmlDoc, res));
-			}
+		aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+		aResultNode.containerOpen = true;
+		for (var i = 0; i < aResultNode.childCount; i ++) {
+			outlineNode.appendChild(createOpmlOutline(aOpmlDoc, aResultNode.getChild(i)));
 		}
-	} else if(type == CommonFunc.NC_NS + "Bookmark" || type == CommonFunc.NC_NS + "Livemark") {
+		aResultNode.containerOpen = false;
+	} else if (type == bmsvc.TYPE_BOOKMARK) {
+		var url = bmsvc.getBookmarkURI(aResultNode.itemId).spec;
 		outlineNode.setAttribute("type", "rss");
 		outlineNode.setAttribute("text", title);
 		outlineNode.setAttribute("title", title);
