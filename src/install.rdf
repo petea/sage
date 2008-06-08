@@ -48,9 +48,9 @@
 		<em:name>Sage</em:name>
 		<em:description>A lightweight RSS and Atom feed reader.</em:description>
 		<em:creator>The Sage Team</em:creator>
-		<em:contributor>Peter Andrews</em:contributor>
-		<em:contributor>Erik Arvidsson</em:contributor>
-		<em:contributor>Erwan Loisant</em:contributor>
+		<em:developer>Peter Andrews</em:developer>
+		<em:developer>Erik Arvidsson</em:developer>
+		<em:developer>Erwan Loisant</em:developer>
 	
 		<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
 		<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
