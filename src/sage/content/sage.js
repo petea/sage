@@ -50,7 +50,8 @@ var enableTooltip = true;
 
 var logger;
 
-var strBundleService;
+var livemarkService;
+
 var strRes;
 
 var resultStrArray;
@@ -100,7 +101,7 @@ var sidebarController = {
 		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 		logger = new Logger();
 		
-		this.extendPlacesTreeView();
+		this._extendPlacesTreeView();
 		
 		bookmarksTree = document.getElementById("bookmarks-view");
 		statusBarImage = document.getElementById("statusBarImage");
@@ -117,6 +118,8 @@ var sidebarController = {
 		}
 		
 		PlacesUtils.annotations.addObserver(annotationObserver);
+		
+		livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 	
 		strRes = document.getElementById("strRes");		
 		resultStrArray = new Array(
@@ -165,7 +168,7 @@ var sidebarController = {
 		logger.info("sidebar closed");
 	},
 	
-	extendPlacesTreeView : function() {
+	_extendPlacesTreeView : function() {
 		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
 		PlacesTreeView.prototype.getCellProperties =
 		function sage_getCellProperties(aRow, aColumn, aProperties) {
@@ -173,8 +176,12 @@ var sidebarController = {
 			
 			var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
 			this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
+			var proptery;
 			for (var i = 0; i < propertiesBase.Count(); i++) {
-				aProperties.AppendElement(propertiesBase.GetElementAt(i));
+				property = propertiesBase.GetElementAt(i);
+				if (property != this._getAtomFor("livemark")) {
+					aProperties.AppendElement(propertiesBase.GetElementAt(i));
+				}
 			}
 					
 			if (aColumn.id != "title")
@@ -206,6 +213,21 @@ var sidebarController = {
 				}
 			}
 		}
+		PlacesTreeView.prototype.isContainerBase = PlacesTreeView.prototype.isContainer;
+		PlacesTreeView.prototype.isContainer =
+		function sage_isContainer(aRow) {
+			var baseValue = this.isContainerBase(aRow);
+ 			if (baseValue) {
+ 				var node = this._visibleElements[aRow].node;
+ 				if (PlacesUtils.annotations.itemHasAnnotation(node.itemId, LMANNO_FEEDURI)) {
+ 					return false;
+ 				} else {
+ 					return true;
+ 				}
+ 			} else {
+ 				return false;
+ 			}
+		}
 		PlacesTreeView.prototype.getImageSrc =
 		function sage_getImageSrc(aRow, aColumn) {
 			return "";
@@ -225,15 +247,23 @@ var sidebarController = {
 			return;
 		}
 
-		itemId = bookmarksTree.selectedNode.itemId;
-		this.loadFeedFromPlaces(itemId, aEvent);
+		this.loadFeedFromNode(bookmarksTree.selectedNode, aEvent);
 	},
 	
-	loadFeedFromPlaces : function(aItemId, aEvent) {
-		var uri = PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
-		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(aItemId));
+	loadFeedFromNode : function(aNode, aEvent) {
+		var nodeType = aNode.type;
+		var itemId = aNode.itemId;
+		var uri;
+		if ((nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER ||
+			nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER_SHORTCUT) &&
+			livemarkService.isLivemark(itemId)) {
+			uri = livemarkService.getFeedURI(itemId).spec;
+		} else {
+			uri = PlacesUtils.bookmarks.getBookmarkURI(itemId).spec;
+		}
+		
+		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(itemId));
 		feedLoader.loadURI(uri);
-	
 		if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
 			openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
 		}
