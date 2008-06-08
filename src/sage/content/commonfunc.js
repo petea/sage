@@ -86,7 +86,6 @@ var CommonFunc = {
 	STATUS_NO_UPDATE: "no-updated",
 	STATUS_UNKNOWN: "unknown",
 	STATUS_ERROR: "error",
-	STATUS_NO_CHECK: "no-check",
 	STATUS_CHECKING: "checking",
 
 

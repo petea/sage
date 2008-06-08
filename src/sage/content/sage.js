@@ -43,18 +43,15 @@ var rssTitleLabel;
 var rssItemToolTip;
 
 var currentFeed;
-var prefObserverSageFolder;
 var lastItemId;
 var sageFolderID = "";
 var enableTooltip = true;
 
 var logger;
-
 var livemarkService;
-
 var strRes;
-
 var resultStrArray;
+var feedLoader;
 
 var annotationObserver = {
 	
@@ -143,26 +140,23 @@ var sidebarController = {
 	
 		document.documentElement.controllers.appendController(readStateController);
 		readStateController.onCommandUpdate();
+		
+		feedLoader = new FeedLoader();
+		feedLoader.addListener("load", onFeedLoaded);
+		feedLoader.addListener("error", onFeedLoadError);
+		feedLoader.addListener("abort", onFeedAbort);
 	
-		logger.info("sidebar initialized");
+		logger.info("sidebar open");
 	},
 	
-	uninit : function() {
-		if(prefObserverSageFolder) {
-			CommonFunc.removePrefListener(prefObserverSageFolder);
-		}
-	
-		if (feedLoader) {
-			feedLoader.abort();
-		}
+	uninit : function() {	
+		feedLoader.abort();
 		UpdateChecker.done();
 		
-		// remove observer
+		// remove observers
 		linkVisitor.uninit();
-		
-		//logger.info("flushing bookmark data store..");
-		//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
-		
+		PlacesUtils.annotations.removeObserver(annotationObserver);
+				
 		SidebarUtils.clearURLFromStatusBar();
 	
 		logger.info("sidebar closed");
@@ -200,7 +194,7 @@ var sidebarController = {
 						} catch (e) { }
 					}
 				} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
-					if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
+					if (PlacesUtils.nodeIsLivemarkContainer(node)) {
 						try {
 							var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
 							properties.push(this._getAtomFor("sage_state_" + state));
@@ -262,6 +256,7 @@ var sidebarController = {
 			uri = PlacesUtils.bookmarks.getBookmarkURI(itemId).spec;
 		}
 		
+		lastItemId = itemId;
 		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(itemId));
 		feedLoader.loadURI(uri);
 		if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
@@ -532,10 +527,9 @@ function htmlToText(aStr) {
 	return aStr;
 }
 
-function onFeedLoaded(aFeed)
-{
+function onFeedLoaded(aFeed) {
 	currentFeed = aFeed;
-
+	
 	if (lastItemId) {
 		if (CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
 			var title = aFeed.getTitle();
@@ -546,7 +540,7 @@ function onFeedLoaded(aFeed)
 
 		var now = new Date().getTime();
 		PlacesUtils.annotations.setItemAnnotation(lastItemId, CommonFunc.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
-		UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_NO_UPDATE, false);
+		UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_NO_UPDATE);
 		PlacesUtils.annotations.setItemAnnotation(lastItemId, CommonFunc.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	}
 
@@ -564,17 +558,8 @@ function onFeedLoadError(aErrorCode) {
 }
 
 function onFeedAbort(sURI) {
-	var itemId = PlacesUtils.getMostRecentBookmarkForURI(newURI(sURI));
-
-	if (itemId > -1) {
-		UpdateChecker.setStatusFlag(itemId, CommonFunc.STATUS_UNKNOWN, false);
-	}
+	UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_UNKNOWN);
 }
-
-var feedLoader = new FeedLoader;
-feedLoader.addListener("load", onFeedLoaded);
-feedLoader.addListener("error", onFeedLoadError);
-feedLoader.addListener("abort", onFeedAbort);
 
 // This takes a list item from the rss list box and returns the uri it represents
 // this seems a bit inefficient. Shouldn't there be a direct mapping between these?

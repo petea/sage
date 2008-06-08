@@ -110,7 +110,7 @@
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/updated.png") !important;
 }
-#bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_unkown) {
+#bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_unknown) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }

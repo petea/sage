@@ -43,12 +43,11 @@ var UpdateChecker = {
 	httpReq: null,
 	lastItemId: -1,
 	logger: null,
+	livemarkService: null,
 
 	getURL: function(aItemId) {
-		var livemarksvc = Cc["@mozilla.org/browser/livemark-service;2"]
-											.getService(Ci.nsILivemarkService);
-		if (livemarksvc.isLivemark(aItemId)) {
-			return livemarkService.getSiteURI(aItemId).spec;
+		if (this.livemarkService.isLivemark(aItemId)) {
+			return this.livemarkService.getFeedURI(aItemId).spec;
 		} else {
 			return PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
 		}
@@ -65,30 +64,28 @@ var UpdateChecker = {
 	},
 
 	queueItem: function uc_queueItem(aResultNode) {
-		var itemType = PlacesUtils.bookmarks.getItemType(aResultNode.itemId);
-		switch(itemType) {
-			case PlacesUtils.bookmarks.TYPE_BOOKMARK:
-				var url = this.getURL(aResultNode.itemId);
-				var status = this.getItemAnnotation(aResultNode.itemId, CommonFunc.ANNO_STATUS);
-				if(url && !(status == CommonFunc.STATUS_UPDATE || status == CommonFunc.STATUS_NO_CHECK)) {
-					this.checkList.push(aResultNode.itemId);
-				}
-				break;
-			case PlacesUtils.bookmarks.TYPE_FOLDER:
-				aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
-				aResultNode.containerOpen = true;
-				for (var i = 0; i < aResultNode.childCount; i ++) {
-					this.queueItem(aResultNode.getChild(i));
-				}
-				aResultNode.containerOpen = false;
-				break;
-			default:
-				// Separator, do nothing
+		var itemId = aResultNode.itemId;
+		var itemType = PlacesUtils.bookmarks.getItemType(itemId);
+		if (itemType == PlacesUtils.bookmarks.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
+			var url = this.getURL(aResultNode.itemId);
+			var status = this.getItemAnnotation(aResultNode.itemId, CommonFunc.ANNO_STATUS);
+			if(url && status != CommonFunc.STATUS_UPDATE) {
+				this.checkList.push(aResultNode.itemId);
+			}
+		} else if (itemType == PlacesUtils.bookmarks.TYPE_FOLDER) {
+			aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+			aResultNode.containerOpen = true;
+			for (var i = 0; i < aResultNode.childCount; i ++) {
+				this.queueItem(aResultNode.getChild(i));
+			}
+			aResultNode.containerOpen = false;
 		}
 	},
 
 	startCheck: function(aCheckFolderId) {
 		if(this.checking) return;
+
+		this.livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
 		var hist = PlacesUtils.history;
 		var bmsvc = PlacesUtils.bookmarks;
@@ -96,8 +93,6 @@ var UpdateChecker = {
 
 		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 		this.logger = new Logger();
-
-		sageRootFolderID = CommonFunc.getSageRootFolderId();
 
 		var query = hist.getNewQuery();
 		var options = hist.getNewQueryOptions();
@@ -201,18 +196,18 @@ var UpdateChecker = {
 
 	checkResult: function(aSucceed, aLastModified, feed) {
 		var name = PlacesUtils.bookmarks.getItemTitle(this.lastItemId);
-		var url = PlacesUtils.bookmarks.getBookmarkURI(this.lastItemId).spec;
+		var url = this.getURL(this.lastItemId).spec;
 		var status = 0;
 
 		var lastVisit = this.getItemAnnotation(this.lastItemId, CommonFunc.ANNO_LASTVISIT);
-		if(!lastVisit) {
+		if (!lastVisit) {
 			lastVisit = 0;
 		}
 
-		if(aSucceed) {
+		if (aSucceed) {
 			var sig = this.getItemAnnotation(this.lastItemId, CommonFunc.ANNO_SIG);
 
-			if(aLastModified) {
+			if (aLastModified) {
 				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
 					status = CommonFunc.STATUS_UPDATE;
 				} else {
@@ -231,7 +226,7 @@ var UpdateChecker = {
 
 		this.setStatusFlag(this.lastItemId, status);
 		
-		if(this.checkList.length == 0) {
+		if (this.checkList.length == 0) {
 			this.checking = false;
 			this.onChecked(name, url);
 			return;
@@ -240,18 +235,9 @@ var UpdateChecker = {
 		}
 	},
 
-	setStatusFlag: function(aItemId, aState, aRecursive) {
+	setStatusFlag: function(aItemId, aState) {
 		logger.info("setting " + CommonFunc.ANNO_STATUS + " => " + aState + " on item " + aItemId);
 		PlacesUtils.annotations.setItemAnnotation(aItemId, CommonFunc.ANNO_STATUS, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
-
-		if (aRecursive || aRecursive === undefined) {
-			// Go to parent folder
-			var parentFolderId = PlacesUtils.bookmarks.getFolderIdForItem(aItemId);
-			if (parentFolderId != -1 &&
-					parentFolderId != sageRootFolderID) {
-				this.setStatusFlag(parentFolderId, aState, true);
-			}
-		}
 	},
 	
 	onCheck: function(aName, aURL) {},

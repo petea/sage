@@ -183,7 +183,7 @@ FeedLoader.prototype = {
 
 	httpGetResult:	function httpGetResult(aResultCode)
 	{
-		this.abort();
+		//this.abort();
 		this.loading = false;
 
 		if (aResultCode == CommonFunc.RESULT_OK)
