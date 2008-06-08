@@ -87,6 +87,20 @@
 	-moz-image-region: rect(48px 32px 64px 16px) !important;
 }
 
+
+#statusBarImage {
+  margin-left: 4px;
+  width: 16px;
+  height: 16px;
+}
+#statusBarImage.loading {
+  list-style-image: url("chrome://sage/skin/icon/checking.gif");
+}
+#statusBarImage.error {
+  list-style-image: url("chrome://sage/skin/icon/error.gif");
+}
+
+
 #bookmarks-view treechildren::-moz-tree-image(leaf),
 #bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_no-updated) {
   -moz-image-region: auto !important;

@@ -36,10 +36,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
  
-var resultStrArray = null;
-
-var strRes; // stringbundle Object
 var bookmarksTree;
+var statusBarImage, statusBarLabel;
 var rssItemListBox;
 var rssTitleLabel;
 var rssItemToolTip;
@@ -52,11 +50,16 @@ var enableTooltip = true;
 
 var logger;
 
+var strBundleService;
+var strRes;
+
+var resultStrArray;
+
 var annotationObserver = {
 	
-	onPageAnnotationSet: function(aURI, aName) { },
+	onPageAnnotationSet : function(aURI, aName) { },
 	
-	onItemAnnotationSet: function(aItemId, aName) {
+	onItemAnnotationSet : function(aItemId, aName) {
 		switch (aName) {
 			case CommonFunc.ANNO_ROOT:
 				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
@@ -85,130 +88,173 @@ var annotationObserver = {
 		}
 	},
 	
-	onPageAnnotationRemoved: function(aURI, aName) { },
+	onPageAnnotationRemoved : function(aURI, aName) { },
 	
-	onItemAnnotationRemoved: function(aItemId, aName) { }
+	onItemAnnotationRemoved : function(aItemId, aName) { }
 	
 }
 
+var sidebarController = {
 
-function init() {
-	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-	logger = new Logger();
-	
-	extendPlacesTreeView();
-	
-	bookmarksTree = document.getElementById("bookmarks-view");
-	rssItemListBox = document.getElementById("rssItemListBox");
-	rssTitleLabel = document.getElementById("rssTitleLabel");
-	rssItemToolTip = document.getElementById("rssItemToolTip");
-	
-	try {
-		var sageRootFolderId = CommonFunc.getSageRootFolderId();
-		bookmarksTree.place = "place:queryType=1&folder=" + sageRootFolderId;
-	} catch(e) {
-		logger.error(e);
-	}
-	
-	PlacesUtils.annotations.addObserver(annotationObserver);
-
-	strRes = document.getElementById("strRes");
-	resultStrArray = new Array(
-		strRes.getString("RESULT_OK_STR"),
-		strRes.getString("RESULT_PARSE_ERROR_STR"),
-		strRes.getString("RESULT_NOT_RSS_STR"),
-		strRes.getString("RESULT_NOT_FOUND_STR"),
-		strRes.getString("RESULT_NOT_AVAILABLE_STR"),
-		strRes.getString("RESULT_ERROR_FAILURE_STR")
-	);
-	
-	// select first entry
-	//if (bookmarksTree.treeBoxObject.selection) {
-	//	bookmarksTree.treeBoxObject.selection.select(0);
-	//}
-
-	FeedSearch.init();
-	toggleShowSearchBar();
-	toggleShowFeedItemList();
-	toggleShowFeedItemListToolbar();
-
-	document.documentElement.controllers.appendController(readStateController);
-	readStateController.onCommandUpdate();
-
-	logger.info("sidebar initialized");
-}
-
-function uninit() {
-	if(prefObserverSageFolder) {
-		CommonFunc.removePrefListener(prefObserverSageFolder);
-	}
-
-	if (feedLoader) {
-		feedLoader.abort();
-	}
-	UpdateChecker.done();
-	
-	// remove observer
-	linkVisitor.uninit();
-	
-	//logger.info("flushing bookmark data store..");
-	//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
-	
-	SidebarUtils.clearURLFromStatusBar();
-
-	logger.info("sidebar closed");
-}
-
-function extendPlacesTreeView() {
-	PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;	
-	PlacesTreeView.prototype.getCellProperties =
-	function sage_getCellProperties(aRow, aColumn, aProperties) {
-		var properties = this._visibleElements[aRow].properties;
+	init : function() {
+		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+		logger = new Logger();
 		
-		var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
-		this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
-		for (var i = 0; i < propertiesBase.Count(); i++) {
-			aProperties.AppendElement(propertiesBase.GetElementAt(i));
+		this.extendPlacesTreeView();
+		
+		bookmarksTree = document.getElementById("bookmarks-view");
+		statusBarImage = document.getElementById("statusBarImage");
+		statusBarLabel = document.getElementById("statusBarLabel");
+		rssItemListBox = document.getElementById("rssItemListBox");
+		rssTitleLabel = document.getElementById("rssTitleLabel");
+		rssItemToolTip = document.getElementById("rssItemToolTip");
+		
+		try {
+			var sageRootFolderId = CommonFunc.getSageRootFolderId();
+			bookmarksTree.place = "place:queryType=1&folder=" + sageRootFolderId;
+		} catch(e) {
+			logger.error(e);
 		}
-				
-		if (aColumn.id != "title")
-		  return;
 		
-		if (!properties) {
-			properties = [];
-			var node = this._visibleElements[aRow].node;
-			var nodeType = node.type;
-			var itemId = node.itemId;
-			if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
-				if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
-					try {
-						var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
-						properties.push(this._getAtomFor("sage_state_" + state));
-					} catch (e) { }
+		PlacesUtils.annotations.addObserver(annotationObserver);
+	
+		strBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
+		strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
+		
+		resultStrArray = new Array(
+			strRes.GetStringFromName("RESULT_OK_STR"),
+			strRes.GetStringFromName("RESULT_PARSE_ERROR_STR"),
+			strRes.GetStringFromName("RESULT_NOT_RSS_STR"),
+			strRes.GetStringFromName("RESULT_NOT_FOUND_STR"),
+			strRes.GetStringFromName("RESULT_NOT_AVAILABLE_STR"),
+			strRes.GetStringFromName("RESULT_ERROR_FAILURE_STR")
+		);
+		
+		// select first entry
+		//if (bookmarksTree.treeBoxObject.selection) {
+		//	bookmarksTree.treeBoxObject.selection.select(0);
+		//}
+	
+		FeedSearch.init();
+		toggleShowSearchBar();
+		toggleShowFeedItemList();
+		toggleShowFeedItemListToolbar();
+	
+		document.documentElement.controllers.appendController(readStateController);
+		readStateController.onCommandUpdate();
+	
+		logger.info("sidebar initialized");
+	},
+	
+	uninit : function() {
+		if(prefObserverSageFolder) {
+			CommonFunc.removePrefListener(prefObserverSageFolder);
+		}
+	
+		if (feedLoader) {
+			feedLoader.abort();
+		}
+		UpdateChecker.done();
+		
+		// remove observer
+		linkVisitor.uninit();
+		
+		//logger.info("flushing bookmark data store..");
+		//BMDS.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource).Flush();
+		
+		SidebarUtils.clearURLFromStatusBar();
+	
+		logger.info("sidebar closed");
+	},
+	
+	extendPlacesTreeView : function() {
+		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;	
+		PlacesTreeView.prototype.getCellProperties =
+		function sage_getCellProperties(aRow, aColumn, aProperties) {
+			var properties = this._visibleElements[aRow].properties;
+			
+			var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
+			this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
+			for (var i = 0; i < propertiesBase.Count(); i++) {
+				aProperties.AppendElement(propertiesBase.GetElementAt(i));
+			}
+					
+			if (aColumn.id != "title")
+			  return;
+			
+			if (!properties) {
+				properties = [];
+				var node = this._visibleElements[aRow].node;
+				var nodeType = node.type;
+				var itemId = node.itemId;
+				if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
+					if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
+						try {
+							var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
+							properties.push(this._getAtomFor("sage_state_" + state));
+						} catch (e) { }
+					}
+				} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
+					if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
+						try {
+							var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
+							properties.push(this._getAtomFor("sage_state_" + state));
+						} catch (e) { }
+					}
 				}
-			} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
-				if (!PlacesUtils.nodeIsLivemarkContainer(node)) {
-					try {
-						var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
-						properties.push(this._getAtomFor("sage_state_" + state));
-					} catch (e) { }
+				for (var i = 0; i < properties.length; i++) {
+					aProperties.AppendElement(properties[i]);
+					this._visibleElements[aRow].properties.push(properties[i]);
 				}
 			}
-			for (var i = 0; i < properties.length; i++) {
-				aProperties.AppendElement(properties[i]);
-				this._visibleElements[aRow].properties.push(properties[i]);
-			}
 		}
+		PlacesTreeView.prototype.getImageSrc =
+		function sage_getImageSrc(aRow, aColumn) {
+			return "";
+		}	
+	},
+		
+	bookmarksTreeClick : function(aEvent) {
+		if (aEvent.button == 2) {
+			return;
+		}
+		
+		var tbo = bookmarksTree.treeBoxObject;
+		var row = { }, col = { }, obj = { };
+		tbo.getCellAt(aEvent.clientX, aEvent.clientY, row, col, obj);
+
+		if (row.value == -1 || obj.value == "twisty") {
+			return;
+		}
+
+		itemId = bookmarksTree.selectedNode.itemId;
+		this.loadFeedFromPlaces(itemId);
+	},
+	
+	loadFeedFromPlaces : function(aItemId) {
+		var uri = PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
+		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(aItemId));
+		feedLoader.loadURI(uri);
+	
+		if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
+			openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), wType);
+		}
+	},
+
+	openDiscoverFeeds : function() {
+		openDialog("chrome://sage/content/discover_feeds.xul", "sage_discover_feeds", "chrome,centerscreen,modal,close", bookmarksTree);
+	},
+	
+	openAboutDialog : function() {
+		var extensionManager = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
+		openDialog("chrome://mozapps/content/extensions/about.xul", "",
+			"chrome,centerscreen,modal", "urn:mozilla:item:{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", extensionManager.datasource);
 	}
-	PlacesTreeView.prototype.getImageSrc =
-	function sage_getImageSrc(aRow, aColumn) {
-		return "";
-	}	
+
 }
 
-function discoverFeeds() {
-	window.openDialog("chrome://sage/content/discover_feeds.xul", "sage_discover_feeds", "chrome,modal,close", bookmarksTree);
-}
+
+
 
 // TODO: This does not work in 0.9.x since the implementation for smart bookmarks
 //       has been removed. Too bad because this feature was really nice
@@ -233,11 +279,6 @@ function openSettingDialog() {
 	window.openDialog(dialogURL, "", "chrome,modal,close");
 }
 
-function openSageProjectFeed() {
-	lastItemId = null;
-	loadFeed("http://sage.mozdev.org/rss.xml", "", "Sage Project News");
-}
-
 function manageRSSList() {
 	var dialogURL = "chrome://browser/content/bookmarks/bookmarksManager.xul";
 	window.openDialog(dialogURL, "", "chrome,all,dialog=no", sageFolderID);
@@ -255,35 +296,6 @@ function updateCheck(aCheckFolderId) {
 		UpdateChecker.startCheck(aCheckFolderId);
 	} else {
 		UpdateChecker.startCheck(CommonFunc.getSageRootFolderId());
-	}
-}
-
-function BookmarkResource(aRes, aDB) {
-	this.res = aRes;
-	this.db = aDB;
-	this.name = BookmarksUtils.getProperty(this.res, CommonFunc.NC_NS + "Name", this.db);
-	if(BookmarksUtils.getProperty(this.res, CommonFunc.RDF_NS + "type", this.db) == CommonFunc.NC_NS + "Bookmark") {
-		this.url = BookmarksUtils.getProperty(this.res, CommonFunc.NC_NS + "URL", this.db);
-	}
-	if(BookmarksUtils.getProperty(this.res, CommonFunc.RDF_NS + "type", this.db) == CommonFunc.NC_NS + "Livemark") {
-		this.url = BookmarksUtils.getProperty(this.res, CommonFunc.NC_NS + "FeedURL", this.db);
-	}
-
-}
-
-function bookmarksOpen(aEvent) {
-	lastResource = new BookmarkResource(bookmarksTree.currentResource, bookmarksTree.db);
-	// get type of parent node
-	var predicate = lastResource.db.ArcLabelsIn(lastResource.res).getNext();
-	if(predicate instanceof Components.interfaces.nsIRDFResource) {
-		var parent = lastResource.db.GetSource(predicate, lastResource.res, true);
-	}
-	var parentType = BookmarksUtils.getProperty(parent, CommonFunc.RDF_NS + "type", lastResource.db);
-	// if this is a livemark child, open as a web page, otherwise process it as a feed
-	if(parentType == CommonFunc.NC_NS + "Livemark") {
-		getContentBrowser().loadURI(lastResource.url);
-	} else {
-		loadFeed(lastResource.url, aEvent);
 	}
 }
 
@@ -306,14 +318,14 @@ function createTreeContextMenu2(aEvent) {
 	if((selection.type == "Bookmark" && parentType != CommonFunc.NC_NS + "Livemark") || selection.type == "Livemark") {
 		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
-		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));
+		tempMenuItem.setAttribute("label", strRes.GetStringFromName("GET_RSS_TITLE"));
 		tempMenuItem.setAttribute("oncommand", cmdSrc);
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
 	} else if(selection.type == "Folder") {
 		cmdSrc = "updateCheck('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
-		tempMenuItem.setAttribute("label", strRes.getString("CHECK_UPDATE"));
+		tempMenuItem.setAttribute("label", strRes.GetStringFromName("CHECK_UPDATE"));
 		tempMenuItem.setAttribute("oncommand", cmdSrc);
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
@@ -328,24 +340,6 @@ function createTreeContextMenu2(aEvent) {
 	} else {
 		cmdWin.setAttribute("disabled", "true");
 		cmdTab.setAttribute("disabled", "true");
-	}
-}
-
-function bookmarksTreeClick(aTarget, aEvent) {
-	if (aEvent.button == 2) {
-		return;
-	}
-
-	lastItemId = aTarget.selectedNode.itemId;
-
-	var wType = getWindowType();
-	if (wType != "tab" && wType != "window") {
-		var uri = PlacesUtils.bookmarks.getBookmarkURI(lastItemId).spec;
-		feedLoader.loadURI(uri);
-	}
-
-	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
-		SidebarUtils.handleTreeClick(aTarget, aEvent, true);
 	}
 }
 
@@ -380,18 +374,17 @@ function rssTitleLabelClick(aNode, aEvent){
 	openURI(currentFeed.getLink(), aEvent);
 }
 
-function setStatusLoading(label) {
-	// TODO: Remove?
-	UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_CHECKING, false);
+function setStatusLoading(aStatus) {
+	statusBarImage.setAttribute("class", "loading");
+	statusBarLabel.value = strRes.formatStringFromName("RESULT_LOADING", [aStatus], 1);
 }
 
 function setStatusDone() {
-	if (lastItemId) {
-		UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_UNKNOWN, false);
-	}
-	if(currentFeed) {
+	statusBarImage.removeAttribute("class");
+	statusBarLabel.value = "";
+	if (currentFeed) {
 		rssTitleLabel.value = currentFeed.getTitle();
-		if(currentFeed.getLink()) {
+		if (currentFeed.getLink()) {
 			rssTitleLabel.tooltipText = currentFeed.getLink();
 		} else {
 			rssTitleLabel.tooltipText = "";
@@ -400,7 +393,8 @@ function setStatusDone() {
 }
 
 function setStatusError(aStatus) {
-	UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_ERROR, false);
+	statusBarImage.setAttribute("class", "error");
+	statusBarLabel.value = strRes.formatStringFromName("RESULT_ERROR", [aStatus], 1);
 }
 
 function getContentBrowser() {
@@ -453,7 +447,7 @@ function setRssItemListBox() {
 		} else if (item.getTitle()) {
 			itemLabel = item.getTitle();
 		} else {
-			itemLabel = strRes.getString("feed_item_no_title")
+			itemLabel = strRes.GetStringFromName("feed_item_no_title")
 		}
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
@@ -589,27 +583,6 @@ function getFeedItemFromListItem( oListItem ) {
 }
 
 /**
- * Starts the loading of a feed. This will open up the feed summary if needed
- * @param	aURI : String	The URI to the feed
- * @param	oType : Object	If this is an Event object we check the modifiers.
- * 							Otherwise we assume it is a string describing the
- *                          window type.
- * @param	aStatus : String	Optional status text
- * @returns	void
- */
-function loadFeed(aURI, oType, aStatus) {
-	var wType = getWindowType(oType);
-	if (wType != "tab" && wType != "window") {
-		setStatusLoading(aStatus);
-		feedLoader.loadURI(aURI);
-	}
-
-	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
-		openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(aURI), wType);
-	}
-}
-
-/**
  * Returns "tab", "window" or other describing where to open the URI
  *
  * @param	oType : Object	If this is an Event object we check the modifiers.
@@ -617,16 +590,16 @@ function loadFeed(aURI, oType, aStatus) {
  *                          window type.
  * @returns	String
  */
-function getWindowType(oType) {
+function getWindowType(aEvent) {
 	var windowType;
-	if (oType instanceof Event) {
+	if (aEvent instanceof Event) {
 		// figure out what kind of open we want
-		if (oType.button == 1 || oType.ctrlKey) // click middle button or ctrl click
+		if (aEvent.button == 1 || aEvent.ctrlKey) // click middle button or ctrl click
 			return "tab";
-		else if (oType.shiftKey)
+		else if (aEvent.shiftKey)
 			return "window";
 	}
-	return oType;
+	return aEvent;
 }
 
 

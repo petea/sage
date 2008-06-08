@@ -16,7 +16,7 @@
 <!ENTITY menu.manageRSSList			"Manage Feed List...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">
 <!ENTITY menu.setting				"Settings...">
-<!ENTITY menu.sageProjectFeed				"Sage Project News">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"Discover Feeds">
 <!ENTITY menu.sidebarLayout				"Sidebar Layout">
 

@@ -116,8 +116,8 @@ var feedSummary = {
 
 		var p = document.createElement("p");
 		p.setAttribute("id", "loading-text");
-		var title = this._getFeedTitle(uri);
-		p.textContent = strRes.formatStringFromName("RESULT_LOADING", [title], 1);
+		//var title = this._getFeedTitle(uri);
+		p.textContent = strRes.formatStringFromName("RESULT_LOADING", [uri], 1);
 		document.body.appendChild(p);
 
 		var pb = document.createElementNS(XUL_NS, "progressmeter");

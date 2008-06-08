@@ -51,8 +51,8 @@
 <page id="sagePanel" title="&sage.label;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	onload="init();"
-	onunload="uninit();">
+	onload="sidebarController.init();"
+	onunload="sidebarController.uninit();">
 
 	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/sidebarUtils.js"/>	
 	
@@ -77,65 +77,68 @@
 	</keyset>
 
 	<commandset id="readCommands">
-		<command id="cmd_markasread" oncommand="readStateController.doCommand('cmd_markasread')"
+		<command id="cmd_markasread" oncommand="readStateController.doCommand('cmd_markasread');"
 			tooltiptext="&markAsRead.command.tooltip;"
 			label="&markAsRead.command.label;"
 			accesskey="&markAsRead.command.accesskey;"/>
-		<command id="cmd_markasunread" oncommand="readStateController.doCommand('cmd_markasunread')"
+		<command id="cmd_markasunread" oncommand="readStateController.doCommand('cmd_markasunread');"
 			label="&markAsUnread.command.label;"
 			tooltiptext="&markAsUnread.command.tooltip;"
 			accesskey="&markAsUnread.command.accesskey;"/>
-		<command id="cmd_toggleread" oncommand="readStateController.doCommand('cmd_toggleread')"/>
-		<command id="cmd_markallasread" oncommand="readStateController.doCommand('cmd_markallasread')"
+		<command id="cmd_toggleread" oncommand="readStateController.doCommand('cmd_toggleread');"/>
+		<command id="cmd_markallasread" oncommand="readStateController.doCommand('cmd_markallasread');"
 			label="&markAllAsRead.command.label;"
 			tooltiptext="&markAllAsRead.command.tooltip;"
 			accesskey="&markAllAsRead.command.accesskey;"/>
-		<command id="cmd_markallasunread" oncommand="readStateController.doCommand('cmd_markallasunread')"
+		<command id="cmd_markallasunread" oncommand="readStateController.doCommand('cmd_markallasunread');"
 			label="&markAllAsUnread.command.label;"
 			tooltiptext="&markAllAsUnread.command.tooltip;"
 			accesskey="&markAllAsUnread.command.accesskey;"/>
 	</commandset>
 
-	<stringbundleset>
-		<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
-	</stringbundleset>
-
 	<toolbox class="plain">
 		<toolbar id="feedListToolbar">
-			<toolbarbutton id="checkFeeds" class="toolbarbutton-1" oncommand="updateCheck()" tooltiptext="&menu.checkUpdate;"/>
-			<toolbarbutton id="discoverFeeds" class="toolbarbutton-1" oncommand="discoverFeeds()" tooltiptext="&menu.discoverFeeds;"/>
+			<toolbarbutton id="checkFeeds" class="toolbarbutton-1" oncommand="updateCheck();" tooltiptext="&menu.checkUpdate;"/>
+			<toolbarbutton id="discoverFeeds" class="toolbarbutton-1" oncommand="sidebarController.openDiscoverFeeds();" tooltiptext="&menu.discoverFeeds;"/>
 			<spacer flex="1"/>
 			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.options;" class="toolbarbutton-1">
 				<menupopup>
 					<menu label="&menu.sidebarLayout;">
 						<menupopup>
-							<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar()"/>
+							<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar();"/>
 							<menuitem id="chkShowTooltip" type="checkbox" persist="checked" label="&menu.showDescTooltip;"/>
-							<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList()"/>
-							<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar()"/>
+							<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList();"/>
+							<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar();"/>
 						</menupopup>
 					</menu>
 					<menuseparator/>
-					<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList()"/>
-					<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard()"/>
+					<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList();"/>
+					<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard();"/>
 					<menuseparator/>
-					<menuitem label="&menu.sageProjectFeed;" oncommand="openSageProjectFeed()"/>
+					<menuitem label="&menu.setting;" oncommand="openSettingDialog();"/>
 					<menuseparator/>
-					<menuitem label="&menu.setting;" oncommand="openSettingDialog()"/>
+					<menuitem label="&menu.aboutSage;" oncommand="sidebarController.openAboutDialog();"/>
 				</menupopup>
 			</toolbarbutton>
 		</toolbar>
 		<toolbar id="barSearch" align="center">
 			<textbox id="txtSearchValue" type="autocomplete" flex="1"
-				ontextentered="FeedSearch.search()"
+				ontextentered="FeedSearch.search();"
 				autocompletesearch="form-history"
 				autocompletesearchparam="q"
 				searchengine="" persist="searchengine">
 				<image id="imgSearchEngine" popup="popSearchEngine"/>
 			</textbox>
-			<toolbarbutton id="btnSearchSubmit" oncommand="FeedSearch.search()"/>
+			<toolbarbutton id="btnSearchSubmit" oncommand="FeedSearch.search();"/>
 		</toolbar>
 	</toolbox>
+	
+	<sidebarheader id="statusBar" align="center">
+		<hbox align="center" flex="1">
+			<image id="statusBarImage" loading="false"/>
+			<label id="statusBarLabel" flex="1" crop="end" value=""/>
+		</hbox>
+	</sidebarheader>
 
 	<vbox flex="1">
 		<vbox id="bookmarksTreeBox" flex="1" persist="height">
@@ -146,7 +149,7 @@
 				context="placesContext"
 				flex="1"
 				onkeypress="SidebarUtils.handleTreeKeyPress(event);"
-				onclick="bookmarksTreeClick(this, event);"
+				onclick="sidebarController.bookmarksTreeClick(event);"
 				onmousemove="SidebarUtils.handleTreeMouseMove(event);"
 				onmouseout="SidebarUtils.clearURLFromStatusBar();">
 				<treecols>
@@ -159,7 +162,7 @@
 		<vbox id="rssItemListBoxBox" flex="1" persist="height">
 			<sidebarheader id="feedTitleBar" align="center">
 				<hbox align="center" flex="1">
-					<label id="rssTitleLabel" flex="1" crop="end" value="" onclick="rssTitleLabelClick(this, event)"/>
+					<label id="rssTitleLabel" flex="1" crop="end" value="" onclick="rssTitleLabelClick(this, event);"/>
 				</hbox>
 			</sidebarheader>
 			<toolbox class="plain">
@@ -173,9 +176,9 @@
 			<listbox id="rssItemListBox" class="plain" flex="1"
 				tooltip="rssItemToolTip"
 				contextmenu="rssItemListBoxContextMenu"
-				onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event)"
-				onclick="rssItemListBoxClick(event)"
-				onselect="readStateController.onCommandUpdate()"
+				onkeypress="if(event.keyCode == 13) rssItemListBoxClick(event);"
+				onclick="rssItemListBoxClick(event);"
+				onselect="readStateController.onCommandUpdate();"
 				disableKeyNavigation="true"/>
 		</vbox>
 	</vbox>
@@ -185,18 +188,18 @@
 		<popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
 			<template>
 				<menuitem type="checkbox" uri="..." value="..."
-					oncommand="FeedSearch.popSearchEngineClick(event)"
+					oncommand="FeedSearch.popSearchEngineClick(event);"
 					label="rdf:http://sage.mozdev.org/#name"
 					image="rdf:http://sage.mozdev.org/#icon"/>
 			</template>
 		</popup>
 		<popup id="rssItemListBoxContextMenu"
-			onpopupshowing="updateItemContextMenu()">
-			<menuitem id="rssOpenItem" default="true" oncommand="openListItem()"
+			onpopupshowing="updateItemContextMenu();">
+			<menuitem id="rssOpenItem" default="true" oncommand="openListItem();"
 				label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
-			<menuitem id="rssOpenNewTabItem" oncommand="openListItem('tab')"
+			<menuitem id="rssOpenNewTabItem" oncommand="openListItem('tab');"
 				label="&openInNewTab.label;" accesskey="&openInNewTab.accesskey;"/>
-			<menuitem id="rssOpenNewWindowItem" oncommand="openListItem('window')"
+			<menuitem id="rssOpenNewWindowItem" oncommand="openListItem('window');"
 				label="&openInNewWindow.label;" accesskey="&openInNewWindow.accesskey;"/>
 			<menuseparator/>
 			<menuitem id="rssMarkAsReadItem" command="cmd_markasread"/>
