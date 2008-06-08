@@ -118,16 +118,14 @@ var sidebarController = {
 		
 		PlacesUtils.annotations.addObserver(annotationObserver);
 	
-		strBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
-		strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
-		
+		strRes = document.getElementById("strRes");		
 		resultStrArray = new Array(
-			strRes.GetStringFromName("RESULT_OK_STR"),
-			strRes.GetStringFromName("RESULT_PARSE_ERROR_STR"),
-			strRes.GetStringFromName("RESULT_NOT_RSS_STR"),
-			strRes.GetStringFromName("RESULT_NOT_FOUND_STR"),
-			strRes.GetStringFromName("RESULT_NOT_AVAILABLE_STR"),
-			strRes.GetStringFromName("RESULT_ERROR_FAILURE_STR")
+			strRes.getString("RESULT_OK_STR"),
+			strRes.getString("RESULT_PARSE_ERROR_STR"),
+			strRes.getString("RESULT_NOT_RSS_STR"),
+			strRes.getString("RESULT_NOT_FOUND_STR"),
+			strRes.getString("RESULT_NOT_AVAILABLE_STR"),
+			strRes.getString("RESULT_ERROR_FAILURE_STR")
 		);
 		
 		// select first entry
@@ -168,7 +166,7 @@ var sidebarController = {
 	},
 	
 	extendPlacesTreeView : function() {
-		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;	
+		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
 		PlacesTreeView.prototype.getCellProperties =
 		function sage_getCellProperties(aRow, aColumn, aProperties) {
 			var properties = this._visibleElements[aRow].properties;
@@ -228,21 +226,33 @@ var sidebarController = {
 		}
 
 		itemId = bookmarksTree.selectedNode.itemId;
-		this.loadFeedFromPlaces(itemId);
+		this.loadFeedFromPlaces(itemId, aEvent);
 	},
 	
-	loadFeedFromPlaces : function(aItemId) {
+	loadFeedFromPlaces : function(aItemId, aEvent) {
 		var uri = PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
 		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(aItemId));
 		feedLoader.loadURI(uri);
 	
 		if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
-			openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), wType);
+			openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
 		}
 	},
 
-	openDiscoverFeeds : function() {
+	openDiscoverFeedsDialog : function() {
 		openDialog("chrome://sage/content/discover_feeds.xul", "sage_discover_feeds", "chrome,centerscreen,modal,close", bookmarksTree);
+	},
+	
+	openSettingsDialog : function() {
+		openDialog("chrome://sage/content/settings/settings.xul", "", "chrome,centerscreen,modal,close");
+	},
+	
+	openOPMLWizardDialog : function() {
+		openDialog("chrome://sage/content/opml/opml.xul", "", "chrome,centerscreen,modal,close");
+	},
+	
+	openOrganizeFeedsDialog : function() {
+		openDialog("chrome://browser/content/places/places.xul", "", "chrome,all,dialog=no");
 	},
 	
 	openAboutDialog : function() {
@@ -254,35 +264,6 @@ var sidebarController = {
 }
 
 
-
-
-// TODO: This does not work in 0.9.x since the implementation for smart bookmarks
-//       has been removed. Too bad because this feature was really nice
-function showOnlyUpdated() {
-	if(getCheckboxCheck("chkOnlyUpdate")) {
-		var findURL = "find:datasource=rdf:bookmarks&match=";
-			findURL += CommonFunc.BM_DESCRIPTION;
-			findURL += "&method=is&text=updated";
-		bookmarksTree.tree.setAttribute("ref", findURL);
-	} else {
-		bookmarksTree.tree.setAttribute("ref", sageFolderID);
-	}
-}
-
-function openOPMLWizard() {
-	var dialogURL = "chrome://sage/content/opml/opml.xul";
-	window.openDialog(dialogURL, "", "chrome,modal,close");
-}
-
-function openSettingDialog() {
-	var dialogURL = "chrome://sage/content/settings/settings.xul";
-	window.openDialog(dialogURL, "", "chrome,modal,close");
-}
-
-function manageRSSList() {
-	var dialogURL = "chrome://browser/content/bookmarks/bookmarksManager.xul";
-	window.openDialog(dialogURL, "", "chrome,all,dialog=no", sageFolderID);
-}
 
 function updateCheck(aCheckFolderId) {
 	UpdateChecker.onCheck = function(aName, aURL) {
@@ -318,14 +299,14 @@ function createTreeContextMenu2(aEvent) {
 	if((selection.type == "Bookmark" && parentType != CommonFunc.NC_NS + "Livemark") || selection.type == "Livemark") {
 		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
-		tempMenuItem.setAttribute("label", strRes.GetStringFromName("GET_RSS_TITLE"));
+		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));
 		tempMenuItem.setAttribute("oncommand", cmdSrc);
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
 	} else if(selection.type == "Folder") {
 		cmdSrc = "updateCheck('" + itemId + "')";
 		tempMenuItem = document.createElement("menuitem");
-		tempMenuItem.setAttribute("label", strRes.GetStringFromName("CHECK_UPDATE"));
+		tempMenuItem.setAttribute("label", strRes.getString("CHECK_UPDATE"));
 		tempMenuItem.setAttribute("oncommand", cmdSrc);
 		popup.appendChild(document.createElement("menuseparator"));
 		popup.appendChild(tempMenuItem);
@@ -376,7 +357,7 @@ function rssTitleLabelClick(aNode, aEvent){
 
 function setStatusLoading(aStatus) {
 	statusBarImage.setAttribute("class", "loading");
-	statusBarLabel.value = strRes.formatStringFromName("RESULT_LOADING", [aStatus], 1);
+	statusBarLabel.value = strRes.getFormattedString("RESULT_LOADING", [aStatus]);
 }
 
 function setStatusDone() {
@@ -394,7 +375,7 @@ function setStatusDone() {
 
 function setStatusError(aStatus) {
 	statusBarImage.setAttribute("class", "error");
-	statusBarLabel.value = strRes.formatStringFromName("RESULT_ERROR", [aStatus], 1);
+	statusBarLabel.value = strRes.getFormattedString("RESULT_ERROR", [aStatus]);
 }
 
 function getContentBrowser() {
@@ -447,7 +428,7 @@ function setRssItemListBox() {
 		} else if (item.getTitle()) {
 			itemLabel = item.getTitle();
 		} else {
-			itemLabel = strRes.GetStringFromName("feed_item_no_title")
+			itemLabel = strRes.getString("feed_item_no_title")
 		}
 		itemLabel = (i+1) + ". " + itemLabel;
 		var listItem = rssItemListBox.appendItem(itemLabel, i);
@@ -585,7 +566,7 @@ function getFeedItemFromListItem( oListItem ) {
 /**
  * Returns "tab", "window" or other describing where to open the URI
  *
- * @param	oType : Object	If this is an Event object we check the modifiers.
+ * @param	aEvent : Object	If this is an Event object we check the modifiers.
  * 							Otherwise we assume it is a string describing the
  *                          window type.
  * @returns	String
@@ -617,36 +598,36 @@ function newURI(spec) {
  * Opens a link in the same window, a new tab or a new window
  *
  * @param	sURI : String
- * @param	oType : Object	If this is an Event object we check the modifiers.
+ * @param	aEvent : Object	If this is an Event object we check the modifiers.
  * 							Otherwise we assume it is a string describing the
  *                          window type.
  * @returns	void
  */
-function openURI(sURI, oType) {
-	switch (getWindowType(oType)) {
+function openURI(aURI, aEvent) {
+	switch (getWindowType(aEvent)) {
 		case "tab":
-			getContentBrowser().addTab(sURI);
+			getContentBrowser().addTab(aURI);
 			break;
 		case "window":
 			// XXX: This opens the window in the background if using the context menu
-			document.commandDispatcher.focusedWindow.open(sURI);
+			document.commandDispatcher.focusedWindow.open(aURI);
 			break;
 		default:
-			getContentBrowser().loadURI(sURI);
+			getContentBrowser().loadURI(aURI);
 	}
 	readStateController.onCommandUpdate();
 }
 
 /**
  * This is called by the context menu
- * @param	oType : String
+ * @param	aEvent : String
  * @returns	void
  */
-function openListItem(oType) {
+function openListItem(aEvent) {
 	var listItem = document.popupNode;
 	var feedItem = getFeedItemFromListItem(listItem);
 	listItem.setAttribute("visited", "true");
-	openURI(feedItem.getLink(), oType);
+	openURI(feedItem.getLink(), aEvent);
 }
 
 // link visit code based on LinkVisitor.mozdev.org

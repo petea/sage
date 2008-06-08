@@ -13,7 +13,7 @@
 <!ENTITY menu.openHTML				"Open Feeds In Contents Area">
 <!ENTITY menu.options				"Options">
 <!ENTITY menu.checkUpdate			"Check Feeds">
-<!ENTITY menu.manageRSSList			"Manage Feed List...">
+<!ENTITY menu.organizeFeedList		"Organize Feed List...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">
 <!ENTITY menu.setting				"Settings...">
 <!ENTITY menu.aboutSage				"About Sage">

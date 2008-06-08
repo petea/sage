@@ -95,11 +95,15 @@
 			tooltiptext="&markAllAsUnread.command.tooltip;"
 			accesskey="&markAllAsUnread.command.accesskey;"/>
 	</commandset>
+	
+	<stringbundleset>
+		<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+	</stringbundleset>
 
 	<toolbox class="plain">
 		<toolbar id="feedListToolbar">
 			<toolbarbutton id="checkFeeds" class="toolbarbutton-1" oncommand="updateCheck();" tooltiptext="&menu.checkUpdate;"/>
-			<toolbarbutton id="discoverFeeds" class="toolbarbutton-1" oncommand="sidebarController.openDiscoverFeeds();" tooltiptext="&menu.discoverFeeds;"/>
+			<toolbarbutton id="discoverFeeds" class="toolbarbutton-1" oncommand="sidebarController.openDiscoverFeedsDialog();" tooltiptext="&menu.discoverFeeds;"/>
 			<spacer flex="1"/>
 			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.options;" class="toolbarbutton-1">
 				<menupopup>
@@ -112,10 +116,10 @@
 						</menupopup>
 					</menu>
 					<menuseparator/>
-					<menuitem label="&menu.manageRSSList;" oncommand="manageRSSList();"/>
-					<menuitem label="&menu.opmlImportExport;" oncommand="openOPMLWizard();"/>
+					<menuitem label="&menu.organizeFeedList;" oncommand="sidebarController.openOrganizeFeedsDialog();"/>
+					<menuitem label="&menu.opmlImportExport;" oncommand="sidebarController.openOPMLWizardDialog();"/>
 					<menuseparator/>
-					<menuitem label="&menu.setting;" oncommand="openSettingDialog();"/>
+					<menuitem label="&menu.setting;" oncommand="sidebarController.openSettingsDialog();"/>
 					<menuseparator/>
 					<menuitem label="&menu.aboutSage;" oncommand="sidebarController.openAboutDialog();"/>
 				</menupopup>
