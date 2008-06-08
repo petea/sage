@@ -50,6 +50,7 @@
 		<em:creator>The Sage Team</em:creator>
 		<em:contributor>Peter Andrews</em:contributor>
 		<em:contributor>Erik Arvidsson</em:contributor>
+		<em:contributor>Erwan Loisant</em:contributor>
 	
 		<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
 		<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
