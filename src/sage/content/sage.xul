@@ -54,7 +54,8 @@
 	onload="sidebarController.init();"
 	onunload="sidebarController.uninit();">
 
-	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/sidebarUtils.js"/>	
+	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/sidebarUtils.js"/>
+	<script type="application/x-javascript" src="chrome://global/content/contentAreaUtils.js"/>
 	
 	<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
