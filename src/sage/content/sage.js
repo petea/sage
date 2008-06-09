@@ -479,7 +479,7 @@ function setCheckbox(element_id, value) {
 
 function populateToolTip(e) {
 	// if setting disabled
-	if(!getCheckboxCheck("chkShowTooltip")) {
+	if(!getCheckboxCheck("chkShowFeedItemTooltips")) {
 		e.preventDefault();
 		return;
 	}

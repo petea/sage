@@ -9,7 +9,7 @@
 <!ENTITY menu.showSearchBar			"Feed Search Bar">
 <!ENTITY menu.showFeedItemList			"Feed Item List">
 <!ENTITY menu.showFeedItemListToolbar	"Feed Item List Toolbar">
-<!ENTITY menu.showDescTooltip			"Description Tooltips">
+<!ENTITY menu.showFeedItemTooltips		"Feed Item Tooltips">
 <!ENTITY menu.openHTML				"Open Feeds In Contents Area">
 <!ENTITY menu.options				"Options">
 <!ENTITY menu.checkUpdate			"Check Feeds">
