@@ -102,10 +102,10 @@ FeedLoader.prototype = {
 		this.httpReq.onreadystatechange = function (e) { return oThis.onHttpReadyStateChange(e); };
 
 		try {
-			this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
+			this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
 			this.httpReq.overrideMimeType("application/xml");
 		} catch (e) {
-			this.httpGetResult(CommonFunc.RESULT_ERROR_FAILURE);
+			this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
 		}
 
 		try {
@@ -114,7 +114,7 @@ FeedLoader.prototype = {
 			this.currentFeed = null;
 		}
 		catch (e) {
-			this.httpGetResult(CommonFunc.RESULT_ERROR_FAILURE);
+			this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
 		}
 	},
 
@@ -135,7 +135,7 @@ FeedLoader.prototype = {
 		var logger = new Logger();
 
 		logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
-		this.httpGetResult(CommonFunc.RESULT_NOT_AVAILABLE);
+		this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
 	},
 
 	onHttpReadyStateChange:	function (e)
@@ -146,12 +146,12 @@ FeedLoader.prototype = {
 			{
 				if (this.httpReq.status == 404)
 				{
-					this.httpGetResult(CommonFunc.RESULT_NOT_FOUND);
+					this.httpGetResult(SageUtils.RESULT_NOT_FOUND);
 				}
 			}
 			catch (e)
 			{
-				this.httpGetResult(CommonFunc.RESULT_NOT_AVAILABLE);
+				this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
 				return;
 			}
 		}
@@ -167,16 +167,16 @@ FeedLoader.prototype = {
 		{
 			case "parsererror":
 				// XML Parse Error
-				this.httpGetResult(CommonFunc.RESULT_PARSE_ERROR);
+				this.httpGetResult(SageUtils.RESULT_PARSE_ERROR);
 				break;
 			case "rss":
 			case "rdf":
 			case "feed":
-				this.httpGetResult(CommonFunc.RESULT_OK);
+				this.httpGetResult(SageUtils.RESULT_OK);
 				break;
 			default:
 				// Not RSS or Atom
-				this.httpGetResult(CommonFunc.RESULT_NOT_RSS);
+				this.httpGetResult(SageUtils.RESULT_NOT_RSS);
 				break;
 		}
 	},
@@ -186,7 +186,7 @@ FeedLoader.prototype = {
 		//this.abort();
 		this.loading = false;
 
-		if (aResultCode == CommonFunc.RESULT_OK)
+		if (aResultCode == SageUtils.RESULT_OK)
 		{
 			var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
 			var feedParserFactory = new FeedParserFactory();

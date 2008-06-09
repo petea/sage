@@ -59,7 +59,7 @@ function init() {
 	strRes = document.getElementById("strRes");
 
 	try {
-		sageFolderID = CommonFunc.getSageRootFolderId();
+		sageFolderID = SageUtils.getSageRootFolderId();
 	} catch (e) {
 		logger.error(e);
 	}
@@ -67,28 +67,28 @@ function init() {
 	gList = document.getElementById("select-menu");
 
 	chkUserCssEnable = document.getElementById("chkUserCssEnable");
-	chkUserCssEnable.checked = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
+	chkUserCssEnable.checked = SageUtils.getPrefValue(SageUtils.USER_CSS_ENABLE, "bool", false);
 
 	txtUserCssPath = document.getElementById("txtUserCssPath");
-	txtUserCssPath.value = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
+	txtUserCssPath.value = SageUtils.getPrefValue(SageUtils.USER_CSS_PATH, "wstr", "");
 
 	chkAllowEContent = document.getElementById("chkAllowEContent");
-	chkAllowEContent.checked = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
+	chkAllowEContent.checked = SageUtils.getPrefValue(SageUtils.ALLOW_ENCODED_CONTENT, "bool", true);
 
 	chkAutoFeedTitle = document.getElementById("chkAutoFeedTitle");
-	chkAutoFeedTitle.checked = CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true);
+	chkAutoFeedTitle.checked = SageUtils.getPrefValue(SageUtils.AUTO_FEED_TITLE, "bool", true);
 
 	chkRenderFeeds = document.getElementById("chkRenderFeeds");
-	chkRenderFeeds.checked = CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true);
+	chkRenderFeeds.checked = SageUtils.getPrefValue(SageUtils.RENDER_FEEDS, "bool", true);
 
 	chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
-	chkTwelveHourClock.checked = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
+	chkTwelveHourClock.checked = SageUtils.getPrefValue(SageUtils.TWELVE_HOUR_CLOCK, "bool", false);
 
 	feedItemOrder = document.getElementById("feedItemOrder");
-	feedItemOrder.value = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+	feedItemOrder.value = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
 
 	feedDiscoveryMode = document.getElementById("feedDiscoveryMode");
-	feedDiscoveryMode.value = CommonFunc.getPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", "exhaustive");
+	feedDiscoveryMode.value = SageUtils.getPrefValue(SageUtils.FEED_DISCOVERY_MODE, "str", "exhaustive");
 
 	setDisabled();
 
@@ -96,15 +96,15 @@ function init() {
 }
 
 function accept() {
-	CommonFunc.setSageRootFolderId(sageFolderID);
-	CommonFunc.setPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
-	CommonFunc.setPrefValue(CommonFunc.USER_CSS_PATH, "wstr", txtUserCssPath.value);
-	CommonFunc.setPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
-	CommonFunc.setPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", chkAutoFeedTitle.checked);
-	CommonFunc.setPrefValue(CommonFunc.RENDER_FEEDS, "bool", chkRenderFeeds.checked);
-	CommonFunc.setPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", chkTwelveHourClock.checked);
-	CommonFunc.setPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", feedItemOrder.value);
-	CommonFunc.setPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", feedDiscoveryMode.value);
+	SageUtils.setSageRootFolderId(sageFolderID);
+	SageUtils.setPrefValue(SageUtils.USER_CSS_ENABLE, "bool", chkUserCssEnable.checked);
+	SageUtils.setPrefValue(SageUtils.USER_CSS_PATH, "wstr", txtUserCssPath.value);
+	SageUtils.setPrefValue(SageUtils.ALLOW_ENCODED_CONTENT, "bool", chkAllowEContent.checked);
+	SageUtils.setPrefValue(SageUtils.AUTO_FEED_TITLE, "bool", chkAutoFeedTitle.checked);
+	SageUtils.setPrefValue(SageUtils.RENDER_FEEDS, "bool", chkRenderFeeds.checked);
+	SageUtils.setPrefValue(SageUtils.TWELVE_HOUR_CLOCK, "bool", chkTwelveHourClock.checked);
+	SageUtils.setPrefValue(SageUtils.FEED_ITEM_ORDER, "str", feedItemOrder.value);
+	SageUtils.setPrefValue(SageUtils.FEED_DISCOVERY_MODE, "str", feedDiscoveryMode.value);
 }
 
 function selectFolder(aEvent){
@@ -138,7 +138,7 @@ function fillSelectFolderMenupopup () {
 	}
 
 	// to be removed once I checkin the top folder
-	var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
+	var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
 	element.setAttribute("label", "Bookmarks");
 	element.setAttribute("id", PlacesUtils.bookmarks.bookmarksMenuFolder);
 	popup.appendChild(element);
@@ -162,7 +162,7 @@ function fillFolder(aPopup, aFolder, aDepth) {
 		if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
 			!PlacesUtils.nodeIsLivemarkContainer(child)) {
 			child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
-			var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
+			var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
 			element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);
 			element.setAttribute("id", child.itemId);
 			aPopup.appendChild(element);

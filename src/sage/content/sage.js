@@ -59,10 +59,10 @@ var annotationObserver = {
 	
 	onItemAnnotationSet : function(aItemId, aName) {
 		switch (aName) {
-			case CommonFunc.ANNO_ROOT:
+			case SageUtils.ANNO_ROOT:
 				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
 				break;
-			case CommonFunc.ANNO_STATUS:
+			case SageUtils.ANNO_STATUS:
 				/* not sure why this doesn't work...
 				function findNode(node) {
 					if (node.itemId == aItemId) {
@@ -108,7 +108,7 @@ var sidebarController = {
 		rssItemToolTip = document.getElementById("rssItemToolTip");
 		
 		try {
-			var sageRootFolderId = CommonFunc.getSageRootFolderId();
+			var sageRootFolderId = SageUtils.getSageRootFolderId();
 			bookmarksTree.place = "place:queryType=1&folder=" + sageRootFolderId;
 		} catch(e) {
 			logger.error(e);
@@ -187,14 +187,14 @@ var sidebarController = {
 				if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
 					if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
 						try {
-							var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
+							var state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
 							properties.push(this._getAtomFor("sage_state_" + state));
 						} catch (e) { }
 					}
 				} else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
 					if (PlacesUtils.nodeIsLivemarkContainer(node)) {
 						try {
-							var state = PlacesUtils.annotations.getItemAnnotation(itemId, CommonFunc.ANNO_STATUS);
+							var state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
 							properties.push(this._getAtomFor("sage_state_" + state));
 						} catch (e) { }
 					}
@@ -257,8 +257,8 @@ var sidebarController = {
 		lastItemId = itemId;
 		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(itemId));
 		feedLoader.loadURI(uri);
-		if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
-			openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
+		if (SageUtils.getPrefValue(SageUtils.RENDER_FEEDS, "bool", true)) {
+			openURI(SageUtils.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
 		}
 	},
 	
@@ -273,7 +273,7 @@ var sidebarController = {
 		if(aFolderId) {
 			UpdateChecker.startCheck(aFolderId);
 		} else {
-			UpdateChecker.startCheck(CommonFunc.getSageRootFolderId());
+			UpdateChecker.startCheck(SageUtils.getSageRootFolderId());
 		}
 	},
 
@@ -387,7 +387,7 @@ function setRssItemListBox() {
 	}
 
 	linkVisitor.clearItems();
-	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+	var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -437,7 +437,7 @@ function populateToolTip(e) {
 		return;
 	}
 	var listItem = document.tooltipNode;
-	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+	var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -479,7 +479,7 @@ function onFeedLoaded(aFeed) {
 	currentFeed = aFeed;
 	
 	if (lastItemId) {
-		if (CommonFunc.getPrefValue(CommonFunc.AUTO_FEED_TITLE, "bool", true)) {
+		if (SageUtils.getPrefValue(SageUtils.AUTO_FEED_TITLE, "bool", true)) {
 			var title = aFeed.getTitle();
 			if (PlacesUtils.bookmarks.getItemTitle(lastItemId) != title) {
 				PlacesUtils.bookmarks.setItemTitle(lastItemId, title);
@@ -487,15 +487,15 @@ function onFeedLoaded(aFeed) {
 		}
 
 		var now = new Date().getTime();
-		PlacesUtils.annotations.setItemAnnotation(lastItemId, CommonFunc.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
-		UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_NO_UPDATE);
-		PlacesUtils.annotations.setItemAnnotation(lastItemId, CommonFunc.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		UpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_NO_UPDATE);
+		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	}
 
 	setStatusDone();
 	setRssItemListBox();
 
-	//if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true))
+	//if (SageUtils.getPrefValue(SageUtils.RENDER_FEEDS, "bool", true))
 	//{
 	//	CreateHTML.openHTML(currentFeed);
 	//}
@@ -506,7 +506,7 @@ function onFeedLoadError(aErrorCode) {
 }
 
 function onFeedAbort(sURI) {
-	UpdateChecker.setStatusFlag(lastItemId, CommonFunc.STATUS_UNKNOWN);
+	UpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_UNKNOWN);
 }
 
 // This takes a list item from the rss list box and returns the uri it represents
@@ -518,7 +518,7 @@ function onFeedAbort(sURI) {
  * @returns	FeedItem
  */
 function getFeedItemFromListItem( oListItem ) {
-	var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+	var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -728,7 +728,7 @@ function updateItemContextMenu() {
  */
 function markAllReadState(bRead) {
 	if (currentFeed) {
-		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+		var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
 		switch (feedItemOrder) {
 			case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 			case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;

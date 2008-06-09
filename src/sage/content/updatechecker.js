@@ -68,8 +68,8 @@ var UpdateChecker = {
 		var itemType = PlacesUtils.bookmarks.getItemType(itemId);
 		if (itemType == PlacesUtils.bookmarks.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
 			var url = this.getURL(aResultNode.itemId);
-			var status = this.getItemAnnotation(aResultNode.itemId, CommonFunc.ANNO_STATUS);
-			if(url && status != CommonFunc.STATUS_UPDATE) {
+			var status = this.getItemAnnotation(aResultNode.itemId, SageUtils.ANNO_STATUS);
+			if(url && status != SageUtils.STATUS_UPDATE) {
 				this.checkList.push(aResultNode.itemId);
 			}
 		} else if (itemType == PlacesUtils.bookmarks.TYPE_FOLDER) {
@@ -114,7 +114,7 @@ var UpdateChecker = {
 	done: function() {
 		if(this.checking) {
 			this.httpReq.abort();
-			this.setStatusFlag(this.lastItemId, CommonFunc.STATUS_NO_UPDATE);
+			this.setStatusFlag(this.lastItemId, SageUtils.STATUS_NO_UPDATE);
 		}
 	},
 
@@ -143,10 +143,10 @@ var UpdateChecker = {
 		this.httpReq.onreadystatechange = this.httpReadyStateChange;
 
 		try {
-			this.httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
+			this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
 			this.httpReq.overrideMimeType("application/xml");
 			this.httpReq.send(null);
-			this.setStatusFlag(this.lastItemId, CommonFunc.STATUS_CHECKING);
+			this.setStatusFlag(this.lastItemId, SageUtils.STATUS_CHECKING);
 			this.onCheck(name, url);
 		} catch(e) {
 				// FAILURE
@@ -199,29 +199,29 @@ var UpdateChecker = {
 		var url = this.getURL(this.lastItemId).spec;
 		var status = 0;
 
-		var lastVisit = this.getItemAnnotation(this.lastItemId, CommonFunc.ANNO_LASTVISIT);
+		var lastVisit = this.getItemAnnotation(this.lastItemId, SageUtils.ANNO_LASTVISIT);
 		if (!lastVisit) {
 			lastVisit = 0;
 		}
 
 		if (aSucceed) {
-			var sig = this.getItemAnnotation(this.lastItemId, CommonFunc.ANNO_SIG);
+			var sig = this.getItemAnnotation(this.lastItemId, SageUtils.ANNO_SIG);
 
 			if (aLastModified) {
 				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
-					status = CommonFunc.STATUS_UPDATE;
+					status = SageUtils.STATUS_UPDATE;
 				} else {
-					status = CommonFunc.STATUS_NO_UPDATE;
+					status = SageUtils.STATUS_NO_UPDATE;
 				}
 			} else {
 				if(sig != feed.getSignature()) {
-					status = CommonFunc.STATUS_UPDATE;
+					status = SageUtils.STATUS_UPDATE;
 				} else {
-					status = CommonFunc.STATUS_NO_UPDATE;
+					status = SageUtils.STATUS_NO_UPDATE;
 				}
 			}
 		} else {
-			status = CommonFunc.STATUS_ERROR;
+			status = SageUtils.STATUS_ERROR;
 		}
 
 		this.setStatusFlag(this.lastItemId, status);
@@ -236,8 +236,8 @@ var UpdateChecker = {
 	},
 
 	setStatusFlag: function(aItemId, aState) {
-		logger.info("setting " + CommonFunc.ANNO_STATUS + " => " + aState + " on item " + aItemId);
-		PlacesUtils.annotations.setItemAnnotation(aItemId, CommonFunc.ANNO_STATUS, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		logger.info("setting " + SageUtils.ANNO_STATUS + " => " + aState + " on item " + aItemId);
+		PlacesUtils.annotations.setItemAnnotation(aItemId, SageUtils.ANNO_STATUS, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	},
 	
 	onCheck: function(aName, aURL) {},

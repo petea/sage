@@ -37,8 +37,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 var CreateHTML = {
-	HTML_SOURCE: CommonFunc.loadText("chrome://sage/content/res/template-html.txt"),
-	ITEM_SOURCE: CommonFunc.loadText("chrome://sage/content/res/template-item.txt"),
+	HTML_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-html.txt"),
+	ITEM_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-item.txt"),
 	DEFAULT_CSS: "chrome://sage/content/res/sage.css",
 
 	_tabbed: false,
@@ -88,8 +88,8 @@ var CreateHTML = {
 	},
 
 	getUserCssURL: function() {
-		var userCssEnable = CommonFunc.getPrefValue(CommonFunc.USER_CSS_ENABLE, "bool", false);
-		var userCssPath = CommonFunc.getPrefValue(CommonFunc.USER_CSS_PATH, "wstr", "");
+		var userCssEnable = SageUtils.getPrefValue(SageUtils.USER_CSS_ENABLE, "bool", false);
+		var userCssPath = SageUtils.getPrefValue(SageUtils.USER_CSS_PATH, "wstr", "");
 		if (!userCssEnable || !userCssPath) {
 			return null;
 		}
@@ -134,7 +134,7 @@ var CreateHTML = {
 				return CreateHTML.replaceFeedKeyword(feed, s);
 			});
 
-		return CommonFunc.convertCharCodeFrom(
+		return SageUtils.convertCharCodeFrom(
 			this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
 				return CreateHTML.replaceFeedKeyword(feed, s);
 			}),
@@ -209,7 +209,7 @@ var CreateHTML = {
 	},
 
 	getItemsHtml:	function (feed) {
-		var feedItemOrder = CommonFunc.getPrefValue(CommonFunc.FEED_ITEM_ORDER, "str", "chrono");
+		var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
 		switch (feedItemOrder) {
 			case "chrono": feed.setSort(feed.SORT_CHRONO); break;
 			case "source": feed.setSort(feed.SORT_SOURCE); break;
@@ -255,7 +255,7 @@ var CreateHTML = {
 
 			case "**DESCRIPTION**":
 				if (item.hasContent()) {
-					var allowEContent = CommonFunc.getPrefValue(CommonFunc.ALLOW_ENCODED_CONTENT, "bool", true);
+					var allowEContent = SageUtils.getPrefValue(SageUtils.ALLOW_ENCODED_CONTENT, "bool", true);
 					var ds;
 					if (allowEContent) {
 						this.filterHtmlHandler.clear();
@@ -270,7 +270,7 @@ var CreateHTML = {
 
 			case "**PUBDATE**":
 				if (item.hasPubDate()) {
-					var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
+					var twelveHourClock = SageUtils.getPrefValue(SageUtils.TWELVE_HOUR_CLOCK, "bool", false);
 					var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
 					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
 					var dateString = formatter.formatDate(item.getPubDate());

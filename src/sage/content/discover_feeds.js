@@ -61,7 +61,7 @@ function init() {
 	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 	logger = new Logger();
 
-	var discoveryMode = CommonFunc.getPrefValue(CommonFunc.FEED_DISCOVERY_MODE, "str", "exhaustive");
+	var discoveryMode = SageUtils.getPrefValue(SageUtils.FEED_DISCOVERY_MODE, "str", "exhaustive");
 
 	initServices();
 	initBMService();
@@ -150,7 +150,7 @@ function init() {
 		httpReq.onerror = httpError;
 		try {
 			httpReq.open("GET", possibleFeeds[entry][0], true);
-			httpReq.setRequestHeader("User-Agent", CommonFunc.USER_AGENT);
+			httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
 			httpReq.overrideMimeType("application/xml");
 			httpReq.send(null);
 		} catch(e) {
@@ -194,7 +194,7 @@ function doAddFeed() {
 			if(title == "") {
 				title = "No Title";
 			}
-			var sage_folder = rdfService.GetResource(CommonFunc.getPrefValue(CommonFunc.FEED_FOLDER_ID, "str", "NC:BookmarksRoot"));
+			var sage_folder = rdfService.GetResource(SageUtils.getPrefValue(SageUtils.FEED_FOLDER_ID, "str", "NC:BookmarksRoot"));
 			if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
 				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, sage_folder, null);
 			} else {
@@ -253,7 +253,7 @@ function addDiscoveredFeed(uri, feed) {
 		feeds_found_external++;
 	}
 
-	var twelveHourClock = CommonFunc.getPrefValue(CommonFunc.TWELVE_HOUR_CLOCK, "bool", false);
+	var twelveHourClock = SageUtils.getPrefValue(SageUtils.TWELVE_HOUR_CLOCK, "bool", false);
 	lastPubDate = "N/A";
 	if(feed.hasLastPubDate()) {
 		var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);

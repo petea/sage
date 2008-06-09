@@ -139,12 +139,12 @@ function importOPML() {
 		reportError(strRes.getString("opml_import_badfile"));
 		return false;
 	}
-	var rssReaderFolderID = CommonFunc.getSageRootFolderId();
+	var rssReaderFolderID = SageUtils.getSageRootFolderId();
 
 	var folderName = "OPML Import";
 	var opmlTitles = opmlDoc.getElementsByTagName("title");
 	if(opmlTitles.length > 0) {
-		var opmlTitle = CommonFunc.getInnerText(opmlTitles[0]);
+		var opmlTitle = SageUtils.getInnerText(opmlTitles[0]);
 		folderName += " - " + opmlTitle;
 	}
 	var rootFolderId = bookmarksService.createFolder(rssReaderFolderID, folderName, bookmarksService.DEFAULT_INDEX);
@@ -203,7 +203,7 @@ function exportOPML() {
 	}
 
 	var opmlSource = createOpmlSource();
-	opmlSource = CommonFunc.convertCharCodeFrom(opmlSource, "UTF-8");
+	opmlSource = SageUtils.convertCharCodeFrom(opmlSource, "UTF-8");
 
 	var tmpFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
 	try {
@@ -229,7 +229,7 @@ function createOpmlSource() {
 	var hist = Components.classes["@mozilla.org/browser/nav-history-service;1"]
              .getService(Components.interfaces.nsINavHistoryService);
 
-	var rssReaderFolderID = CommonFunc.getSageRootFolderId();
+	var rssReaderFolderID = SageUtils.getSageRootFolderId();
 
 	var srcTemplate =  '<?xml version="1.0" encoding="UTF-8"?>';
 	srcTemplate += '<opml version="1.0">';

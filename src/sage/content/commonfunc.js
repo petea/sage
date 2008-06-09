@@ -36,7 +36,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var CommonFunc = {
+var SageUtils = {
 
 	VERSION : [1, 4, 0],
 	USER_AGENT : "Mozilla/5.0 (Sage)",
@@ -62,7 +62,7 @@ var CommonFunc = {
 	FEED_SUMMARY_URI :		"chrome://sage/content/feedsummary.html",
 
 	ANNO_ROOT : "sage/root", // int, a Places itemId
-	ANNO_STATUS : "sage/status", // string, as defined in CommonFunc (STATUS_*)
+	ANNO_STATUS : "sage/status", // string, as defined in SageUtils (STATUS_*)
 	ANNO_SIG : "sage/signature", // string
 	ANNO_LASTVISIT : "sage/lastvisit", // Epoch seconds
 
@@ -90,7 +90,6 @@ var CommonFunc = {
 		return tmpString;
 	},
 
-
 	getInnerText : function(aNode) {
 		if(!aNode.hasChildNodes()) return "";
 		
@@ -103,7 +102,6 @@ var CommonFunc = {
 		}
 		return resultArray.join('').replace(/^\s+|\s+$/g, "");
 	},
-
 
 	loadText : function(aURI) {
 		var	URI = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
