@@ -64,8 +64,6 @@ var sageOverlay = {
 			createBookmark("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
 			createBookmark("Sage Project News", "http://sage.mozdev.org/rss.xml");
 			this.addButton();
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowSearchBar"), true);
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowSearchBar"), RDF.GetResource("checked"), RDF.GetLiteral("false"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
 			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), true);

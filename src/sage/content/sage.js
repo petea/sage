@@ -133,8 +133,6 @@ var sidebarController = {
 		//	bookmarksTree.treeBoxObject.selection.select(0);
 		//}
 	
-		FeedSearch.init();
-		toggleShowSearchBar();
 		toggleShowFeedItemList();
 		toggleShowFeedItemListToolbar();
 	
@@ -410,11 +408,6 @@ function getContentBrowser() {
 		return topWindowOfType.document.getElementById('content');
 	}
 	return null;
-}
-
-function toggleShowSearchBar() {
-	var showSearchBar = getCheckboxCheck("chkShowSearchBar");
-	document.getElementById("barSearch").hidden = !showSearchBar;
 }
 
 function toggleShowFeedItemList() {

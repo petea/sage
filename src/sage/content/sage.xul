@@ -63,7 +63,6 @@
 	<script type="application/x-javascript" src="chrome://sage/content/simplehtmlparser.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/filterhtmlhandler.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
 	
 	<commandset id="placesCommands"/>
 	<commandset id="editMenuCommands"/>
@@ -108,7 +107,6 @@
 				<menupopup>
 					<menu label="&menu.sidebarLayout;">
 						<menupopup>
-							<menuitem id="chkShowSearchBar" type="checkbox" persist="checked" label="&menu.showSearchBar;" oncommand="toggleShowSearchBar();"/>
 							<menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList();"/>
 							<menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar();"/>
 							<menuitem id="chkShowFeedItemTooltips" type="checkbox" persist="checked" label="&menu.showFeedItemTooltips;"/>
@@ -123,16 +121,6 @@
 					<menuitem label="&menu.aboutSage;" oncommand="sidebarController.openAboutDialog();"/>
 				</menupopup>
 			</toolbarbutton>
-		</toolbar>
-		<toolbar id="barSearch" align="center">
-			<textbox id="txtSearchValue" type="autocomplete" flex="1"
-				ontextentered="FeedSearch.search();"
-				autocompletesearch="form-history"
-				autocompletesearchparam="q"
-				searchengine="" persist="searchengine">
-				<image id="imgSearchEngine" popup="popSearchEngine"/>
-			</textbox>
-			<toolbarbutton id="btnSearchSubmit" oncommand="FeedSearch.search();"/>
 		</toolbar>
 	</toolbox>
 	

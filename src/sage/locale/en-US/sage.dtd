@@ -6,7 +6,6 @@
 <!ENTITY sage.tooltip				"Displays Sage">
 
 <!ENTITY menu.view				"View">
-<!ENTITY menu.showSearchBar			"Feed Search Bar">
 <!ENTITY menu.showFeedItemList			"Feed Item List">
 <!ENTITY menu.showFeedItemListToolbar	"Feed Item List Toolbar">
 <!ENTITY menu.showFeedItemTooltips		"Feed Item Tooltips">
