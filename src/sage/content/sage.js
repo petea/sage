@@ -263,6 +263,21 @@ var sidebarController = {
 			openURI(CommonFunc.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
 		}
 	},
+	
+	checkFeeds : function(aFolderId) {
+		UpdateChecker.onCheck = function(aName, aURL) {
+			// TODO: Remove
+		}
+		UpdateChecker.onChecked = function(aName, aURL) {
+			setStatusDone();
+		}
+	
+		if(aFolderId) {
+			UpdateChecker.startCheck(aFolderId);
+		} else {
+			UpdateChecker.startCheck(CommonFunc.getSageRootFolderId());
+		}
+	},
 
 	openDiscoverFeedsDialog : function() {
 		openDialog("chrome://sage/content/discover_feeds.xul", "sage_discover_feeds", "chrome,centerscreen,modal,close", bookmarksTree);
@@ -289,21 +304,6 @@ var sidebarController = {
 }
 
 
-
-function updateCheck(aCheckFolderId) {
-	UpdateChecker.onCheck = function(aName, aURL) {
-		// TODO: Remove
-	}
-	UpdateChecker.onChecked = function(aName, aURL) {
-		setStatusDone();
-	}
-
-	if(aCheckFolderId) {
-		UpdateChecker.startCheck(aCheckFolderId);
-	} else {
-		UpdateChecker.startCheck(CommonFunc.getSageRootFolderId());
-	}
-}
 
 function createTreeContextMenu2(aEvent) {
 	var popup = aEvent.target;

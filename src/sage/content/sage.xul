@@ -63,7 +63,6 @@
 	<script type="application/x-javascript" src="chrome://sage/content/simplehtmlparser.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/filterhtmlhandler.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/getrsstitle.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/search/feedsearch.js"/>
 	
 	<commandset id="placesCommands"/>
@@ -102,7 +101,7 @@
 
 	<toolbox class="plain">
 		<toolbar id="feedListToolbar">
-			<toolbarbutton id="checkFeeds" class="toolbarbutton-1" oncommand="updateCheck();" tooltiptext="&menu.checkUpdate;"/>
+			<toolbarbutton id="checkFeeds" class="toolbarbutton-1" oncommand="sidebarController.checkFeeds();" tooltiptext="&menu.checkUpdate;"/>
 			<toolbarbutton id="discoverFeeds" class="toolbarbutton-1" oncommand="sidebarController.openDiscoverFeedsDialog();" tooltiptext="&menu.discoverFeeds;"/>
 			<spacer flex="1"/>
 			<toolbarbutton id="toolsMenuButton" type="menu" label="&menu.options;" class="toolbarbutton-1">
