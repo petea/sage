@@ -60,6 +60,7 @@ var logger;
 var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 var historyService = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService);
 var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+var livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
 function init() {
 	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
@@ -171,7 +172,8 @@ function fillFolder(aPopup, aFolder, aDepth) {
 	aFolder.containerOpen = true;
 	for (var c = 0; c < aFolder.childCount; c++) {
 		var child = aFolder.getChild(c);
-		if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
+		if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
+			!livemarkService.isLivemark(child.itemId)) {
 			child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
 			var element = document.createElementNS(CommonFunc.XUL_NS, "menuitem");
 			element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);
