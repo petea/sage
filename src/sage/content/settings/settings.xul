@@ -38,7 +38,7 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css"?>
+<?xul-overlay href="chrome://browser/content/places/placesOverlay.xul"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://sage/locale/sage.dtd">
 
@@ -47,11 +47,8 @@
 		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 
-	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/bookmarks.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/settings/settings.js"/>
-	
-	<dialogheader id="header" title="&sage.label;" description="&sage.version.label;"/>
 	
 	<stringbundleset>
 		<stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
