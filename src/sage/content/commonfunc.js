@@ -38,49 +38,36 @@
 
 var CommonFunc = {
 
-	VERSION: [1, 4, 0],
-	USER_AGENT: "Mozilla/5.0 (Sage)",
+	VERSION : [1, 4, 0],
+	USER_AGENT : "Mozilla/5.0 (Sage)",
 
-	FEED_FOLDER_ID: "sage.folder_id",
-	LAST_VERSION: "sage.last_version",
-	USER_CSS_ENABLE: "sage.user_css.enable",
-	USER_CSS_PATH: "sage.user_css.path",
-	ALLOW_ENCODED_CONTENT: "sage.allow_encoded_content",
-	AUTO_FEED_TITLE: "sage.auto_feed_title",
-	RENDER_FEEDS: "sage.render_feeds",
-	TWELVE_HOUR_CLOCK: "sage.twelve_hour_clock",
-	FEED_ITEM_ORDER: "sage.feed_item_order",
-	FEED_DISCOVERY_MODE: "sage.feed_discovery_mode",
+	FEED_FOLDER_ID : "sage.folder_id",
+	LAST_VERSION : "sage.last_version",
+	USER_CSS_ENABLE : "sage.user_css.enable",
+	USER_CSS_PATH : "sage.user_css.path",
+	ALLOW_ENCODED_CONTENT : "sage.allow_encoded_content",
+	AUTO_FEED_TITLE : "sage.auto_feed_title",
+	RENDER_FEEDS : "sage.render_feeds",
+	TWELVE_HOUR_CLOCK : "sage.twelve_hour_clock",
+	FEED_ITEM_ORDER : "sage.feed_item_order",
+	FEED_DISCOVERY_MODE : "sage.feed_discovery_mode",
 
+	RESULT_OK : 0,
+	RESULT_PARSE_ERROR : 1,
+	RESULT_NOT_RSS : 2,
+	RESULT_NOT_FOUND : 3,
+	RESULT_NOT_AVAILABLE : 4,
+	RESULT_ERROR_FAILURE : 5,
 
-	RESULT_OK:	 			0,
-	RESULT_PARSE_ERROR:		1,
-	RESULT_NOT_RSS:			2,
-	RESULT_NOT_FOUND:		3,
-	RESULT_NOT_AVAILABLE:	4,
-	RESULT_ERROR_FAILURE:	5,
+	FEED_SUMMARY_URI :		"chrome://sage/content/feedsummary.html",
 
-	FEED_SUMMARY_URI:		"chrome://sage/content/feedsummary.html",
+	ANNO_ROOT : "sage/root", // int, a Places itemId
+	ANNO_STATUS : "sage/status", // string, as defined in CommonFunc (STATUS_*)
+	ANNO_SIG : "sage/signature", // string
+	ANNO_LASTVISIT : "sage/lastvisit", // Epoch seconds
 
-	ANNO_ROOT: "sage/root", // int, a Places itemId
-	ANNO_STATUS: "sage/status", // string, as defined in CommonFunc (STATUS_*)
-	ANNO_SIG: "sage/signature", // string
-	ANNO_LASTVISIT: "sage/lastvisit", // Epoch seconds
-
-// ++++++++++ ++++++++++ Bookmark RDF ++++++++++ ++++++++++
-
-	NC_NS:				"http://home.netscape.com/NC-rdf#",
-	BM_LAST_VISIT:		"http://home.netscape.com/WEB-rdf#LastVisitDate",
-	BM_LAST_MODIFIED:	"http://home.netscape.com/WEB-rdf#LastModifiedDate",
-	BM_DESCRIPTION:		"http://home.netscape.com/NC-rdf#Description",
-	BM_NAME:				"http://home.netscape.com/NC-rdf#Name",
-	BM_URL:				"http://home.netscape.com/NC-rdf#URL",
-	BM_FEEDURL:			"http://home.netscape.com/NC-rdf#FeedURL",
-
-	RDF_NS:				"http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-	RDF_TYPE:			"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-	
-	XUL_NS:				"http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
+	NC_NS: "http://home.netscape.com/NC-rdf#",
+	XUL_NS: "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
 
 	STATUS_UPDATE: "updated",
 	STATUS_NO_UPDATE: "no-updated",
@@ -88,10 +75,7 @@ var CommonFunc = {
 	STATUS_ERROR: "error",
 	STATUS_CHECKING: "checking",
 
-
-// ++++++++++ ++++++++++ CharCode ++++++++++ ++++++++++
-
-	convertCharCodeFrom: function(aString, aCharCode) {
+	convertCharCodeFrom : function(aString, aCharCode) {
 		var UConvID = "@mozilla.org/intl/scriptableunicodeconverter";
 		var UConvIF  = Components.interfaces.nsIScriptableUnicodeConverter;
 		var UConv = Components.classes[UConvID].getService(UConvIF);
@@ -107,7 +91,7 @@ var CommonFunc = {
 	},
 
 
-	getInnerText: function(aNode) {
+	getInnerText : function(aNode) {
 		if(!aNode.hasChildNodes()) return "";
 		
 		var NodeFilter = Components.interfaces.nsIDOMNodeFilter;
@@ -121,7 +105,7 @@ var CommonFunc = {
 	},
 
 
-	loadText: function(aURI) {
+	loadText : function(aURI) {
 		var	URI = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
 		URI.spec = aURI;
 	
@@ -138,9 +122,6 @@ var CommonFunc = {
 
 		return fileContents;
 	},
-
-
-// ++++++++++ ++++++++++ preferences ++++++++++ ++++++++++
 
 	setPrefValue : function(aPrefString, aPrefType, aValue) {
 		var nsISupportsString = Components.interfaces.nsISupportsString;
@@ -203,73 +184,20 @@ var CommonFunc = {
 		return aDefault;
 	},
 
-	clearPref: function(aPrefString) {
-		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
-
-		try {
-			xpPref.clearUserPref(aPrefString);
-			return true;
-		} catch(e) {
-			return false;
-		}
-	},
-
-		// remove all preferences
-	removePrefs: function() {
-		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPref);
-
-		var prefBranch = xpPref.getBranch("sage.");
-
-		try {
-			prefBranch.deleteBranch("");
-			return true;
-		} catch(e) {
-			return false;
-		}
-	},
-
-	addPrefListener: function(aPrefString, aFunc) {
-		var prefObserver;
-		try {
-			prefObserver = {
-				domain: aPrefString,
-				observe: aFunc
-			};
-
-			var pbi = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranchInternal);
-			pbi.addObserver(prefObserver.domain, prefObserver, false);
-		} catch(e) {
-			alert(e);
-			prefObserver = null;
-		}
-
-		return prefObserver;
-	},
-
-	removePrefListener: function(aObserver) {
-		var prefObserver;
-		try {
-			var pbi = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranchInternal);
-			pbi.removeObserver(aObserver.domain, aObserver);
-		} catch(e) {
-			alert(e)
-		}
-	},
-
 	// takes a version string, returns an integer triple containing (major version, minor version, patch level)
-	versionStrDecode: function(versionStr) {
+	versionStrDecode : function(versionStr) {
 		var regexp = /([0-9]*)\.([0-9]*)\.([0-9]*)/;
 		var result = regexp.exec(versionStr);
 		return Array(parseInt(result[1]), parseInt(result[2]), parseInt(result[3]));
 	},
 
 	// takes a version triple, returns an integer
-	versionToInt: function(versionTriple) {
+	versionToInt : function(versionTriple) {
 		return versionTriple[0]*100 + versionTriple[1]*10 + versionTriple[2];
 	},
 
 	// takes two version triples, returns 1 if the first is more recent, 0 otherwise
-	versionCompare: function(versionA, versionB) {
+	versionCompare : function(versionA, versionB) {
 		if(this.versionToInt(versionA) > this.versionToInt(versionB)) {
 			return 1;
 		} else {
@@ -278,7 +206,7 @@ var CommonFunc = {
 	},
 
 	// takes a version triple, returns a formatted version string
-	versionString: function(version, pretty) {
+	versionString : function(version, pretty) {
 		var formatted;
 		if(pretty) {
 			formatted = version[0].toString() + '.' + version[1].toString();
@@ -289,7 +217,7 @@ var CommonFunc = {
 		return formatted;
 	},
 	
-	getSageRootFolderId: function() {
+	getSageRootFolderId : function() {
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 		var results = annotationService.getItemsWithAnnotation("sage/root", {});
 		if (results.length == 1) {
@@ -301,7 +229,7 @@ var CommonFunc = {
 		}
 	},
 	
-	setSageRootFolderId: function(folderId) {
+	setSageRootFolderId : function(folderId) {
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 		var results = annotationService.getItemsWithAnnotation("sage/root", {});
 		if (results.length == 1) {

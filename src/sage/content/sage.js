@@ -302,51 +302,6 @@ var sidebarController = {
 }
 
 
-
-function createTreeContextMenu2(aEvent) {
-	var popup = aEvent.target;
-	if(popup.localName != "menupopup") return;
-
-	var selection = bookmarksTree._selection;
-	var itemId = selection.item[0].Value;
-	var cmdSrc = "";
-	var tempMenuItem;
-
-	// get type of parent node
-	var predicate = bookmarksTree.db.ArcLabelsIn(bookmarksTree.currentResource).getNext();
-	if(predicate instanceof Components.interfaces.nsIRDFResource) {
-		var parent = bookmarksTree.db.GetSource(predicate, bookmarksTree.currentResource, true);
-	}
-	var parentType = BookmarksUtils.getProperty(parent, CommonFunc.RDF_NS + "type", bookmarksTree.db);
-
-	if((selection.type == "Bookmark" && parentType != CommonFunc.NC_NS + "Livemark") || selection.type == "Livemark") {
-		cmdSrc = "GetRssTitle.getRssTitle('" + itemId + "')";
-		tempMenuItem = document.createElement("menuitem");
-		tempMenuItem.setAttribute("label", strRes.getString("GET_RSS_TITLE"));
-		tempMenuItem.setAttribute("oncommand", cmdSrc);
-		popup.appendChild(document.createElement("menuseparator"));
-		popup.appendChild(tempMenuItem);
-	} else if(selection.type == "Folder") {
-		cmdSrc = "updateCheck('" + itemId + "')";
-		tempMenuItem = document.createElement("menuitem");
-		tempMenuItem.setAttribute("label", strRes.getString("CHECK_UPDATE"));
-		tempMenuItem.setAttribute("oncommand", cmdSrc);
-		popup.appendChild(document.createElement("menuseparator"));
-		popup.appendChild(tempMenuItem);
-	}
-
-	// if we are not rendering the summary we should disable the open new window and tab
-	var cmdWin = document.getElementById("cmd_bm_openinnewwindow");
-	var cmdTab = document.getElementById("cmd_bm_openinnewtab");
-	if (CommonFunc.getPrefValue(CommonFunc.RENDER_FEEDS, "bool", true)) {
-		cmdWin.removeAttribute("disabled");
-		cmdTab.removeAttribute("disabled");
-	} else {
-		cmdWin.setAttribute("disabled", "true");
-		cmdTab.setAttribute("disabled", "true");
-	}
-}
-
 function rssItemListBoxClick(aEvent) {
 	if(aEvent.type == "click") {
 		if(aEvent.button == 2 || aEvent.originalTarget.localName != "listitem") {
