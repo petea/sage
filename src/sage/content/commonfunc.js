@@ -240,6 +240,21 @@ var SageUtils = {
 		} else if (results.length > 1) {
 			throw "Multiple root folders found";
 		}
+	},
+	
+	addFeed : function(title, url) {
+		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+		var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+		var bookmarkURI = ioService.newURI(url, null, null);
+		var folderId = this.getSageRootFolderId();
+		bookmarksService.insertBookmark(folderId, bookmarkURI, bookmarksService.DEFAULT_INDEX, title);	
+	},
+	
+	persistValue : function(uri, id, attribute, value) {
+		var RDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
+		var localstore = RDF.GetDataSource("rdf:local-store");
+		localstore.Assert(RDF.GetResource(uri), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource(uri + "#" + id), true);
+		localstore.Assert(RDF.GetResource(uri + "#" + id), RDF.GetResource(attribute), RDF.GetLiteral(value), true);
 	}
 
 }

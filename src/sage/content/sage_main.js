@@ -44,33 +44,21 @@ var sageOverlay = {
 		
 		logger.info("initialized");
 
-		var RDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
-		var localstore = RDF.GetDataSource("rdf:local-store");
 		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
 		var prefBranch = prefService.getBranch("sage.");
 		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-		var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 		
 		if (!prefBranch.prefHasUserValue("last_version")) {  // new user
 			var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
-			annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
-			//prefBranch.setCharPref("folder_id", new_folder.Value);
-			function createBookmark(title, url) {
-				var bookmarkURI = ioService.newURI(url, null, null);
-				bookmarksService.insertBookmark(folderId, bookmarkURI, bookmarksService.DEFAULT_INDEX, title);
-			}
-			createBookmark("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
-			createBookmark("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
-			createBookmark("Sage Project News", "http://sage.mozdev.org/rss.xml");
+			SageUtils.setSageRootFolderId(folderId);
+			SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
+			SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
+			SageUtils.addFeed("Sage Project News", "http://sage.mozdev.org/rss.xml");
 			this.addButton();
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), true);
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), true);
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul"), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemTooltips"), true);
-			localstore.Assert(RDF.GetResource("chrome://sage/content/sage.xul#chkShowTooltip"), RDF.GetResource("checked"), RDF.GetLiteral("true"), true);
-			
+			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemList", "checked", true);
+			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemListToolbar", "checked", true);
+			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);			
 		} else { // check for upgrade
 			var lastVersion = prefBranch.getCharPref("last_version");
 			if (lastVersion != "1.3.7" &&
