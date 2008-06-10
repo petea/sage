@@ -35,5 +35,14 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
- 
- pref("extensions.{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}.description", "chrome://sage/locale/sage.properties");
+
+pref("extensions.sage.version", "");
+pref("extensions.sage.userCss.enable", false);
+pref("extensions.sage.userCss.path", "");
+pref("extensions.sage.allowEncodedContent", true);
+pref("extensions.sage.autoFeedTitle", true);
+pref("extensions.sage.renderFeeds", true);
+pref("extensions.sage.twelveHourClock", true);
+pref("extensions.sage.feedItemOrder", "chrono");
+pref("extensions.sage.feedDiscoveryMode", "exhaustive");
+pref("extensions.sage.logLevel", 3);

@@ -257,7 +257,7 @@ var sidebarController = {
 		lastItemId = itemId;
 		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(itemId));
 		feedLoader.loadURI(uri);
-		if (SageUtils.getPrefValue(SageUtils.RENDER_FEEDS, "bool", true)) {
+		if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS)) {
 			openURI(SageUtils.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
 		}
 	},
@@ -397,7 +397,7 @@ function setRssItemListBox() {
 	}
 
 	linkVisitor.clearItems();
-	var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
+	var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -447,7 +447,7 @@ function populateToolTip(e) {
 		return;
 	}
 	var listItem = document.tooltipNode;
-	var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
+	var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -489,7 +489,7 @@ function onFeedLoaded(aFeed) {
 	currentFeed = aFeed;
 	
 	if (lastItemId) {
-		if (SageUtils.getPrefValue(SageUtils.AUTO_FEED_TITLE, "bool", true)) {
+		if (SageUtils.getPrefValue(SageUtils.PREF_AUTO_FEED_TITLE)) {
 			var title = aFeed.getTitle();
 			if (PlacesUtils.bookmarks.getItemTitle(lastItemId) != title) {
 				PlacesUtils.bookmarks.setItemTitle(lastItemId, title);
@@ -505,7 +505,7 @@ function onFeedLoaded(aFeed) {
 	setStatusDone();
 	setRssItemListBox();
 
-	//if (SageUtils.getPrefValue(SageUtils.RENDER_FEEDS, "bool", true))
+	//if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS))
 	//{
 	//	CreateHTML.openHTML(currentFeed);
 	//}
@@ -528,7 +528,7 @@ function onFeedAbort(sURI) {
  * @returns	FeedItem
  */
 function getFeedItemFromListItem( oListItem ) {
-	var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
+	var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -738,7 +738,7 @@ function updateItemContextMenu() {
  */
 function markAllReadState(bRead) {
 	if (currentFeed) {
-		var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
+		var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 		switch (feedItemOrder) {
 			case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 			case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;

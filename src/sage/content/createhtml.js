@@ -88,8 +88,8 @@ var CreateHTML = {
 	},
 
 	getUserCssURL: function() {
-		var userCssEnable = SageUtils.getPrefValue(SageUtils.USER_CSS_ENABLE, "bool", false);
-		var userCssPath = SageUtils.getPrefValue(SageUtils.USER_CSS_PATH, "wstr", "");
+		var userCssEnable = SageUtils.getPrefValue(SageUtils.PREF_USER_CSS_ENABLE);
+		var userCssPath = SageUtils.getPrefValue(SageUtils.PREF_USER_CSS_PATH);
 		if (!userCssEnable || !userCssPath) {
 			return null;
 		}
@@ -209,7 +209,7 @@ var CreateHTML = {
 	},
 
 	getItemsHtml:	function (feed) {
-		var feedItemOrder = SageUtils.getPrefValue(SageUtils.FEED_ITEM_ORDER, "str", "chrono");
+		var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 		switch (feedItemOrder) {
 			case "chrono": feed.setSort(feed.SORT_CHRONO); break;
 			case "source": feed.setSort(feed.SORT_SOURCE); break;
@@ -255,7 +255,7 @@ var CreateHTML = {
 
 			case "**DESCRIPTION**":
 				if (item.hasContent()) {
-					var allowEContent = SageUtils.getPrefValue(SageUtils.ALLOW_ENCODED_CONTENT, "bool", true);
+					var allowEContent = SageUtils.getPrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 					var ds;
 					if (allowEContent) {
 						this.filterHtmlHandler.clear();
@@ -270,7 +270,7 @@ var CreateHTML = {
 
 			case "**PUBDATE**":
 				if (item.hasPubDate()) {
-					var twelveHourClock = SageUtils.getPrefValue(SageUtils.TWELVE_HOUR_CLOCK, "bool", false);
+					var twelveHourClock = SageUtils.getPrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 					var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
 					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
 					var dateString = formatter.formatDate(item.getPubDate());

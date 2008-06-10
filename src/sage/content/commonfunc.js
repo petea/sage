@@ -38,19 +38,22 @@
 
 var SageUtils = {
 
-	VERSION : [1, 4, 0],
+	VERSION : "1.4a",
+	
 	USER_AGENT : "Mozilla/5.0 (Sage)",
 
-	FEED_FOLDER_ID : "sage.folder_id",
-	LAST_VERSION : "sage.last_version",
-	USER_CSS_ENABLE : "sage.user_css.enable",
-	USER_CSS_PATH : "sage.user_css.path",
-	ALLOW_ENCODED_CONTENT : "sage.allow_encoded_content",
-	AUTO_FEED_TITLE : "sage.auto_feed_title",
-	RENDER_FEEDS : "sage.render_feeds",
-	TWELVE_HOUR_CLOCK : "sage.twelve_hour_clock",
-	FEED_ITEM_ORDER : "sage.feed_item_order",
-	FEED_DISCOVERY_MODE : "sage.feed_discovery_mode",
+	PREF_BRANCH : "extensions.sage.",
+	
+	PREF_VERSION : "version",
+	PREF_USER_CSS_ENABLE : "userCss.enable",
+	PREF_USER_CSS_PATH : "userCss.path",
+	PREF_ALLOW_ENCODED_CONTENT : "allowEncodedContent",
+	PREF_AUTO_FEED_TITLE : "autoFeedTitle",
+	PREF_RENDER_FEEDS : "renderFeeds",
+	PREF_TWELVE_HOUR_CLOCK : "twelveHourClock",
+	PREF_FEED_ITEM_ORDER : "feedItemOrder",
+	PREF_FEED_DISCOVERY_MODE : "feedDiscoveryMode",
+	PREF_LOG_LEVEL : "logLevel",
 
 	RESULT_OK : 0,
 	RESULT_PARSE_ERROR : 1,
@@ -122,65 +125,45 @@ var SageUtils = {
 		return fileContents;
 	},
 
-	setPrefValue : function(aPrefString, aPrefType, aValue) {
-		var nsISupportsString = Components.interfaces.nsISupportsString;
-		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
+	setPrefValue : function(aPrefString, aValue) {
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
+		var prefBranch = prefService.getBranch(this.PREF_BRANCH);
 
-		var prefType = xpPref.getPrefType(aPrefString);
-
-		try {
-			switch(aPrefType) {
-				case "wstr":
-					var string = Components.classes['@mozilla.org/supports-string;1'].createInstance(nsISupportsString);
-					string.data = aValue;
-					return xpPref.setComplexValue(aPrefString, nsISupportsString, string);
-					break;
-				case "str":
-					return xpPref.setCharPref(aPrefString, aValue);
-					break;
-				case "int":
-					aValue = parseInt(aValue);
-					return xpPref.setIntPref(aPrefString, aValue);
-					break;
-				case "bool":
-				default:
-					if(typeof(aValue) == "string") {
-						aValue = (aValue == "true");
-					}
-					return xpPref.setBoolPref(aPrefString, aValue);
-					break;
-			}
-		} catch(e) {
+		switch (prefBranch.getPrefType(aPrefString)) {
+			case Ci.nsIPrefBranch.PREF_INVALID:
+				throw "Invalid preference: " + aPrefString;
+			case Ci.nsIPrefBranch.PREF_STRING:
+				var string = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+				string.data = aValue;
+				prefBranch.setComplexValue(aPrefString, Ci.nsISupportsString, string);
+				break;
+			case Ci.nsIPrefBranch.PREF_INT:
+				aValue = parseInt(aValue);
+				prefBranch.setIntPref(aPrefString, aValue);
+				break;
+			case Ci.nsIPrefBranch.PREF_BOOL:
+				if (typeof(aValue) == "string") {
+					aValue = (aValue == "true");
+				}
+				prefBranch.setBoolPref(aPrefString, aValue);
+				break;
 		}
-		return null;
 	},
 
-	getPrefValue : function(aPrefString, aPrefType, aDefault) {
-		var nsISupportsString = Components.interfaces.nsISupportsString;
-		var xpPref = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefBranch);
-
-		if(xpPref.getPrefType(aPrefString) == xpPref.PREF_INVALID) {
-			return aDefault;
+	getPrefValue : function(aPrefString) {
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
+		var prefBranch = prefService.getBranch(this.PREF_BRANCH);
+		
+		switch (prefBranch.getPrefType(aPrefString)) {
+			case Ci.nsIPrefBranch.PREF_INVALID:
+				throw "Invalid preference: " + aPrefString;
+			case Ci.nsIPrefBranch.PREF_STRING:
+				return prefBranch.getComplexValue(aPrefString, Ci.nsISupportsString).data;
+			case Ci.nsIPrefBranch.PREF_INT:
+				return prefBranch.getIntPref(aPrefString);
+			case Ci.nsIPrefBranch.PREF_BOOL:
+				return prefBranch.getBoolPref(aPrefString);
 		}
-		try {
-			switch (aPrefType) {
-				case "wstr":
-					return xpPref.getComplexValue(aPrefString, nsISupportsString).data;
-					break;
-				case "str":
-					return xpPref.getCharPref(aPrefString).toString();
-					break;
-				case "int":
-					return xpPref.getIntPref(aPrefString);
-					break;
-				case "bool":
-				default:
-					return xpPref.getBoolPref(aPrefString);
-					break;
-			}
-		} catch(e) {
-		}
-		return aDefault;
 	},
 
 	// takes a version string, returns an integer triple containing (major version, minor version, patch level)

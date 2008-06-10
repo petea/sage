@@ -41,6 +41,8 @@ const CLASS_NAME = "Sage Logger Component";
 const CONTRACT_ID = "@sage.mozdev.org/sage/logger;1";
 const sageILogger = Components.interfaces.sageILogger;
 
+const PREF_LOG_LEVEL = "extensions.sage.logLevel";
+
 /******************************************************************************
  * sageLogger Component
  ******************************************************************************/
@@ -52,8 +54,8 @@ sageLogger.prototype = {
 	init: function()
 	{
 		var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-		if (pref.prefHasUserValue("sage.loglevel")) {
-			this.setLevel(pref.getIntPref("sage.loglevel"));
+		if (pref.prefHasUserValue(PREF_LOG_LEVEL)) {
+			this.setLevel(pref.getIntPref(PREF_LOG_LEVEL));
 		}	
 	},
 

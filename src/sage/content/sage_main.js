@@ -44,12 +44,10 @@ var sageOverlay = {
 		
 		logger.info("initialized");
 
-		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
-		var prefBranch = prefService.getBranch("sage.");
 		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 		
-		if (!prefBranch.prefHasUserValue("last_version")) {  // new user
+		if (SageUtils.getPrefValue(SageUtils.PREF_VERSION) == "") {  // new user
 			var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
 			SageUtils.setSageRootFolderId(folderId);
 			SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
@@ -60,7 +58,7 @@ var sageOverlay = {
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemListToolbar", "checked", true);
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);			
 		} else { // check for upgrade
-			var lastVersion = prefBranch.getCharPref("last_version");
+			var lastVersion = SageUtils.getPrefValue(SageUtils.PREF_VERSION);
 			if (lastVersion != "1.3.7" &&
 				lastVersion != "1.3.8" &&
 				lastVersion != "1.3.9" &&
@@ -69,7 +67,7 @@ var sageOverlay = {
 				this.addButton();
 			}
 		}
-		prefBranch.setCharPref("last_version", "1.4.0");
+		SageUtils.setPrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
 	},
 	
 	uninit: function() {},
