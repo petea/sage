@@ -65,6 +65,7 @@ var SageUtils = {
 	ANNO_STATUS : "sage/status", // string, as defined in SageUtils (STATUS_*)
 	ANNO_SIG : "sage/signature", // string
 	ANNO_LASTVISIT : "sage/lastvisit", // Epoch seconds
+	ORGANIZER_QUERY_ANNO : "PlacesOrganizer/OrganizerQuery", // Not Sage-specific
 
 	NC_NS: "http://home.netscape.com/NC-rdf#",
 	XUL_NS: "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
@@ -227,6 +228,11 @@ var SageUtils = {
 		}
 	},
 	
+	// Set the sage/root annotation to the corresponding folder, as well as
+	// PlacesOrganizer/OrganizerQuery. Note that there is no risk to stomp
+	// a folder already annotated for Firefox, because Firefox only annotates
+	// left pane queries this way. Our UI doesn't allow users to select such
+	// queries so no problem.
 	setSageRootFolderId : function(folderId) {
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 		var results = annotationService.getItemsWithAnnotation("sage/root", {});
@@ -234,11 +240,23 @@ var SageUtils = {
 			if (results[0] != folderId) {
 				annotationService.removeItemAnnotation(results[0], "sage/root");
 				annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+				this.clearSageLibraryQuery(results[0]);
+				annotationService.setItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO, "SageRoot", 0, annotationService.EXPIRE_NEVER);
 			}
 		} else if (results.length == 0) {
 			annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+			annotationService.setItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO, "SageRoot", 0, annotationService.EXPIRE_NEVER);
 		} else if (results.length > 1) {
 			throw "Multiple root folders found";
+		}
+	},
+	
+	clearSageLibraryQuery : function(folderId) {
+		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+		try {
+				annotationService.removeItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO);
+		 } catch (e) {
+			// The annotation didn't exist
 		}
 	},
 	

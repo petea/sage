@@ -290,8 +290,18 @@ var sidebarController = {
 	},
 	
 	openOrganizeFeedsDialog : function() {
-		openDialog("chrome://browser/content/places/places.xul", "", "chrome,all,dialog=no");
-	},
+		var query = "SageRoot";
+		var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+		var organizer = wm.getMostRecentWindow("Places:Organizer");
+		if (!organizer) {
+			// No currently open places window, so open one with the specified mode.
+			openDialog("chrome://browser/content/places/places.xul", "", "chrome,toolbar=yes,dialog=no,resizable", query);
+		}
+		else {
+			organizer.PlacesOrganizer.selectLeftPaneQuery(query);
+			organizer.focus();
+		}
+},
 	
 	openAboutDialog : function() {
 		var extensionManager = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
