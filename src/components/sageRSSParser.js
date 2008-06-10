@@ -224,9 +224,9 @@ sageRSSParser.prototype = {
 					logger.warn("unable to resolve URI: " + guid + " feed: " + title);
 				}
 			}
-			
+
 			var feedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, null);
-	
+
 			feed.addItem(feedItem);
 		}
 		
