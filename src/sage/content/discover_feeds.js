@@ -36,6 +36,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+
 var strRes;
 var feedTree;
 var dataSource;
@@ -53,6 +56,7 @@ var statusMessage;
 var feeds_found_local;
 var feeds_found_external;
 var possibleFeeds;
+var bmsvc;
 
 var logger;
 
@@ -62,9 +66,6 @@ function init() {
 	logger = new Logger();
 
 	var discoveryMode = SageUtils.getPrefValue(SageUtils.FEED_DISCOVERY_MODE, "str", "exhaustive");
-
-	initServices();
-	initBMService();
 
 	strRes = document.getElementById("strRes");
 	statusDeck = document.getElementById("statusDeck");
@@ -83,6 +84,7 @@ function init() {
 	schema = "http://sage.mozdev.org/FeedData#";
 
 	ds = ds.QueryInterface(Components.interfaces.nsIRDFDataSource);
+	bmsvc = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 
 	var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
 	var browserWindow = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
@@ -194,12 +196,9 @@ function doAddFeed() {
 			if(title == "") {
 				title = "No Title";
 			}
-			var sage_folder = rdfService.GetResource(SageUtils.getPrefValue(SageUtils.FEED_FOLDER_ID, "str", "NC:BookmarksRoot"));
-			if(BMSVC.createBookmarkInContainer.length == 7) { // firefox 0.8 and lower
-				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, sage_folder, null);
-			} else {
-				BMSVC.createBookmarkInContainer(title, url, null, "updated", null, null, sage_folder, null);
-			}
+			var sage_folder = SageUtils.getSageRootFolderId();
+			var uri = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(url, null, null);
+			bmsvc.insertBookmark(sage_folder, uri, -1, title);
 			logger.info("added feed: '" + title + "' " + url);
 
 			// select new feed in sibebar
