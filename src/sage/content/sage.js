@@ -457,17 +457,26 @@ function onFeedLoaded(aFeed) {
 	currentFeed = aFeed;
 	
 	if (lastItemId) {
-		if (SageUtils.getPrefValue(SageUtils.PREF_AUTO_FEED_TITLE)) {
-			var title = aFeed.getTitle();
+		function syncTitle(title) {
 			if (PlacesUtils.bookmarks.getItemTitle(lastItemId) != title) {
 				PlacesUtils.bookmarks.setItemTitle(lastItemId, title);
 			}
+		}
+		if (PlacesUtils.annotations.itemHasAnnotation(lastItemId, SageUtils.ANNO_FEEDTITLE)) {
+			var currentItemTitle = PlacesUtils.bookmarks.getItemTitle(lastItemId);
+			var lastFeedTitle = PlacesUtils.annotations.getItemAnnotation(lastItemId, SageUtils.ANNO_FEEDTITLE);
+			if (currentItemTitle == lastFeedTitle) {
+				syncTitle(aFeed.getTitle());
+			}
+		} else {
+			syncTitle(aFeed.getTitle());
 		}
 
 		var now = new Date().getTime();
 		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
 		UpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_NO_UPDATE);
-		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_SIG, aFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
+		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_FEEDTITLE, aFeed.getTitle(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	}
 
 	sidebarController.clearStatus();

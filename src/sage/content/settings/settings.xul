@@ -67,7 +67,6 @@
 	
 	<groupbox>
 		<caption label="&settings.general.caption;"/>
-		<checkbox id="chkAutoFeedTitle" label="&settings.autoFeedTitle.label;"/>
 		<checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
 		<grid>
 			<columns>

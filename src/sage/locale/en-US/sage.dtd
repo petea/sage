@@ -31,7 +31,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "General">
-<!ENTITY settings.autoFeedTitle.label     "Automatically update feed titles">
 <!ENTITY settings.renderFeeds.label     "Render feeds in contents area">
 <!ENTITY settings.twelveHourClock.label     "Use 12 hour clock">
 <!ENTITY settings.feedItemOrder.label     "Feed item order">

@@ -48,7 +48,6 @@ var SageUtils = {
 	PREF_USER_CSS_ENABLE : "userCss.enable",
 	PREF_USER_CSS_PATH : "userCss.path",
 	PREF_ALLOW_ENCODED_CONTENT : "allowEncodedContent",
-	PREF_AUTO_FEED_TITLE : "autoFeedTitle",
 	PREF_RENDER_FEEDS : "renderFeeds",
 	PREF_TWELVE_HOUR_CLOCK : "twelveHourClock",
 	PREF_FEED_ITEM_ORDER : "feedItemOrder",
@@ -68,6 +67,8 @@ var SageUtils = {
 	ANNO_STATUS : "sage/status", // string, as defined in SageUtils (STATUS_*)
 	ANNO_SIG : "sage/signature", // string
 	ANNO_LASTVISIT : "sage/lastvisit", // Epoch seconds
+	ANNO_FEEDTITLE : "sage/feedtitle", // string
+		
 	ORGANIZER_QUERY_ANNO : "PlacesOrganizer/OrganizerQuery", // Not Sage-specific
 
 	NC_NS: "http://home.netscape.com/NC-rdf#",
