@@ -93,7 +93,6 @@ div.item-pubDate {
 	font-size: x-small;
 	margin: 0px;
 	padding: 8px 10px;
-	width: 80%;
 	float: left;
 }
 
@@ -115,9 +114,8 @@ div.item-enclosure {
 div.item-author {
 	font-size: x-small;
 	margin: 0px;
-	padding: 0px 10px;
-	width: 80%;
-	float: left;
+	padding: 8px 10px;
+	float: right;
 }
 
 div.item-technorati {

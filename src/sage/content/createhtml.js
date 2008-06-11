@@ -235,9 +235,6 @@ var CreateHTML = {
 			case "**LINK**":
 				return item.getLink();
 
-			case "**TECHNORATI**":
-				return encodeURIComponent(item.getLink());
-
 			case "**TITLE**":
 				if (item.hasTitle()) {
 					return this.entityEncode(item.getTitle());
@@ -281,6 +278,14 @@ var CreateHTML = {
 			case "**ENCLOSURE**":
 				if (item.hasEnclosure()) {
 					var enc = item.getEnclosure();
+					function createDescriptionFromURL(url) {
+						var array = url.split("/");
+						var description = "";
+						if (array.length > 0) {
+							description = array[array.length - 1];
+						}
+						return description;
+					}
 					return "<div class=\"item-enclosure\">" +
 						"<a href=\"" + enc.getLink() + "\" title=\"" +
 						strRes.GetStringFromName("feed_summary_enclosure") +
@@ -289,9 +294,10 @@ var CreateHTML = {
 								"moz-icon://dummy?size=16&contentType=" + enc.getMimeType() :
 								"chrome://sage/skin/enclosure.png") +
 						"\">" +
-						(enc.getDescription() ? enc.getDescription() + ", " : "") +
-						(enc.hasLength() ? this.formatFileSize(enc.getLength()) : "") +
-						"</a></div>";
+						(enc.getDescription() ? enc.getDescription() + ", " : createDescriptionFromURL(enc.getLink())) +
+						"</a>" +
+						(enc.hasLength() ? " (" + this.formatFileSize(enc.getLength()) + ")" : "") +
+						"</div>";
 				}
 				return "";
 		}
