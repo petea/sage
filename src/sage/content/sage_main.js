@@ -45,7 +45,6 @@ var sageOverlay = {
 		logger.info("initialized");
 
 		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 		
 		if (SageUtils.getPrefValue(SageUtils.PREF_VERSION) == "") {  // new user
 			var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);

@@ -63,24 +63,6 @@ var annotationObserver = {
 				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
 				break;
 			case SageUtils.ANNO_STATUS:
-				/* not sure why this doesn't work...
-				function findNode(node) {
-					if (node.itemId == aItemId) {
-						return node;
-					} else if (PlacesUtils.nodeIsContainer(node)) {
-						asContainer(node);
-						var match;
-						for (var child = 0; child < node.childCount; child++) {
-							match = findNode(node.getChild(child));
-							if (match) {
-								return match;
-							}
-						}
-					}
-					return null;
-				}
-				bookmarksTree.getResultView().itemChanged(findNode(bookmarksTree.getResultNode()));
-				*/
 				bookmarksTree.getResultView().invalidateAll();
 				break;
 		}
@@ -127,12 +109,7 @@ var sidebarController = {
 			strRes.getString("RESULT_NOT_AVAILABLE_STR"),
 			strRes.getString("RESULT_ERROR_FAILURE_STR")
 		);
-		
-		// select first entry
-		//if (bookmarksTree.treeBoxObject.selection) {
-		//	bookmarksTree.treeBoxObject.selection.select(0);
-		//}
-	
+			
 		toggleShowFeedItemList();
 		toggleShowFeedItemListToolbar();
 	
@@ -143,6 +120,8 @@ var sidebarController = {
 		feedLoader.addListener("load", onFeedLoaded);
 		feedLoader.addListener("error", onFeedLoadError);
 		feedLoader.addListener("abort", onFeedAbort);
+		
+		linkVisitor.init();
 	
 		logger.info("sidebar open");
 	},
@@ -255,7 +234,7 @@ var sidebarController = {
 		}
 		
 		lastItemId = itemId;
-		setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
+		this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
 		feedLoader.loadURI(uri);
 		if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS)) {
 			openURI(SageUtils.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
@@ -263,17 +242,36 @@ var sidebarController = {
 	},
 	
 	checkFeeds : function(aFolderId) {
+		var self = this;
 		UpdateChecker.onCheck = function(aName, aURL) {
-			setStatus("checking", strRes.getFormattedString("RESULT_CHECKING", [aName]));
+			self.setStatus("checking", strRes.getFormattedString("RESULT_CHECKING", [aName]));
 		}
 		UpdateChecker.onChecked = function(aName, aURL) {
-			clearStatus();
+			self.clearStatus();
 		}
 	
 		if(aFolderId) {
 			UpdateChecker.startCheck(aFolderId);
 		} else {
 			UpdateChecker.startCheck(SageUtils.getSageRootFolderId());
+		}
+	},
+	
+	setStatus : function(aClass, aStatus) {
+		statusBarImage.setAttribute("class", aClass);
+		statusBarLabel.value = aStatus;
+	},
+
+	clearStatus : function() {
+		statusBarImage.removeAttribute("class");
+		statusBarLabel.value = "";
+		if (currentFeed) {
+			rssTitleLabel.value = currentFeed.getTitle();
+			if (currentFeed.getLink()) {
+				rssTitleLabel.tooltipText = currentFeed.getLink();
+			} else {
+				rssTitleLabel.tooltipText = "";
+			}
 		}
 	},
 
@@ -301,7 +299,7 @@ var sidebarController = {
 			organizer.PlacesOrganizer.selectLeftPaneQuery(query);
 			organizer.focus();
 		}
-},
+	},
 	
 	openAboutDialog : function() {
 		var extensionManager = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
@@ -326,13 +324,6 @@ function rssItemListBoxClick(aEvent) {
 	var listItem = rssItemListBox.selectedItem;
 	var feedItem = getFeedItemFromListItem( listItem );
 
-	// If we are using Gecko 1.8+ we are using an observer to listen to
-	// changes to the history and therefore we should not the item as visited
-	// here in case we failed to load it
-	var rv = navigator.userAgent.match(/rv\:([^)]+)/)[1];
-	if (rv < "1.8") {
-		listItem.setAttribute("visited", "true");
-	}
 	openURI(feedItem.getLink(), aEvent);
 }
 
@@ -341,29 +332,6 @@ function rssTitleLabelClick(aNode, aEvent){
 		return;
 	}
 	openURI(currentFeed.getLink(), aEvent);
-}
-
-function setStatus(aClass, aStatus) {
-	statusBarImage.setAttribute("class", aClass);
-	statusBarLabel.value = aStatus;
-}
-
-function clearStatus() {
-	statusBarImage.removeAttribute("class");
-	statusBarLabel.value = "";
-	if (currentFeed) {
-		rssTitleLabel.value = currentFeed.getTitle();
-		if (currentFeed.getLink()) {
-			rssTitleLabel.tooltipText = currentFeed.getLink();
-		} else {
-			rssTitleLabel.tooltipText = "";
-		}
-	}
-}
-
-function setStatusError(aStatus) {
-	statusBarImage.setAttribute("class", "error");
-	statusBarLabel.value = strRes.getFormattedString("RESULT_ERROR", [aStatus]);
 }
 
 function getContentBrowser() {
@@ -502,17 +470,12 @@ function onFeedLoaded(aFeed) {
 		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	}
 
-	clearStatus();
+	sidebarController.clearStatus();
 	setRssItemListBox();
-
-	//if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS))
-	//{
-	//	CreateHTML.openHTML(currentFeed);
-	//}
 }
 
 function onFeedLoadError(aErrorCode) {
-	setStatusError(resultStrArray[aErrorCode]);
+	sidebarController.setStatus("error", strRes.getFormattedString("RESULT_ERROR", [resultStrArray[aErrorCode]]));
 }
 
 function onFeedAbort(sURI) {
@@ -555,7 +518,6 @@ function getWindowType(aEvent) {
 	}
 	return aEvent;
 }
-
 
 /**
  * Create a nsIURI from a string spec
@@ -604,6 +566,7 @@ function openListItem(aEvent) {
 }
 
 // link visit code based on LinkVisitor.mozdev.org
+
 /*
  * This observes to the link-visited broadcast topic and calls onURIChanged when
  * an URI changed its visited state.
@@ -711,7 +674,6 @@ var linkVisitor = {
 		}
 	}
 };
-linkVisitor.init();
 
 
 // RSS Item Context Menu
