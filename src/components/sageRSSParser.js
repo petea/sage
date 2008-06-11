@@ -180,6 +180,7 @@ sageRSSParser.prototype = {
 						}
 						break;
 					case "creator":
+					case "dc:creator":
 						item.author = this._getInnerText(j);
 						break;
 					case "guid":
