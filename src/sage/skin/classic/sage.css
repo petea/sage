@@ -93,7 +93,8 @@
   width: 16px;
   height: 16px;
 }
-#statusBarImage.loading {
+#statusBarImage.loading,
+#statusBarImage.checking {
   list-style-image: url("chrome://sage/skin/icon/checking.gif");
 }
 #statusBarImage.error {

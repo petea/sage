@@ -255,7 +255,7 @@ var sidebarController = {
 		}
 		
 		lastItemId = itemId;
-		setStatusLoading(PlacesUtils.bookmarks.getItemTitle(itemId));
+		setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
 		feedLoader.loadURI(uri);
 		if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS)) {
 			openURI(SageUtils.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
@@ -264,10 +264,10 @@ var sidebarController = {
 	
 	checkFeeds : function(aFolderId) {
 		UpdateChecker.onCheck = function(aName, aURL) {
-			// TODO: Remove
+			setStatus("checking", strRes.getFormattedString("RESULT_CHECKING", [aName]));
 		}
 		UpdateChecker.onChecked = function(aName, aURL) {
-			setStatusDone();
+			clearStatus();
 		}
 	
 		if(aFolderId) {
@@ -343,12 +343,12 @@ function rssTitleLabelClick(aNode, aEvent){
 	openURI(currentFeed.getLink(), aEvent);
 }
 
-function setStatusLoading(aStatus) {
-	statusBarImage.setAttribute("class", "loading");
-	statusBarLabel.value = strRes.getFormattedString("RESULT_LOADING", [aStatus]);
+function setStatus(aClass, aStatus) {
+	statusBarImage.setAttribute("class", aClass);
+	statusBarLabel.value = aStatus;
 }
 
-function setStatusDone() {
+function clearStatus() {
 	statusBarImage.removeAttribute("class");
 	statusBarLabel.value = "";
 	if (currentFeed) {
@@ -502,7 +502,7 @@ function onFeedLoaded(aFeed) {
 		PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_SIG, currentFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	}
 
-	setStatusDone();
+	clearStatus();
 	setRssItemListBox();
 
 	//if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS))
