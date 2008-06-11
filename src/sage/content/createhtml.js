@@ -121,11 +121,11 @@ var CreateHTML = {
 
 	formatFileSize:	function (n) {
 		if (n > 1048576) {
-			return Math.round(n / 1048576) + "M";
+			return Math.round(n / 1048576) + " MB";
 		} else if (n > 1024) {
-			return Math.round(n / 1024) + "K";
+			return Math.round(n / 1024) + " KB";
 		} else {
-			return n + "B";
+			return n + " B";
 		}
 	},
 
