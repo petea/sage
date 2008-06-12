@@ -89,6 +89,10 @@ div.item-desc {
 	padding: 8px 10px;
 }
 
+div.item-desc table {
+	font-size: x-small;
+}
+
 div.item-pubDate {
 	font-size: x-small;
 	margin: 0px;
@@ -116,19 +120,6 @@ div.item-author {
 	margin: 0px;
 	padding: 8px 10px;
 	float: right;
-}
-
-div.item-technorati {
-	font-size: x-small;
-	margin: 0px;
-	padding: 8px 10px;
-	width: 20%;
-	float: right;
-	text-align: right;
-}
-
-div.item-technorati img {
-	border:	0;
 }
 
 img {

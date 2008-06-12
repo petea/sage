@@ -38,10 +38,10 @@
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#sage-button {
-	list-style-image: url("chrome://sage/skin/sage_leaf_32.png");
+#sidebar-box[src="chrome://sage/content/sage.xul"] sidebarheader {
+	background-color: #ccc;
 }
 
-toolbar[iconsize="small"] #sage-button {
-	list-style-image: url("chrome://sage/skin/sage_leaf_24.png");
+#sidebar-box[src="chrome://sage/content/sage.xul"] browser {
+	padding: 0;
 }

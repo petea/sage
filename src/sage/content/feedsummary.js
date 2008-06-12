@@ -232,36 +232,8 @@ var feedSummary = {
 
 	displayFeed:	function (feed)
 	{
-		document.title = "Sage - " + feed.getTitle();
-
-		var s = CreateHTML.createHTMLSource(feed);
-
-		var cssUrl	= CreateHTML.getUserCssURL();
-		if (!cssUrl)
-			cssUrl = CreateHTML.DEFAULT_CSS;
-
-		var headEl = document.getElementsByTagName("head")[0];
-
-		var linkEl = document.createElement("link");
-		linkEl.setAttribute("rel", "stylesheet");
-		linkEl.setAttribute("type", "text/css");
-		linkEl.setAttribute("title", "standard Style");
-		linkEl.setAttribute("href", cssUrl);
-		headEl.appendChild(linkEl);
-
-		/*
-		// insert base tag
-		var baseEl = document.createElement("base");
-		baseEl.setAttribute("href", feed.getLink());
-		headEl.appendChild(baseEl);
-		*/
-
-		// another hack... extract body
-		var i = s.indexOf("<body>");
-		var i2 = s.lastIndexOf("</body>");
-		var s2 = s.substring(i, i2);
-
-		document.body.innerHTML = s2;
+		document.title = feed.getTitle() + " - Sage";
+		document.body.innerHTML = CreateHTML.createHTMLSource(feed);
 	},
 
 	findSageSideBar:	function ()
@@ -390,5 +362,19 @@ window.addEventListener("unload", function (e)
 
 
 // Cannot use DOM to set base
-if (feedSummary.uri)
+if (feedSummary.uri) {
 	document.write("<base href=\"" + feedSummary.uri + "\">");
+}
+
+// set feed style sheet before content loads
+var cssUrl	= CreateHTML.getUserCssURL();
+if (!cssUrl) {
+	cssUrl = CreateHTML.DEFAULT_CSS;
+}
+var headEl = document.getElementsByTagName("head")[0];
+var linkEl = document.createElement("link");
+linkEl.setAttribute("rel", "stylesheet");
+linkEl.setAttribute("type", "text/css");
+linkEl.setAttribute("title", "standard Style");
+linkEl.setAttribute("href", cssUrl);
+headEl.appendChild(linkEl);

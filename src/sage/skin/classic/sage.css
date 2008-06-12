@@ -95,7 +95,7 @@
 }
 #statusBarImage.loading,
 #statusBarImage.checking {
-  list-style-image: url("chrome://sage/skin/icon/checking.gif");
+  list-style-image: url("chrome://global/skin/icons/loading_16.png");
 }
 #statusBarImage.error {
   list-style-image: url("chrome://sage/skin/icon/error.gif");
@@ -117,7 +117,7 @@
 }
 #bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_checking) {
   -moz-image-region: auto !important;
-  list-style-image: url("chrome://sage/skin/icon/checking.gif") !important;
+  list-style-image: url("chrome://global/skin/icons/loading_16.png") !important;
 }
 #bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_error) {
   -moz-image-region: auto !important;
@@ -149,6 +149,10 @@
 #bookmarksTreeBox,
 #rssItemListBoxBox {
 	min-height: 90px;
+}
+
+#rssItemListBox {
+	-moz-appearance: none;
 }
 
 #rssItemListBox > listitem {

@@ -38,7 +38,7 @@
 
 var sageOverlay = {
 
-	init: function() {		
+	init : function() {		
 		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 		var logger = new Logger();
 		
@@ -55,7 +55,8 @@ var sageOverlay = {
 			this.addButton();
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemList", "checked", true);
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemListToolbar", "checked", true);
-			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);			
+			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
+			//this.addContentHandler();
 		} else { // check for upgrade
 			var lastVersion = SageUtils.getPrefValue(SageUtils.PREF_VERSION);
 			if (lastVersion != "1.3.7" &&
@@ -67,11 +68,12 @@ var sageOverlay = {
 			}
 		}
 		SageUtils.setPrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
+		//this.loadFaviconForHandler();
 	},
 	
-	uninit: function() {},
+	uninit : function() {},
 
-	hasButton: function() {
+	hasButton : function() {
 		var toolbox = document.getElementById("navigator-toolbox");
 		for (var i = 0; i < toolbox.childNodes.length; ++i) {
 			var toolbar = toolbox.childNodes[i];
@@ -83,7 +85,7 @@ var sageOverlay = {
 	    }
 	},
 	
-	addButton: function() {
+	addButton : function() {
 		if (!this.hasButton()) {
 			var toolbox = document.getElementById("navigator-toolbox");
 			for (var i = 0; i < toolbox.childNodes.length; ++i) {
@@ -109,6 +111,36 @@ var sageOverlay = {
 				}
 			}
 		}
+	},
+	
+	addContentHandler : function() {
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
+		var i = 0;
+		var prefBranch = null;
+		while (true) {
+			prefBranch = prefService.getBranch("browser.contentHandlers.types." + i + ".");
+			try {
+				prefBranch.getCharPref("type");
+				i++;
+			} catch (e) {
+				// No more handlers
+				break;
+			}
+		}
+		if (prefBranch) {
+			prefBranch.setCharPref("title", "Sage");
+			prefBranch.setCharPref("type", "application/vnd.mozilla.maybe.feed");
+			prefBranch.setCharPref("uri", "chrome://sage/content/feedsummary.html?uri=%s");
+		}
+		prefService.savePrefFile(null);
+	},
+	
+	loadFaviconForHandler : function() {
+		var faviconService = Cc["@mozilla.org/browser/favicon-service;1"].getService(Ci.nsIFaviconService);
+		var ioservice = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+		var pageURI = ioservice.newURI("chrome://sage/content/feedsummary.html", null, null);
+		var faviconURI = ioservice.newURI("chrome://sage/skin/sage_leaf_16.png", null, null);
+		faviconService.setAndLoadFaviconForPage(pageURI, faviconURI, true);
 	},
 	
 	// nsIDOMEventListener

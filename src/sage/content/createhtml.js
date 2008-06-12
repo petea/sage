@@ -145,10 +145,6 @@ var CreateHTML = {
 		var footer;
 
 		switch (s) {
-			case "**CSSURL**":
-				return this.getUserCssURL() || this.DEFAULT_CSS;
-
-			case "**HTMLTITLE**":
 			case "**TITLE**":
 				return this.entityEncode(feed.getTitle());
 

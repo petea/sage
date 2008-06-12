@@ -39,9 +39,9 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #sage-button {
-  list-style-image: url("chrome://sage/skin/sage_leaf_24.png");
+	list-style-image: url("chrome://sage/skin/sage_leaf_24.png");
 }
 
 toolbar[iconsize="small"] #sage-button {
-  list-style-image: url("chrome://sage/skin/sage_leaf_16.png");
+	list-style-image: url("chrome://sage/skin/sage_leaf_16.png");
 }
