@@ -199,26 +199,24 @@ var UpdateChecker = {
 		var url = this.getURL(this.lastItemId).spec;
 		var status = 0;
 
-		var lastVisit = this.getItemAnnotation(this.lastItemId, SageUtils.ANNO_LASTVISIT);
-		if (!lastVisit) {
-			lastVisit = 0;
-		}
-
 		if (aSucceed) {
+			var lastVisit = this.getItemAnnotation(this.lastItemId, SageUtils.ANNO_LASTVISIT);
 			var sig = this.getItemAnnotation(this.lastItemId, SageUtils.ANNO_SIG);
 
-			if (aLastModified) {
-				if((aLastModified > lastVisit) && (sig != feed.getSignature())) {
+			if (aLastModified && lastVisit && sig) {
+				if ((aLastModified > lastVisit) && (sig != feed.getSignature())) {
+					status = SageUtils.STATUS_UPDATE;
+				} else {
+					status = SageUtils.STATUS_NO_UPDATE;
+				}
+			} else if (sig) {
+				if (sig != feed.getSignature()) {
 					status = SageUtils.STATUS_UPDATE;
 				} else {
 					status = SageUtils.STATUS_NO_UPDATE;
 				}
 			} else {
-				if(sig != feed.getSignature()) {
-					status = SageUtils.STATUS_UPDATE;
-				} else {
-					status = SageUtils.STATUS_NO_UPDATE;
-				}
+				status = SageUtils.STATUS_UPDATE;
 			}
 		} else {
 			status = SageUtils.STATUS_ERROR;
