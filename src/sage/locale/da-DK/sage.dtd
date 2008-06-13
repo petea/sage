@@ -6,7 +6,7 @@
 <!ENTITY menu.view				"Vis">
 <!ENTITY menu.showFeedItemList			"Vis feed-oversigt">
 <!ENTITY menu.showFeedItemListToolbar	"Vis feed-værktøjslinjen">
-<!ENTITY menu.showFeedItemTooltip			"Vis popop-hjælp">
+<!ENTITY menu.showFeedItemTooltips			"Vis popop-hjælp">
 <!ENTITY menu.openHTML				"Vis feeds i hovedvinduet">
 <!ENTITY menu.options				"Indstillinger">
 <!ENTITY menu.checkUpdate			"Opdater feeds">
