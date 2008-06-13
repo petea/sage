@@ -200,8 +200,8 @@ var sageOverlay = {
 				convertFeeds(result.root);
 				// copy prefs and delete old ones
 				// rename persisted value chkShowTooltip => chkShowFeedItemTooltips
-				//self.addContentHandler();
-				//self.needsRestart = true;
+				self.addContentHandler();
+				self.needsRestart = true;
 			}
 			
 		}
