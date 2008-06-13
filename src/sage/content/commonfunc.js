@@ -166,43 +166,10 @@ var SageUtils = {
 				return prefBranch.getBoolPref(aPrefString);
 		}
 	},
-
-	// takes a version string, returns an integer triple containing (major version, minor version, patch level)
-	versionStrDecode : function(versionStr) {
-		var regexp = /([0-9]*)\.([0-9]*)\.([0-9]*)/;
-		var result = regexp.exec(versionStr);
-		return Array(parseInt(result[1]), parseInt(result[2]), parseInt(result[3]));
-	},
-
-	// takes a version triple, returns an integer
-	versionToInt : function(versionTriple) {
-		return versionTriple[0]*100 + versionTriple[1]*10 + versionTriple[2];
-	},
-
-	// takes two version triples, returns 1 if the first is more recent, 0 otherwise
-	versionCompare : function(versionA, versionB) {
-		if(this.versionToInt(versionA) > this.versionToInt(versionB)) {
-			return 1;
-		} else {
-			return 0;
-		}
-	},
-
-	// takes a version triple, returns a formatted version string
-	versionString : function(version, pretty) {
-		var formatted;
-		if(pretty) {
-			formatted = version[0].toString() + '.' + version[1].toString();
-			formatted += version[2] != 0 ? "." + version[2] : ""
-		} else {
-			formatted = version[0].toString() + '.' + version[1].toString() + '.' + version[2].toString();
-		}
-		return formatted;
-	},
 	
 	getSageRootFolderId : function() {
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-		var results = annotationService.getItemsWithAnnotation("sage/root", {});
+		var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT, {});
 		if (results.length == 1) {
 			return results[0];
 		} else if (results.length == 0) {
@@ -219,37 +186,34 @@ var SageUtils = {
 	// queries so no problem.
 	setSageRootFolderId : function(folderId) {
 		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-		var results = annotationService.getItemsWithAnnotation("sage/root", {});
+		var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT, {});
 		if (results.length == 1) {
 			if (results[0] != folderId) {
-				annotationService.removeItemAnnotation(results[0], "sage/root");
-				annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
-				this.clearSageLibraryQuery(results[0]);
+				annotationService.removeItemAnnotation(results[0], this.ANNO_ROOT);
+				annotationService.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+				try {
+					annotationService.removeItemAnnotation(results[0], this.ORGANIZER_QUERY_ANNO);
+				} catch (e) {
+					// The annotation didn't exist
+				}
 				annotationService.setItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO, "SageRoot", 0, annotationService.EXPIRE_NEVER);
 			}
 		} else if (results.length == 0) {
-			annotationService.setItemAnnotation(folderId, "sage/root", "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
+			annotationService.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
 			annotationService.setItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO, "SageRoot", 0, annotationService.EXPIRE_NEVER);
 		} else if (results.length > 1) {
 			throw "Multiple root folders found";
 		}
 	},
 	
-	clearSageLibraryQuery : function(folderId) {
-		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-		try {
-				annotationService.removeItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO);
-		 } catch (e) {
-			// The annotation didn't exist
-		}
-	},
-	
 	addFeed : function(title, url) {
 		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+		var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
 		var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 		var bookmarkURI = ioService.newURI(url, null, null);
 		var folderId = this.getSageRootFolderId();
-		bookmarksService.insertBookmark(folderId, bookmarkURI, bookmarksService.DEFAULT_INDEX, title);	
+		var id = bookmarksService.insertBookmark(folderId, bookmarkURI, bookmarksService.DEFAULT_INDEX, title);
+		annotationService.setItemAnnotation(id, this.ANNO_STATUS, "updated", 0, annotationService.EXPIRE_NEVER);
 	},
 	
 	persistValue : function(uri, id, attribute, value) {

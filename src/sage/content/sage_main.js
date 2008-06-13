@@ -37,41 +37,182 @@
  * ***** END LICENSE BLOCK ***** */
 
 var sageOverlay = {
+	
+	logger : null,
+	needsRestart : null,
 
 	init : function() {		
 		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-		var logger = new Logger();
+		this.logger = new Logger();
+				
+		this.needsRestart = false;
 		
-		logger.info("initialized");
-
-		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-		
-		if (SageUtils.getPrefValue(SageUtils.PREF_VERSION) == "") {  // new user
-			var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
-			SageUtils.setSageRootFolderId(folderId);
-			SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
-			SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
-			SageUtils.addFeed("Sage Project News", "http://sage.mozdev.org/rss.xml");
-			this.addButton();
+		if (this.isNewUser()) {
+			this.createRoot();
+			this.addToolbarButton();
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemList", "checked", true);
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemListToolbar", "checked", true);
 			SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
-			//this.addContentHandler();
-		} else { // check for upgrade
-			var lastVersion = SageUtils.getPrefValue(SageUtils.PREF_VERSION);
-			if (lastVersion != "1.3.7" &&
-				lastVersion != "1.3.8" &&
-				lastVersion != "1.3.9" &&
-				lastVersion != "1.3.10" &&
-				lastVersion != "1.4.0") { // upgrade
-				this.addButton();
+			this.addContentHandler();
+			this.needsRestart = true;
+		} else if (this.needsMigration()) {
+			try {
+				this.migrate();
+			} catch (e) {
+				this.logger.error("migration failed: " + e);
 			}
 		}
 		SageUtils.setPrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
 		//this.loadFaviconForHandler();
+		if (this.needsRestart) {
+			var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
+			prefService.setBoolPref("browser.sessionstore.resume_session_once", true);
+			Cc["@mozilla.org/toolkit/app-startup;1"]
+				.getService(Ci.nsIAppStartup)
+				.quit(Ci.nsIAppStartup.eForceQuit | Ci.nsIAppStartup.eRestart);
+		}
+		this.logger.info("initialized");
 	},
 	
 	uninit : function() {},
+	
+	createRoot : function() {
+		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+		var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
+		SageUtils.setSageRootFolderId(folderId);
+		SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
+		SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
+		SageUtils.addFeed("Sage Project News", "http://sage.mozdev.org/rss.xml");
+	},
+	
+	getVersion : function() {
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
+		var oldVersionString = null;
+		try {
+			oldVersionString = prefService.getCharPref("sage.last_version");
+		} catch (e) { }
+		var versionString = SageUtils.getPrefValue(SageUtils.PREF_VERSION);
+		
+		if (oldVersionString != null && versionString == "") {
+			return oldVersionString;
+		} else if (versionString != "") {
+			return versionString;
+		}
+		return null;
+	},
+	
+	isNewUser : function() {
+		if (this.getVersion()) {
+			return false;
+		}
+		return true;
+	},
+	
+	needsMigration : function() {
+		var version = this.getVersion();
+		if (version) {
+			var comparator = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
+			var x = comparator.compare(SageUtils.VERSION, version);
+			if (x > 0) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	migrate : function() {
+		var comparator = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
+		var version = this.getVersion();
+		if (!version) {
+			return;
+		}
+
+		var self = this;
+		
+		var migrations = {
+
+			"1.3.7" : function() {
+				self.addToolbarButton();
+			},
+			
+			"1.4a" : function() {
+				// find sage root or create new one
+				var historyService = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService);
+				var bookmarkService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+				var livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
+				var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+				function findRoot(folderNode) {
+					folderNode.containerOpen = true;
+					for (var c = 0; c < folderNode.childCount; c++) {
+						var child = folderNode.getChild(c);
+						if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
+							!livemarkService.isLivemark(child.itemId)) {
+							if (child.title == "Sage Feeds") {
+								rootId = child.itemId;
+							} else {
+								child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
+								findRoot(child);
+							}
+						}
+					}
+				}
+				var query, result;
+				query = historyService.getNewQuery();
+				query.setFolders([bookmarkService.bookmarksMenuFolder], 1);
+				result = historyService.executeQuery(query, historyService.getNewQueryOptions());
+				var rootId = null;
+				findRoot(result.root);
+				if (rootId) {
+					SageUtils.setSageRootFolderId(rootId);
+				} else {
+					self.createRoot();
+				}
+				// convert feed states and sigs
+				function convertFeeds(folderNode) {
+					var description, status, sig;
+					folderNode.containerOpen = true;
+					for (var c = 0; c < folderNode.childCount; c++) {
+						var child = folderNode.getChild(c);
+						if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI ||
+							(child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
+							livemarkService.isLivemark(child.itemId))) {
+							try {
+								description = annotationService.getItemAnnotation(child.itemId, "bookmarkProperties/description");
+								if (description.split(" ").length == 2) {
+									status = description.split(" ")[0];
+									annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_STATUS, status, 0, annotationService.EXPIRE_NEVER);
+									sig = description.split(" ")[1];
+									sig = sig.substring(1, sig.length - 1);
+									annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_SIG, sig, 0, annotationService.EXPIRE_NEVER);
+									annotationService.setItemAnnotation(child.itemId, "bookmarkProperties/description", "", 0, annotationService.EXPIRE_NEVER);
+								}
+							} catch (e) {}
+						} else if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
+							!livemarkService.isLivemark(child.itemId)) {
+							child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
+							convertFeeds(child);
+						}
+					}
+				}
+				query = historyService.getNewQuery();
+				query.setFolders([SageUtils.getSageRootFolderId()], 1);
+				result = historyService.executeQuery(query, historyService.getNewQueryOptions());
+				convertFeeds(result.root);
+				// copy prefs and delete old ones
+				// rename persisted value chkShowTooltip => chkShowFeedItemTooltips
+				//self.addContentHandler();
+				//self.needsRestart = true;
+			}
+			
+		}
+		
+		for (var migration in migrations) {
+			if (comparator.compare(migration, version) > 0) {
+				this.logger.info("performing migration " + migration);
+				migrations[migration]();
+			}
+		}
+	},
 
 	hasButton : function() {
 		var toolbox = document.getElementById("navigator-toolbox");
@@ -85,7 +226,7 @@ var sageOverlay = {
 	    }
 	},
 	
-	addButton : function() {
+	addToolbarButton : function() {
 		if (!this.hasButton()) {
 			var toolbox = document.getElementById("navigator-toolbox");
 			for (var i = 0; i < toolbox.childNodes.length; ++i) {
@@ -140,7 +281,7 @@ var sageOverlay = {
 		var ioservice = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 		var pageURI = ioservice.newURI("chrome://sage/content/feedsummary.html", null, null);
 		var faviconURI = ioservice.newURI("chrome://sage/skin/sage_leaf_16.png", null, null);
-		faviconService.setAndLoadFaviconForPage(pageURI, faviconURI, true);
+		faviconService.setAndLoadFaviconForPage(pageURI, faviconURI, false);
 	},
 	
 	// nsIDOMEventListener
