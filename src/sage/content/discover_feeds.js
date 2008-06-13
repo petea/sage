@@ -252,7 +252,7 @@ function addDiscoveredFeed(uri, feed) {
 		feeds_found_external++;
 	}
 
-	var twelveHourClock = SageUtils.getPrefValue(SageUtils.TWELVE_HOUR_CLOCK);
+	var twelveHourClock = SageUtils.getPrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 	lastPubDate = "N/A";
 	if(feed.hasLastPubDate()) {
 		var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
