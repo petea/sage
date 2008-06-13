@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip				"Öffnet Sage">
 
 <!ENTITY menu.view				"Anzeigen">
-<!ENTITY menu.showSearchBar			"Suchfenster für Nachrichtenkanäle anzeigen">
 <!ENTITY menu.showFeedItemList			"Inhaltsübersicht der Nachrichtenkanäle anzeigen">
 <!ENTITY menu.showFeedItemListToolbar	"Gelesen/Ungelesen-Optionsleiste anzeigen">
-<!ENTITY menu.showDescTooltip			"Mouseover-Effekte aktivieren">
+<!ENTITY menu.showFeedItemTooltips			"Mouseover-Effekte aktivieren">
 <!ENTITY menu.openHTML				"Nachrichtenkanäle im Hauptfenster anzeigen">
 <!ENTITY menu.options				"Optionen">
 <!ENTITY menu.checkUpdate			"Nachrichtenkanäle auf Aktualisierungen prüfen">
-<!ENTITY menu.manageRSSList			"Liste der Nachrichtenkanäle verwalten...">
+<!ENTITY menu.organizeFeedList			"Liste der Nachrichtenkanäle verwalten...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">
 <!ENTITY menu.setting				"Einstellungen">
-<!ENTITY menu.sageProjectFeed				"Sage Projekt Meldungen">
 <!ENTITY menu.discoverFeeds				"Nachrichtenkanäle auf dieser Seite suchen">
+<!ENTITY menu.aboutSage				"About Sage">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Aktuelle Seite durchsuchen">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Allgemein">
-<!ENTITY settings.autoFeedTitle.label     "Nachrichtenkanal-Titel automatisch aktualisieren">
 <!ENTITY settings.renderFeeds.label     "Nachrichtenkanäle im Hauptfenster anzeigen">
 <!ENTITY settings.twelveHourClock.label     "12h-Uhrzeitsystem verwenden (USA)">
 <!ENTITY settings.feedItemOrder.label     "Anordnung der Überschriften">
