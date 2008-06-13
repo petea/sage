@@ -123,6 +123,7 @@ FilterHtmlHandler.prototype = {
 			return;
 		}
 
+		var tl = sTagName.toLowerCase();
 		var nl = sName.toLowerCase();
 		var vl = String(sValue).toLowerCase();	// might be null
 
@@ -139,6 +140,9 @@ FilterHtmlHandler.prototype = {
 			//noop
 		} else if ((nl == "href" || nl == "src" || nl == "data" || nl == "codebase") &&
 				 /^javascript\:/i.test(vl)) {
+			//noop
+		} else if (tl == "img" && nl == "src" &&
+							 vl.substring(0, 7) == "mailto:") {
 			//noop
 		} else if (nl == "style") {
 			sValue = sValue.replace(/\-moz\-binding/gi, "BLOCKED")
