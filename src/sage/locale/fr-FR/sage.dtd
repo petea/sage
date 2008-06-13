@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip							 "Affiche le panneau latéral Sage">
 
 <!ENTITY menu.view								 "Affichage">
-<!ENTITY menu.showSearchBar						 "Afficher la barre de recherche des fils">
 <!ENTITY menu.showFeedItemList					 "Afficher le contenu du fil">
 <!ENTITY menu.showFeedItemListToolbar			 "Afficher la barre d'outils des éléments du fil">
-<!ENTITY menu.showDescTooltip					 "Afficher les bulles descriptives">
+<!ENTITY menu.showFeedItemTooltips					 "Afficher les bulles descriptives">
 <!ENTITY menu.openHTML							 "Afficher le contenu des fils dans la zone de navigation">
 <!ENTITY menu.options								 "Options">
 <!ENTITY menu.checkUpdate						 "Vérifier les fils">
-<!ENTITY menu.manageRSSList						 "Gérer la liste des fils...">
+<!ENTITY menu.organizeFeedList						 "Gérer la liste des fils...">
 <!ENTITY menu.opmlImportExport					 "Import/Export OPML...">
 <!ENTITY menu.setting							 "Configuration...">
-<!ENTITY menu.sageProjectFeed					 "Nouveautés du projet Sage">
+<!ENTITY menu.aboutSage				"À propos de Sage">
 <!ENTITY menu.discoverFeeds						 "Découvrir de nouveaux fils">
+<!ENTITY menu.sidebarLayout				"Arrangement de la barre latérale">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     		 "Chercher dans la page en cours">
@@ -32,7 +32,6 @@
 
 <!-- Setting Dialog -->
 <!ENTITY settings.general.caption     			 "Général">
-<!ENTITY settings.autoFeedTitle.label     		 "Mise à jour automatique des titres des fils">
 <!ENTITY settings.renderFeeds.label				 "Afficher les fils dans la zone de navigation">
 <!ENTITY settings.twelveHourClock.label			 "Utiliser une horloge sur 12 heures">
 <!ENTITY settingWindow.title                     "Configuration de Sage">
