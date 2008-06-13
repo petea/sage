@@ -7,11 +7,11 @@
 <!ENTITY menu.view "Visualitza">
 <!ENTITY menu.showFeedItemList "Mostra la llista de les fonts">
 <!ENTITY menu.showFeedItemListToolbar "Mostra la barra del llistat de fonts">
-<!ENTITY menu.showDescTooltip "Mostra els rètols indicadors de funció">
+<!ENTITY menu.showFeedItemTooltip "Mostra els rètols indicadors de funció">
 <!ENTITY menu.openHTML "Obri les fonts a l'àrea de continguts">
 <!ENTITY menu.options "Opcions">
 <!ENTITY menu.checkUpdate "Comprova les fonts">
-<!ENTITY menu.manageRSSList "Gestiona la llista de fonts...">
+<!ENTITY menu.organizeFeedList "Gestiona la llista de fonts...">
 <!ENTITY menu.opmlImportExport "Importació/exportació OPML">
 <!ENTITY menu.setting "Paràmetres...">
 <!ENTITY menu.discoverFeeds "Descobreix fonts">
