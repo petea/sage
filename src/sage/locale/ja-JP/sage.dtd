@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip			"Sageを表示">
 
 <!ENTITY menu.view					"表示">
-<!ENTITY menu.showSearchBar			"フィード検索バーの表示">
 <!ENTITY menu.showFeedItemList			"項目リストの表示">
 <!ENTITY menu.showFeedItemListToolbar	"項目リストツールバーの表示">
-<!ENTITY menu.showDescTooltip		"概要のツールチップの表示">
+<!ENTITY menu.showFeedItemTooltips		"概要のツールチップの表示">
 <!ENTITY menu.openHTML				"コンテンツエリアで開く">
 <!ENTITY menu.options					"ツール">
 <!ENTITY menu.checkUpdate			"更新チェック">
 <!ENTITY menu.manageRSSList			"フィードリストの管理">
 <!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
 <!ENTITY menu.setting				"設定...">
-<!ENTITY menu.sageProjectFeed				"Sageプロジェクトニュース">
+<!ENTITY menu.aboutSage				"Sageについて">
 <!ENTITY menu.discoverFeeds				"フィードを発見する">
+<!ENTITY menu.sidebarLayout				"サイドバーレイアウト">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "現在のページを検索">
@@ -32,7 +32,6 @@
 
 <!-- Setting Dialog -->
 <!ENTITY settings.general.caption     "概要">
-<!ENTITY settings.autoFeedTitle.label     "フィードのタイトルを自動的に更新する">
 <!ENTITY settings.renderFeeds.label     "コンテンツエリアにフィードを読みこむ">
 <!ENTITY settings.twelveHourClock.label     "時間は12時間制にする">
 <!ENTITY settingWindow.title		"設定: フィードリーダパネル">
@@ -80,5 +79,4 @@
 <!ENTITY markAllAsUnread.command.accesskey	"n">
 
 <!ENTITY toggleReadState.command.key		"M">
-
 
