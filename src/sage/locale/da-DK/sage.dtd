@@ -4,18 +4,18 @@
 <!ENTITY sage.sidebarTitle			"Sage">
 <!ENTITY sage.tooltip				"Vis Sage">
 <!ENTITY menu.view				"Vis">
-<!ENTITY menu.showSearchBar			"Vis søgefelt">
 <!ENTITY menu.showFeedItemList			"Vis feed-oversigt">
 <!ENTITY menu.showFeedItemListToolbar	"Vis feed-værktøjslinjen">
-<!ENTITY menu.showDescTooltip			"Vis popop-hjælp">
+<!ENTITY menu.showFeedItemTooltip			"Vis popop-hjælp">
 <!ENTITY menu.openHTML				"Vis feeds i hovedvinduet">
 <!ENTITY menu.options				"Indstillinger">
 <!ENTITY menu.checkUpdate			"Opdater feeds">
-<!ENTITY menu.manageRSSList			"Håndter feeds...">
+<!ENTITY menu.organizeFeedList			"Håndter feeds...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Eksport...">
 <!ENTITY menu.setting				"Indstillinger...">
-<!ENTITY menu.sageProjectFeed				"Sage projekt-nyheder">
 <!ENTITY menu.discoverFeeds				"Find feeds">
+<!ENTITY menu.aboutSage				"About Sage">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Leder på den aktuelle side">
 <!ENTITY discovery.button.addFeed    "Tilføj feed">
@@ -27,7 +27,6 @@
 <!ENTITY discovery.header.url     "URL">
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Generelt">
-<!ENTITY settings.autoFeedTitle.label     "Opdater feeds automatisk">
 <!ENTITY settings.renderFeeds.label     "Vis feeds i hovedvinduet">
 <!ENTITY settings.twelveHourClock.label     "Brug 12-timers ur">
 <!ENTITY settings.feedItemOrder.label     "Rækkefølge">

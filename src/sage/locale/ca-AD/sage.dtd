@@ -5,7 +5,6 @@
 <!ENTITY sage.sidebarTitle "Sage">
 <!ENTITY sage.tooltip "Mostra el Sage">
 <!ENTITY menu.view "Visualitza">
-<!ENTITY menu.showSearchBar "Mostra la barra de cerca de fonts">
 <!ENTITY menu.showFeedItemList "Mostra la llista de les fonts">
 <!ENTITY menu.showFeedItemListToolbar "Mostra la barra del llistat de fonts">
 <!ENTITY menu.showDescTooltip "Mostra els rètols indicadors de funció">
@@ -15,8 +14,9 @@
 <!ENTITY menu.manageRSSList "Gestiona la llista de fonts...">
 <!ENTITY menu.opmlImportExport "Importació/exportació OPML">
 <!ENTITY menu.setting "Paràmetres...">
-<!ENTITY menu.sageProjectFeed "Notícies del Projecte Sage">
 <!ENTITY menu.discoverFeeds "Descobreix fonts">
+<!ENTITY menu.aboutSage "About Sage">
+<!ENTITY menu.sidebarLayout "Sidebar Layout">
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching "Cercant la pàgina actual">
 <!ENTITY discovery.button.addFeed "Afegeix font">
@@ -28,7 +28,6 @@
 <!ENTITY discovery.header.url "URL">
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption "General">
-<!ENTITY settings.autoFeedTitle.label "Actualitza els títols de les fonts automàticament">
 <!ENTITY settings.renderFeeds.label "Representa les fonts a l'àrea de continguts">
 <!ENTITY settings.twelveHourClock.label "Utilitza el rellotge de 12 hores">
 <!ENTITY settings.feedItemOrder.label "Ordre dels elements de les fonts">
