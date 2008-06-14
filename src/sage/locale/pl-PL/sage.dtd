@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip				"Wyświetla Sage">
 
 <!ENTITY menu.view				"Widok">
-<!ENTITY menu.showSearchBar			"Pokaż pasek wyszukiwania kanałów">
 <!ENTITY menu.showFeedItemList		"Pokaż listę artykułów w kanale">
 <!ENTITY menu.showFeedItemListToolbar	"Pokaż pasek narzędzi dla listy artykułów">
-<!ENTITY menu.showDescTooltip			"Pokaż dymki z opisami">
+<!ENTITY menu.showFeedItemTooltips			"Pokaż dymki z opisami">
 <!ENTITY menu.openHTML				"Otwórz kanał w oknie zawartości">
 <!ENTITY menu.options				"Opcje">
 <!ENTITY menu.checkUpdate			"Aktualizuj kanały">
-<!ENTITY menu.manageRSSList			"Zarządzaj listą kanałów...">
+<!ENTITY menu.organizeFeedList			"Zarządzaj listą kanałów...">
 <!ENTITY menu.opmlImportExport		"OPML Import/Eksport...">
 <!ENTITY menu.setting				"Ustawienia...">
-<!ENTITY menu.sageProjectFeed			"Artykuły projektu Sage">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds			"Wyszukaj kanały">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching		"Przeszukuję aktualną stronę">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     	"Ustawienia ogólne">
-<!ENTITY settings.autoFeedTitle.label     "Automatyczna aktualizacja tytułów kanałów">
 <!ENTITY settings.renderFeeds.label     	"Wyświetl kanał w oknie zawartości">
 <!ENTITY settings.twelveHourClock.label	"Użyj 12-godzinnego zegara">
 <!ENTITY settings.feedItemOrder.label     "Kolejność artykułów">

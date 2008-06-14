@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip										"Toon Sage">
 
 <!ENTITY menu.view											"Beeld">
-<!ENTITY menu.showSearchBar								"Toon feed zoekbalk">
 <!ENTITY menu.showFeedItemList							"Toon feed itemlijst">
 <!ENTITY menu.showFeedItemListToolbar					"Show Feed Item List Toolbar">
-<!ENTITY menu.showDescTooltip								"Toon beschrijvende tooltips">
+<!ENTITY menu.showFeedItemTooltips								"Toon beschrijvende tooltips">
 <!ENTITY menu.openHTML										"Open feeds in Contents Area">
 <!ENTITY menu.options											"Opties">
 <!ENTITY menu.checkUpdate									"Controleer feeds">
-<!ENTITY menu.manageRSSList								"Beheer feedlijst...">
+<!ENTITY menu.organizeFeedList								"Beheer feedlijst...">
 <!ENTITY menu.opmlImportExport							"OPML Importeren/Exporteren...">
 <!ENTITY menu.setting										"Instellingen...">
-<!ENTITY menu.sageProjectFeed								"Sage Projectnieuws">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds								"Ontdek feeds">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching						"Zoeken op huidige pagina">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption						"Algemeen">
-<!ENTITY settings.autoFeedTitle.label					"Automatisch feedtitels bijwerken">
 <!ENTITY settings.renderFeeds.label						"Feeds weergeven in Contents Area">
 <!ENTITY settings.twelveHourClock.label				"Gebruik 12-uurs klok">
 <!ENTITY settings.feedItemOrder.label					"Volgorde van feeditems">

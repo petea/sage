@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip				"Sage를 표시합니다">
 
 <!ENTITY menu.view				"보기">
-<!ENTITY menu.showSearchBar			"피드 검색 막대 표시">
 <!ENTITY menu.showFeedItemList			"글 목록 표시">
 <!ENTITY menu.showFeedItemListToolbar	"글 목록 도구막대 표시">
-<!ENTITY menu.showDescTooltip			"글 내용을 꼬리말로 보여주기">
+<!ENTITY menu.showFeedItemTooltips			"글 내용을 꼬리말로 보여주기">
 <!ENTITY menu.openHTML				"피드를 내용 영역에 열기">
 <!ENTITY menu.options				"기능">
 <!ENTITY menu.checkUpdate			"업데이트 검사">
-<!ENTITY menu.manageRSSList			"피드 목록 관리">
+<!ENTITY menu.organizeFeedList			"피드 목록 관리">
 <!ENTITY menu.opmlImportExport			"OPML 가져오기/내보내기...">
 <!ENTITY menu.setting				"설정...">
-<!ENTITY menu.sageProjectFeed				"Sage 프로젝트 새소식">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"현재 문서의 RSS 피드 찾기">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "문서를 검색하고 있습니다">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "일반">
-<!ENTITY settings.autoFeedTitle.label     "피드의 제목을 자동으로 업데이트 합니다">
 <!ENTITY settings.renderFeeds.label     "피드의 글들을 내용 영역에 표시합니다">
 <!ENTITY settings.twelveHourClock.label     "시간 단위를 12로 합니다">
 <!ENTITY settings.feedItemOrder.label     "피드의 글 정렬 기준">
