@@ -6,18 +6,18 @@
 <!ENTITY sage.tooltip				"Mostrar Sage">
 
 <!ENTITY menu.view				"Ver">
-<!ENTITY menu.showSearchBar			"Mostrar barra de búsqueda de fuentes">
 <!ENTITY menu.showFeedItemList			"Mostrar la lista de fuentes">
 <!ENTITY menu.showFeedItemListToolbar	"Mostrar barra de herramientas">
-<!ENTITY menu.showDescTooltip			"Mostrar sugerencias de descripción">
+<!ENTITY menu.showFeedItemTooltips			"Mostrar sugerencias de descripción">
 <!ENTITY menu.openHTML				"Abrir fuentes en área de contenidos">
 <!ENTITY menu.options				"Opciones">
 <!ENTITY menu.checkUpdate			"Comprobar Fuentes">
-<!ENTITY menu.manageRSSList			"Gestionar lista de fuentes...">
+<!ENTITY menu.organizeFeedList			"Gestionar lista de fuentes...">
 <!ENTITY menu.opmlImportExport			"Importación/Exportación OPML...">
 <!ENTITY menu.setting				"Configuración..">
-<!ENTITY menu.sageProjectFeed				"Noticias Projecto Sage">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"Descubrir fuentes">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Buscando página actual">
@@ -31,7 +31,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "General">
-<!ENTITY settings.autoFeedTitle.label     "Actualizar automáticamente los títulos de las fuentes">
 <!ENTITY settings.renderFeeds.label     "Representar las fuentes en el área de contenidos">
 <!ENTITY settings.twelveHourClock.label     "Utilizar reloj de 12 horas">
 <!ENTITY settings.feedItemOrder.label     "Orden de la lista de fuentes">

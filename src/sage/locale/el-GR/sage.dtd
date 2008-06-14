@@ -6,18 +6,18 @@
 <!ENTITY sage.tooltip				"Εμφανίζει το Sage">
 
 <!ENTITY menu.view				"Προβολή">
-<!ENTITY menu.showSearchBar			"Εμφάνιση μπάρας αναζήτησης αρχείων ροής">
 <!ENTITY menu.showFeedItemList			"Εμφάνιση λίστας αρχείων ροής">
 <!ENTITY menu.showFeedItemListToolbar	"Εμφάνιση εργαλειοθήκης λίστας αρχείων ροής">
-<!ENTITY menu.showDescTooltip			"Εμφάνιση σχολίων περιγραφής">
+<!ENTITY menu.showFeedItemTooltips			"Εμφάνιση σχολίων περιγραφής">
 <!ENTITY menu.openHTML				"Άνοιγμα Ροής στην περιοχή περιεχομένων">
 <!ENTITY menu.options				"Επιλογές">
 <!ENTITY menu.checkUpdate			"Έλεγχος αρχείων ροής">
-<!ENTITY menu.manageRSSList			"Διαχείριση λίστας αρχείων ροής...">
+<!ENTITY menu.organizeFeedList			"Διαχείριση λίστας αρχείων ροής...">
 <!ENTITY menu.opmlImportExport			"OPML Εισαγωγή/Εξαγωγή...">
 <!ENTITY menu.setting				"Ρυθμίσεις...">
-<!ENTITY menu.sageProjectFeed				"Νέα του Sage Project">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"Ανακάλυψη αρχείων ροής">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Αναζήτηση τρέχουσας σελίδας">
@@ -31,7 +31,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Γενικά">
-<!ENTITY settings.autoFeedTitle.label     "Αυτόματη ενημέρωση τίτλων Ροών">
 <!ENTITY settings.renderFeeds.label     "Απεικόνιση Ροών στην περιοχή περιεχομένων">
 <!ENTITY settings.twelveHourClock.label     "Χρήση ρολογιού 12 ωρών">
 <!ENTITY settings.feedItemOrder.label     "Σειρά στοιχείων Ροής">
