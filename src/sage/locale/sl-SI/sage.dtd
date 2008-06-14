@@ -6,18 +6,18 @@
 <!ENTITY sage.tooltip				"Prikaži Sage">
 
 <!ENTITY menu.view				"Poglej">
-<!ENTITY menu.showSearchBar			"Pokaži iskalnik dnevnikov">
 <!ENTITY menu.showFeedItemList			"Pokaži seznam dnevniških elementov">
 <!ENTITY menu.showFeedItemListToolbar	"Pokaži orodno vrstico seznama dnevniških elementov">
-<!ENTITY menu.showDescTooltip			"Pokaži namige">
+<!ENTITY menu.showFeedItemTooltips			"Pokaži namige">
 <!ENTITY menu.openHTML				"Odpri dnevnik v polju za vsebino">
 <!ENTITY menu.options				"Nastavitve">
 <!ENTITY menu.checkUpdate			"Preveri dnevnike">
-<!ENTITY menu.manageRSSList			"Opravljanje z dnevniki...">
+<!ENTITY menu.organizeFeedList			"Opravljanje z dnevniki...">
 <!ENTITY menu.opmlImportExport			"OPML Uvoz/Izvoz...">
 <!ENTITY menu.setting				"Nastavitve...">
-<!ENTITY menu.sageProjectFeed				"Novice projekta Sage">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"Odkrij RSS dnevnike">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Preiskujem trenutno stran">
@@ -31,7 +31,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Glavno">
-<!ENTITY settings.autoFeedTitle.label     "Avtomatično posodobi seznam naslovov">
 <!ENTITY settings.renderFeeds.label     "Prikaž dnevnike v seznamu">
 <!ENTITY settings.twelveHourClock.label     "Uporabi 12 urno uro">
 <!ENTITY settings.feedItemOrder.label     "Vrstni red dnevnikov">
