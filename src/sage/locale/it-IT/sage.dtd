@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip				"Mostra il pannello laterale di Sage">
 
 <!ENTITY menu.view				"Visualizza">
-<!ENTITY menu.showSearchBar			"Mostra Barra di Ricerca dei Feed">
 <!ENTITY menu.showFeedItemList			"Mostra la Lista dei Feed">
 <!ENTITY menu.showFeedItemListToolbar	"Mostra la Barra degli Strumenti della Lista dei Feed">
-<!ENTITY menu.showDescTooltip			"Mostra Descrizione Suggerimenti">
+<!ENTITY menu.showFeedItemTooltips			"Mostra Descrizione Suggerimenti">
 <!ENTITY menu.openHTML				"Mostra i Feed nel Browser">
 <!ENTITY menu.options				"Opzioni">
 <!ENTITY menu.checkUpdate			"Controlla i Feed">
-<!ENTITY menu.manageRSSList			"Gestione Lista dei Feed...">
+<!ENTITY menu.organizeFeedList			"Gestione Lista dei Feed...">
 <!ENTITY menu.opmlImportExport			"Importazione/Esportazione File OPML...">
 <!ENTITY menu.setting				"Preferenze...">
-<!ENTITY menu.sageProjectFeed				"Novità sul Progetto Sage">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"Ricerca Feed Esterni">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Ricerca nella Pagina Corrente">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Generale">
-<!ENTITY settings.autoFeedTitle.label     "Aggiorna automaticamente il Titolo dei Feed">
 <!ENTITY settings.renderFeeds.label     "Mostra i Feed nel Browser">
 <!ENTITY settings.twelveHourClock.label     "Usa Modalità 12 ore">
 <!ENTITY settings.feedItemOrder.label     "Ordinamento dei Feed">

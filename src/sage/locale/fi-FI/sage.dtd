@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip				"Näyttää Sagen">
 
 <!ENTITY menu.view				"Näytä">
-<!ENTITY menu.showSearchBar			"Näytä syötteiden etsintäpalkki">
 <!ENTITY menu.showFeedItemList			"Näytä syötteiden aihelista">
 <!ENTITY menu.showFeedItemListToolbar		"Näytä syötteiden aihelistan työkalupalkki">
-<!ENTITY menu.showDescTooltip			"Näytä selitevihjeet">
+<!ENTITY menu.showFeedItemTooltips			"Näytä selitevihjeet">
 <!ENTITY menu.openHTML				"Avaa syötteet sisältöalueella">
 <!ENTITY menu.options				"Asetukset">
 <!ENTITY menu.checkUpdate			"Tarkista syötteet...">
-<!ENTITY menu.manageRSSList			"Hallinnoi syötelistaa...">
+<!ENTITY menu.organizeRSSList			"Hallinnoi syötelistaa...">
 <!ENTITY menu.opmlImportExport			"OPML-tuonti/vienti...">
 <!ENTITY menu.setting				"Asetukset...">
-<!ENTITY menu.sageProjectFeed			"Sagen projektiuutiset">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds			"Etsi syötteet...">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching		"Etsitään nykyiseltä sivulta">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption		"Yleinen">
-<!ENTITY settings.autoFeedTitle.label		"Päivitä otsikot automaattisesti">
 <!ENTITY settings.renderFeeds.label		"Avaa syötteet sisältöalueella">
 <!ENTITY settings.twelveHourClock.label		"Käytä 12-tuntista kelloa">
 <!ENTITY settings.feedItemOrder.label		"Feed item order">

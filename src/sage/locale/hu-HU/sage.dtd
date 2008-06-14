@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip				"Sage megjelenítése">
 
 <!ENTITY menu.view				"Megnéz">
-<!ENTITY menu.showSearchBar         "Keresõmezõ mutatása">
 <!ENTITY menu.showFeedItemList			"Mutassa a letöltött elemek listáját">
 <!ENTITY menu.showFeedItemListToolbar	"Mutassa a letöltött elemek listáját az Eszköztárban">
-<!ENTITY menu.showDescTooltip       "Leírás-tooltip megjelenítése">
+<!ENTITY menu.showFeedItemTooltips       "Leírás-tooltip megjelenítése">
 <!ENTITY menu.openHTML              "Megnyitás a tartalmi részben">
 <!ENTITY menu.options                 "Eszközök">
 <!ENTITY menu.checkUpdate           "Frissülések ellenõrzése">
-<!ENTITY menu.manageRSSList         "RSS lista menedzselése...">
+<!ENTITY menu.organizeFeedList         "RSS lista menedzselése...">
 <!ENTITY menu.opmlImportExport      "OPML import/export...">
 <!ENTITY menu.setting               "Beállítások...">
-<!ENTITY menu.sageProjectFeed				"A Sage projekt hírei">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds					"Adagolók keresése">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Keresés a jelenlegi oldalon">
@@ -32,7 +32,6 @@
 
 <!-- Setting Dialog -->
 <!ENTITY settings.general.caption     "Általános">
-<!ENTITY settings.autoFeedTitle.label     "Címek automatikus frissítése">
 <!ENTITY settings.renderFeeds.label     "Megnyitás a tartalmi részben">
 <!ENTITY settings.twelveHourClock.label     "12 órás idő">
 <!ENTITY settingWindow.title        "Az RSS olvasópanel beállításai">
