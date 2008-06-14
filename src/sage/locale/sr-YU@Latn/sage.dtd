@@ -6,18 +6,18 @@
 <!ENTITY sage.tooltip				"Otvara Sage">
 
 <!ENTITY menu.view				"Pregled">
-<!ENTITY menu.showSearchBar			"Prikaži liniju za pretragu">
 <!ENTITY menu.showFeedItemList			"Prikaži spisak novosti">
 <!ENTITY menu.showFeedItemListToolbar	"Prikaži alat za prikaz spiska novosti">
-<!ENTITY menu.showDescTooltip			"Prikaži oblačiće sa opisima">
+<!ENTITY menu.showFeedItemTooltips			"Prikaži oblačiće sa opisima">
 <!ENTITY menu.openHTML				"Otvori izvore u sadržaju">
 <!ENTITY menu.options				"Postavke">
 <!ENTITY menu.checkUpdate			"Proveri izvore">
-<!ENTITY menu.manageRSSList			"Uredi spisak izvora...">
+<!ENTITY menu.organizeFeedList			"Uredi spisak izvora...">
 <!ENTITY menu.opmlImportExport			"OPML uvoz/izvoz...">
 <!ENTITY menu.setting				"Postavke...">
-<!ENTITY menu.sageProjectFeed				"Novosti na projektu Sage">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds				"Pronađi izvore">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Pretražujem trenutnu stranu">
@@ -31,7 +31,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Opšte">
-<!ENTITY settings.autoFeedTitle.label     "Automatski preuzmi naslov izvora">
 <!ENTITY settings.renderFeeds.label     "Prikazuj izvore u sadržaju">
 <!ENTITY settings.twelveHourClock.label     "Prikaz 12-časovnog vremena">
 <!ENTITY settings.feedItemOrder.label     "Redosled">

@@ -7,18 +7,18 @@
 <!ENTITY sage.tooltip			"Visar Sage">
 
 <!ENTITY menu.view			"Visa">
-<!ENTITY menu.showSearchBar		"Visa flödessökruta">
 <!ENTITY menu.showFeedItemList		"Visa flödens innehållslista">
 <!ENTITY menu.showFeedItemListToolbar	"Visa flödens innehållslista verktygsfält">
-<!ENTITY menu.showDescTooltip		"Visa beskrivningstips">
+<!ENTITY menu.showFeedItemTooltips		"Visa beskrivningstips">
 <!ENTITY menu.openHTML			"Öppna flöden i innehållsrutan">
 <!ENTITY menu.options			"Inställningar">
 <!ENTITY menu.checkUpdate		"Uppdatera flöden">
-<!ENTITY menu.manageRSSList		"Hantera flödeslista...">
+<!ENTITY menu.organizeFeedList		"Hantera flödeslista...">
 <!ENTITY menu.opmlImportExport		"Importera/Exportera OPML...">
 <!ENTITY menu.setting			"Inställningar...">
-<!ENTITY menu.sageProjectFeed		"Sage projektnyheter">
+<!ENTITY menu.aboutSage				"About Sage">
 <!ENTITY menu.discoverFeeds		"Hitta flöden">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Söker i nuvarande sida">
@@ -32,7 +32,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption		"General">
-<!ENTITY settings.autoFeedTitle.label		"Uppdatera flödeslista automatiskt">
 <!ENTITY settings.renderFeeds.label		"Visa flöden i innehållsrutan">
 <!ENTITY settings.twelveHourClock.label		"Använd 12-timmars klocka">
 <!ENTITY settings.feedItemOrder.label		"Flödeslistans ordning">
