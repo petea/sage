@@ -65,7 +65,7 @@ function init() {
 	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 	logger = new Logger();
 
-	var discoveryMode = SageUtils.getPrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE);
+	var discoveryMode = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE);
 
 	strRes = document.getElementById("strRes");
 	statusDeck = document.getElementById("statusDeck");
@@ -252,7 +252,7 @@ function addDiscoveredFeed(uri, feed) {
 		feeds_found_external++;
 	}
 
-	var twelveHourClock = SageUtils.getPrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
+	var twelveHourClock = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 	lastPubDate = "N/A";
 	if(feed.hasLastPubDate()) {
 		var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);

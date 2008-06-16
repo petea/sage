@@ -209,6 +209,12 @@ var UpdateChecker = {
 				} else {
 					status = SageUtils.STATUS_NO_UPDATE;
 				}
+			} else if (aLastModified && lastVisit) {
+				if (aLastModified > lastVisit) {
+					status = SageUtils.STATUS_UPDATE;
+				} else {
+					status = SageUtils.STATUS_NO_UPDATE;
+				}
 			} else if (sig) {
 				if (sig != feed.getSignature()) {
 					status = SageUtils.STATUS_UPDATE;

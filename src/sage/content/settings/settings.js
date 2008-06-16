@@ -66,25 +66,25 @@ function init() {
 	gList = document.getElementById("select-menu");
 
 	chkUserCssEnable = document.getElementById("chkUserCssEnable");
-	chkUserCssEnable.checked = SageUtils.getPrefValue(SageUtils.PREF_USER_CSS_ENABLE);
+	chkUserCssEnable.checked = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE);
 
 	txtUserCssPath = document.getElementById("txtUserCssPath");
-	txtUserCssPath.value = SageUtils.getPrefValue(SageUtils.PREF_USER_CSS_PATH);
+	txtUserCssPath.value = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_PATH);
 
 	chkAllowEContent = document.getElementById("chkAllowEContent");
-	chkAllowEContent.checked = SageUtils.getPrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
+	chkAllowEContent.checked = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 
 	chkRenderFeeds = document.getElementById("chkRenderFeeds");
-	chkRenderFeeds.checked = SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS);
+	chkRenderFeeds.checked = SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS);
 
 	chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
-	chkTwelveHourClock.checked = SageUtils.getPrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
+	chkTwelveHourClock.checked = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 
 	feedItemOrder = document.getElementById("feedItemOrder");
-	feedItemOrder.value = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
+	feedItemOrder.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 
 	feedDiscoveryMode = document.getElementById("feedDiscoveryMode");
-	feedDiscoveryMode.value = SageUtils.getPrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE);
+	feedDiscoveryMode.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE);
 
 	setDisabled();
 
@@ -93,13 +93,13 @@ function init() {
 
 function accept() {
 	SageUtils.setSageRootFolderId(sageFolderID);
-	SageUtils.setPrefValue(SageUtils.PREF_USER_CSS_ENABLE, chkUserCssEnable.checked);
-	SageUtils.setPrefValue(SageUtils.PREF_USER_CSS_PATH, txtUserCssPath.value);
-	SageUtils.setPrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT, chkAllowEContent.checked);
-	SageUtils.setPrefValue(SageUtils.PREF_RENDER_FEEDS, chkRenderFeeds.checked);
-	SageUtils.setPrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK, chkTwelveHourClock.checked);
-	SageUtils.setPrefValue(SageUtils.PREF_FEED_ITEM_ORDER, feedItemOrder.value);
-	SageUtils.setPrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE, feedDiscoveryMode.value);
+	SageUtils.setSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE, chkUserCssEnable.checked);
+	SageUtils.setSagePrefValue(SageUtils.PREF_USER_CSS_PATH, txtUserCssPath.value);
+	SageUtils.setSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT, chkAllowEContent.checked);
+	SageUtils.setSagePrefValue(SageUtils.PREF_RENDER_FEEDS, chkRenderFeeds.checked);
+	SageUtils.setSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK, chkTwelveHourClock.checked);
+	SageUtils.setSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER, feedItemOrder.value);
+	SageUtils.setSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE, feedDiscoveryMode.value);
 }
 
 function selectFolder(aEvent){

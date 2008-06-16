@@ -126,45 +126,49 @@ var SageUtils = {
 		return fileContents;
 	},
 
-	setPrefValue : function(aPrefString, aValue) {
-		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
-		var prefBranch = prefService.getBranch(this.PREF_BRANCH);
-
-		switch (prefBranch.getPrefType(aPrefString)) {
+	setPrefValue : function(aPref, aValue) {
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
+		switch (prefService.getPrefType(aPref)) {
 			case Ci.nsIPrefBranch.PREF_INVALID:
-				throw "Invalid preference: " + aPrefString;
+				throw "Invalid preference: " + aPref;
 			case Ci.nsIPrefBranch.PREF_STRING:
 				var string = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
 				string.data = aValue;
-				prefBranch.setComplexValue(aPrefString, Ci.nsISupportsString, string);
+				prefService.setComplexValue(aPref, Ci.nsISupportsString, string);
 				break;
 			case Ci.nsIPrefBranch.PREF_INT:
 				aValue = parseInt(aValue);
-				prefBranch.setIntPref(aPrefString, aValue);
+				prefService.setIntPref(aPref, aValue);
 				break;
 			case Ci.nsIPrefBranch.PREF_BOOL:
 				if (typeof(aValue) == "string") {
 					aValue = (aValue == "true");
 				}
-				prefBranch.setBoolPref(aPrefString, aValue);
+				prefService.setBoolPref(aPref, aValue);
 				break;
 		}
 	},
 
-	getPrefValue : function(aPrefString) {
-		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefService);
-		var prefBranch = prefService.getBranch(this.PREF_BRANCH);
-		
-		switch (prefBranch.getPrefType(aPrefString)) {
+	getPrefValue : function(aPref) {
+		var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
+		switch (prefService.getPrefType(aPref)) {
 			case Ci.nsIPrefBranch.PREF_INVALID:
-				throw "Invalid preference: " + aPrefString;
+				throw "Invalid preference: " + aPref;
 			case Ci.nsIPrefBranch.PREF_STRING:
-				return prefBranch.getComplexValue(aPrefString, Ci.nsISupportsString).data;
+				return prefService.getComplexValue(aPref, Ci.nsISupportsString).data;
 			case Ci.nsIPrefBranch.PREF_INT:
-				return prefBranch.getIntPref(aPrefString);
+				return prefService.getIntPref(aPref);
 			case Ci.nsIPrefBranch.PREF_BOOL:
-				return prefBranch.getBoolPref(aPrefString);
+				return prefService.getBoolPref(aPref);
 		}
+	},
+	
+	setSagePrefValue : function(aSagePref, aValue) {
+		this.setPrefValue(this.PREF_BRANCH + aSagePref, aValue);
+	},
+
+	getSagePrefValue : function(aSagePref) {
+		return this.getPrefValue(this.PREF_BRANCH + aSagePref);
 	},
 	
 	getSageRootFolderId : function() {

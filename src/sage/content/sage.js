@@ -236,7 +236,7 @@ var sidebarController = {
 		lastItemId = itemId;
 		this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
 		feedLoader.loadURI(uri);
-		if (SageUtils.getPrefValue(SageUtils.PREF_RENDER_FEEDS)) {
+		if (SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS)) {
 			openURI(SageUtils.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
 		}
 	},
@@ -365,7 +365,7 @@ function setRssItemListBox() {
 	}
 
 	linkVisitor.clearItems();
-	var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
+	var feedItemOrder = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -415,7 +415,7 @@ function populateToolTip(e) {
 		return;
 	}
 	var listItem = document.tooltipNode;
-	var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
+	var feedItemOrder = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -500,7 +500,7 @@ function onFeedAbort(sURI) {
  * @returns	FeedItem
  */
 function getFeedItemFromListItem( oListItem ) {
-	var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
+	var feedItemOrder = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 	switch (feedItemOrder) {
 		case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
@@ -709,7 +709,7 @@ function updateItemContextMenu() {
  */
 function markAllReadState(bRead) {
 	if (currentFeed) {
-		var feedItemOrder = SageUtils.getPrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
+		var feedItemOrder = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 		switch (feedItemOrder) {
 			case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
 			case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;

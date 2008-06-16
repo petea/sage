@@ -62,7 +62,7 @@ var sageOverlay = {
 				this.logger.error("migration failed: " + e);
 			}
 		}
-		SageUtils.setPrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
+		SageUtils.setSagePrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
 		//this.loadFaviconForHandler();
 		if (this.needsRestart) {
 			var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
@@ -91,7 +91,7 @@ var sageOverlay = {
 		try {
 			oldVersionString = prefService.getCharPref("sage.last_version");
 		} catch (e) { }
-		var versionString = SageUtils.getPrefValue(SageUtils.PREF_VERSION);
+		var versionString = SageUtils.getSagePrefValue(SageUtils.PREF_VERSION);
 		
 		if (oldVersionString != null && versionString == "") {
 			return oldVersionString;
@@ -167,9 +167,10 @@ var sageOverlay = {
 				} else {
 					self.createRoot();
 				}
+				
 				// convert feed states and sigs
 				function convertFeeds(folderNode) {
-					var description, status, sig;
+					var lastVisit, description, descriptionParts, status;
 					folderNode.containerOpen = true;
 					for (var c = 0; c < folderNode.childCount; c++) {
 						var child = folderNode.getChild(c);
@@ -177,16 +178,18 @@ var sageOverlay = {
 							(child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
 							livemarkService.isLivemark(child.itemId))) {
 							try {
+								lastVisit = new Date().getTime();
+								annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_LASTVISIT, lastVisit, 0, annotationService.EXPIRE_NEVER);
 								description = annotationService.getItemAnnotation(child.itemId, "bookmarkProperties/description");
-								if (description.split(" ").length == 2) {
-									status = description.split(" ")[0];
+								descriptionParts = description.split(" ");
+								if (descriptionParts.length == 1 || descriptionParts.length == 2) {
+									status = descriptionParts[0];
 									annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_STATUS, status, 0, annotationService.EXPIRE_NEVER);
-									sig = description.split(" ")[1];
-									sig = sig.substring(1, sig.length - 1);
-									annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_SIG, sig, 0, annotationService.EXPIRE_NEVER);
 									annotationService.setItemAnnotation(child.itemId, "bookmarkProperties/description", "", 0, annotationService.EXPIRE_NEVER);
 								}
-							} catch (e) {}
+							} catch (e) {
+								self.logger.warn("feed state conversion failed: " + e);
+							}
 						} else if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
 							!livemarkService.isLivemark(child.itemId)) {
 							child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
@@ -198,8 +201,43 @@ var sageOverlay = {
 				query.setFolders([SageUtils.getSageRootFolderId()], 1);
 				result = historyService.executeQuery(query, historyService.getNewQueryOptions());
 				convertFeeds(result.root);
+				
 				// copy prefs and delete old ones
+				function deletePref(pref) {
+					var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
+					try {
+						prefService.clearUserPref(pref);
+					} catch (e) { }
+				}
+				function movePref(oldPref, sagePref) {
+					try {
+						var value = SageUtils.getPrefValue(oldPref);
+						SageUtils.setSagePrefValue(sagePref, value);
+					} catch (e) { }
+					deletePref(oldPref);
+				}
+				deletePref("sage.folder_id");
+				deletePref("sage.last_version");
+				deletePref("sage.auto_feed_title");
+				movePref("sage.user_css.enable", SageUtils.PREF_USER_CSS_ENABLE);
+				movePref("sage.user_css.path", SageUtils.PREF_USER_CSS_PATH);
+				movePref("sage.allow_encoded_content", SageUtils.PREF_ALLOW_ENCODED_CONTENT);
+				movePref("sage.render_feeds", SageUtils.PREF_RENDER_FEEDS);
+				movePref("sage.twelve_hour_clock", SageUtils.PREF_TWELVE_HOUR_CLOCK);
+				movePref("sage.feed_item_order", SageUtils.PREF_FEED_ITEM_ORDER);
+				movePref("sage.feed_discovery_mode", SageUtils.PREF_FEED_DISCOVERY_MODE);
+				movePref("sage.log_level", SageUtils.PREF_LOG_LEVEL);
+				
 				// rename persisted value chkShowTooltip => chkShowFeedItemTooltips
+				var RDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
+				var localstore = RDF.GetDataSource("rdf:local-store");
+				if (localstore.HasAssertion(RDF.GetResource("chrome://sage/content/sage.xul#chkShowTooltip"), RDF.GetResource("checked"), RDF.GetLiteral(true), true)) {
+					SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
+				} else {
+					SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", false);
+				}
+				
+				// add content handler
 				self.addContentHandler();
 				self.needsRestart = true;
 			}
