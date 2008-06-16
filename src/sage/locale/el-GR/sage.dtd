@@ -48,7 +48,7 @@
 
 
 <!ENTITY openSageSidebar.commandkey		"S">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.modifiersKey		"control alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Άνοιγμα">

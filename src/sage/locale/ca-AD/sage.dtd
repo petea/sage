@@ -43,7 +43,7 @@
 <!ENTITY browseCss.label "Navega">
 <!ENTITY allowEContent.label "Habilita les etiquetes HTML">
 <!ENTITY openSageSidebar.commandkey "S">
-<!ENTITY openSageSidebar.modifiersKey "alt">
+<!ENTITY openSageSidebar.modifiersKey "control alt">
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Obre">
 <!ENTITY openLinkInWindow.accesskey "O">
