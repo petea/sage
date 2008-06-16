@@ -16,6 +16,8 @@
 <!ENTITY menu.opmlImportExport			"OPML 导入/导出...">
 <!ENTITY menu.setting				"设置...">
 <!ENTITY menu.discoverFeeds				"发现 Feed">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.aboutSage				"About Sage">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "正在搜索当前页">

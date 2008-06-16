@@ -13,7 +13,7 @@
 <!ENTITY menu.openHTML				"コンテンツエリアで開く">
 <!ENTITY menu.options					"ツール">
 <!ENTITY menu.checkUpdate			"更新チェック">
-<!ENTITY menu.manageRSSList			"フィードリストの管理">
+<!ENTITY menu.organizeFeedList			"フィードリストの管理">
 <!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
 <!ENTITY menu.setting				"設定...">
 <!ENTITY menu.aboutSage				"Sageについて">

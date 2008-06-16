@@ -8,7 +8,7 @@
 <!ENTITY menu.view				"Преглед">
 <!ENTITY menu.showFeedItemList			"Прикажи списак новости">
 <!ENTITY menu.showFeedItemListToolbar	"Прикажи алат за приказ списка новости">
-<!ENTITY menu.showFeedItemTooltip			"Прикажи облачиће са описима">
+<!ENTITY menu.showFeedItemTooltips			"Прикажи облачиће са описима">
 <!ENTITY menu.openHTML				"Отвори изворе у садржају">
 <!ENTITY menu.options				"Поставке">
 <!ENTITY menu.checkUpdate			"Провери изворе">

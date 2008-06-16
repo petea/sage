@@ -13,7 +13,7 @@
 <!ENTITY menu.openHTML				"Nachrichtenkanäle im Hauptfenster anzeigen">
 <!ENTITY menu.options				"Optionen">
 <!ENTITY menu.checkUpdate			"Nachrichtenkanäle auf Aktualisierungen prüfen">
-<!ENTITY menu.manageRSSList			"Liste der Nachrichtenkanäle verwalten...">
+<!ENTITY menu.organizeFeedList			"Liste der Nachrichtenkanäle verwalten...">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">
 <!ENTITY menu.setting				"Einstellungen">
 <!ENTITY menu.discoverFeeds				"Nachrichtenkanäle auf dieser Seite suchen">

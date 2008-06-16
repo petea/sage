@@ -13,7 +13,7 @@
 <!ENTITY menu.openHTML				"Avaa syötteet sisältöalueella">
 <!ENTITY menu.options				"Asetukset">
 <!ENTITY menu.checkUpdate			"Tarkista syötteet...">
-<!ENTITY menu.organizeRSSList			"Hallinnoi syötelistaa...">
+<!ENTITY menu.organizeFeedList			"Hallinnoi syötelistaa...">
 <!ENTITY menu.opmlImportExport			"OPML-tuonti/vienti...">
 <!ENTITY menu.setting				"Asetukset...">
 <!ENTITY menu.aboutSage				"About Sage">

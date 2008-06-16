@@ -9,7 +9,7 @@
 <!ENTITY menu.view                              "Вид">
 <!ENTITY menu.showFeedItemList                  "Показывать элементы ленты">
 <!ENTITY menu.showFeedItemListToolbar   "Показывать панель элементов">
-<!ENTITY menu.showFeedITemTooltips                   "Показывать всплывающие описания">
+<!ENTITY menu.showFeedItemTooltips                   "Показывать всплывающие описания">
 <!ENTITY menu.openHTML                          "Открывать ленты в основном окне">
 <!ENTITY menu.options                             "Настройки">
 <!ENTITY menu.checkUpdate                       "Проверить обновления">

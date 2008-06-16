@@ -6,18 +6,18 @@
 <!ENTITY sage.tooltip				"Zobrazí Sage">
 
 <!ENTITY menu.view				"Ukázat">
-<!ENTITY menu.showSearchBar			"Ukáže vyhledávací panel">
 <!ENTITY menu.showFeedItemList			"Ukáže seznam položek v kanálu">
 <!ENTITY menu.showFeedItemListToolbar	"Ukáže panel pro seznam položek">
-<!ENTITY menu.showDescTooltip			"Ukáže nápovědy k popisům">
+<!ENTITY menu.showFeedItemTooltips			"Ukáže nápovědy k popisům">
 <!ENTITY menu.openHTML				"Otevře kanál v hlavním okně">
 <!ENTITY menu.options				"Nastavení">
 <!ENTITY menu.checkUpdate			"Zkontrolovat kanály">
-<!ENTITY menu.manageRSSList			"Upravit seznam kanálů">
+<!ENTITY menu.organizeFeedList			"Upravit seznam kanálů">
 <!ENTITY menu.opmlImportExport			"OPML Import/Export...">
 <!ENTITY menu.setting				"Nastavení...">
-<!ENTITY menu.sageProjectFeed				"Novinky o Sage">
 <!ENTITY menu.discoverFeeds				"Vyhledat kanály">
+<!ENTITY menu.aboutSage				"About Sage">
+<!ENTITY menu.sidebarLayout				"Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Prohledává se aktuální stránka">
@@ -31,7 +31,6 @@
 
 <!-- Settings Dialog -->
 <!ENTITY settings.general.caption     "Obecné">
-<!ENTITY settings.autoFeedTitle.label     "Automaticky aktualizovat nadpisy kanálů">
 <!ENTITY settings.renderFeeds.label     "Zobrazovat kanály v hlavním okně">
 <!ENTITY settings.twelveHourClock.label     "PM/AM zobrazování času (12 hodin a postfix)">
 <!ENTITY settings.feedItemOrder.label     "Pořadí kanálů">
