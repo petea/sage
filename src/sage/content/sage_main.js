@@ -135,7 +135,7 @@ var sageOverlay = {
 				self.addToolbarButton();
 			},
 			
-			"1.4a" : function() {
+			"1.4" : function() {
 				// find sage root or create new one
 				var historyService = Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService);
 				var bookmarkService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
