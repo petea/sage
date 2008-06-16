@@ -255,7 +255,7 @@ var CreateHTML = {
 						this.simpleHtmlParser.parse(item.getContent());
 						ds = this.filterHtmlHandler.toString();
 					} else {
-						ds = htmlToText(item.getContent());
+						ds = SageUtils.htmlToText(item.getContent());
 					}
 					return "<div class=\"item-desc\">" + ds + "</div>";
 				}

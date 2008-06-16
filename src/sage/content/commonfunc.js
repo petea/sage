@@ -225,6 +225,24 @@ var SageUtils = {
 		var localstore = RDF.GetDataSource("rdf:local-store");
 		localstore.Assert(RDF.GetResource(uri), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource(uri + "#" + id), true);
 		localstore.Assert(RDF.GetResource(uri + "#" + id), RDF.GetResource(attribute), RDF.GetLiteral(value), true);
+	},
+	
+	htmlToText : function(aStr) {
+		var	formatConverter = Cc["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Ci.nsIFormatConverter);
+		var fromStr = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+		fromStr.data = aStr;
+		var toStr = { value: null };
+	
+		try {
+			formatConverter.convert("text/html", fromStr, fromStr.toString().length, "text/unicode", toStr, {});
+		} catch(e) {
+			return aStr;
+		}
+		if (toStr.value) {
+			toStr = toStr.value.QueryInterface(Components.interfaces.nsISupportsString);
+			return toStr.toString();
+		}
+		return aStr;
 	}
 
 }

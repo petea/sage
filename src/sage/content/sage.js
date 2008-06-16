@@ -421,7 +421,7 @@ function populateToolTip(e) {
 		case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
 	}
 	if (currentFeed.getItem(listItem.value).hasContent()) {
-		var description = htmlToText(currentFeed.getItem(listItem.value).getContent());
+		var description = SageUtils.htmlToText(currentFeed.getItem(listItem.value).getContent());
 		if (description.indexOf("/") != -1) {
 			description = description.replace(/\//gm, "/\u200B");
 		}
@@ -433,24 +433,6 @@ function populateToolTip(e) {
 	}
 	rssItemToolTip.title = listItem.label;
 	rssItemToolTip.description = description;
-}
-
-function htmlToText(aStr) {
-	var	formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Components.interfaces.nsIFormatConverter);
-	var fromStr = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-	fromStr.data = aStr;
-	var toStr = { value: null };
-
-	try {
-		formatConverter.convert("text/html", fromStr, fromStr.toString().length, "text/unicode", toStr, {});
-	} catch(e) {
-		return aStr;
-	}
-	if(toStr.value) {
-		toStr = toStr.value.QueryInterface(Components.interfaces.nsISupportsString);
-		return toStr.toString();
-	}
-	return aStr;
 }
 
 function onFeedLoaded(aFeed) {
