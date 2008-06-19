@@ -134,7 +134,7 @@ function fillSelectFolderMenupopup () {
 
 	// to be removed once I checkin the top folder
 	var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
-	element.setAttribute("label", "Bookmarks");
+	element.setAttribute("label", PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.bookmarksMenuFolder));
 	element.setAttribute("id", PlacesUtils.bookmarks.bookmarksMenuFolder);
 	popup.appendChild(element);
 
