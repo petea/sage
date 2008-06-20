@@ -180,6 +180,9 @@ var sageOverlay = {
 							try {
 								lastVisit = new Date().getTime();
 								annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_LASTVISIT, lastVisit, 0, annotationService.EXPIRE_NEVER);
+								if (!auto_feed_titles) {
+									annotationService.setItemAnnotation(child.itemId, SageUtils.ANNO_FEEDTITLE, "", 0, annotationService.EXPIRE_NEVER);
+								}
 								description = annotationService.getItemAnnotation(child.itemId, "bookmarkProperties/description");
 								descriptionParts = description.split(" ");
 								if (descriptionParts.length == 1 || descriptionParts.length == 2) {
@@ -200,6 +203,10 @@ var sageOverlay = {
 				query = historyService.getNewQuery();
 				query.setFolders([SageUtils.getSageRootFolderId()], 1);
 				result = historyService.executeQuery(query, historyService.getNewQueryOptions());
+				var auto_feed_titles = true;
+				try {
+					auto_feed_titles = SageUtils.getPrefValue("sage.auto_feed_title");
+				} catch (e) { }
 				convertFeeds(result.root);
 				
 				// copy prefs and delete old ones
