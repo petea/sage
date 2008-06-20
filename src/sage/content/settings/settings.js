@@ -132,9 +132,8 @@ function fillSelectFolderMenupopup () {
 		popup.removeChild(popup.firstChild);
 	}
 
-	// to be removed once I checkin the top folder
 	var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
-	element.setAttribute("label", "Bookmarks");
+	element.setAttribute("label", PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.bookmarksMenuFolder));
 	element.setAttribute("id", PlacesUtils.bookmarks.bookmarksMenuFolder);
 	popup.appendChild(element);
 
@@ -144,6 +143,7 @@ function fillSelectFolderMenupopup () {
 
 	var folder = result.root;
 	fillFolder(popup, folder, 1);
+	
 	if(gList.selectedIndex == -1) {
 		gList.selectedIndex = 0;
 		sageFolderID = PlacesUtils.bookmarks.bookmarksMenuFolder;

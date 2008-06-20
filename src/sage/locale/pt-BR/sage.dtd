@@ -47,8 +47,8 @@
 <!ENTITY allowEContent.label			"Permitir tags HTML">
 
 
-<!ENTITY openSageSidebar.commandkey		"S">
-<!ENTITY openSageSidebar.modifiersKey		"control alt">
+<!ENTITY openSageSidebar.commandkey		"Z">
+<!ENTITY openSageSidebar.modifiersKey		"alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Abrir">

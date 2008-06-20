@@ -502,7 +502,7 @@ function getWindowType(aEvent) {
 	var windowType;
 	if (aEvent instanceof Event) {
 		// figure out what kind of open we want
-		if (aEvent.button == 1 || aEvent.ctrlKey) // click middle button or ctrl click
+		if (aEvent.button == 1 || aEvent.ctrlKey || aEvent.metaKey) // click middle button or ctrl/meta click
 			return "tab";
 		else if (aEvent.shiftKey)
 			return "window";

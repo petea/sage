@@ -42,8 +42,8 @@
 <!ENTITY enableUserCss.label "Utilitza fulla d'estil personalitzada">
 <!ENTITY browseCss.label "Navega">
 <!ENTITY allowEContent.label "Habilita les etiquetes HTML">
-<!ENTITY openSageSidebar.commandkey "S">
-<!ENTITY openSageSidebar.modifiersKey "control alt">
+<!ENTITY openSageSidebar.commandkey "Z">
+<!ENTITY openSageSidebar.modifiersKey "alt">
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Obre">
 <!ENTITY openLinkInWindow.accesskey "O">

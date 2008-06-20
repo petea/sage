@@ -37,6 +37,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var CreateHTML = {
+	
 	HTML_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-html.txt"),
 	ITEM_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-item.txt"),
 	DEFAULT_CSS: "chrome://sage/content/res/sage.css",
@@ -93,30 +94,16 @@ var CreateHTML = {
 		if (!userCssEnable || !userCssPath) {
 			return null;
 		}
-
-		return userCssPath;
-
-		/*
-
-        we need to check for file path and convert to uri and check uris
-
-		var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-							.getService(Components.interfaces.nsIIOService);
-		var tmpFile = Components.classes['@mozilla.org/file/local;1']
-							.createInstance(Components.interfaces.nsILocalFile);
+		var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+		var tmpFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		try {
 			tmpFile.initWithPath(userCssPath);
 			var cssUrl = ioService.newFileURI(tmpFile);
 			var contentType = ioService.newChannelFromURI(cssUrl).contentType;
-			if (contentType != "text/css") {
-				return null;
-            }
-
 			return cssUrl.spec;
 		} catch(e) {
 			return null;
 		}
-		*/
 	},
 
 	formatFileSize:	function (n) {
