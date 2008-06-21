@@ -1,16 +1,16 @@
-<!ENTITY pageStart.label			"OPML インポート/エクスポート ウィザード">
-<!ENTITY pageStart.desc				"動作を選択してください">
-<!ENTITY pageImport.label			"OPML のインポート">
-<!ENTITY pageImport.desc			"読み込む OPML ファイルを選択してください">
-<!ENTITY pageExport.label			"OPML のエクスポート">
-<!ENTITY pageExport.desc			"書き込む OPML ファイルを選択してください">
+<!ENTITY pageStart.label      "OPML インポート/エクスポート ウィザード">
+<!ENTITY pageStart.desc        "動作を選択してください">
+<!ENTITY pageImport.label      "OPML のインポート">
+<!ENTITY pageImport.desc      "読み込む OPML ファイルを選択してください">
+<!ENTITY pageExport.label      "OPML のエクスポート">
+<!ENTITY pageExport.desc      "書き込む OPML ファイルを選択してください">
 
-<!ENTITY rdoImport.label			"OPML のインポート">
-<!ENTITY rdoExport.label			"OPML のエクスポート">
+<!ENTITY rdoImport.label      "OPML のインポート">
+<!ENTITY rdoExport.label      "OPML のエクスポート">
 
-<!ENTITY browseButton.label			"参照...">
+<!ENTITY browseButton.label      "参照...">
 
-<!ENTITY pageImportFinished.label	"OPML のインポート">
-<!ENTITY pageImportFinished.desc	"インポート完了">
-<!ENTITY pageExportFinished.label	"OPML のエクスポート">
-<!ENTITY pageExportFinished.desc	"エクスポート完了">
+<!ENTITY pageImportFinished.label  "OPML のインポート">
+<!ENTITY pageImportFinished.desc  "インポート完了">
+<!ENTITY pageExportFinished.label  "OPML のエクスポート">
+<!ENTITY pageExportFinished.desc  "エクスポート完了">

@@ -1,16 +1,16 @@
-<!ENTITY pageStart.label			"OPML Import/Export Assistent">
-<!ENTITY pageStart.desc				"Gewünschte Aktion auswählen">
-<!ENTITY pageImport.label			"OPML importieren">
-<!ENTITY pageImport.desc			"Zu importierende OPML-Datei auswählen">
-<!ENTITY pageExport.label			"OPML exportieren">
-<!ENTITY pageExport.desc			"Zu exportierende OPML-Datei auswählen">
+<!ENTITY pageStart.label      "OPML Import/Export Assistent">
+<!ENTITY pageStart.desc        "Gewünschte Aktion auswählen">
+<!ENTITY pageImport.label      "OPML importieren">
+<!ENTITY pageImport.desc      "Zu importierende OPML-Datei auswählen">
+<!ENTITY pageExport.label      "OPML exportieren">
+<!ENTITY pageExport.desc      "Zu exportierende OPML-Datei auswählen">
 
-<!ENTITY rdoImport.label			"OPML importieren">
-<!ENTITY rdoExport.label			"OPML exportieren">
+<!ENTITY rdoImport.label      "OPML importieren">
+<!ENTITY rdoExport.label      "OPML exportieren">
 
-<!ENTITY browseButton.label			"Durchsuchen...">
+<!ENTITY browseButton.label      "Durchsuchen...">
 
-<!ENTITY pageImportFinished.label	"OPML importieren">
-<!ENTITY pageImportFinished.desc	"Import erfolgreich">
-<!ENTITY pageExportFinished.label	"OPML exportieren">
-<!ENTITY pageExportFinished.desc	"Export erfolgreich">
+<!ENTITY pageImportFinished.label  "OPML importieren">
+<!ENTITY pageImportFinished.desc  "Import erfolgreich">
+<!ENTITY pageExportFinished.label  "OPML exportieren">
+<!ENTITY pageExportFinished.desc  "Export erfolgreich">

@@ -42,25 +42,25 @@
 [scriptable, uuid(A77B3BDF-DCFE-4E2B-B6E4-615B7BEB5FAE)]
 interface sageIFeedItem: nsISupports {
 
-	void init(in AString title, in AString link, in AString author, in AString content, in PRTime pubDate, in sageIFeedItemEnclosure enclosure, in AString baseURI);
-	
-	PRBool hasTitle();
-	AString getTitle();
-	
-	PRBool hasAuthor();
-	AString getAuthor();
-	
-	AString getLink();
-	
-	PRBool hasContent();
-	AString getContent();
+  void init(in AString title, in AString link, in AString author, in AString content, in PRTime pubDate, in sageIFeedItemEnclosure enclosure, in AString baseURI);
+  
+  PRBool hasTitle();
+  AString getTitle();
+  
+  PRBool hasAuthor();
+  AString getAuthor();
+  
+  AString getLink();
+  
+  PRBool hasContent();
+  AString getContent();
 
-	PRBool hasPubDate();
-	PRTime getPubDate();
-	
-	PRBool hasEnclosure();
-	sageIFeedItemEnclosure getEnclosure();
-	
-	PRBool hasBaseURI();
-	AString getBaseURI();
+  PRBool hasPubDate();
+  PRTime getPubDate();
+  
+  PRBool hasEnclosure();
+  sageIFeedItemEnclosure getEnclosure();
+  
+  PRBool hasBaseURI();
+  AString getBaseURI();
 };

@@ -1,81 +1,81 @@
-<!ENTITY sage.label											"Sage">
-<!ENTITY sage.version										"1.3">
-<!ENTITY sage.version.label								"versie">
+<!ENTITY sage.label                      "Sage">
+<!ENTITY sage.version                    "1.3">
+<!ENTITY sage.version.label                "versie">
 
-<!ENTITY sage.toolbarLabel									"Sage">
-<!ENTITY sage.sidebarTitle									"Sage">
-<!ENTITY sage.tooltip										"Toon Sage">
+<!ENTITY sage.toolbarLabel                  "Sage">
+<!ENTITY sage.sidebarTitle                  "Sage">
+<!ENTITY sage.tooltip                    "Toon Sage">
 
-<!ENTITY menu.view											"Beeld">
-<!ENTITY menu.showFeedItemList							"Toon feed itemlijst">
-<!ENTITY menu.showFeedItemListToolbar					"Show Feed Item List Toolbar">
-<!ENTITY menu.showFeedItemTooltips								"Toon beschrijvende tooltips">
-<!ENTITY menu.openHTML										"Open feeds in Contents Area">
-<!ENTITY menu.options											"Opties">
-<!ENTITY menu.checkUpdate									"Controleer feeds">
-<!ENTITY menu.organizeFeedList								"Beheer feedlijst...">
-<!ENTITY menu.opmlImportExport							"OPML Importeren/Exporteren...">
-<!ENTITY menu.setting										"Instellingen...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds								"Ontdek feeds">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view                      "Beeld">
+<!ENTITY menu.showFeedItemList              "Toon feed itemlijst">
+<!ENTITY menu.showFeedItemListToolbar          "Show Feed Item List Toolbar">
+<!ENTITY menu.showFeedItemTooltips                "Toon beschrijvende tooltips">
+<!ENTITY menu.openHTML                    "Open feeds in Contents Area">
+<!ENTITY menu.options                      "Opties">
+<!ENTITY menu.checkUpdate                  "Controleer feeds">
+<!ENTITY menu.organizeFeedList                "Beheer feedlijst...">
+<!ENTITY menu.opmlImportExport              "OPML Importeren/Exporteren...">
+<!ENTITY menu.setting                    "Instellingen...">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds                "Ontdek feeds">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
-<!ENTITY discovery.status.searching						"Zoeken op huidige pagina">
-<!ENTITY discovery.button.addFeed						"Feed toevoegen">
-<!ENTITY discovery.button.close							"Sluiten">
-<!ENTITY discovery.header.title							"Titel">
-<!ENTITY discovery.header.format							"Formaat">
-<!ENTITY discovery.header.lastPubDate					"Laatste update">
-<!ENTITY discovery.header.itemCount						"Items">
-<!ENTITY discovery.header.url								"URL">
+<!ENTITY discovery.status.searching            "Zoeken op huidige pagina">
+<!ENTITY discovery.button.addFeed            "Feed toevoegen">
+<!ENTITY discovery.button.close              "Sluiten">
+<!ENTITY discovery.header.title              "Titel">
+<!ENTITY discovery.header.format              "Formaat">
+<!ENTITY discovery.header.lastPubDate          "Laatste update">
+<!ENTITY discovery.header.itemCount            "Items">
+<!ENTITY discovery.header.url                "URL">
 
 <!-- Settings Dialog -->
-<!ENTITY settings.general.caption						"Algemeen">
-<!ENTITY settings.renderFeeds.label						"Feeds weergeven in Contents Area">
-<!ENTITY settings.twelveHourClock.label				"Gebruik 12-uurs klok">
-<!ENTITY settings.feedItemOrder.label					"Volgorde van feeditems">
-<!ENTITY settings.feedItemOrder.chrono					"Chronologisch">
-<!ENTITY settings.feedItemOrder.source					"Bron">
-<!ENTITY settings.feedDiscoveryMode.label				"Feed ontdekkingsmodus">
-<!ENTITY settings.feedDiscoveryMode.exhaustive		"Grondig">
-<!ENTITY settings.feedDiscoveryMode.conservative	"Conservatief">
-<!ENTITY settingWindow.title								"Sage instellingen">
-<!ENTITY selectFolder.label								"Selecteer map met feeds">
-<!ENTITY openInContentsArea.caption						"Feedweergave">
-<!ENTITY enableUserCss.label								"Gebruik aangepaste CSS">
-<!ENTITY browseCss.label									"Verkennen...">
-<!ENTITY allowEContent.label								"HTML tags toestaan">
+<!ENTITY settings.general.caption            "Algemeen">
+<!ENTITY settings.renderFeeds.label            "Feeds weergeven in Contents Area">
+<!ENTITY settings.twelveHourClock.label        "Gebruik 12-uurs klok">
+<!ENTITY settings.feedItemOrder.label          "Volgorde van feeditems">
+<!ENTITY settings.feedItemOrder.chrono          "Chronologisch">
+<!ENTITY settings.feedItemOrder.source          "Bron">
+<!ENTITY settings.feedDiscoveryMode.label        "Feed ontdekkingsmodus">
+<!ENTITY settings.feedDiscoveryMode.exhaustive    "Grondig">
+<!ENTITY settings.feedDiscoveryMode.conservative  "Conservatief">
+<!ENTITY settingWindow.title                "Sage instellingen">
+<!ENTITY selectFolder.label                "Selecteer map met feeds">
+<!ENTITY openInContentsArea.caption            "Feedweergave">
+<!ENTITY enableUserCss.label                "Gebruik aangepaste CSS">
+<!ENTITY browseCss.label                  "Verkennen...">
+<!ENTITY allowEContent.label                "HTML tags toestaan">
 
 
-<!ENTITY openSageSidebar.commandkey						"Z">
-<!ENTITY openSageSidebar.modifiersKey					"alt">
+<!ENTITY openSageSidebar.commandkey            "Z">
+<!ENTITY openSageSidebar.modifiersKey          "alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label							"Open">
-<!ENTITY openLinkInWindow.accesskey						"O">
-<!ENTITY openInNewTab.label								"Open in nieuwe tab">
-<!ENTITY openInNewTab.accesskey							"T">
-<!ENTITY openInNewWindow.label							"Open in nieuw venster">
-<!ENTITY openInNewWindow.accesskey						"V">
+<!ENTITY openLinkInWindow.label              "Open">
+<!ENTITY openLinkInWindow.accesskey            "O">
+<!ENTITY openInNewTab.label                "Open in nieuwe tab">
+<!ENTITY openInNewTab.accesskey              "T">
+<!ENTITY openInNewWindow.label              "Open in nieuw venster">
+<!ENTITY openInNewWindow.accesskey            "V">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label						"Markeer als gelezen">
-<!ENTITY markAsRead.command.tooltip						"Markeer als gelezen">
-<!ENTITY markAsRead.command.accesskey					"R">
+<!ENTITY markAsRead.command.label            "Markeer als gelezen">
+<!ENTITY markAsRead.command.tooltip            "Markeer als gelezen">
+<!ENTITY markAsRead.command.accesskey          "R">
 
-<!ENTITY markAsUnread.command.label						"Markeer als ongelezen">
-<!ENTITY markAsUnread.command.tooltip					"Markeer als ongelezen">
-<!ENTITY markAsUnread.command.accesskey				"Z">
+<!ENTITY markAsUnread.command.label            "Markeer als ongelezen">
+<!ENTITY markAsUnread.command.tooltip          "Markeer als ongelezen">
+<!ENTITY markAsUnread.command.accesskey        "Z">
 
-<!ENTITY markAllAsRead.command.label					"Markeer alles als gelezen">
-<!ENTITY markAllAsRead.command.tooltip					"Markeer alles als gelezen">
-<!ENTITY markAllAsRead.command.accesskey				"A">
-<!ENTITY markAllAsRead.command.key						"C">
-<!ENTITY markAllAsRead.command.modifiers				"accel shift">
+<!ENTITY markAllAsRead.command.label          "Markeer alles als gelezen">
+<!ENTITY markAllAsRead.command.tooltip          "Markeer alles als gelezen">
+<!ENTITY markAllAsRead.command.accesskey        "A">
+<!ENTITY markAllAsRead.command.key            "C">
+<!ENTITY markAllAsRead.command.modifiers        "accel shift">
 
-<!ENTITY markAllAsUnread.command.label					"Markeer alles als ongelezen">
-<!ENTITY markAllAsUnread.command.tooltip				"Markeer alles als ongelezen">
-<!ENTITY markAllAsUnread.command.accesskey			"n">
+<!ENTITY markAllAsUnread.command.label          "Markeer alles als ongelezen">
+<!ENTITY markAllAsUnread.command.tooltip        "Markeer alles als ongelezen">
+<!ENTITY markAllAsUnread.command.accesskey      "n">
 
-<!ENTITY toggleReadState.command.key					"M">
+<!ENTITY toggleReadState.command.key          "M">

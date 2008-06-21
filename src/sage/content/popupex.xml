@@ -43,56 +43,56 @@
    xmlns:xbl="http://www.mozilla.org/xbl">
 
   <binding id="popupex" extends="chrome://global/content/bindings/popup.xml#tooltip">
-	<content>
-	  <xul:vbox anonid="popupExBox" class="popupex-internal-box" align="stretch">
-	  	<children/>
-	  	<xul:label anonid="popupExTitleBox" class="popupex-title" xbl:inherits="value=title"/>
-	  	<xul:vbox anonid="popupExDescBox" class="popupex-description"/>
-	  </xul:vbox>
-	</content>
+  <content>
+    <xul:vbox anonid="popupExBox" class="popupex-internal-box" align="stretch">
+      <children/>
+      <xul:label anonid="popupExTitleBox" class="popupex-title" xbl:inherits="value=title"/>
+      <xul:vbox anonid="popupExDescBox" class="popupex-description"/>
+    </xul:vbox>
+  </content>
 
-	<implementation>
+  <implementation>
 
 
-	<property name="title" onget="return this.getAttribute('title');">
-		<setter><![CDATA[
+  <property name="title" onget="return this.getAttribute('title');">
+    <setter><![CDATA[
             this.setAttribute('title', val);
-			return val;
-		]]></setter>
-	</property>
+      return val;
+    ]]></setter>
+  </property>
 
 
-	<property name="description" onget="return this.getAttribute('description');">
-		<setter><![CDATA[
-			this.setAttribute('description', val);
+  <property name="description" onget="return this.getAttribute('description');">
+    <setter><![CDATA[
+      this.setAttribute('description', val);
 
-			var popupExDescBox = document.getAnonymousElementByAttribute(this, "anonid", "popupExDescBox")
-			while(popupExDescBox.hasChildNodes()){
-				popupExDescBox.removeChild(popupExDescBox.firstChild);
-			}
+      var popupExDescBox = document.getAnonymousElementByAttribute(this, "anonid", "popupExDescBox")
+      while(popupExDescBox.hasChildNodes()){
+        popupExDescBox.removeChild(popupExDescBox.firstChild);
+      }
 
-			if(val == ""){
-				return val;
-			}
-			const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-			var popupDesc = document.createElementNS( XUL_NS, "label" );
-			popupDesc.appendChild( document.createTextNode(val) )
-			popupExDescBox.appendChild( popupDesc );
+      if(val == ""){
+        return val;
+      }
+      const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+      var popupDesc = document.createElementNS( XUL_NS, "label" );
+      popupDesc.appendChild( document.createTextNode(val) )
+      popupExDescBox.appendChild( popupDesc );
 
-			return val;
-		]]></setter>
-	</property>
-	</implementation>
+      return val;
+    ]]></setter>
+  </property>
+  </implementation>
 
-	<handlers>
-		<handler event="popupshowing"><![CDATA[
-			this.height = this.boxObject.height;
-		]]></handler>
-		<handler event="popuphiding"><![CDATA[
-			this.height = "";
-		]]></handler>
+  <handlers>
+    <handler event="popupshowing"><![CDATA[
+      this.height = this.boxObject.height;
+    ]]></handler>
+    <handler event="popuphiding"><![CDATA[
+      this.height = "";
+    ]]></handler>
 
-	</handlers>
+  </handlers>
 
 </binding>
 </bindings>

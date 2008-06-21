@@ -39,32 +39,32 @@
 
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
-	<Description about="urn:mozilla:install-manifest">
-	
-		<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
-		<em:version>1.5a</em:version>
-		<em:type>2</em:type>
-	
-		<em:name>Sage</em:name>
-		<em:description>A lightweight RSS and Atom feed reader.</em:description>
-		<em:creator>The Sage Team</em:creator>
-		<em:developer>Peter Andrews</em:developer>
-		<em:developer>Erik Arvidsson</em:developer>
-		<em:developer>Erwan Loisant</em:developer>
-	
-		<em:homepageURL>http://sage.mozdev.org</em:homepageURL>
-		<em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
-		<em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
-	
-		<!-- Firefox -->
-		<em:targetApplication>
-			<Description>
-				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-				<em:minVersion>3.0b1</em:minVersion>
-				<em:maxVersion>3.0.*</em:maxVersion>
-			</Description>
-		</em:targetApplication>
-		
-	</Description>
+  <Description about="urn:mozilla:install-manifest">
+  
+    <em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
+    <em:version>1.5a</em:version>
+    <em:type>2</em:type>
+  
+    <em:name>Sage</em:name>
+    <em:description>A lightweight RSS and Atom feed reader.</em:description>
+    <em:creator>The Sage Team</em:creator>
+    <em:developer>Peter Andrews</em:developer>
+    <em:developer>Erik Arvidsson</em:developer>
+    <em:developer>Erwan Loisant</em:developer>
+  
+    <em:homepageURL>http://sage.mozdev.org</em:homepageURL>
+    <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
+    <em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
+  
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.0b1</em:minVersion>
+        <em:maxVersion>3.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    
+  </Description>
 
 </RDF>

@@ -1,29 +1,29 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version.label				"versión">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version.label        "versión">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Mostrar Sage">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Mostrar Sage">
 
-<!ENTITY menu.view				"Ver">
-<!ENTITY menu.showFeedItemList			"Mostrar la lista de fuentes">
-<!ENTITY menu.showFeedItemListToolbar	"Mostrar barra de herramientas">
-<!ENTITY menu.showFeedItemTooltips			"Mostrar sugerencias de descripción">
-<!ENTITY menu.openHTML				"Abrir fuentes en área de contenidos">
-<!ENTITY menu.options				"Opciones">
-<!ENTITY menu.checkUpdate			"Comprobar Fuentes">
-<!ENTITY menu.organizeFeedList			"Gestionar lista de fuentes...">
-<!ENTITY menu.opmlImportExport			"Importación/Exportación OPML...">
-<!ENTITY menu.setting				"Configuración..">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds				"Descubrir fuentes">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "Ver">
+<!ENTITY menu.showFeedItemList      "Mostrar la lista de fuentes">
+<!ENTITY menu.showFeedItemListToolbar  "Mostrar barra de herramientas">
+<!ENTITY menu.showFeedItemTooltips      "Mostrar sugerencias de descripción">
+<!ENTITY menu.openHTML        "Abrir fuentes en área de contenidos">
+<!ENTITY menu.options        "Opciones">
+<!ENTITY menu.checkUpdate      "Comprobar Fuentes">
+<!ENTITY menu.organizeFeedList      "Gestionar lista de fuentes...">
+<!ENTITY menu.opmlImportExport      "Importación/Exportación OPML...">
+<!ENTITY menu.setting        "Configuración..">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds        "Descubrir fuentes">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Buscando página actual">
 <!ENTITY discovery.button.addFeed    "Abrir fuente">
-<!ENTITY discovery.button.close			 "Cerrar">
-<!ENTITY discovery.header.title			 "Título">
+<!ENTITY discovery.button.close       "Cerrar">
+<!ENTITY discovery.header.title       "Título">
 <!ENTITY discovery.header.format     "Formato">
 <!ENTITY discovery.header.lastPubDate     "Última actualización">
 <!ENTITY discovery.header.itemCount     "Elementos">
@@ -40,15 +40,15 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Exhaustivo">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Conservador">
 <!ENTITY settingWindow.title                    "Configurar Sage">
-<!ENTITY selectFolder.label			"Seleccionar carpeta de fuentes">
-<!ENTITY openInContentsArea.caption		"Representación de las fuentes">
-<!ENTITY enableUserCss.label			"Utilizar CSS personalizada">
-<!ENTITY browseCss.label			"Examinar...">
-<!ENTITY allowEContent.label			"Permitir etiquetas HTML">
+<!ENTITY selectFolder.label      "Seleccionar carpeta de fuentes">
+<!ENTITY openInContentsArea.caption    "Representación de las fuentes">
+<!ENTITY enableUserCss.label      "Utilizar CSS personalizada">
+<!ENTITY browseCss.label      "Examinar...">
+<!ENTITY allowEContent.label      "Permitir etiquetas HTML">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Abrir">
@@ -59,22 +59,22 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Marcar como leído">
-<!ENTITY markAsRead.command.tooltip			"Marcar como leído">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "Marcar como leído">
+<!ENTITY markAsRead.command.tooltip      "Marcar como leído">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"Marcar como no leído">
-<!ENTITY markAsUnread.command.tooltip		"Marcar como no leído">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "Marcar como no leído">
+<!ENTITY markAsUnread.command.tooltip    "Marcar como no leído">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"Marcar todos como leídos">
-<!ENTITY markAllAsRead.command.tooltip		"Marcar todos como leídos">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "Marcar todos como leídos">
+<!ENTITY markAllAsRead.command.tooltip    "Marcar todos como leídos">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Marcar todos como no leídos">
-<!ENTITY markAllAsUnread.command.tooltip	"Marcar todos como no leídos">
-<!ENTITY markAllAsUnread.command.accesskey	"N">
+<!ENTITY markAllAsUnread.command.label    "Marcar todos como no leídos">
+<!ENTITY markAllAsUnread.command.tooltip  "Marcar todos como no leídos">
+<!ENTITY markAllAsUnread.command.accesskey  "N">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">

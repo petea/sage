@@ -1,26 +1,26 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version.label				"version">
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Vis Sage">
-<!ENTITY menu.view				"Vis">
-<!ENTITY menu.showFeedItemList			"Vis feed-oversigt">
-<!ENTITY menu.showFeedItemListToolbar	"Vis feed-værktøjslinjen">
-<!ENTITY menu.showFeedItemTooltips			"Vis popop-hjælp">
-<!ENTITY menu.openHTML				"Vis feeds i hovedvinduet">
-<!ENTITY menu.options				"Indstillinger">
-<!ENTITY menu.checkUpdate			"Opdater feeds">
-<!ENTITY menu.organizeFeedList			"Håndter feeds...">
-<!ENTITY menu.opmlImportExport			"OPML Import/Eksport...">
-<!ENTITY menu.setting				"Indstillinger...">
-<!ENTITY menu.discoverFeeds				"Find feeds">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version.label        "version">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Vis Sage">
+<!ENTITY menu.view        "Vis">
+<!ENTITY menu.showFeedItemList      "Vis feed-oversigt">
+<!ENTITY menu.showFeedItemListToolbar  "Vis feed-værktøjslinjen">
+<!ENTITY menu.showFeedItemTooltips      "Vis popop-hjælp">
+<!ENTITY menu.openHTML        "Vis feeds i hovedvinduet">
+<!ENTITY menu.options        "Indstillinger">
+<!ENTITY menu.checkUpdate      "Opdater feeds">
+<!ENTITY menu.organizeFeedList      "Håndter feeds...">
+<!ENTITY menu.opmlImportExport      "OPML Import/Eksport...">
+<!ENTITY menu.setting        "Indstillinger...">
+<!ENTITY menu.discoverFeeds        "Find feeds">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Leder på den aktuelle side">
 <!ENTITY discovery.button.addFeed    "Tilføj feed">
-<!ENTITY discovery.button.close			 "Luk">
-<!ENTITY discovery.header.title			 "Titel">
+<!ENTITY discovery.button.close       "Luk">
+<!ENTITY discovery.header.title       "Titel">
 <!ENTITY discovery.header.format     "Format">
 <!ENTITY discovery.header.lastPubDate     "Senest opdateret">
 <!ENTITY discovery.header.itemCount     "Feeds">
@@ -36,14 +36,14 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Grundig">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Almindelig">
 <!ENTITY settingWindow.title                    "Gem indstillinger">
-<!ENTITY selectFolder.label			"Vælg feedmappe">
-<!ENTITY openInContentsArea.caption		"Feed-visning">
-<!ENTITY enableUserCss.label			"Brug eget stilark">
-<!ENTITY browseCss.label			"Gennemse...">
-<!ENTITY allowEContent.label			"Tillad HTML-tags">
+<!ENTITY selectFolder.label      "Vælg feedmappe">
+<!ENTITY openInContentsArea.caption    "Feed-visning">
+<!ENTITY enableUserCss.label      "Brug eget stilark">
+<!ENTITY browseCss.label      "Gennemse...">
+<!ENTITY allowEContent.label      "Tillad HTML-tags">
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Åbn">
 <!ENTITY openLinkInWindow.accesskey "Å">
@@ -52,19 +52,19 @@
 <!ENTITY openInNewWindow.label "Åbn i nyt vindue">
 <!ENTITY openInNewWindow.accesskey "V">
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Marker som læst">
-<!ENTITY markAsRead.command.tooltip			"Marker som læst">
-<!ENTITY markAsRead.command.accesskey		"L">
-<!ENTITY markAsUnread.command.label			"Marker som ulæst">
-<!ENTITY markAsUnread.command.tooltip		"Marker som ulæst">
-<!ENTITY markAsUnread.command.accesskey		"U">
-<!ENTITY markAllAsRead.command.label		"Marker alle som læste">
-<!ENTITY markAllAsRead.command.tooltip		"Marker alle som læste">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
-<!ENTITY markAllAsUnread.command.label		"Marker alle som ulæste">
-<!ENTITY markAllAsUnread.command.tooltip	"Marker alle som ulæste">
-<!ENTITY markAllAsUnread.command.accesskey	"k">
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY markAsRead.command.label      "Marker som læst">
+<!ENTITY markAsRead.command.tooltip      "Marker som læst">
+<!ENTITY markAsRead.command.accesskey    "L">
+<!ENTITY markAsUnread.command.label      "Marker som ulæst">
+<!ENTITY markAsUnread.command.tooltip    "Marker som ulæst">
+<!ENTITY markAsUnread.command.accesskey    "U">
+<!ENTITY markAllAsRead.command.label    "Marker alle som læste">
+<!ENTITY markAllAsRead.command.tooltip    "Marker alle som læste">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
+<!ENTITY markAllAsUnread.command.label    "Marker alle som ulæste">
+<!ENTITY markAllAsUnread.command.tooltip  "Marker alle som ulæste">
+<!ENTITY markAllAsUnread.command.accesskey  "k">
+<!ENTITY toggleReadState.command.key    "M">
 

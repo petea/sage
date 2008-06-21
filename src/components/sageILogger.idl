@@ -41,32 +41,32 @@
 [scriptable, uuid(763E994A-2124-4151-B1D9-A4B311035A5D)]
 interface sageILogger: nsISupports {
 
-	// logging level constants
-	const unsigned short LEVEL_ALL = 0x00;
-	const unsigned short LEVEL_DEBUG = 0x01;
-	const unsigned short LEVEL_INFO = 0x02;
-	const unsigned short LEVEL_WARN = 0x03;
-	const unsigned short LEVEL_ERROR = 0x04;
-	const unsigned short LEVEL_FATAL = 0x05;
-	const unsigned short LEVEL_OFF = 0x06;
+  // logging level constants
+  const unsigned short LEVEL_ALL = 0x00;
+  const unsigned short LEVEL_DEBUG = 0x01;
+  const unsigned short LEVEL_INFO = 0x02;
+  const unsigned short LEVEL_WARN = 0x03;
+  const unsigned short LEVEL_ERROR = 0x04;
+  const unsigned short LEVEL_FATAL = 0x05;
+  const unsigned short LEVEL_OFF = 0x06;
 
-	void init();
+  void init();
 
-	// set logging level
-	void setLevel(in unsigned short level);
+  // set logging level
+  void setLevel(in unsigned short level);
 
-	// debug level message
-	void debug(in AString aMessage);
+  // debug level message
+  void debug(in AString aMessage);
 
-	// info level message
-	void info(in AString aMessage);
+  // info level message
+  void info(in AString aMessage);
 
-	// warn level message
-	void warn(in AString aMessage);
+  // warn level message
+  void warn(in AString aMessage);
 
-	// error level message
-	void error(in AString aMessage);
+  // error level message
+  void error(in AString aMessage);
 
-	// fatal level message
-	void fatal(in AString aMessage);
+  // fatal level message
+  void fatal(in AString aMessage);
 };

@@ -1,38 +1,38 @@
-content	sage	jar:chrome/sage.jar!/content/
+content  sage  jar:chrome/sage.jar!/content/
 
-skin	sage	classic/1.0		jar:chrome/sage.jar!/skin/classic/
+skin  sage  classic/1.0    jar:chrome/sage.jar!/skin/classic/
 
-locale	sage	en-US			jar:chrome/sage.jar!/locale/en-US/
-locale	sage	ja-JP			jar:chrome/sage.jar!/locale/ja-JP/
-locale	sage	fr-FR			jar:chrome/sage.jar!/locale/fr-FR/
-locale	sage	hu-HU			jar:chrome/sage.jar!/locale/hu-HU/
-locale	sage	it-IT			jar:chrome/sage.jar!/locale/it-IT/
-locale	sage	nl-NL			jar:chrome/sage.jar!/locale/nl-NL/
-locale	sage	ca-AD			jar:chrome/sage.jar!/locale/ca-AD/
-locale	sage	zh-TW			jar:chrome/sage.jar!/locale/zh-TW/
-locale	sage	de-DE			jar:chrome/sage.jar!/locale/de-DE/
-locale	sage	es-ES			jar:chrome/sage.jar!/locale/es-ES/
-locale	sage	ru-RU			jar:chrome/sage.jar!/locale/ru-RU/
-locale	sage	de-AT			jar:chrome/sage.jar!/locale/de-AT/
-locale	sage	de-CH			jar:chrome/sage.jar!/locale/de-CH/
-locale	sage	sv-SE			jar:chrome/sage.jar!/locale/sv-SE/
-locale	sage	ko-KR			jar:chrome/sage.jar!/locale/ko-KR/
-locale	sage	sr-YU			jar:chrome/sage.jar!/locale/sr-YU/
-locale	sage	sr-YU@Latn		jar:chrome/sage.jar!/locale/sr-YU@Latn/
-locale	sage	es-AR			jar:chrome/sage.jar!/locale/es-AR/
-locale	sage	fi-FI			jar:chrome/sage.jar!/locale/fi-FI/
-locale	sage	cs-CZ			jar:chrome/sage.jar!/locale/cs-CZ/
-locale	sage	el-GR			jar:chrome/sage.jar!/locale/el-GR/
-locale	sage	pl-PL			jar:chrome/sage.jar!/locale/pl-PL/
-locale	sage	pt-BR			jar:chrome/sage.jar!/locale/pt-BR/
-locale	sage	sl-SI			jar:chrome/sage.jar!/locale/sl-SI/
-locale	sage	zh-CN			jar:chrome/sage.jar!/locale/zh-CN/
-locale	sage	da-DK			jar:chrome/sage.jar!/locale/da-DK/
+locale  sage  en-US      jar:chrome/sage.jar!/locale/en-US/
+locale  sage  ja-JP      jar:chrome/sage.jar!/locale/ja-JP/
+locale  sage  fr-FR      jar:chrome/sage.jar!/locale/fr-FR/
+locale  sage  hu-HU      jar:chrome/sage.jar!/locale/hu-HU/
+locale  sage  it-IT      jar:chrome/sage.jar!/locale/it-IT/
+locale  sage  nl-NL      jar:chrome/sage.jar!/locale/nl-NL/
+locale  sage  ca-AD      jar:chrome/sage.jar!/locale/ca-AD/
+locale  sage  zh-TW      jar:chrome/sage.jar!/locale/zh-TW/
+locale  sage  de-DE      jar:chrome/sage.jar!/locale/de-DE/
+locale  sage  es-ES      jar:chrome/sage.jar!/locale/es-ES/
+locale  sage  ru-RU      jar:chrome/sage.jar!/locale/ru-RU/
+locale  sage  de-AT      jar:chrome/sage.jar!/locale/de-AT/
+locale  sage  de-CH      jar:chrome/sage.jar!/locale/de-CH/
+locale  sage  sv-SE      jar:chrome/sage.jar!/locale/sv-SE/
+locale  sage  ko-KR      jar:chrome/sage.jar!/locale/ko-KR/
+locale  sage  sr-YU      jar:chrome/sage.jar!/locale/sr-YU/
+locale  sage  sr-YU@Latn    jar:chrome/sage.jar!/locale/sr-YU@Latn/
+locale  sage  es-AR      jar:chrome/sage.jar!/locale/es-AR/
+locale  sage  fi-FI      jar:chrome/sage.jar!/locale/fi-FI/
+locale  sage  cs-CZ      jar:chrome/sage.jar!/locale/cs-CZ/
+locale  sage  el-GR      jar:chrome/sage.jar!/locale/el-GR/
+locale  sage  pl-PL      jar:chrome/sage.jar!/locale/pl-PL/
+locale  sage  pt-BR      jar:chrome/sage.jar!/locale/pt-BR/
+locale  sage  sl-SI      jar:chrome/sage.jar!/locale/sl-SI/
+locale  sage  zh-CN      jar:chrome/sage.jar!/locale/zh-CN/
+locale  sage  da-DK      jar:chrome/sage.jar!/locale/da-DK/
 
-overlay	chrome://browser/content/browser.xul			chrome://sage/content/sage-Overlay.xul
-style	chrome://browser/content/browser.xul			chrome://sage/skin/sage-button.css
-style	chrome://browser/content/browser.xul			chrome://sage/skin/sage-button-mac.css		os=Darwin
-style	chrome://global/content/customizeToolbar.xul	chrome://sage/skin/sage-button.css
-style	chrome://global/content/customizeToolbar.xul	chrome://sage/skin/sage-button-mac.css		os=Darwin
-style	chrome://sage/content/sage.xul					chrome://sage/skin/sage-mac.css				os=Darwin
-style	chrome://browser/content/browser.xul			chrome://sage/skin/sage-browser-mac.css		os=Darwin
+overlay  chrome://browser/content/browser.xul      chrome://sage/content/sage-Overlay.xul
+style  chrome://browser/content/browser.xul      chrome://sage/skin/sage-button.css
+style  chrome://browser/content/browser.xul      chrome://sage/skin/sage-button-mac.css    os=Darwin
+style  chrome://global/content/customizeToolbar.xul  chrome://sage/skin/sage-button.css
+style  chrome://global/content/customizeToolbar.xul  chrome://sage/skin/sage-button-mac.css    os=Darwin
+style  chrome://sage/content/sage.xul          chrome://sage/skin/sage-mac.css        os=Darwin
+style  chrome://browser/content/browser.xul      chrome://sage/skin/sage-browser-mac.css    os=Darwin

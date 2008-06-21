@@ -1,16 +1,16 @@
-<!ENTITY pageStart.label				"OPML Importeer/Exporteer Wizard">
-<!ENTITY pageStart.desc					"Kies een actie">
-<!ENTITY pageImport.label				"Importeer OPML">
-<!ENTITY pageImport.desc				"Selecteer OPML bestand om te importeren">
-<!ENTITY pageExport.label				"Exporteer OPML">
-<!ENTITY pageExport.desc				"Selecteer OPML bestand om te exporteren">
+<!ENTITY pageStart.label        "OPML Importeer/Exporteer Wizard">
+<!ENTITY pageStart.desc          "Kies een actie">
+<!ENTITY pageImport.label        "Importeer OPML">
+<!ENTITY pageImport.desc        "Selecteer OPML bestand om te importeren">
+<!ENTITY pageExport.label        "Exporteer OPML">
+<!ENTITY pageExport.desc        "Selecteer OPML bestand om te exporteren">
 
-<!ENTITY rdoImport.label				"Importeer OPML">
-<!ENTITY rdoExport.label				"Exporteer OPML">
+<!ENTITY rdoImport.label        "Importeer OPML">
+<!ENTITY rdoExport.label        "Exporteer OPML">
 
-<!ENTITY browseButton.label			"Verkennen...">
+<!ENTITY browseButton.label      "Verkennen...">
 
-<!ENTITY pageImportFinished.label	"Importeer OPML">
-<!ENTITY pageImportFinished.desc		"Import volledig">
-<!ENTITY pageExportFinished.label	"Exporteer OPML">
-<!ENTITY pageExportFinished.desc		"Export volledig">
+<!ENTITY pageImportFinished.label  "Importeer OPML">
+<!ENTITY pageImportFinished.desc    "Import volledig">
+<!ENTITY pageExportFinished.label  "Exporteer OPML">
+<!ENTITY pageExportFinished.desc    "Export volledig">

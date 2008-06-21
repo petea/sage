@@ -41,23 +41,23 @@
 [scriptable, uuid(64EB5409-0A04-49DD-868F-F9359552C52E)]
 interface sageIDateFormatter: nsISupports {
 
-	readonly attribute unsigned short format;
-	readonly attribute unsigned short abbreviated;
-	readonly attribute unsigned short clock;
+  readonly attribute unsigned short format;
+  readonly attribute unsigned short abbreviated;
+  readonly attribute unsigned short clock;
 
-	// formatting constants     
-	const unsigned short FORMAT_LONG = 0x00;
-	const unsigned short FORMAT_SHORT = 0x01;
-	const unsigned short ABBREVIATED_TRUE = 0x02;
-	const unsigned short ABBREVIATED_FALSE = 0x03;
-	const unsigned short CLOCK_12HOUR = 0x04;
-	const unsigned short CLOCK_24HOUR = 0x05;
+  // formatting constants     
+  const unsigned short FORMAT_LONG = 0x00;
+  const unsigned short FORMAT_SHORT = 0x01;
+  const unsigned short ABBREVIATED_TRUE = 0x02;
+  const unsigned short ABBREVIATED_FALSE = 0x03;
+  const unsigned short CLOCK_12HOUR = 0x04;
+  const unsigned short CLOCK_24HOUR = 0x05;
   
-	// configure formatter
-	void setFormat(in unsigned short aFormat,
-		in unsigned short aAbbreviated, 
-		in unsigned short aClock);
+  // configure formatter
+  void setFormat(in unsigned short aFormat,
+    in unsigned short aAbbreviated, 
+    in unsigned short aClock);
   
-	// format date
-	AString formatDate(in PRTime aDate);
+  // format date
+  AString formatDate(in PRTime aDate);
 };

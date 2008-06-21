@@ -41,18 +41,18 @@
 [scriptable, uuid(73C6ECE6-0D9F-474C-8959-3979D2D1CBDB)]
 interface sageIFeedItemEnclosure: nsISupports {
 
-	void init(in AString link, in PRInt64 length, in AString mimeType);
-	
-	PRBool hasLink();
-	AString getLink();
-	
-	PRBool hasLength();
-	PRInt64 getLength();
-	
-	AString getSize();
-	
-	PRBool hasMimeType();
-	AString getMimeType();
-	
-	AString getDescription();
+  void init(in AString link, in PRInt64 length, in AString mimeType);
+  
+  PRBool hasLink();
+  AString getLink();
+  
+  PRBool hasLength();
+  PRInt64 getLength();
+  
+  AString getSize();
+  
+  PRBool hasMimeType();
+  AString getMimeType();
+  
+  AString getDescription();
 };

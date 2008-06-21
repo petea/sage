@@ -1,29 +1,29 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version.label				"版本">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version.label        "版本">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"显示 Sage 面板">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "显示 Sage 面板">
 
-<!ENTITY menu.view				"查看">
-<!ENTITY menu.showFeedItemList			"显示 Feed 项目列表">
-<!ENTITY menu.showFeedItemListToolbar	"显示 Feed 项目列表工具栏">
-<!ENTITY menu.showFeedItemTooltips			"显示描述提示">
-<!ENTITY menu.openHTML				"在内容区打开 Feed">
-<!ENTITY menu.options				"选项">
-<!ENTITY menu.checkUpdate			"检查 Feed">
-<!ENTITY menu.organizeFeedList			"管理 Feed 列表...">
-<!ENTITY menu.opmlImportExport			"OPML 导入/导出...">
-<!ENTITY menu.setting				"设置...">
-<!ENTITY menu.discoverFeeds				"发现 Feed">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
-<!ENTITY menu.aboutSage				"About Sage">
+<!ENTITY menu.view        "查看">
+<!ENTITY menu.showFeedItemList      "显示 Feed 项目列表">
+<!ENTITY menu.showFeedItemListToolbar  "显示 Feed 项目列表工具栏">
+<!ENTITY menu.showFeedItemTooltips      "显示描述提示">
+<!ENTITY menu.openHTML        "在内容区打开 Feed">
+<!ENTITY menu.options        "选项">
+<!ENTITY menu.checkUpdate      "检查 Feed">
+<!ENTITY menu.organizeFeedList      "管理 Feed 列表...">
+<!ENTITY menu.opmlImportExport      "OPML 导入/导出...">
+<!ENTITY menu.setting        "设置...">
+<!ENTITY menu.discoverFeeds        "发现 Feed">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
+<!ENTITY menu.aboutSage        "About Sage">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "正在搜索当前页">
 <!ENTITY discovery.button.addFeed    "添加 Feed">
-<!ENTITY discovery.button.close			 "关闭">
-<!ENTITY discovery.header.title			 "标题">
+<!ENTITY discovery.button.close       "关闭">
+<!ENTITY discovery.header.title       "标题">
 <!ENTITY discovery.header.format     "格式">
 <!ENTITY discovery.header.lastPubDate     "最后更新">
 <!ENTITY discovery.header.itemCount     "项目">
@@ -40,15 +40,15 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "详尽">
 <!ENTITY settings.feedDiscoveryMode.conservative     "保守">
 <!ENTITY settingWindow.title                    "Sage 设置">
-<!ENTITY selectFolder.label			"选择 Feed 文件夹">
-<!ENTITY openInContentsArea.caption		"打开 Feed">
-<!ENTITY enableUserCss.label			"使用自定义 CSS">
-<!ENTITY browseCss.label			"浏览...">
-<!ENTITY allowEContent.label			"允许 HTML 标签">
+<!ENTITY selectFolder.label      "选择 Feed 文件夹">
+<!ENTITY openInContentsArea.caption    "打开 Feed">
+<!ENTITY enableUserCss.label      "使用自定义 CSS">
+<!ENTITY browseCss.label      "浏览...">
+<!ENTITY allowEContent.label      "允许 HTML 标签">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "打开">
@@ -59,24 +59,24 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"标记为已读">
-<!ENTITY markAsRead.command.tooltip			"标记为已读">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "标记为已读">
+<!ENTITY markAsRead.command.tooltip      "标记为已读">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"标记为未读">
-<!ENTITY markAsUnread.command.tooltip		"标记为未读">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "标记为未读">
+<!ENTITY markAsUnread.command.tooltip    "标记为未读">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"全部标记为已读">
-<!ENTITY markAllAsRead.command.tooltip		"全部标记为已读">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "全部标记为已读">
+<!ENTITY markAllAsRead.command.tooltip    "全部标记为已读">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"全部标记为未读">
-<!ENTITY markAllAsUnread.command.tooltip	"全部标记为未读">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "全部标记为未读">
+<!ENTITY markAllAsUnread.command.tooltip  "全部标记为未读">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">
 
 

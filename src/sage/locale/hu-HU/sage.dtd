@@ -1,14 +1,14 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label				"Verzió">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version        "1.3">
+<!ENTITY sage.version.label        "Verzió">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Sage megjelenítése">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Sage megjelenítése">
 
-<!ENTITY menu.view				"Megnéz">
-<!ENTITY menu.showFeedItemList			"Mutassa a letöltött elemek listáját">
-<!ENTITY menu.showFeedItemListToolbar	"Mutassa a letöltött elemek listáját az Eszköztárban">
+<!ENTITY menu.view        "Megnéz">
+<!ENTITY menu.showFeedItemList      "Mutassa a letöltött elemek listáját">
+<!ENTITY menu.showFeedItemListToolbar  "Mutassa a letöltött elemek listáját az Eszköztárban">
 <!ENTITY menu.showFeedItemTooltips       "Leírás-tooltip megjelenítése">
 <!ENTITY menu.openHTML              "Megnyitás a tartalmi részben">
 <!ENTITY menu.options                 "Eszközök">
@@ -16,15 +16,15 @@
 <!ENTITY menu.organizeFeedList         "RSS lista menedzselése...">
 <!ENTITY menu.opmlImportExport      "OPML import/export...">
 <!ENTITY menu.setting               "Beállítások...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds					"Adagolók keresése">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds          "Adagolók keresése">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Keresés a jelenlegi oldalon">
 <!ENTITY discovery.button.addFeed    "Adagoló hozzáadása">
-<!ENTITY discovery.button.close			 "Bezár">
-<!ENTITY discovery.header.title			 "Cím">
+<!ENTITY discovery.button.close       "Bezár">
+<!ENTITY discovery.header.title       "Cím">
 <!ENTITY discovery.header.format     "Formátum">
 <!ENTITY discovery.header.lastPubDate     "Utolsó frissíés">
 <!ENTITY discovery.header.itemCount     "Elemek">
@@ -48,8 +48,8 @@
 <!ENTITY allowEContent.label        "HTML tagek engedélyezése">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Open">
@@ -60,22 +60,22 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Olvasottnak jelöl">
-<!ENTITY markAsRead.command.tooltip			"Olvasottnak jelöl">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "Olvasottnak jelöl">
+<!ENTITY markAsRead.command.tooltip      "Olvasottnak jelöl">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"Olvasatlannak jelöl">
-<!ENTITY markAsUnread.command.tooltip		"Olvasatlannak jelöl">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "Olvasatlannak jelöl">
+<!ENTITY markAsUnread.command.tooltip    "Olvasatlannak jelöl">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"Olvasottnak jelöli az összeset">
-<!ENTITY markAllAsRead.command.tooltip		"Olvasottnak jelöli az összeset">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "Olvasottnak jelöli az összeset">
+<!ENTITY markAllAsRead.command.tooltip    "Olvasottnak jelöli az összeset">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Olvasatlannak jelöli az összeset">
-<!ENTITY markAllAsUnread.command.tooltip	"Olvasatlannak jelöli az összeset">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "Olvasatlannak jelöli az összeset">
+<!ENTITY markAllAsUnread.command.tooltip  "Olvasatlannak jelöli az összeset">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">

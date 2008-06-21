@@ -10,7 +10,7 @@
 
 <!ENTITY browseButton.label                     "Пролистать...">
 
-<!ENTITY pageImportFinished.label	"Импорт OPML">
-<!ENTITY pageImportFinished.desc	"Импорт завершен">
-<!ENTITY pageExportFinished.label	"Экспорт OPML">
-<!ENTITY pageExportFinished.desc	"Экспорт завершен">
+<!ENTITY pageImportFinished.label  "Импорт OPML">
+<!ENTITY pageImportFinished.desc  "Импорт завершен">
+<!ENTITY pageExportFinished.label  "Экспорт OPML">
+<!ENTITY pageExportFinished.desc  "Экспорт завершен">

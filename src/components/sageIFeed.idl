@@ -42,39 +42,39 @@
 [scriptable, uuid(28C949A0-57A4-4825-A5FF-2C72E688EAF8)]
 interface sageIFeed: nsISupports {
 
-	// sort order constants     
-	const unsigned short SORT_SOURCE = 0x00;
-	const unsigned short SORT_CHRONO = 0x01;
+  // sort order constants     
+  const unsigned short SORT_SOURCE = 0x00;
+  const unsigned short SORT_CHRONO = 0x01;
 
-	void init(in AString title, in AString link, in AString description, in AString author, in AString feedURI, in AString format);
-	
-	void addItem(in sageIFeedItem item);
-	
-	PRBool hasFeedURI();
-	AString getFeedURI();
-	void setFeedURI(in AString feedURI);
-	
-	AString getTitle();
+  void init(in AString title, in AString link, in AString description, in AString author, in AString feedURI, in AString format);
+  
+  void addItem(in sageIFeedItem item);
+  
+  PRBool hasFeedURI();
+  AString getFeedURI();
+  void setFeedURI(in AString feedURI);
+  
+  AString getTitle();
 
-	PRBool hasDescription();
-	AString getDescription();
-	
-	AString getLink();
-	
-	PRBool hasAuthor();
-	AString getAuthor();
+  PRBool hasDescription();
+  AString getDescription();
+  
+  AString getLink();
+  
+  PRBool hasAuthor();
+  AString getAuthor();
 
-	PRBool hasLastPubDate();
-	PRTime getLastPubDate();
+  PRBool hasLastPubDate();
+  PRTime getLastPubDate();
 
-	PRInt32 getItemCount();
-	
-	sageIFeedItem getItem(in PRInt32 index);
-	
-	void setSort(in unsigned short order);
-	
-	AString getFormat();
-	
-	AString getSignature();
+  PRInt32 getItemCount();
+  
+  sageIFeedItem getItem(in PRInt32 index);
+  
+  void setSort(in unsigned short order);
+  
+  AString getFormat();
+  
+  AString getSignature();
 
 };

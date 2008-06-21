@@ -47,275 +47,275 @@ const sageIFeedParser = Components.interfaces.sageIFeedParser;
 function sageRSSParser() {};
 sageRSSParser.prototype = {
 
-	discover: function(feedDocument)
-	{
-		var rootNodeName = feedDocument.documentElement.localName.toLowerCase();
-		if (rootNodeName == "rss" || rootNodeName == "rdf") {
-			return true;
-		} else {
-			return false;
-		}
-	},
+  discover: function(feedDocument)
+  {
+    var rootNodeName = feedDocument.documentElement.localName.toLowerCase();
+    if (rootNodeName == "rss" || rootNodeName == "rdf") {
+      return true;
+    } else {
+      return false;
+    }
+  },
 
-	parse: function(feedDocument)
-	{
-		var Feed = new Components.Constructor("@sage.mozdev.org/sage/feed;1", "sageIFeed", "init");
-		var FeedItem = new Components.Constructor("@sage.mozdev.org/sage/feeditem;1", "sageIFeedItem", "init");
-		var FeedItemEnclosure = new Components.Constructor("@sage.mozdev.org/sage/feeditemenclosure;1", "sageIFeedItemEnclosure", "init");
+  parse: function(feedDocument)
+  {
+    var Feed = new Components.Constructor("@sage.mozdev.org/sage/feed;1", "sageIFeed", "init");
+    var FeedItem = new Components.Constructor("@sage.mozdev.org/sage/feeditem;1", "sageIFeedItem", "init");
+    var FeedItemEnclosure = new Components.Constructor("@sage.mozdev.org/sage/feeditemenclosure;1", "sageIFeedItemEnclosure", "init");
 
-		var dateParser = Components.classes["@sage.mozdev.org/sage/dateparser;1"].getService(Components.interfaces.sageIDateParser);
+    var dateParser = Components.classes["@sage.mozdev.org/sage/dateparser;1"].getService(Components.interfaces.sageIDateParser);
 
-		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-		var logger = new Logger();
-	
-		const nsIURIFixup = Components.interfaces.nsIURIFixup;
-		const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
-	
-		var title;
-		var link;
-		var description;
-		var author;
-		var feedURI;
-		var format;
-	
-		var firstElement = feedDocument.documentElement;
+    var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+    var logger = new Logger();
+  
+    const nsIURIFixup = Components.interfaces.nsIURIFixup;
+    const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(nsIURIFixup);
+  
+    var title;
+    var link;
+    var description;
+    var author;
+    var feedURI;
+    var format;
+  
+    var firstElement = feedDocument.documentElement;
 
-		if (firstElement.localName.toLowerCase() == "rdf") {
-			format = "RSS (1.0)";
-		} else if (firstElement.localName.toLowerCase() == "rss") {
-			if (firstElement.hasAttribute("version")) {
-				format = "RSS (" + firstElement.getAttribute("version") + ")";
-			} else {
-				format = "RSS (?)";
-			}
-		}
-	
-		var i, j;
-	
-		var channelNode;
-		for (i = firstElement.firstChild; i != null; i = i.nextSibling) {
-			if (i.nodeType != i.ELEMENT_NODE) continue;
-			if (i.localName.toLowerCase() == "channel") {
-				channelNode = i;
-			}
-		}
-		if (!channelNode) {
-			throw "No channel element where expected";
-		}
-	
-		if (feedDocument.getElementsByTagName("channel").length != 0) {
-			channelNode = feedDocument.getElementsByTagName("channel")[0];
-		} else {
-			throw "No elements in channel tag";
-		}
-	
-		for (i = channelNode.firstChild; i != null; i = i.nextSibling) {
-			if (i.nodeType != i.ELEMENT_NODE) continue;
-			switch(i.nodeName) {
-				case "title":
-					title = this._getInnerText(i);
-					break;
-				case "link":
-					link = this._getInnerText(i);
-					break;
-				case "description":
-					description = this._getInnerText(i);
-					break;
-				case "author":
-					author = this._getInnerText(i);
-					break;
+    if (firstElement.localName.toLowerCase() == "rdf") {
+      format = "RSS (1.0)";
+    } else if (firstElement.localName.toLowerCase() == "rss") {
+      if (firstElement.hasAttribute("version")) {
+        format = "RSS (" + firstElement.getAttribute("version") + ")";
+      } else {
+        format = "RSS (?)";
+      }
+    }
+  
+    var i, j;
+  
+    var channelNode;
+    for (i = firstElement.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType != i.ELEMENT_NODE) continue;
+      if (i.localName.toLowerCase() == "channel") {
+        channelNode = i;
+      }
+    }
+    if (!channelNode) {
+      throw "No channel element where expected";
+    }
+  
+    if (feedDocument.getElementsByTagName("channel").length != 0) {
+      channelNode = feedDocument.getElementsByTagName("channel")[0];
+    } else {
+      throw "No elements in channel tag";
+    }
+  
+    for (i = channelNode.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType != i.ELEMENT_NODE) continue;
+      switch(i.nodeName) {
+        case "title":
+          title = this._getInnerText(i);
+          break;
+        case "link":
+          link = this._getInnerText(i);
+          break;
+        case "description":
+          description = this._getInnerText(i);
+          break;
+        case "author":
+          author = this._getInnerText(i);
+          break;
 /*
-				case "copyright":
-					this.footer.copyright = this._entityDecode(this._getInnerText(i));
-					break;
-				case "generator":
-					this.footer.generator = this._entityDecode(this._getInnerText(i));
-					break;
-				case "webMaster":
-					this.footer.webmaster = this._entityDecode(this._getInnerText(i));
-					break;
-				case "managingEditor":
-					this.footer.editor = this._entityDecode(this._getInnerText(i));
-					break;
-				case "image":
-					for (j = i.firstChild; j!=null; j=j.nextSibling) {
-						if (j.nodeType != j.ELEMENT_NODE) continue;
-						switch(j.localName) {
-							case "url":
-								this.logo.link = this._entityDecode(this._getInnerText(j));
-								break;
-							case "title":
-								this.logo.alt = this._entityDecode(this._getInnerText(j));
-								break;
-						}
-					}
-					break;
+        case "copyright":
+          this.footer.copyright = this._entityDecode(this._getInnerText(i));
+          break;
+        case "generator":
+          this.footer.generator = this._entityDecode(this._getInnerText(i));
+          break;
+        case "webMaster":
+          this.footer.webmaster = this._entityDecode(this._getInnerText(i));
+          break;
+        case "managingEditor":
+          this.footer.editor = this._entityDecode(this._getInnerText(i));
+          break;
+        case "image":
+          for (j = i.firstChild; j!=null; j=j.nextSibling) {
+            if (j.nodeType != j.ELEMENT_NODE) continue;
+            switch(j.localName) {
+              case "url":
+                this.logo.link = this._entityDecode(this._getInnerText(j));
+                break;
+              case "title":
+                this.logo.alt = this._entityDecode(this._getInnerText(j));
+                break;
+            }
+          }
+          break;
 */
-			}
-		}
-		
-		feed = new Feed(title, link, description, author, feedURI, format);
-		
-		var itemNodes = feedDocument.getElementsByTagName("item");
-		var item, guid;
-		for (i = 0; itemNodes.length > i; i++) {
-			if (itemNodes[i].prefix) continue;  // skip elements with namespaces
-		
-			item = {title:"", link:"", content:"", author:"", pubDate:"", enclosure: null};
-			guid = null;
-	
-			for (j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
-				if (j.nodeType != j.ELEMENT_NODE) continue;
-				switch(j.nodeName) {
-					case "title":
-						item.title = this._getInnerText(j);
-						break;
-					case "link":
-						if (!item.link) {
-							try {
-								item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(this._getInnerText(j)) : this._getInnerText(j);
-							} catch (e) {
-								logger.warn("unable to resolve URI: " + this._getInnerText(j) + " feed: " + title);
-							}
-						}
-						break;
-					case "creator":
-					case "dc:creator":
-						item.author = this._getInnerText(j);
-						break;
-					case "guid":
-						if(!guid) {
-							guid = this._getInnerText(j);
-						}
-						break;
-					case "description":
-						if (!item.content) {
-							item.content = this._getInnerText(j);
-						}
-						break;
-					case "content:encoded":
-						item.content = this._getInnerText(j);
-						break;
-					case "pubDate":
-						tmp_str = this._getInnerText(j);
-						try {
-							item.pubDate = dateParser.parseRFC822(tmp_str);
-						} catch(e) {
-							logger.warn("unable to parse RFC 822 date string: " + tmp_str + " feed: " + title);
-						}
-						break;
-					case "dc:date":
-						tmp_str = this._getInnerText(j);
-						try {
-							item.pubDate = dateParser.parseISO8601(tmp_str);
-						} catch(e) {
-							logger.warn("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + title);
-						}
-						break;
-					case "enclosure":
-						item.enclosure = new FeedItemEnclosure(j.getAttribute("url"), j.getAttribute("length"), j.getAttribute("type"));
-						break;
-				}
-			}
-	
-			if (!item.link && guid) {
-				try {
-					item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
-				} catch (e) {
-					logger.warn("unable to resolve URI: " + guid + " feed: " + title);
-				}
-			}
+      }
+    }
+    
+    feed = new Feed(title, link, description, author, feedURI, format);
+    
+    var itemNodes = feedDocument.getElementsByTagName("item");
+    var item, guid;
+    for (i = 0; itemNodes.length > i; i++) {
+      if (itemNodes[i].prefix) continue;  // skip elements with namespaces
+    
+      item = {title:"", link:"", content:"", author:"", pubDate:"", enclosure: null};
+      guid = null;
+  
+      for (j = itemNodes[i].firstChild; j!=null; j=j.nextSibling) {
+        if (j.nodeType != j.ELEMENT_NODE) continue;
+        switch(j.nodeName) {
+          case "title":
+            item.title = this._getInnerText(j);
+            break;
+          case "link":
+            if (!item.link) {
+              try {
+                item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(this._getInnerText(j)) : this._getInnerText(j);
+              } catch (e) {
+                logger.warn("unable to resolve URI: " + this._getInnerText(j) + " feed: " + title);
+              }
+            }
+            break;
+          case "creator":
+          case "dc:creator":
+            item.author = this._getInnerText(j);
+            break;
+          case "guid":
+            if(!guid) {
+              guid = this._getInnerText(j);
+            }
+            break;
+          case "description":
+            if (!item.content) {
+              item.content = this._getInnerText(j);
+            }
+            break;
+          case "content:encoded":
+            item.content = this._getInnerText(j);
+            break;
+          case "pubDate":
+            tmp_str = this._getInnerText(j);
+            try {
+              item.pubDate = dateParser.parseRFC822(tmp_str);
+            } catch(e) {
+              logger.warn("unable to parse RFC 822 date string: " + tmp_str + " feed: " + title);
+            }
+            break;
+          case "dc:date":
+            tmp_str = this._getInnerText(j);
+            try {
+              item.pubDate = dateParser.parseISO8601(tmp_str);
+            } catch(e) {
+              logger.warn("unable to parse ISO 8601 date string: " + tmp_str + " feed: " + title);
+            }
+            break;
+          case "enclosure":
+            item.enclosure = new FeedItemEnclosure(j.getAttribute("url"), j.getAttribute("length"), j.getAttribute("type"));
+            break;
+        }
+      }
+  
+      if (!item.link && guid) {
+        try {
+          item.link = link ? URIFixup.createFixupURI(link, nsIURIFixup.FIXUP_FLAG_NONE).resolve(guid) : guid;
+        } catch (e) {
+          logger.warn("unable to resolve URI: " + guid + " feed: " + title);
+        }
+      }
 
-			var feedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, null);
+      var feedItem = new FeedItem(item.title, item.link, item.author, item.content, item.pubDate, item.enclosure, null);
 
-			feed.addItem(feedItem);
-		}
-		
-		return feed;
-	},
-	
-	_entityDecode: function(aStr)
-	{
-		var	formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Components.interfaces.nsIFormatConverter);
-		var fromStr = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-		fromStr.data = aStr;
-		var toStr = {value: null};
-	
-		try {
-			formatConverter.convert("text/html", fromStr, fromStr.toString().length, "text/unicode", toStr, {});
-		} catch(e) {
-			return aStr;
-		}
-		if (toStr.value) {
-			toStr = toStr.value.QueryInterface(Components.interfaces.nsISupportsString);
-			return toStr.toString();
-		}
-		return aStr;
-	},
-	
-	_getInnerText: function(aNode)
-	{
-		if(!aNode.hasChildNodes()) return "";
-		
-		var NodeFilter = Components.interfaces.nsIDOMNodeFilter;
-	
-		var resultArray = new Array();
-		var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
-		while(walker.nextNode()) {
-			resultArray.push(walker.currentNode.nodeValue);
-		}
-		return resultArray.join('').replace(/^\s+|\s+$/g, "");
-	},
-	
-	// nsISupports
-	QueryInterface: function(aIID)
-	{
-		if (!aIID.equals(Components.interfaces.sageIFeedParser) && !aIID.equals(Components.interfaces.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	}
+      feed.addItem(feedItem);
+    }
+    
+    return feed;
+  },
+  
+  _entityDecode: function(aStr)
+  {
+    var  formatConverter = Components.classes["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Components.interfaces.nsIFormatConverter);
+    var fromStr = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+    fromStr.data = aStr;
+    var toStr = {value: null};
+  
+    try {
+      formatConverter.convert("text/html", fromStr, fromStr.toString().length, "text/unicode", toStr, {});
+    } catch(e) {
+      return aStr;
+    }
+    if (toStr.value) {
+      toStr = toStr.value.QueryInterface(Components.interfaces.nsISupportsString);
+      return toStr.toString();
+    }
+    return aStr;
+  },
+  
+  _getInnerText: function(aNode)
+  {
+    if(!aNode.hasChildNodes()) return "";
+    
+    var NodeFilter = Components.interfaces.nsIDOMNodeFilter;
+  
+    var resultArray = new Array();
+    var walker = aNode.ownerDocument.createTreeWalker(aNode, NodeFilter.SHOW_CDATA_SECTION | NodeFilter.SHOW_TEXT, null, false);
+    while(walker.nextNode()) {
+      resultArray.push(walker.currentNode.nodeValue);
+    }
+    return resultArray.join('').replace(/^\s+|\s+$/g, "");
+  },
+  
+  // nsISupports
+  QueryInterface: function(aIID)
+  {
+    if (!aIID.equals(Components.interfaces.sageIFeedParser) && !aIID.equals(Components.interfaces.nsISupports))
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    return this;
+  }
 };
 
 /******************************************************************************
  * XPCOM Functions for construction and registration
  ******************************************************************************/
 var Module = {
-	_firstTime: true,
-	registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-	{
-		if (this._firstTime) {
-			this._firstTime = false;
-			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-		}
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-	},
+  _firstTime: true,
+  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
+  {
+    if (this._firstTime) {
+      this._firstTime = false;
+      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
+    }
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
+  },
 
-	unregisterSelf: function(aCompMgr, aLocation, aType)
-	{
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-	},
+  unregisterSelf: function(aCompMgr, aLocation, aType)
+  {
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
+  },
   
-	getClassObject: function(aCompMgr, aCID, aIID)
-	{
-		if (!aIID.equals(Components.interfaces.nsIFactory))
-			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-		if (aCID.equals(CLASS_ID))
-			return Factory;
-		throw Components.results.NS_ERROR_NO_INTERFACE;
-	},
+  getClassObject: function(aCompMgr, aCID, aIID)
+  {
+    if (!aIID.equals(Components.interfaces.nsIFactory))
+      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    if (aCID.equals(CLASS_ID))
+      return Factory;
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+  },
 
-	canUnload: function(aCompMgr) { return true; }
+  canUnload: function(aCompMgr) { return true; }
 };
 
 var Factory = {
-	createInstance: function(aOuter, aIID)
-	{
-		if (aOuter != null)
-			throw Components.results.NS_ERROR_NO_AGGREGATION;
-		return (new sageRSSParser()).QueryInterface(aIID);
-	}
+  createInstance: function(aOuter, aIID)
+  {
+    if (aOuter != null)
+      throw Components.results.NS_ERROR_NO_AGGREGATION;
+    return (new sageRSSParser()).QueryInterface(aIID);
+  }
 };
 
 function NSGetModule(aCompMgr, aFileSpec) { return Module; }

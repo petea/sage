@@ -48,106 +48,106 @@ const PREF_LOG_LEVEL = "extensions.sage.logLevel";
  ******************************************************************************/
 function sageLogger() {};
 sageLogger.prototype = {
-	_level: sageILogger.LEVEL_WARN,
-	_consoleService: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
-	
-	init: function()
-	{
-		var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-		if (pref.prefHasUserValue(PREF_LOG_LEVEL)) {
-			this.setLevel(pref.getIntPref(PREF_LOG_LEVEL));
-		}	
-	},
+  _level: sageILogger.LEVEL_WARN,
+  _consoleService: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
+  
+  init: function()
+  {
+    var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+    if (pref.prefHasUserValue(PREF_LOG_LEVEL)) {
+      this.setLevel(pref.getIntPref(PREF_LOG_LEVEL));
+    }  
+  },
 
-	setLevel: function(aLevel)
-	{
-		this._level = aLevel;
-	},
+  setLevel: function(aLevel)
+  {
+    this._level = aLevel;
+  },
 
-	debug: function(aMessage)
-	{
-		if (this._level <= sageILogger.LEVEL_DEBUG) {
-			this._consoleService.logStringMessage("Sage [DEBUG]: " + aMessage);
-		}
-	},
-	
-	info: function(aMessage)
-	{
-		if (this._level <= sageILogger.LEVEL_INFO) {
-			this._consoleService.logStringMessage("Sage [INFO]: " + aMessage);
-		}
-	},
-	
-	warn: function(aMessage)
-	{
-		if (this._level <= sageILogger.LEVEL_WARN) {
-			this._consoleService.logStringMessage("Sage [WARN]: " + aMessage);
-		}
-	},
-	
-	error: function(aMessage)
-	{
-		if (this._level <= sageILogger.LEVEL_ERROR) {
-			this._consoleService.logStringMessage("Sage [ERROR]: " + aMessage);
-		}
-	},
-	
-	fatal: function(aMessage)
-	{
-		if (this._level <= sageILogger.LEVEL_FATAL) {
-			this._consoleService.logStringMessage("Sage [FATAL]: " + aMessage);
-		}
-	},
-	
-	// nsISupports
-	QueryInterface: function(aIID)
-	{
-		if (!aIID.equals(Components.interfaces.sageILogger) && !aIID.equals(Components.interfaces.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	}
+  debug: function(aMessage)
+  {
+    if (this._level <= sageILogger.LEVEL_DEBUG) {
+      this._consoleService.logStringMessage("Sage [DEBUG]: " + aMessage);
+    }
+  },
+  
+  info: function(aMessage)
+  {
+    if (this._level <= sageILogger.LEVEL_INFO) {
+      this._consoleService.logStringMessage("Sage [INFO]: " + aMessage);
+    }
+  },
+  
+  warn: function(aMessage)
+  {
+    if (this._level <= sageILogger.LEVEL_WARN) {
+      this._consoleService.logStringMessage("Sage [WARN]: " + aMessage);
+    }
+  },
+  
+  error: function(aMessage)
+  {
+    if (this._level <= sageILogger.LEVEL_ERROR) {
+      this._consoleService.logStringMessage("Sage [ERROR]: " + aMessage);
+    }
+  },
+  
+  fatal: function(aMessage)
+  {
+    if (this._level <= sageILogger.LEVEL_FATAL) {
+      this._consoleService.logStringMessage("Sage [FATAL]: " + aMessage);
+    }
+  },
+  
+  // nsISupports
+  QueryInterface: function(aIID)
+  {
+    if (!aIID.equals(Components.interfaces.sageILogger) && !aIID.equals(Components.interfaces.nsISupports))
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    return this;
+  }
 };
 
 /******************************************************************************
  * XPCOM Functions for construction and registration
  ******************************************************************************/
 var Module = {
-	_firstTime: true,
-	registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-	{
-		if (this._firstTime) {
-			this._firstTime = false;
-			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-		}
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-	},
+  _firstTime: true,
+  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
+  {
+    if (this._firstTime) {
+      this._firstTime = false;
+      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
+    }
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
+  },
 
-	unregisterSelf: function(aCompMgr, aLocation, aType)
-	{
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-	},
+  unregisterSelf: function(aCompMgr, aLocation, aType)
+  {
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
+  },
   
-	getClassObject: function(aCompMgr, aCID, aIID)
-	{
-		if (!aIID.equals(Components.interfaces.nsIFactory))
-			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-		if (aCID.equals(CLASS_ID))
-			return Factory;
-		throw Components.results.NS_ERROR_NO_INTERFACE;
-	},
+  getClassObject: function(aCompMgr, aCID, aIID)
+  {
+    if (!aIID.equals(Components.interfaces.nsIFactory))
+      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    if (aCID.equals(CLASS_ID))
+      return Factory;
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+  },
 
-	canUnload: function(aCompMgr) { return true; }
+  canUnload: function(aCompMgr) { return true; }
 };
 
 var Factory = {
-	createInstance: function(aOuter, aIID)
-	{
-		if (aOuter != null)
-			throw Components.results.NS_ERROR_NO_AGGREGATION;
-		return (new sageLogger()).QueryInterface(aIID);
-	}
+  createInstance: function(aOuter, aIID)
+  {
+    if (aOuter != null)
+      throw Components.results.NS_ERROR_NO_AGGREGATION;
+    return (new sageLogger()).QueryInterface(aIID);
+  }
 };
 
 function NSGetModule(aCompMgr, aFileSpec) { return Module; }

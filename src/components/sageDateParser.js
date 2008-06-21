@@ -46,255 +46,255 @@ const sageIDateParser = Components.interfaces.sageIDateParser;
  ******************************************************************************/
 function sageDateParser() {};
 sageDateParser.prototype = {
-	
-	parseRFC822: function(aDateString)
-	{
-		date_array = aDateString.split(" ");
-		// check for two digit year
-		if(!isNaN(date_array[3]) && date_array[3].length == 2) { // format DDD, dd MMM yy [tt:mm:ss zzz], asumes that time is in format tt:mm or uexpected result will happen
-			// convert to four digit year with a pivot of 70
-			if(date_array[3] < 70) {
-				date_array[3] = "20" + date_array[3];
-			} else {
-				date_array[3] = "19" + date_array[3];
-			}
-		} else if(!isNaN(date_array[2]) && date_array[2].length == 2) { // format dd MMM yy [tt:mm:ss zzz]
-			// convert to four digit year with a pivot of 70
-			if(date_array[2] < 70) {
-				date_array[2] = "20" + date_array[2];
-			} else {
-				date_array[2] = "19" + date_array[2];
-			}
-		}
-		dLength = date_array.length-1;
-		if (date_array[dLength].length == 1) { // uses 1alpha as timezone marker
-			// but im confused, rfc822 and rfc2822 that replace the former have oppositt defenitions. "A" in rfc822 is -0100 and in rfc2822 +0100
-			switch (date_array[dLength]) {
-				case 'A', 'a':
-					date_array[dLength] = '-0100'
-				case 'B', 'b':
-					date_array[dLength] = '-0200'
-				case 'C', 'c':
-					date_array[dLength] = '-0300'
-				case 'D', 'd':
-					date_array[dLength] = '-0400'
-				case 'E', 'e':
-					date_array[dLength] = '-0500'
-				case 'F', 'f':
-					date_array[dLength] = '-0600'
-				case 'G', 'g':
-					date_array[dLength] = '-0700'
-				case 'H', 'h':
-					date_array[dLength] = '-0800'
-				case 'I', 'i':
-					date_array[dLength] = '-0900'
-				case 'K', 'k':
-					date_array[dLength] = '-1000'
-				case 'L', 'l':
-					date_array[dLength] = '-1100'
-				case 'M', 'm':
-					date_array[dLength] = '-1200'
-				case 'N', 'n':
-					date_array[dLength] = '+0100'
-				case 'O', 'o':
-					date_array[dLength] = '+0200'
-				case 'P', 'p':
-					date_array[dLength] = '+0300'
-				case 'Q', 'q':
-					date_array[dLength] = '+0400'
-				case 'R', 'r':
-					date_array[dLength] = '+0500'
-				case 'S', 's':
-					date_array[dLength] = '+0600'
-				case 'T', 't':
-					date_array[dLength] = '+0700'
-				case 'U', 'u':
-					date_array[dLength] = '+0800'
-				case 'V', 'v':
-					date_array[dLength] = '+0900'
-				case 'W', 'w':
-					date_array[dLength] = '+1000'
-				case 'X', 'x':
-					date_array[dLength] = '+1100'
-				case 'Y', 'y':
-					date_array[dLength] = '+1200'
-				case 'Z', 'z':
-					date_array[dLength] = 'GMT'
-			}
-		}
-		aDateString = date_array.join(" ");
-		date = new Date(aDateString);
-		if(date != "Invalid Date") {
-			return date.getTime();
-		} else {
-			throw "RFC 822 parse error";
-		}
-	},
-	
-	parseISO8601: function(aDateString)
-	{
-		// trims leading spaces
-		String.prototype.lTrim = function () {
-			return this.replace(/^\s+/gm, '');
-		}
-		
-		// trims trailing spaces
-		String.prototype.rTrim = function () {
-			return this.replace(/\s+$/gm, '');
-		}
-		
-		// trims spaces
-		String.prototype.trim = function () {
-			return this.rTrim().lTrim();
-		}
-	
-		var tmp = aDateString.trim(); // remove any leding and/or trailing spaces
-		if (tmp.indexOf('T') > -1) {
-			tmp = tmp.split('T');
-		} else {
-			tmp = tmp.split(' '); // space can also be a legel date/time separator
-		}
-		var date = tmp[0];
-		var year, month, day;
-		var hours = 0;
-		var minutes = 0;
-		var seconds = 0;
-		var tz_mark, tz_hours, tz_minutes;
-		tz_hours = 0;
-		tz_minutes = 0;
-		var time, whole_time, tz;
-	
-		if (date.indexOf('-') > -1) { //extended notation
-			date = date.split("-");
-			year = date[0];
-			month = date[1];
-			day = date[2];
-		} else if (date.length == 8) { // basic notation with YYYY as year
-			year = date.substr(0,4);
-			month = date.substr(4,2);
-			day = date.substr(6,2);
-		} else if (date.length == 6) { // basic notation with YY as year
-			year = date.substr(0,2);
-			month = date.substr(2,2);
-			day = date.substr(4,2);
-		} else {
-			year = 'NaN';
-			month = 'NaN';
-			day = 'NaN';
-		}
-		if (year.length == 1) { // when i tested i could se that 5-5-5 will give me a valid date
-			year = '0' + year;
-		}
-		if (year.length == 2) { // add century to YY notation
-			if (year < 70) {
-				year = '20' + year;
-			} else {
-				year = '19' + year;
-			}
-		}
-	
-		if(tmp.length == 2) { // contains time
-			whole_time = tmp[1];
-			tz_mark = whole_time.match("[Z+-]{1}");
-			if(tz_mark) {// contains timezone
-				tmp = whole_time.split(tz_mark);
-				time = tmp[0];
-				if(tz_mark == "+" || tz_mark == "-") { // is not utc time
-					tz = tmp[1];
-					if (tz.indexOf(':') > -1) { // extended notation
-						tmp = tz.split(":");
-						tz_hours = tmp[0];
-						tz_minutes = tmp[1];
-					} else { // basic notation
-						tz_hours = tz.substr(0,2);
-						tz_minutes = tz.substr(2,2);
-					}
-				}
-			} else {
-				//tz_mark = "Z";
-				time = whole_time;
-			}
-			if (time.indexOf(':') > -1) { // extended notation
-				tmp = time.split(":");
-				hours = tmp[0];
-				minutes = tmp[1];
-				seconds = tmp[2]?tmp[2]:0;
-			} else { // basic notation
-				hours = time.substr(0,2);
-				minutes = time.substr(2,2);
-				seconds = time.substr(4,2);
-			}
-		}
-	
-		var utc = Date.UTC(year, month - 1, day, hours, minutes, seconds);
-		var return_date;
-		if (!tz_mark) {// no timezone, assume local date
-			return_date = new Date(year, month - 1, day, hours, minutes, seconds);
-		} else if(tz_mark == "Z") {
-			return_date = new Date(utc);
-		} else if(tz_mark == "+") {
-			return_date = new Date(utc - tz_hours*3600000 - tz_minutes*60000);
-		} else if(tz_mark == "-") {
-			return_date = new Date(utc + tz_hours*3600000 + tz_minutes*60000);
-		} else {
-			throw "ISO 6801 parse error";
-		}
-		if (return_date == "Invalid Date") {
-			throw "ISO 6801 parse error";
-		} else {
-			return return_date.getTime();
-		}
-	},
-	
-	// nsISupports
-	QueryInterface: function(aIID)
-	{
-		if (!aIID.equals(Components.interfaces.sageIDateParser) && !aIID.equals(Components.interfaces.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	}
+  
+  parseRFC822: function(aDateString)
+  {
+    date_array = aDateString.split(" ");
+    // check for two digit year
+    if(!isNaN(date_array[3]) && date_array[3].length == 2) { // format DDD, dd MMM yy [tt:mm:ss zzz], asumes that time is in format tt:mm or uexpected result will happen
+      // convert to four digit year with a pivot of 70
+      if(date_array[3] < 70) {
+        date_array[3] = "20" + date_array[3];
+      } else {
+        date_array[3] = "19" + date_array[3];
+      }
+    } else if(!isNaN(date_array[2]) && date_array[2].length == 2) { // format dd MMM yy [tt:mm:ss zzz]
+      // convert to four digit year with a pivot of 70
+      if(date_array[2] < 70) {
+        date_array[2] = "20" + date_array[2];
+      } else {
+        date_array[2] = "19" + date_array[2];
+      }
+    }
+    dLength = date_array.length-1;
+    if (date_array[dLength].length == 1) { // uses 1alpha as timezone marker
+      // but im confused, rfc822 and rfc2822 that replace the former have oppositt defenitions. "A" in rfc822 is -0100 and in rfc2822 +0100
+      switch (date_array[dLength]) {
+        case 'A', 'a':
+          date_array[dLength] = '-0100'
+        case 'B', 'b':
+          date_array[dLength] = '-0200'
+        case 'C', 'c':
+          date_array[dLength] = '-0300'
+        case 'D', 'd':
+          date_array[dLength] = '-0400'
+        case 'E', 'e':
+          date_array[dLength] = '-0500'
+        case 'F', 'f':
+          date_array[dLength] = '-0600'
+        case 'G', 'g':
+          date_array[dLength] = '-0700'
+        case 'H', 'h':
+          date_array[dLength] = '-0800'
+        case 'I', 'i':
+          date_array[dLength] = '-0900'
+        case 'K', 'k':
+          date_array[dLength] = '-1000'
+        case 'L', 'l':
+          date_array[dLength] = '-1100'
+        case 'M', 'm':
+          date_array[dLength] = '-1200'
+        case 'N', 'n':
+          date_array[dLength] = '+0100'
+        case 'O', 'o':
+          date_array[dLength] = '+0200'
+        case 'P', 'p':
+          date_array[dLength] = '+0300'
+        case 'Q', 'q':
+          date_array[dLength] = '+0400'
+        case 'R', 'r':
+          date_array[dLength] = '+0500'
+        case 'S', 's':
+          date_array[dLength] = '+0600'
+        case 'T', 't':
+          date_array[dLength] = '+0700'
+        case 'U', 'u':
+          date_array[dLength] = '+0800'
+        case 'V', 'v':
+          date_array[dLength] = '+0900'
+        case 'W', 'w':
+          date_array[dLength] = '+1000'
+        case 'X', 'x':
+          date_array[dLength] = '+1100'
+        case 'Y', 'y':
+          date_array[dLength] = '+1200'
+        case 'Z', 'z':
+          date_array[dLength] = 'GMT'
+      }
+    }
+    aDateString = date_array.join(" ");
+    date = new Date(aDateString);
+    if(date != "Invalid Date") {
+      return date.getTime();
+    } else {
+      throw "RFC 822 parse error";
+    }
+  },
+  
+  parseISO8601: function(aDateString)
+  {
+    // trims leading spaces
+    String.prototype.lTrim = function () {
+      return this.replace(/^\s+/gm, '');
+    }
+    
+    // trims trailing spaces
+    String.prototype.rTrim = function () {
+      return this.replace(/\s+$/gm, '');
+    }
+    
+    // trims spaces
+    String.prototype.trim = function () {
+      return this.rTrim().lTrim();
+    }
+  
+    var tmp = aDateString.trim(); // remove any leding and/or trailing spaces
+    if (tmp.indexOf('T') > -1) {
+      tmp = tmp.split('T');
+    } else {
+      tmp = tmp.split(' '); // space can also be a legel date/time separator
+    }
+    var date = tmp[0];
+    var year, month, day;
+    var hours = 0;
+    var minutes = 0;
+    var seconds = 0;
+    var tz_mark, tz_hours, tz_minutes;
+    tz_hours = 0;
+    tz_minutes = 0;
+    var time, whole_time, tz;
+  
+    if (date.indexOf('-') > -1) { //extended notation
+      date = date.split("-");
+      year = date[0];
+      month = date[1];
+      day = date[2];
+    } else if (date.length == 8) { // basic notation with YYYY as year
+      year = date.substr(0,4);
+      month = date.substr(4,2);
+      day = date.substr(6,2);
+    } else if (date.length == 6) { // basic notation with YY as year
+      year = date.substr(0,2);
+      month = date.substr(2,2);
+      day = date.substr(4,2);
+    } else {
+      year = 'NaN';
+      month = 'NaN';
+      day = 'NaN';
+    }
+    if (year.length == 1) { // when i tested i could se that 5-5-5 will give me a valid date
+      year = '0' + year;
+    }
+    if (year.length == 2) { // add century to YY notation
+      if (year < 70) {
+        year = '20' + year;
+      } else {
+        year = '19' + year;
+      }
+    }
+  
+    if(tmp.length == 2) { // contains time
+      whole_time = tmp[1];
+      tz_mark = whole_time.match("[Z+-]{1}");
+      if(tz_mark) {// contains timezone
+        tmp = whole_time.split(tz_mark);
+        time = tmp[0];
+        if(tz_mark == "+" || tz_mark == "-") { // is not utc time
+          tz = tmp[1];
+          if (tz.indexOf(':') > -1) { // extended notation
+            tmp = tz.split(":");
+            tz_hours = tmp[0];
+            tz_minutes = tmp[1];
+          } else { // basic notation
+            tz_hours = tz.substr(0,2);
+            tz_minutes = tz.substr(2,2);
+          }
+        }
+      } else {
+        //tz_mark = "Z";
+        time = whole_time;
+      }
+      if (time.indexOf(':') > -1) { // extended notation
+        tmp = time.split(":");
+        hours = tmp[0];
+        minutes = tmp[1];
+        seconds = tmp[2]?tmp[2]:0;
+      } else { // basic notation
+        hours = time.substr(0,2);
+        minutes = time.substr(2,2);
+        seconds = time.substr(4,2);
+      }
+    }
+  
+    var utc = Date.UTC(year, month - 1, day, hours, minutes, seconds);
+    var return_date;
+    if (!tz_mark) {// no timezone, assume local date
+      return_date = new Date(year, month - 1, day, hours, minutes, seconds);
+    } else if(tz_mark == "Z") {
+      return_date = new Date(utc);
+    } else if(tz_mark == "+") {
+      return_date = new Date(utc - tz_hours*3600000 - tz_minutes*60000);
+    } else if(tz_mark == "-") {
+      return_date = new Date(utc + tz_hours*3600000 + tz_minutes*60000);
+    } else {
+      throw "ISO 6801 parse error";
+    }
+    if (return_date == "Invalid Date") {
+      throw "ISO 6801 parse error";
+    } else {
+      return return_date.getTime();
+    }
+  },
+  
+  // nsISupports
+  QueryInterface: function(aIID)
+  {
+    if (!aIID.equals(Components.interfaces.sageIDateParser) && !aIID.equals(Components.interfaces.nsISupports))
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    return this;
+  }
 };
 
 /******************************************************************************
  * XPCOM Functions for construction and registration
  ******************************************************************************/
 var Module = {
-	_firstTime: true,
-	registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-	{
-		if (this._firstTime) {
-			this._firstTime = false;
-			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-		}
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-	},
+  _firstTime: true,
+  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
+  {
+    if (this._firstTime) {
+      this._firstTime = false;
+      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
+    }
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
+  },
 
-	unregisterSelf: function(aCompMgr, aLocation, aType)
-	{
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-	},
+  unregisterSelf: function(aCompMgr, aLocation, aType)
+  {
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
+  },
   
-	getClassObject: function(aCompMgr, aCID, aIID)
-	{
-		if (!aIID.equals(Components.interfaces.nsIFactory))
-			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-		if (aCID.equals(CLASS_ID))
-			return Factory;
-		throw Components.results.NS_ERROR_NO_INTERFACE;
-	},
+  getClassObject: function(aCompMgr, aCID, aIID)
+  {
+    if (!aIID.equals(Components.interfaces.nsIFactory))
+      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    if (aCID.equals(CLASS_ID))
+      return Factory;
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+  },
 
-	canUnload: function(aCompMgr) { return true; }
+  canUnload: function(aCompMgr) { return true; }
 };
 
 var Factory = {
-	createInstance: function(aOuter, aIID)
-	{
-		if (aOuter != null)
-			throw Components.results.NS_ERROR_NO_AGGREGATION;
-		return (new sageDateParser()).QueryInterface(aIID);
-	}
+  createInstance: function(aOuter, aIID)
+  {
+    if (aOuter != null)
+      throw Components.results.NS_ERROR_NO_AGGREGATION;
+    return (new sageDateParser()).QueryInterface(aIID);
+  }
 };
 
 function NSGetModule(aCompMgr, aFileSpec) { return Module; }

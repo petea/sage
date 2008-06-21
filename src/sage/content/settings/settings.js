@@ -52,120 +52,120 @@ var strRes;
 var logger;
 
 function init() {
-	var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-	logger = new Logger();
+  var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+  logger = new Logger();
 
-	strRes = document.getElementById("strRes");
+  strRes = document.getElementById("strRes");
 
-	try {
-		sageFolderID = SageUtils.getSageRootFolderId();
-	} catch (e) {
-		logger.error(e);
-	}
+  try {
+    sageFolderID = SageUtils.getSageRootFolderId();
+  } catch (e) {
+    logger.error(e);
+  }
 
-	gList = document.getElementById("select-menu");
+  gList = document.getElementById("select-menu");
 
-	chkUserCssEnable = document.getElementById("chkUserCssEnable");
-	chkUserCssEnable.checked = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE);
+  chkUserCssEnable = document.getElementById("chkUserCssEnable");
+  chkUserCssEnable.checked = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE);
 
-	txtUserCssPath = document.getElementById("txtUserCssPath");
-	txtUserCssPath.value = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_PATH);
+  txtUserCssPath = document.getElementById("txtUserCssPath");
+  txtUserCssPath.value = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_PATH);
 
-	chkAllowEContent = document.getElementById("chkAllowEContent");
-	chkAllowEContent.checked = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
+  chkAllowEContent = document.getElementById("chkAllowEContent");
+  chkAllowEContent.checked = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 
-	chkRenderFeeds = document.getElementById("chkRenderFeeds");
-	chkRenderFeeds.checked = SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS);
+  chkRenderFeeds = document.getElementById("chkRenderFeeds");
+  chkRenderFeeds.checked = SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS);
 
-	chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
-	chkTwelveHourClock.checked = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
+  chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
+  chkTwelveHourClock.checked = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 
-	feedItemOrder = document.getElementById("feedItemOrder");
-	feedItemOrder.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
+  feedItemOrder = document.getElementById("feedItemOrder");
+  feedItemOrder.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 
-	feedDiscoveryMode = document.getElementById("feedDiscoveryMode");
-	feedDiscoveryMode.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE);
+  feedDiscoveryMode = document.getElementById("feedDiscoveryMode");
+  feedDiscoveryMode.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE);
 
-	setDisabled();
+  setDisabled();
 
-	setTimeout(fillSelectFolderMenupopup, 0);
+  setTimeout(fillSelectFolderMenupopup, 0);
 }
 
 function accept() {
-	SageUtils.setSageRootFolderId(sageFolderID);
-	SageUtils.setSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE, chkUserCssEnable.checked);
-	SageUtils.setSagePrefValue(SageUtils.PREF_USER_CSS_PATH, txtUserCssPath.value);
-	SageUtils.setSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT, chkAllowEContent.checked);
-	SageUtils.setSagePrefValue(SageUtils.PREF_RENDER_FEEDS, chkRenderFeeds.checked);
-	SageUtils.setSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK, chkTwelveHourClock.checked);
-	SageUtils.setSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER, feedItemOrder.value);
-	SageUtils.setSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE, feedDiscoveryMode.value);
+  SageUtils.setSageRootFolderId(sageFolderID);
+  SageUtils.setSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE, chkUserCssEnable.checked);
+  SageUtils.setSagePrefValue(SageUtils.PREF_USER_CSS_PATH, txtUserCssPath.value);
+  SageUtils.setSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT, chkAllowEContent.checked);
+  SageUtils.setSagePrefValue(SageUtils.PREF_RENDER_FEEDS, chkRenderFeeds.checked);
+  SageUtils.setSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK, chkTwelveHourClock.checked);
+  SageUtils.setSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER, feedItemOrder.value);
+  SageUtils.setSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE, feedDiscoveryMode.value);
 }
 
 function selectFolder(aEvent){
-	sageFolderID = aEvent.target.id;
+  sageFolderID = aEvent.target.id;
 }
 
 function setDisabled() {
-	txtUserCssPath.disabled = !chkUserCssEnable.checked;
-	document.getElementById("btnBrowseCss").disabled = !chkUserCssEnable.checked;
+  txtUserCssPath.disabled = !chkUserCssEnable.checked;
+  document.getElementById("btnBrowseCss").disabled = !chkUserCssEnable.checked;
 }
 
 function browseCss() {
-	var fpicker = Components.classes["@mozilla.org/filepicker;1"]
-					.createInstance(Components.interfaces.nsIFilePicker);
-	fpicker.init(window, strRes.getString("css_select_file"), fpicker.modeOpen);
-	fpicker.appendFilter(strRes.getString("css_css_file") + " (*.css)", "*.css");
-	fpicker.appendFilters(fpicker.filterAll);
+  var fpicker = Components.classes["@mozilla.org/filepicker;1"]
+          .createInstance(Components.interfaces.nsIFilePicker);
+  fpicker.init(window, strRes.getString("css_select_file"), fpicker.modeOpen);
+  fpicker.appendFilter(strRes.getString("css_css_file") + " (*.css)", "*.css");
+  fpicker.appendFilters(fpicker.filterAll);
 
-	var showResult = fpicker.show();
-	if(showResult == fpicker.returnOK) {
-		txtUserCssPath.value = fpicker.file.path;
-	}
+  var showResult = fpicker.show();
+  if(showResult == fpicker.returnOK) {
+    txtUserCssPath.value = fpicker.file.path;
+  }
 }
 
 function fillSelectFolderMenupopup () {
-	var popup = document.getElementById("select-folder");
+  var popup = document.getElementById("select-folder");
 
-	// clearing the old menupopup
-	while (popup.hasChildNodes()) {
-		popup.removeChild(popup.firstChild);
-	}
+  // clearing the old menupopup
+  while (popup.hasChildNodes()) {
+    popup.removeChild(popup.firstChild);
+  }
 
-	var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
-	element.setAttribute("label", PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.bookmarksMenuFolder));
-	element.setAttribute("id", PlacesUtils.bookmarks.bookmarksMenuFolder);
-	popup.appendChild(element);
+  var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
+  element.setAttribute("label", PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.bookmarksMenuFolder));
+  element.setAttribute("id", PlacesUtils.bookmarks.bookmarksMenuFolder);
+  popup.appendChild(element);
 
-	var query = PlacesUtils.history.getNewQuery();
-	query.setFolders([PlacesUtils.bookmarks.bookmarksMenuFolder], 1);
-	var result = PlacesUtils.history.executeQuery(query, PlacesUtils.history.getNewQueryOptions());
+  var query = PlacesUtils.history.getNewQuery();
+  query.setFolders([PlacesUtils.bookmarks.bookmarksMenuFolder], 1);
+  var result = PlacesUtils.history.executeQuery(query, PlacesUtils.history.getNewQueryOptions());
 
-	var folder = result.root;
-	fillFolder(popup, folder, 1);
-	
-	if(gList.selectedIndex == -1) {
-		gList.selectedIndex = 0;
-		sageFolderID = PlacesUtils.bookmarks.bookmarksMenuFolder;
-	}
+  var folder = result.root;
+  fillFolder(popup, folder, 1);
+  
+  if(gList.selectedIndex == -1) {
+    gList.selectedIndex = 0;
+    sageFolderID = PlacesUtils.bookmarks.bookmarksMenuFolder;
+  }
 }
 
 function fillFolder(aPopup, aFolder, aDepth) {
-	aFolder.containerOpen = true;
-	for (var c = 0; c < aFolder.childCount; c++) {
-		var child = aFolder.getChild(c);
-		if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
-			!PlacesUtils.nodeIsLivemarkContainer(child)) {
-			child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
-			var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
-			element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);
-			element.setAttribute("id", child.itemId);
-			aPopup.appendChild(element);
-			if (child.itemId == sageFolderID) {
-				gList.selectedItem = element;
-			}
-			fillFolder(aPopup, child, ++aDepth);
-			--aDepth;
-		}
-	}
+  aFolder.containerOpen = true;
+  for (var c = 0; c < aFolder.childCount; c++) {
+    var child = aFolder.getChild(c);
+    if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
+      !PlacesUtils.nodeIsLivemarkContainer(child)) {
+      child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
+      var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
+      element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);
+      element.setAttribute("id", child.itemId);
+      aPopup.appendChild(element);
+      if (child.itemId == sageFolderID) {
+        gList.selectedItem = element;
+      }
+      fillFolder(aPopup, child, ++aDepth);
+      --aDepth;
+    }
+  }
 }

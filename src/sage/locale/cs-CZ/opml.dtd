@@ -1,16 +1,16 @@
-<!ENTITY pageStart.label			"OPML importní/exportní nástroj">
-<!ENTITY pageStart.desc				"Vyberte akci">
-<!ENTITY pageImport.label			"Importovat OPML">
-<!ENTITY pageImport.desc			"Vyberte OPML soubor pro importování">
-<!ENTITY pageExport.label			"Exportovat OPML">
-<!ENTITY pageExport.desc			"Vyberte OPML soubor pro exportování">
+<!ENTITY pageStart.label      "OPML importní/exportní nástroj">
+<!ENTITY pageStart.desc        "Vyberte akci">
+<!ENTITY pageImport.label      "Importovat OPML">
+<!ENTITY pageImport.desc      "Vyberte OPML soubor pro importování">
+<!ENTITY pageExport.label      "Exportovat OPML">
+<!ENTITY pageExport.desc      "Vyberte OPML soubor pro exportování">
 
-<!ENTITY rdoImport.label			"Importovat OPML">
-<!ENTITY rdoExport.label			"Exportovat OPML">
+<!ENTITY rdoImport.label      "Importovat OPML">
+<!ENTITY rdoExport.label      "Exportovat OPML">
 
-<!ENTITY browseButton.label			"Hledat...">
+<!ENTITY browseButton.label      "Hledat...">
 
-<!ENTITY pageImportFinished.label	"Importovat OPML">
-<!ENTITY pageImportFinished.desc	"Import dokončen">
-<!ENTITY pageExportFinished.label	"Exportovat OPML">
-<!ENTITY pageExportFinished.desc	"Export dokončen">
+<!ENTITY pageImportFinished.label  "Importovat OPML">
+<!ENTITY pageImportFinished.desc  "Import dokončen">
+<!ENTITY pageExportFinished.label  "Exportovat OPML">
+<!ENTITY pageExportFinished.desc  "Export dokončen">

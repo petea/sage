@@ -1,29 +1,29 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version.label				"издање">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version.label        "издање">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Отвара Sage">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Отвара Sage">
 
-<!ENTITY menu.view				"Преглед">
-<!ENTITY menu.showFeedItemList			"Прикажи списак новости">
-<!ENTITY menu.showFeedItemListToolbar	"Прикажи алат за приказ списка новости">
-<!ENTITY menu.showFeedItemTooltips			"Прикажи облачиће са описима">
-<!ENTITY menu.openHTML				"Отвори изворе у садржају">
-<!ENTITY menu.options				"Поставке">
-<!ENTITY menu.checkUpdate			"Провери изворе">
-<!ENTITY menu.organizeFeedList			"Уреди списак извора...">
-<!ENTITY menu.opmlImportExport			"OPML увоз/извоз...">
-<!ENTITY menu.setting				"Поставке...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds				"Пронађи изворе">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "Преглед">
+<!ENTITY menu.showFeedItemList      "Прикажи списак новости">
+<!ENTITY menu.showFeedItemListToolbar  "Прикажи алат за приказ списка новости">
+<!ENTITY menu.showFeedItemTooltips      "Прикажи облачиће са описима">
+<!ENTITY menu.openHTML        "Отвори изворе у садржају">
+<!ENTITY menu.options        "Поставке">
+<!ENTITY menu.checkUpdate      "Провери изворе">
+<!ENTITY menu.organizeFeedList      "Уреди списак извора...">
+<!ENTITY menu.opmlImportExport      "OPML увоз/извоз...">
+<!ENTITY menu.setting        "Поставке...">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds        "Пронађи изворе">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Претражујем тренутну страну">
 <!ENTITY discovery.button.addFeed    "Додај извор">
-<!ENTITY discovery.button.close			 "Затвори">
-<!ENTITY discovery.header.title			 "Наслов">
+<!ENTITY discovery.button.close       "Затвори">
+<!ENTITY discovery.header.title       "Наслов">
 <!ENTITY discovery.header.format     "Формат">
 <!ENTITY discovery.header.lastPubDate     "Последња измена">
 <!ENTITY discovery.header.itemCount     "Вести">
@@ -40,15 +40,15 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Исцрпан">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Конзервативан">
 <!ENTITY settingWindow.title                    "Поставке Sage">
-<!ENTITY selectFolder.label			"Каталог извора">
-<!ENTITY openInContentsArea.caption		"Приказ извора">
-<!ENTITY enableUserCss.label			"Посебна страница са стилом">
-<!ENTITY browseCss.label			"Прегледај...">
-<!ENTITY allowEContent.label			"Дозволи HTML ознаке">
+<!ENTITY selectFolder.label      "Каталог извора">
+<!ENTITY openInContentsArea.caption    "Приказ извора">
+<!ENTITY enableUserCss.label      "Посебна страница са стилом">
+<!ENTITY browseCss.label      "Прегледај...">
+<!ENTITY allowEContent.label      "Дозволи HTML ознаке">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Отвори">
@@ -59,24 +59,24 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Означи као прочитано">
-<!ENTITY markAsRead.command.tooltip			"Означи да је ова вест прочитана">
-<!ENTITY markAsRead.command.accesskey		"Р">
+<!ENTITY markAsRead.command.label      "Означи као прочитано">
+<!ENTITY markAsRead.command.tooltip      "Означи да је ова вест прочитана">
+<!ENTITY markAsRead.command.accesskey    "Р">
 
-<!ENTITY markAsUnread.command.label			"Означи као непрочитано">
-<!ENTITY markAsUnread.command.tooltip		"Означи да ова вест није прочитана">
-<!ENTITY markAsUnread.command.accesskey		"У">
+<!ENTITY markAsUnread.command.label      "Означи као непрочитано">
+<!ENTITY markAsUnread.command.tooltip    "Означи да ова вест није прочитана">
+<!ENTITY markAsUnread.command.accesskey    "У">
 
-<!ENTITY markAllAsRead.command.label		"Све је прочитано">
-<!ENTITY markAllAsRead.command.tooltip		"Означи да су све вести из овог извора прочитане">
-<!ENTITY markAllAsRead.command.accesskey	"А">
-<!ENTITY markAllAsRead.command.key			"Ц">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "Све је прочитано">
+<!ENTITY markAllAsRead.command.tooltip    "Означи да су све вести из овог извора прочитане">
+<!ENTITY markAllAsRead.command.accesskey  "А">
+<!ENTITY markAllAsRead.command.key      "Ц">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Ништа није прочитано">
-<!ENTITY markAllAsUnread.command.tooltip	"Означи да ниједна вест из овог извора није прочитана">
-<!ENTITY markAllAsUnread.command.accesskey	"н">
+<!ENTITY markAllAsUnread.command.label    "Ништа није прочитано">
+<!ENTITY markAllAsUnread.command.tooltip  "Означи да ниједна вест из овог извора није прочитана">
+<!ENTITY markAllAsUnread.command.accesskey  "н">
 
-<!ENTITY toggleReadState.command.key		"М">
+<!ENTITY toggleReadState.command.key    "М">
 
 

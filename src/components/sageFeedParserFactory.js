@@ -47,86 +47,86 @@ const sageIFeedParserFactory = Components.interfaces.sageIFeedParserFactory;
 function sageFeedParserFactory() {};
 sageFeedParserFactory.prototype = {
 
-	createFeedParser: function(feedDocument)
-	{
-		if (!feedDocument) {
-			throw "Feed document empty";
-		}
-		
-		var parsers = new Array();
-		parsers.push("@sage.mozdev.org/sage/rssparser;1");
-		parsers.push("@sage.mozdev.org/sage/atomparser;1");
-		parsers.push("@sage.mozdev.org/sage/atom03parser;1");
-		
-		
-		var FeedParser;
-		var feedParser;
-		var found = false;
-		for (var parser in parsers) {
-			FeedParser = new Components.Constructor(parsers[parser], "sageIFeedParser");
-			feedParser = new FeedParser();
-			if (feedParser.discover(feedDocument)) {
-				found = true;
-				break;
-			}
-		}
+  createFeedParser: function(feedDocument)
+  {
+    if (!feedDocument) {
+      throw "Feed document empty";
+    }
+    
+    var parsers = new Array();
+    parsers.push("@sage.mozdev.org/sage/rssparser;1");
+    parsers.push("@sage.mozdev.org/sage/atomparser;1");
+    parsers.push("@sage.mozdev.org/sage/atom03parser;1");
+    
+    
+    var FeedParser;
+    var feedParser;
+    var found = false;
+    for (var parser in parsers) {
+      FeedParser = new Components.Constructor(parsers[parser], "sageIFeedParser");
+      feedParser = new FeedParser();
+      if (feedParser.discover(feedDocument)) {
+        found = true;
+        break;
+      }
+    }
 
-		if (!found) {
-			throw "No matching parser found";
-		}
+    if (!found) {
+      throw "No matching parser found";
+    }
 
-		return feedParser;
-	},
-	
-	// nsISupports
-	QueryInterface: function(aIID)
-	{
-		if (!aIID.equals(Components.interfaces.sageIFeedParserFactory) && !aIID.equals(Components.interfaces.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	}
+    return feedParser;
+  },
+  
+  // nsISupports
+  QueryInterface: function(aIID)
+  {
+    if (!aIID.equals(Components.interfaces.sageIFeedParserFactory) && !aIID.equals(Components.interfaces.nsISupports))
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    return this;
+  }
 };
 
 /******************************************************************************
  * XPCOM Functions for construction and registration
  ******************************************************************************/
 var Module = {
-	_firstTime: true,
-	registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-	{
-		if (this._firstTime) {
-			this._firstTime = false;
-			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-		}
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-	},
+  _firstTime: true,
+  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
+  {
+    if (this._firstTime) {
+      this._firstTime = false;
+      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
+    }
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
+  },
 
-	unregisterSelf: function(aCompMgr, aLocation, aType)
-	{
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-	},
+  unregisterSelf: function(aCompMgr, aLocation, aType)
+  {
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
+  },
   
-	getClassObject: function(aCompMgr, aCID, aIID)
-	{
-		if (!aIID.equals(Components.interfaces.nsIFactory))
-			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-		if (aCID.equals(CLASS_ID))
-			return Factory;
-		throw Components.results.NS_ERROR_NO_INTERFACE;
-	},
+  getClassObject: function(aCompMgr, aCID, aIID)
+  {
+    if (!aIID.equals(Components.interfaces.nsIFactory))
+      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    if (aCID.equals(CLASS_ID))
+      return Factory;
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+  },
 
-	canUnload: function(aCompMgr) { return true; }
+  canUnload: function(aCompMgr) { return true; }
 };
 
 var Factory = {
-	createInstance: function(aOuter, aIID)
-	{
-		if (aOuter != null)
-			throw Components.results.NS_ERROR_NO_AGGREGATION;
-		return (new sageFeedParserFactory()).QueryInterface(aIID);
-	}
+  createInstance: function(aOuter, aIID)
+  {
+    if (aOuter != null)
+      throw Components.results.NS_ERROR_NO_AGGREGATION;
+    return (new sageFeedParserFactory()).QueryInterface(aIID);
+  }
 };
 
 function NSGetModule(aCompMgr, aFileSpec) { return Module; }

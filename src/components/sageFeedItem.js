@@ -46,175 +46,175 @@ const sageIFeedItem = Components.interfaces.sageIFeedItem;
  ******************************************************************************/
 function sageFeedItem() {};
 sageFeedItem.prototype = {
-	_title: null,
-	_link: null,
-	_author: null,
-	_content: null,
-	_pubDate: null,
-	_enclosure: null,
-	_baseURI: null,
+  _title: null,
+  _link: null,
+  _author: null,
+  _content: null,
+  _pubDate: null,
+  _enclosure: null,
+  _baseURI: null,
 
-	init: function(title, link, author, content, pubDate, enclosure, baseURI)
-	{
-		this._title = title;
-		this._link = link;
-		this._author = author;
-		this._content = content;
-		this._pubDate = pubDate;
-		this._enclosure = enclosure;
-		this._baseURI = baseURI;
-	},
-	
-	hasTitle: function()
-	{
-		return Boolean(this._title);
-	},
-	
-	getTitle: function()
-	{
-		var title;
-		if (this.hasTitle()) {
-			title = this._title;
-		} else {
-			if (this.hasContent()) {
-				var temp = this.getContent();
-				temp = temp.replace(/<.*?>/g, "");
-				title = this._smartTrim(temp, 30, " ...");
-			} else {
-				title = null;
-			}
-		}
-		return title;
-	},
-	
-	hasAuthor: function()
-	{
-		return Boolean(this._author);
-	},
-	
-	getAuthor: function()
-	{
-		return this.hasAuthor() ? this._author : null;
-	},
-	
-	getLink: function()
-	{
-		return this._link;
-	},
-	
-	hasContent: function()
-	{
-		return Boolean(this._content);
-	},
-	
-	getContent: function()
-	{
-		return this.hasContent() ? this._content : null;
-	},
-	
-	hasPubDate: function()
-	{
-		return Boolean(this._pubDate);
-	},
-	
-	getPubDate: function()
-	{
-		return this.hasPubDate() ? this._pubDate : null;
-	},
-	
-	hasEnclosure: function()
-	{
-		return Boolean(this._enclosure);
-	},
-	
-	getEnclosure: function()
-	{
-		return this.hasEnclosure() ? this._enclosure : null;
-	},
-	
-	hasBaseURI: function()
-	{
-		return Boolean(this._baseURI);
-	},
-	
-	getBaseURI: function()
-	{
-		return this.hasBaseURI() ? this._baseURI : null;
-	},
-	
-	_smartTrim: function(s, l, p) {
-		var words = s.split(" ");
-		var numWords = words.length;
-		var output = [];
-		var cwl, ol, cWord, w;
-		ol = 0;
-		for(w = 0; w < numWords; ++w) {
-			cWord = words[w];
-			cwl = cWord.length;
-			if((ol + cwl) <= l) {
-				output.push(cWord);
-				ol += cwl + 1;
-			} else {
-				break;
-			}
-		}
-		var trimmedString = output.join(" ");
-		if (trimmedString == s) {
-			return s;
-		} else {
-			return trimmedString + p;
-		}
-	},
-	
-	// nsISupports
-	QueryInterface: function(aIID)
-	{
-		if (!aIID.equals(Components.interfaces.sageIFeedItem) && !aIID.equals(Components.interfaces.nsISupports))
-			throw Components.results.NS_ERROR_NO_INTERFACE;
-		return this;
-	}
+  init: function(title, link, author, content, pubDate, enclosure, baseURI)
+  {
+    this._title = title;
+    this._link = link;
+    this._author = author;
+    this._content = content;
+    this._pubDate = pubDate;
+    this._enclosure = enclosure;
+    this._baseURI = baseURI;
+  },
+  
+  hasTitle: function()
+  {
+    return Boolean(this._title);
+  },
+  
+  getTitle: function()
+  {
+    var title;
+    if (this.hasTitle()) {
+      title = this._title;
+    } else {
+      if (this.hasContent()) {
+        var temp = this.getContent();
+        temp = temp.replace(/<.*?>/g, "");
+        title = this._smartTrim(temp, 30, " ...");
+      } else {
+        title = null;
+      }
+    }
+    return title;
+  },
+  
+  hasAuthor: function()
+  {
+    return Boolean(this._author);
+  },
+  
+  getAuthor: function()
+  {
+    return this.hasAuthor() ? this._author : null;
+  },
+  
+  getLink: function()
+  {
+    return this._link;
+  },
+  
+  hasContent: function()
+  {
+    return Boolean(this._content);
+  },
+  
+  getContent: function()
+  {
+    return this.hasContent() ? this._content : null;
+  },
+  
+  hasPubDate: function()
+  {
+    return Boolean(this._pubDate);
+  },
+  
+  getPubDate: function()
+  {
+    return this.hasPubDate() ? this._pubDate : null;
+  },
+  
+  hasEnclosure: function()
+  {
+    return Boolean(this._enclosure);
+  },
+  
+  getEnclosure: function()
+  {
+    return this.hasEnclosure() ? this._enclosure : null;
+  },
+  
+  hasBaseURI: function()
+  {
+    return Boolean(this._baseURI);
+  },
+  
+  getBaseURI: function()
+  {
+    return this.hasBaseURI() ? this._baseURI : null;
+  },
+  
+  _smartTrim: function(s, l, p) {
+    var words = s.split(" ");
+    var numWords = words.length;
+    var output = [];
+    var cwl, ol, cWord, w;
+    ol = 0;
+    for(w = 0; w < numWords; ++w) {
+      cWord = words[w];
+      cwl = cWord.length;
+      if((ol + cwl) <= l) {
+        output.push(cWord);
+        ol += cwl + 1;
+      } else {
+        break;
+      }
+    }
+    var trimmedString = output.join(" ");
+    if (trimmedString == s) {
+      return s;
+    } else {
+      return trimmedString + p;
+    }
+  },
+  
+  // nsISupports
+  QueryInterface: function(aIID)
+  {
+    if (!aIID.equals(Components.interfaces.sageIFeedItem) && !aIID.equals(Components.interfaces.nsISupports))
+      throw Components.results.NS_ERROR_NO_INTERFACE;
+    return this;
+  }
 };
 
 /******************************************************************************
  * XPCOM Functions for construction and registration
  ******************************************************************************/
 var Module = {
-	_firstTime: true,
-	registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-	{
-		if (this._firstTime) {
-			this._firstTime = false;
-			throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-		}
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-	},
+  _firstTime: true,
+  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
+  {
+    if (this._firstTime) {
+      this._firstTime = false;
+      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
+    }
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
+  },
 
-	unregisterSelf: function(aCompMgr, aLocation, aType)
-	{
-		aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-		aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-	},
+  unregisterSelf: function(aCompMgr, aLocation, aType)
+  {
+    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
+    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
+  },
   
-	getClassObject: function(aCompMgr, aCID, aIID)
-	{
-		if (!aIID.equals(Components.interfaces.nsIFactory))
-			throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-		if (aCID.equals(CLASS_ID))
-			return Factory;
-		throw Components.results.NS_ERROR_NO_INTERFACE;
-	},
+  getClassObject: function(aCompMgr, aCID, aIID)
+  {
+    if (!aIID.equals(Components.interfaces.nsIFactory))
+      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    if (aCID.equals(CLASS_ID))
+      return Factory;
+    throw Components.results.NS_ERROR_NO_INTERFACE;
+  },
 
-	canUnload: function(aCompMgr) { return true; }
+  canUnload: function(aCompMgr) { return true; }
 };
 
 var Factory = {
-	createInstance: function(aOuter, aIID)
-	{
-		if (aOuter != null)
-			throw Components.results.NS_ERROR_NO_AGGREGATION;
-		return (new sageFeedItem()).QueryInterface(aIID);
-	}
+  createInstance: function(aOuter, aIID)
+  {
+    if (aOuter != null)
+      throw Components.results.NS_ERROR_NO_AGGREGATION;
+    return (new sageFeedItem()).QueryInterface(aIID);
+  }
 };
 
 function NSGetModule(aCompMgr, aFileSpec) { return Module; }

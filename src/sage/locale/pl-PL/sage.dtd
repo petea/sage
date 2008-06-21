@@ -1,83 +1,83 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label			"wersja">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version        "1.3">
+<!ENTITY sage.version.label      "wersja">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Wyświetla Sage">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Wyświetla Sage">
 
-<!ENTITY menu.view				"Widok">
-<!ENTITY menu.showFeedItemList		"Pokaż listę artykułów w kanale">
-<!ENTITY menu.showFeedItemListToolbar	"Pokaż pasek narzędzi dla listy artykułów">
-<!ENTITY menu.showFeedItemTooltips			"Pokaż dymki z opisami">
-<!ENTITY menu.openHTML				"Otwórz kanał w oknie zawartości">
-<!ENTITY menu.options				"Opcje">
-<!ENTITY menu.checkUpdate			"Aktualizuj kanały">
-<!ENTITY menu.organizeFeedList			"Zarządzaj listą kanałów...">
-<!ENTITY menu.opmlImportExport		"OPML Import/Eksport...">
-<!ENTITY menu.setting				"Ustawienia...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds			"Wyszukaj kanały">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "Widok">
+<!ENTITY menu.showFeedItemList    "Pokaż listę artykułów w kanale">
+<!ENTITY menu.showFeedItemListToolbar  "Pokaż pasek narzędzi dla listy artykułów">
+<!ENTITY menu.showFeedItemTooltips      "Pokaż dymki z opisami">
+<!ENTITY menu.openHTML        "Otwórz kanał w oknie zawartości">
+<!ENTITY menu.options        "Opcje">
+<!ENTITY menu.checkUpdate      "Aktualizuj kanały">
+<!ENTITY menu.organizeFeedList      "Zarządzaj listą kanałów...">
+<!ENTITY menu.opmlImportExport    "OPML Import/Eksport...">
+<!ENTITY menu.setting        "Ustawienia...">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds      "Wyszukaj kanały">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
-<!ENTITY discovery.status.searching		"Przeszukuję aktualną stronę">
-<!ENTITY discovery.button.addFeed    	"Dodaj kanał">
-<!ENTITY discovery.button.close		"Zamknij">
-<!ENTITY discovery.header.title		"Tytuł">
-<!ENTITY discovery.header.format     	"Format">
+<!ENTITY discovery.status.searching    "Przeszukuję aktualną stronę">
+<!ENTITY discovery.button.addFeed      "Dodaj kanał">
+<!ENTITY discovery.button.close    "Zamknij">
+<!ENTITY discovery.header.title    "Tytuł">
+<!ENTITY discovery.header.format       "Format">
 <!ENTITY discovery.header.lastPubDate     "Ostatnia aktualizacja">
-<!ENTITY discovery.header.itemCount     	"Elementów">
-<!ENTITY discovery.header.url     		"URL">
+<!ENTITY discovery.header.itemCount       "Elementów">
+<!ENTITY discovery.header.url         "URL">
 
 <!-- Settings Dialog -->
-<!ENTITY settings.general.caption     	"Ustawienia ogólne">
-<!ENTITY settings.renderFeeds.label     	"Wyświetl kanał w oknie zawartości">
-<!ENTITY settings.twelveHourClock.label	"Użyj 12-godzinnego zegara">
+<!ENTITY settings.general.caption       "Ustawienia ogólne">
+<!ENTITY settings.renderFeeds.label       "Wyświetl kanał w oknie zawartości">
+<!ENTITY settings.twelveHourClock.label  "Użyj 12-godzinnego zegara">
 <!ENTITY settings.feedItemOrder.label     "Kolejność artykułów">
-<!ENTITY settings.feedItemOrder.chrono	"chronologiczna">
-<!ENTITY settings.feedItemOrder.source	"według źródła">
-<!ENTITY settings.feedDiscoveryMode.label	"Tryb wyszukiwania kanałów">
-<!ENTITY settings.feedDiscoveryMode.exhaustive	"dokładny (obejmujący zewnętrzne linki)">
-<!ENTITY settings.feedDiscoveryMode.conservative	"ostrożny (tylko aktualna strona)">
+<!ENTITY settings.feedItemOrder.chrono  "chronologiczna">
+<!ENTITY settings.feedItemOrder.source  "według źródła">
+<!ENTITY settings.feedDiscoveryMode.label  "Tryb wyszukiwania kanałów">
+<!ENTITY settings.feedDiscoveryMode.exhaustive  "dokładny (obejmujący zewnętrzne linki)">
+<!ENTITY settings.feedDiscoveryMode.conservative  "ostrożny (tylko aktualna strona)">
 <!ENTITY settingWindow.title              "Ustawienia Sage">
-<!ENTITY selectFolder.label			"Wybierz folder dla kanałów">
-<!ENTITY openInContentsArea.caption		"Wyświetlanie kanałów">
-<!ENTITY enableUserCss.label			"Użyj własnej listy stylów CSS">
-<!ENTITY browseCss.label			"Przeglądanie...">
-<!ENTITY allowEContent.label			"Zezwól na znaczniki HTML">
+<!ENTITY selectFolder.label      "Wybierz folder dla kanałów">
+<!ENTITY openInContentsArea.caption    "Wyświetlanie kanałów">
+<!ENTITY enableUserCss.label      "Użyj własnej listy stylów CSS">
+<!ENTITY browseCss.label      "Przeglądanie...">
+<!ENTITY allowEContent.label      "Zezwól na znaczniki HTML">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey	"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey  "alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label 		"Otwórz">
-<!ENTITY openLinkInWindow.accesskey 	"O">
-<!ENTITY openInNewTab.label 			"Otwórz w nowym panelu">
-<!ENTITY openInNewTab.accesskey 		"T">
-<!ENTITY openInNewWindow.label 		"Otwórz w nowym oknie">
-<!ENTITY openInNewWindow.accesskey 		"W">
+<!ENTITY openLinkInWindow.label     "Otwórz">
+<!ENTITY openLinkInWindow.accesskey   "O">
+<!ENTITY openInNewTab.label       "Otwórz w nowym panelu">
+<!ENTITY openInNewTab.accesskey     "T">
+<!ENTITY openInNewWindow.label     "Otwórz w nowym oknie">
+<!ENTITY openInNewWindow.accesskey     "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Oznacz jako przeczytaną">
-<!ENTITY markAsRead.command.tooltip			"Oznacz jako przeczytaną">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "Oznacz jako przeczytaną">
+<!ENTITY markAsRead.command.tooltip      "Oznacz jako przeczytaną">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"Oznacz jako nieprzeczytaną">
-<!ENTITY markAsUnread.command.tooltip		"Oznacz jako nieprzeczytaną">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "Oznacz jako nieprzeczytaną">
+<!ENTITY markAsUnread.command.tooltip    "Oznacz jako nieprzeczytaną">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"Oznacz wszystkie jako przeczytane">
-<!ENTITY markAllAsRead.command.tooltip		"Oznacz wszystkie jako przeczytane">
-<!ENTITY markAllAsRead.command.accesskey		"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers		"accel shift">
+<!ENTITY markAllAsRead.command.label    "Oznacz wszystkie jako przeczytane">
+<!ENTITY markAllAsRead.command.tooltip    "Oznacz wszystkie jako przeczytane">
+<!ENTITY markAllAsRead.command.accesskey    "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers    "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Oznacz wszystkie jako nieprzeczytane">
-<!ENTITY markAllAsUnread.command.tooltip		"Oznacz wszystkie jako nieprzeczytane">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "Oznacz wszystkie jako nieprzeczytane">
+<!ENTITY markAllAsUnread.command.tooltip    "Oznacz wszystkie jako nieprzeczytane">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">
 
 

@@ -1,83 +1,83 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label				"versio">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version        "1.3">
+<!ENTITY sage.version.label        "versio">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Näyttää Sagen">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Näyttää Sagen">
 
-<!ENTITY menu.view				"Näytä">
-<!ENTITY menu.showFeedItemList			"Näytä syötteiden aihelista">
-<!ENTITY menu.showFeedItemListToolbar		"Näytä syötteiden aihelistan työkalupalkki">
-<!ENTITY menu.showFeedItemTooltips			"Näytä selitevihjeet">
-<!ENTITY menu.openHTML				"Avaa syötteet sisältöalueella">
-<!ENTITY menu.options				"Asetukset">
-<!ENTITY menu.checkUpdate			"Tarkista syötteet...">
-<!ENTITY menu.organizeFeedList			"Hallinnoi syötelistaa...">
-<!ENTITY menu.opmlImportExport			"OPML-tuonti/vienti...">
-<!ENTITY menu.setting				"Asetukset...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds			"Etsi syötteet...">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "Näytä">
+<!ENTITY menu.showFeedItemList      "Näytä syötteiden aihelista">
+<!ENTITY menu.showFeedItemListToolbar    "Näytä syötteiden aihelistan työkalupalkki">
+<!ENTITY menu.showFeedItemTooltips      "Näytä selitevihjeet">
+<!ENTITY menu.openHTML        "Avaa syötteet sisältöalueella">
+<!ENTITY menu.options        "Asetukset">
+<!ENTITY menu.checkUpdate      "Tarkista syötteet...">
+<!ENTITY menu.organizeFeedList      "Hallinnoi syötelistaa...">
+<!ENTITY menu.opmlImportExport      "OPML-tuonti/vienti...">
+<!ENTITY menu.setting        "Asetukset...">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds      "Etsi syötteet...">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
-<!ENTITY discovery.status.searching		"Etsitään nykyiseltä sivulta">
-<!ENTITY discovery.button.addFeed		"Lisää syöte">
-<!ENTITY discovery.button.close			"Sulje">
-<!ENTITY discovery.header.title			"Otsikko">
-<!ENTITY discovery.header.format		"Muoto">
-<!ENTITY discovery.header.lastPubDate		"Viimeisin päivitys">
-<!ENTITY discovery.header.itemCount		"Aiheita">
-<!ENTITY discovery.header.url			"URL">
+<!ENTITY discovery.status.searching    "Etsitään nykyiseltä sivulta">
+<!ENTITY discovery.button.addFeed    "Lisää syöte">
+<!ENTITY discovery.button.close      "Sulje">
+<!ENTITY discovery.header.title      "Otsikko">
+<!ENTITY discovery.header.format    "Muoto">
+<!ENTITY discovery.header.lastPubDate    "Viimeisin päivitys">
+<!ENTITY discovery.header.itemCount    "Aiheita">
+<!ENTITY discovery.header.url      "URL">
 
 <!-- Settings Dialog -->
-<!ENTITY settings.general.caption		"Yleinen">
-<!ENTITY settings.renderFeeds.label		"Avaa syötteet sisältöalueella">
-<!ENTITY settings.twelveHourClock.label		"Käytä 12-tuntista kelloa">
-<!ENTITY settings.feedItemOrder.label		"Feed item order">
-<!ENTITY settings.feedItemOrder.chrono		"Kronologinen">
-<!ENTITY settings.feedItemOrder.source		"Lähteestä">
-<!ENTITY settings.feedDiscoveryMode.label	"Syötteiden etsintätila">
-<!ENTITY settings.feedDiscoveryMode.exhaustive	"Täydellinen">
-<!ENTITY settings.feedDiscoveryMode.conservative	"Konservatiivinen">
-<!ENTITY settingWindow.title			"Sagen asetukset">
-<!ENTITY selectFolder.label			"Valitse syötekansio">
-<!ENTITY openInContentsArea.caption		"Syötteiden piirto">
-<!ENTITY enableUserCss.label			"Käytä omaa tyyliohjetta">
-<!ENTITY browseCss.label			"Selaa...">
-<!ENTITY allowEContent.label			"Salli HTML-merkintä">
+<!ENTITY settings.general.caption    "Yleinen">
+<!ENTITY settings.renderFeeds.label    "Avaa syötteet sisältöalueella">
+<!ENTITY settings.twelveHourClock.label    "Käytä 12-tuntista kelloa">
+<!ENTITY settings.feedItemOrder.label    "Feed item order">
+<!ENTITY settings.feedItemOrder.chrono    "Kronologinen">
+<!ENTITY settings.feedItemOrder.source    "Lähteestä">
+<!ENTITY settings.feedDiscoveryMode.label  "Syötteiden etsintätila">
+<!ENTITY settings.feedDiscoveryMode.exhaustive  "Täydellinen">
+<!ENTITY settings.feedDiscoveryMode.conservative  "Konservatiivinen">
+<!ENTITY settingWindow.title      "Sagen asetukset">
+<!ENTITY selectFolder.label      "Valitse syötekansio">
+<!ENTITY openInContentsArea.caption    "Syötteiden piirto">
+<!ENTITY enableUserCss.label      "Käytä omaa tyyliohjetta">
+<!ENTITY browseCss.label      "Selaa...">
+<!ENTITY allowEContent.label      "Salli HTML-merkintä">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
-<!ENTITY openLinkInWindow.label			"Avaa">
-<!ENTITY openLinkInWindow.accesskey		"O">
-<!ENTITY openInNewTab.label			"Avaa uudella välilehdellä">
-<!ENTITY openInNewTab.accesskey			"T">
-<!ENTITY openInNewWindow.label			"Avaa uudessa ikkunassa">
-<!ENTITY openInNewWindow.accesskey		"W">
+<!ENTITY openLinkInWindow.label      "Avaa">
+<!ENTITY openLinkInWindow.accesskey    "O">
+<!ENTITY openInNewTab.label      "Avaa uudella välilehdellä">
+<!ENTITY openInNewTab.accesskey      "T">
+<!ENTITY openInNewWindow.label      "Avaa uudessa ikkunassa">
+<!ENTITY openInNewWindow.accesskey    "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label		"Merkitse luetuksi">
-<!ENTITY markAsRead.command.tooltip		"Merkitse luetuksi">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label    "Merkitse luetuksi">
+<!ENTITY markAsRead.command.tooltip    "Merkitse luetuksi">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label		"Merkitse lukemattomaksi">
-<!ENTITY markAsUnread.command.tooltip		"Merkitse lukemattomaksi">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label    "Merkitse lukemattomaksi">
+<!ENTITY markAsUnread.command.tooltip    "Merkitse lukemattomaksi">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"Merkitse kaikki luetuiksi">
-<!ENTITY markAllAsRead.command.tooltip		"Merkitse kaikki luetuiksi">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key		"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "Merkitse kaikki luetuiksi">
+<!ENTITY markAllAsRead.command.tooltip    "Merkitse kaikki luetuiksi">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key    "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Merkitse kaikki lukemattomiksi">
-<!ENTITY markAllAsUnread.command.tooltip	"Merkitse kaikki lukemattomiksi">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "Merkitse kaikki lukemattomiksi">
+<!ENTITY markAllAsUnread.command.tooltip  "Merkitse kaikki lukemattomiksi">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">
 
 

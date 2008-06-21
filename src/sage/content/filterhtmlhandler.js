@@ -41,131 +41,131 @@
  * potentially unsafe HTML code
  */
 function FilterHtmlHandler() {
-	this._sb = [];
+  this._sb = [];
 }
 
 FilterHtmlHandler.prototype = {
 
-	_inBlocked:	null,
+  _inBlocked:  null,
 
-	clear:	function () {
-		this._sb = [];
-	},
+  clear:  function () {
+    this._sb = [];
+  },
 
-	toString:	function () {
-		return this._sb.join("");
-	},
+  toString:  function () {
+    return this._sb.join("");
+  },
 
 // handler interface
 
-	startElement:   function (sTagName, attrs) {
-		if (this._inBlocked) {
-			return;
-		}
+  startElement:   function (sTagName, attrs) {
+    if (this._inBlocked) {
+      return;
+    }
 
-		var ls = sTagName.toLowerCase();
-		switch (ls) {
-			case "embed":
-			case "link":
-			case "meta":
-			case "applet":
-			case "object":
-			case "param":
-			case "frame":
-			case "frameset":
-			case "iframe":
-			case "font":
-			case "center":
-				return;
+    var ls = sTagName.toLowerCase();
+    switch (ls) {
+      case "embed":
+      case "link":
+      case "meta":
+      case "applet":
+      case "object":
+      case "param":
+      case "frame":
+      case "frameset":
+      case "iframe":
+      case "font":
+      case "center":
+        return;
 
-			case "script":
-			case "style":
-				this._inBlocked = ls;
-				break;
+      case "script":
+      case "style":
+        this._inBlocked = ls;
+        break;
 
-			default:
-				this._sb.push("<" + sTagName);
-		}
+      default:
+        this._sb.push("<" + sTagName);
+    }
 
-		if (!this._inBlocked) {
-			for (var i = 0; i < attrs.length; i++) {
-				this.attribute(sTagName, attrs[i].name, attrs[i].value);
-			}
-			this._sb.push(">");
-		}
-	},
+    if (!this._inBlocked) {
+      for (var i = 0; i < attrs.length; i++) {
+        this.attribute(sTagName, attrs[i].name, attrs[i].value);
+      }
+      this._sb.push(">");
+    }
+  },
 
-	endElement:     function (s) {
-		var ls = s.toLowerCase();
-		switch (ls) {
-			case "embed":
-			case "applet":
-			case "object":
-			case "param":
-			case "frame":
-			case "frameset":
-			case "iframe":
-			case "font":
-			case "center":
-				return;
-		}
-		if (this._inBlocked) {
-			if (this._inBlocked == ls) {
-				this._inBlocked = null;
-			}
-			return;
-		}
-		this._sb.push("</" + s + ">");
-	},
+  endElement:     function (s) {
+    var ls = s.toLowerCase();
+    switch (ls) {
+      case "embed":
+      case "applet":
+      case "object":
+      case "param":
+      case "frame":
+      case "frameset":
+      case "iframe":
+      case "font":
+      case "center":
+        return;
+    }
+    if (this._inBlocked) {
+      if (this._inBlocked == ls) {
+        this._inBlocked = null;
+      }
+      return;
+    }
+    this._sb.push("</" + s + ">");
+  },
 
-	attribute:  function (sTagName, sName, sValue) {
-		if (this._inBlocked) {
-			return;
-		}
+  attribute:  function (sTagName, sName, sValue) {
+    if (this._inBlocked) {
+      return;
+    }
 
-		var tl = sTagName.toLowerCase();
-		var nl = sName.toLowerCase();
-		var vl = String(sValue).toLowerCase();	// might be null
+    var tl = sTagName.toLowerCase();
+    var nl = sName.toLowerCase();
+    var vl = String(sValue).toLowerCase();  // might be null
 
-		switch (nl) {
-			case "align":
-			case "style":
-				return;
-		}
+    switch (nl) {
+      case "align":
+      case "style":
+        return;
+    }
 
-		if (nl == "type" && vl == "text/css" ||
-			nl == "rel" && vl == "stylesheet") {
-			this._sb.push(" " + sName + "=\"BLOCKED\"");
-		} else if (nl.substr(0,2) == "on") {
-			//noop
-		} else if ((nl == "href" || nl == "src" || nl == "data" || nl == "codebase") &&
-				 /^javascript\:/i.test(vl)) {
-			//noop
-		} else if (tl == "img" && nl == "src" &&
-							 vl.substring(0, 7) == "mailto:") {
-			//noop
-		} else if (nl == "style") {
-			sValue = sValue.replace(/\-moz\-binding/gi, "BLOCKED")
-					.replace(/binding/gi, "BLOCKED")
-					.replace(/behavior/gi, "BLOCKED")
-					.replace(/\:\s*expression\s*\(/gi, ":BLOCKED(");
-			this._sb.push(" " + sName + "=\"" + sValue + "\"");
-		} else {
-			if (sValue == null) {
-				this._sb.push(" " + sName);
-			} else {
-				this._sb.push(" " + sName + "=\"" + sValue + "\"");
-			}
-		}
-	},
+    if (nl == "type" && vl == "text/css" ||
+      nl == "rel" && vl == "stylesheet") {
+      this._sb.push(" " + sName + "=\"BLOCKED\"");
+    } else if (nl.substr(0,2) == "on") {
+      //noop
+    } else if ((nl == "href" || nl == "src" || nl == "data" || nl == "codebase") &&
+         /^javascript\:/i.test(vl)) {
+      //noop
+    } else if (tl == "img" && nl == "src" &&
+               vl.substring(0, 7) == "mailto:") {
+      //noop
+    } else if (nl == "style") {
+      sValue = sValue.replace(/\-moz\-binding/gi, "BLOCKED")
+          .replace(/binding/gi, "BLOCKED")
+          .replace(/behavior/gi, "BLOCKED")
+          .replace(/\:\s*expression\s*\(/gi, ":BLOCKED(");
+      this._sb.push(" " + sName + "=\"" + sValue + "\"");
+    } else {
+      if (sValue == null) {
+        this._sb.push(" " + sName);
+      } else {
+        this._sb.push(" " + sName + "=\"" + sValue + "\"");
+      }
+    }
+  },
 
-	characters:	function (s) {
-		if (!this._inBlocked) {
-			this._sb.push(s);
-		}
-	},
+  characters:  function (s) {
+    if (!this._inBlocked) {
+      this._sb.push(s);
+    }
+  },
 
-	comment:	function (s) {
-		//this._sb.push(s);
-	}
+  comment:  function (s) {
+    //this._sb.push(s);
+  }
 };

@@ -1,30 +1,30 @@
-<!ENTITY sage.label			"Sage">
-<!ENTITY sage.version			"1.3">
-<!ENTITY sage.version.label				"">
+<!ENTITY sage.label      "Sage">
+<!ENTITY sage.version      "1.3">
+<!ENTITY sage.version.label        "">
 
-<!ENTITY sage.toolbarLabel		"Sage">
-<!ENTITY sage.sidebarTitle		"Sage">
-<!ENTITY sage.tooltip			"Sageを表示">
+<!ENTITY sage.toolbarLabel    "Sage">
+<!ENTITY sage.sidebarTitle    "Sage">
+<!ENTITY sage.tooltip      "Sageを表示">
 
-<!ENTITY menu.view					"表示">
-<!ENTITY menu.showFeedItemList			"項目リストの表示">
-<!ENTITY menu.showFeedItemListToolbar	"項目リストツールバーの表示">
-<!ENTITY menu.showFeedItemTooltips		"概要のツールチップの表示">
-<!ENTITY menu.openHTML				"コンテンツエリアで開く">
-<!ENTITY menu.options					"ツール">
-<!ENTITY menu.checkUpdate			"更新チェック">
-<!ENTITY menu.organizeFeedList			"フィードリストの管理">
-<!ENTITY menu.opmlImportExport		"OPML インポート/エクスポート...">
-<!ENTITY menu.setting				"設定...">
-<!ENTITY menu.aboutSage				"Sageについて">
-<!ENTITY menu.discoverFeeds				"フィードを発見する">
-<!ENTITY menu.sidebarLayout				"サイドバーレイアウト">
+<!ENTITY menu.view          "表示">
+<!ENTITY menu.showFeedItemList      "項目リストの表示">
+<!ENTITY menu.showFeedItemListToolbar  "項目リストツールバーの表示">
+<!ENTITY menu.showFeedItemTooltips    "概要のツールチップの表示">
+<!ENTITY menu.openHTML        "コンテンツエリアで開く">
+<!ENTITY menu.options          "ツール">
+<!ENTITY menu.checkUpdate      "更新チェック">
+<!ENTITY menu.organizeFeedList      "フィードリストの管理">
+<!ENTITY menu.opmlImportExport    "OPML インポート/エクスポート...">
+<!ENTITY menu.setting        "設定...">
+<!ENTITY menu.aboutSage        "Sageについて">
+<!ENTITY menu.discoverFeeds        "フィードを発見する">
+<!ENTITY menu.sidebarLayout        "サイドバーレイアウト">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "現在のページを検索">
 <!ENTITY discovery.button.addFeed    "フィードの追加">
-<!ENTITY discovery.button.close			 "閉じる">
-<!ENTITY discovery.header.title			 "タイトル">
+<!ENTITY discovery.button.close       "閉じる">
+<!ENTITY discovery.header.title       "タイトル">
 <!ENTITY discovery.header.format     "フォーマット">
 <!ENTITY discovery.header.lastPubDate     "最終更新日時">
 <!ENTITY discovery.header.itemCount     "項目">
@@ -34,22 +34,22 @@
 <!ENTITY settings.general.caption     "概要">
 <!ENTITY settings.renderFeeds.label     "コンテンツエリアにフィードを読みこむ">
 <!ENTITY settings.twelveHourClock.label     "時間は12時間制にする">
-<!ENTITY settingWindow.title		"設定: フィードリーダパネル">
-<!ENTITY selectFolder.label			"フィードリストフォルダの選択">
+<!ENTITY settingWindow.title    "設定: フィードリーダパネル">
+<!ENTITY selectFolder.label      "フィードリストフォルダの選択">
 <!ENTITY settings.feedItemOrder.label     "フィード項目の順序">
 <!ENTITY settings.feedItemOrder.chrono     "日付順">
 <!ENTITY settings.feedItemOrder.source     "場所順">
 <!ENTITY settings.feedDiscoveryMode.label     "フィード発見モード">
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "徹底的に">
 <!ENTITY settings.feedDiscoveryMode.conservative     "控えめに">
-<!ENTITY openInContentsArea.caption	"コンテンツエリアで開く">
-<!ENTITY enableUserCss.label		"ユーザースタイルシートを使う">
-<!ENTITY browseCss.label			"参照...">
-<!ENTITY allowEContent.label		"HTML タグを許可する">
+<!ENTITY openInContentsArea.caption  "コンテンツエリアで開く">
+<!ENTITY enableUserCss.label    "ユーザースタイルシートを使う">
+<!ENTITY browseCss.label      "参照...">
+<!ENTITY allowEContent.label    "HTML タグを許可する">
 
 
-<!ENTITY openSageSidebar.commandkey	"Z">
-<!ENTITY openSageSidebar.modifiersKey	"alt">
+<!ENTITY openSageSidebar.commandkey  "Z">
+<!ENTITY openSageSidebar.modifiersKey  "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "開く">
@@ -60,23 +60,23 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"既読に設定">
-<!ENTITY markAsRead.command.tooltip			"既読に設定します">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "既読に設定">
+<!ENTITY markAsRead.command.tooltip      "既読に設定します">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"未読に設定">
-<!ENTITY markAsUnread.command.tooltip		"未読に設定します">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "未読に設定">
+<!ENTITY markAsUnread.command.tooltip    "未読に設定します">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"全て既読に設定">
-<!ENTITY markAllAsRead.command.tooltip		"全て既読に設定します">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "全て既読に設定">
+<!ENTITY markAllAsRead.command.tooltip    "全て既読に設定します">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"全て未読に設定">
-<!ENTITY markAllAsUnread.command.tooltip	"全て未読に設定します">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "全て未読に設定">
+<!ENTITY markAllAsUnread.command.tooltip  "全て未読に設定します">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">
 

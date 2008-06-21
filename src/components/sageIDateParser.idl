@@ -41,9 +41,9 @@
 [scriptable, uuid(8580AC07-319A-4025-ADBA-E62415E1AFFF)]
 interface sageIDateParser: nsISupports {
 
-	// parse RFC 822 date string, return milliseconds since 1970
-	PRTime parseRFC822(in AString aDateString);
+  // parse RFC 822 date string, return milliseconds since 1970
+  PRTime parseRFC822(in AString aDateString);
   
-	// parse ISO 8601 date string, return milliseconds since 1970
-	PRTime parseISO8601(in AString aDateString);
+  // parse ISO 8601 date string, return milliseconds since 1970
+  PRTime parseISO8601(in AString aDateString);
 };

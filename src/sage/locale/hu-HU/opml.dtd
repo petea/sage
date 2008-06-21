@@ -1,16 +1,16 @@
-<!ENTITY pageStart.label			"OPML import/export varázsló">
-<!ENTITY pageStart.desc				"Tevékenység kiválasztása">
-<!ENTITY pageImport.label			"OPML importálás">
-<!ENTITY pageImport.desc			"Válasszon ki egy fájlt a beimportáláshoz">
-<!ENTITY pageExport.label			"OPML exportálás">
-<!ENTITY pageExport.desc			"Válasszon ki egy fájlt a kiexportáláshoz">
+<!ENTITY pageStart.label      "OPML import/export varázsló">
+<!ENTITY pageStart.desc        "Tevékenység kiválasztása">
+<!ENTITY pageImport.label      "OPML importálás">
+<!ENTITY pageImport.desc      "Válasszon ki egy fájlt a beimportáláshoz">
+<!ENTITY pageExport.label      "OPML exportálás">
+<!ENTITY pageExport.desc      "Válasszon ki egy fájlt a kiexportáláshoz">
 
-<!ENTITY rdoImport.label			"OPML import">
-<!ENTITY rdoExport.label			"OPML export">
+<!ENTITY rdoImport.label      "OPML import">
+<!ENTITY rdoExport.label      "OPML export">
 
-<!ENTITY browseButton.label			"Böngészés...">
+<!ENTITY browseButton.label      "Böngészés...">
 
-<!ENTITY pageImportFinished.label	"OPML importálás">
-<!ENTITY pageImportFinished.desc	"Importálás befejezve">
-<!ENTITY pageExportFinished.label	"OPML exportálás">
-<!ENTITY pageExportFinished.desc	"Exportportálás befejezve">
+<!ENTITY pageImportFinished.label  "OPML importálás">
+<!ENTITY pageImportFinished.desc  "Importálás befejezve">
+<!ENTITY pageExportFinished.label  "OPML exportálás">
+<!ENTITY pageExportFinished.desc  "Exportportálás befejezve">

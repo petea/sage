@@ -41,37 +41,37 @@
 
 <overlay id="sageOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/sage_main.js"/>
+  <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
+  <script type="application/x-javascript" src="chrome://sage/content/sage_main.js"/>
 
-	<menupopup id="viewSidebarMenu">
-		<menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
-	</menupopup>
+  <menupopup id="viewSidebarMenu">
+    <menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>
+  </menupopup>
 
-	<menupopup id="menu_ToolsPopup">
-		<menuitem key="key_openSageSidebar" observes="viewSageSidebar" position="1"/>
-	</menupopup>
+  <menupopup id="menu_ToolsPopup">
+    <menuitem key="key_openSageSidebar" observes="viewSageSidebar" position="1"/>
+  </menupopup>
 
-	<keyset id="mainKeyset">
-		<key id="key_openSageSidebar" command="viewSageSidebar"
-			key="&openSageSidebar.commandkey;"
-			modifiers="&openSageSidebar.modifiersKey;"/>
-	</keyset>
+  <keyset id="mainKeyset">
+    <key id="key_openSageSidebar" command="viewSageSidebar"
+      key="&openSageSidebar.commandkey;"
+      modifiers="&openSageSidebar.modifiersKey;"/>
+  </keyset>
 
-	<broadcasterset id="mainBroadcasterSet">
-		<broadcaster id="viewSageSidebar"
-			autoCheck="false"
-			label="&sage.toolbarLabel;"
-			type="checkbox" group="sidebar"
-			sidebarurl="chrome://sage/content/sage.xul"
-			sidebartitle="&sage.sidebarTitle;"
-			oncommand="toggleSidebar('viewSageSidebar');"/>
-	</broadcasterset>
+  <broadcasterset id="mainBroadcasterSet">
+    <broadcaster id="viewSageSidebar"
+      autoCheck="false"
+      label="&sage.toolbarLabel;"
+      type="checkbox" group="sidebar"
+      sidebarurl="chrome://sage/content/sage.xul"
+      sidebartitle="&sage.sidebarTitle;"
+      oncommand="toggleSidebar('viewSageSidebar');"/>
+  </broadcasterset>
 
-	<toolbox id="navigator-toolbox">
-		<toolbarpalette id="BrowserToolbarPalette">
-			<toolbarbutton id="sage-button" tooltiptext="&sage.tooltip;" observes="viewSageSidebar" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
-		</toolbarpalette>
-	</toolbox>
+  <toolbox id="navigator-toolbox">
+    <toolbarpalette id="BrowserToolbarPalette">
+      <toolbarbutton id="sage-button" tooltiptext="&sage.tooltip;" observes="viewSageSidebar" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    </toolbarpalette>
+  </toolbox>
 
 </overlay>

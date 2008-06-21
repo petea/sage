@@ -1,30 +1,30 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label				"version">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version        "1.3">
+<!ENTITY sage.version.label        "version">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage RSS-/ATOM-Betrachter">
-<!ENTITY sage.tooltip				"Öffnet Sage">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage RSS-/ATOM-Betrachter">
+<!ENTITY sage.tooltip        "Öffnet Sage">
 
-<!ENTITY menu.view				"Anzeigen">
-<!ENTITY menu.showFeedItemList			"Inhaltsübersicht der Nachrichtenkanäle anzeigen">
-<!ENTITY menu.showFeedItemListToolbar	"Gelesen/Ungelesen-Optionsleiste anzeigen">
-<!ENTITY menu.showFeedItemTooltips			"Mouseover-Effekte aktivieren">
-<!ENTITY menu.openHTML				"Nachrichtenkanäle im Hauptfenster anzeigen">
-<!ENTITY menu.options				"Optionen">
-<!ENTITY menu.checkUpdate			"Nachrichtenkanäle auf Aktualisierungen prüfen">
-<!ENTITY menu.organizeFeedList			"Liste der Nachrichtenkanäle verwalten...">
-<!ENTITY menu.opmlImportExport			"OPML Import/Export...">
-<!ENTITY menu.setting				"Einstellungen">
-<!ENTITY menu.discoverFeeds				"Nachrichtenkanäle auf dieser Seite suchen">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "Anzeigen">
+<!ENTITY menu.showFeedItemList      "Inhaltsübersicht der Nachrichtenkanäle anzeigen">
+<!ENTITY menu.showFeedItemListToolbar  "Gelesen/Ungelesen-Optionsleiste anzeigen">
+<!ENTITY menu.showFeedItemTooltips      "Mouseover-Effekte aktivieren">
+<!ENTITY menu.openHTML        "Nachrichtenkanäle im Hauptfenster anzeigen">
+<!ENTITY menu.options        "Optionen">
+<!ENTITY menu.checkUpdate      "Nachrichtenkanäle auf Aktualisierungen prüfen">
+<!ENTITY menu.organizeFeedList      "Liste der Nachrichtenkanäle verwalten...">
+<!ENTITY menu.opmlImportExport      "OPML Import/Export...">
+<!ENTITY menu.setting        "Einstellungen">
+<!ENTITY menu.discoverFeeds        "Nachrichtenkanäle auf dieser Seite suchen">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Aktuelle Seite durchsuchen">
 <!ENTITY discovery.button.addFeed    "Nachrichtenkanal hinzufügen">
-<!ENTITY discovery.button.close			 "Schließen">
-<!ENTITY discovery.header.title			 "Titel">
+<!ENTITY discovery.button.close       "Schließen">
+<!ENTITY discovery.header.title       "Titel">
 <!ENTITY discovery.header.format     "Format">
 <!ENTITY discovery.header.lastPubDate     "Letzte Aktualisierung">
 <!ENTITY discovery.header.itemCount     "Elemente">
@@ -41,15 +41,15 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "ausführlich - inkl. externen Quellen">
 <!ENTITY settings.feedDiscoveryMode.conservative     "konservativ - nur auf dieser Seite">
 <!ENTITY settingWindow.title                    "Sage Einstellungen">
-<!ENTITY selectFolder.label			"Ordner für Nachrichtenkanäle auswählen">
-<!ENTITY openInContentsArea.caption		"Anzeige der Nachrichtenkanäle">
-<!ENTITY enableUserCss.label			"Benutzerdefiniertes CSS verwenden">
-<!ENTITY browseCss.label			"Durchsuchen...">
-<!ENTITY allowEContent.label			"HTML Tags zulassen">
+<!ENTITY selectFolder.label      "Ordner für Nachrichtenkanäle auswählen">
+<!ENTITY openInContentsArea.caption    "Anzeige der Nachrichtenkanäle">
+<!ENTITY enableUserCss.label      "Benutzerdefiniertes CSS verwenden">
+<!ENTITY browseCss.label      "Durchsuchen...">
+<!ENTITY allowEContent.label      "HTML Tags zulassen">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Öffnen">
@@ -60,24 +60,24 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Als gelesen markieren">
-<!ENTITY markAsRead.command.tooltip			"Als gelesen markieren">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "Als gelesen markieren">
+<!ENTITY markAsRead.command.tooltip      "Als gelesen markieren">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"Als ungelesen markieren">
-<!ENTITY markAsUnread.command.tooltip		"Als ungelesen markieren">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "Als ungelesen markieren">
+<!ENTITY markAsUnread.command.tooltip    "Als ungelesen markieren">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"Alles als gelesen markieren">
-<!ENTITY markAllAsRead.command.tooltip		"Alles als gelesen markieren ">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "Alles als gelesen markieren">
+<!ENTITY markAllAsRead.command.tooltip    "Alles als gelesen markieren ">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Alles als ungelesen markieren ">
-<!ENTITY markAllAsUnread.command.tooltip	"Alles als ungelesen markieren">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "Alles als ungelesen markieren ">
+<!ENTITY markAllAsUnread.command.tooltip  "Alles als ungelesen markieren">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">
 
 

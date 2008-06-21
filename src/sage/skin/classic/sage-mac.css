@@ -39,21 +39,21 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 sidebarheader {
-	background-color: #eee;
+  background-color: #eee;
 }
 
 #bookmarks-view {
-	background-color: #fff;
-	border-top: 1px solid #aaa !important;
+  background-color: #fff;
+  border-top: 1px solid #aaa !important;
 }
 
 #feedListToolbar,
 #itemListToolbar {
-	background-color: #ddd;
-	border-top: 1px solid #aaa;
-	border-bottom: 1px solid #aaa;
+  background-color: #ddd;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
 }
 
 #feedListToolbar toolbarbutton {
-	padding: 5px 3px 2px 3px;
+  padding: 5px 3px 2px 3px;
 }

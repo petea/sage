@@ -1,30 +1,30 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version				"1.3">
-<!ENTITY sage.version.label				"버전">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version        "1.3">
+<!ENTITY sage.version.label        "버전">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Sage를 표시합니다">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Sage를 표시합니다">
 
-<!ENTITY menu.view				"보기">
-<!ENTITY menu.showFeedItemList			"글 목록 표시">
-<!ENTITY menu.showFeedItemListToolbar	"글 목록 도구막대 표시">
-<!ENTITY menu.showFeedItemTooltips			"글 내용을 꼬리말로 보여주기">
-<!ENTITY menu.openHTML				"피드를 내용 영역에 열기">
-<!ENTITY menu.options				"기능">
-<!ENTITY menu.checkUpdate			"업데이트 검사">
-<!ENTITY menu.organizeFeedList			"피드 목록 관리">
-<!ENTITY menu.opmlImportExport			"OPML 가져오기/내보내기...">
-<!ENTITY menu.setting				"설정...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds				"현재 문서의 RSS 피드 찾기">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "보기">
+<!ENTITY menu.showFeedItemList      "글 목록 표시">
+<!ENTITY menu.showFeedItemListToolbar  "글 목록 도구막대 표시">
+<!ENTITY menu.showFeedItemTooltips      "글 내용을 꼬리말로 보여주기">
+<!ENTITY menu.openHTML        "피드를 내용 영역에 열기">
+<!ENTITY menu.options        "기능">
+<!ENTITY menu.checkUpdate      "업데이트 검사">
+<!ENTITY menu.organizeFeedList      "피드 목록 관리">
+<!ENTITY menu.opmlImportExport      "OPML 가져오기/내보내기...">
+<!ENTITY menu.setting        "설정...">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds        "현재 문서의 RSS 피드 찾기">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "문서를 검색하고 있습니다">
 <!ENTITY discovery.button.addFeed    "피드 추가">
-<!ENTITY discovery.button.close			 "닫기">
-<!ENTITY discovery.header.title			 "제목">
+<!ENTITY discovery.button.close       "닫기">
+<!ENTITY discovery.header.title       "제목">
 <!ENTITY discovery.header.format     "형식">
 <!ENTITY discovery.header.lastPubDate     "마지막 업데이트">
 <!ENTITY discovery.header.itemCount     "항목">
@@ -41,15 +41,15 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "모두 찾기">
 <!ENTITY settings.feedDiscoveryMode.conservative     "현재 주소 아래의 피드만 찾기">
 <!ENTITY settingWindow.title                    "Sage 설정">
-<!ENTITY selectFolder.label			"피드 폴더를 고르세요">
-<!ENTITY openInContentsArea.caption		"피드 표시">
-<!ENTITY enableUserCss.label			"사용자 지정 CSS 사용합니다">
-<!ENTITY browseCss.label			"찾아보기...">
-<!ENTITY allowEContent.label			"HTML를 허용합니다">
+<!ENTITY selectFolder.label      "피드 폴더를 고르세요">
+<!ENTITY openInContentsArea.caption    "피드 표시">
+<!ENTITY enableUserCss.label      "사용자 지정 CSS 사용합니다">
+<!ENTITY browseCss.label      "찾아보기...">
+<!ENTITY allowEContent.label      "HTML를 허용합니다">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "열기">
@@ -60,22 +60,22 @@
 <!ENTITY openInNewWindow.accesskey "W">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"읽은 것으로 표시">
-<!ENTITY markAsRead.command.tooltip			"읽은 것으로 표시">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "읽은 것으로 표시">
+<!ENTITY markAsRead.command.tooltip      "읽은 것으로 표시">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"안 읽은 것으로 표시">
-<!ENTITY markAsUnread.command.tooltip		"안 읽은 것으로 표시">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "안 읽은 것으로 표시">
+<!ENTITY markAsUnread.command.tooltip    "안 읽은 것으로 표시">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"모두 읽은 것으로 표시">
-<!ENTITY markAllAsRead.command.tooltip		"모두 읽은 것으로 표시">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "모두 읽은 것으로 표시">
+<!ENTITY markAllAsRead.command.tooltip    "모두 읽은 것으로 표시">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"모두 안 읽은 것으로 표시">
-<!ENTITY markAllAsUnread.command.tooltip	"모두 안 읽은 것으로 표시">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "모두 안 읽은 것으로 표시">
+<!ENTITY markAllAsUnread.command.tooltip  "모두 안 읽은 것으로 표시">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">

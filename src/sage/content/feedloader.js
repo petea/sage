@@ -37,173 +37,173 @@
  * ***** END LICENSE BLOCK ***** */
 
 function FeedLoader() {
-	this._listeners = {};
+  this._listeners = {};
 }
 
 FeedLoader.prototype = {
-	uri:			null,
-	currentFeed:	null,
-	loading:		false,
+  uri:      null,
+  currentFeed:  null,
+  loading:    false,
 
-	addListener: function (n, f) {
-		var found = false;
-		var ls = this._listeners[n];
-		if (ls == null) {
-			ls = this._listeners[n] = [];
-		} else {
-			var l = ls.length;
-			for (var i = 0; i < l; i++) {
-				if (ls[i] == f) {
-					found = true;
-					break;
-				}
-			}
-		}
-		if (!found) {
-			ls.push(f);
-		}
-	},
+  addListener: function (n, f) {
+    var found = false;
+    var ls = this._listeners[n];
+    if (ls == null) {
+      ls = this._listeners[n] = [];
+    } else {
+      var l = ls.length;
+      for (var i = 0; i < l; i++) {
+        if (ls[i] == f) {
+          found = true;
+          break;
+        }
+      }
+    }
+    if (!found) {
+      ls.push(f);
+    }
+  },
 
-	removeListener: function (n, f) {
-		var ls = this._listeners[n];
-		if (ls) {
-			var l = ls.length;
-			for (var i = 0; i < l; i++) {
-				if (ls[i] == f) {
-					ls.splice(i,1);
-					return;
-				}
-			}
-		}
-	},
+  removeListener: function (n, f) {
+    var ls = this._listeners[n];
+    if (ls) {
+      var l = ls.length;
+      for (var i = 0; i < l; i++) {
+        if (ls[i] == f) {
+          ls.splice(i,1);
+          return;
+        }
+      }
+    }
+  },
 
-	_callListeners: function (n, arg) {
-		var ls = this._listeners[n];
-		if (ls) {
-			var l = ls.length;
-			for (var i = 0; i < l; i++) {
-				ls[i].call(this, arg);
-			}
-		}
-	},
+  _callListeners: function (n, arg) {
+    var ls = this._listeners[n];
+    if (ls) {
+      var l = ls.length;
+      for (var i = 0; i < l; i++) {
+        ls[i].call(this, arg);
+      }
+    }
+  },
 
-	loadURI: function (aURI) {
-		if (this.loading) {
-			this.abort();
-		}
+  loadURI: function (aURI) {
+    if (this.loading) {
+      this.abort();
+    }
 
-		this.httpReq = new XMLHttpRequest();
-		this.httpReq.open("GET", aURI);
-		this.uri = aURI;
+    this.httpReq = new XMLHttpRequest();
+    this.httpReq.open("GET", aURI);
+    this.uri = aURI;
 
-		var oThis = this;
-		this.httpReq.onload = function (e) { return oThis.onHttpLoaded(e); };
-		this.httpReq.onerror = function (e) { return oThis.onHttpError(e); };
-		this.httpReq.onreadystatechange = function (e) { return oThis.onHttpReadyStateChange(e); };
+    var oThis = this;
+    this.httpReq.onload = function (e) { return oThis.onHttpLoaded(e); };
+    this.httpReq.onerror = function (e) { return oThis.onHttpError(e); };
+    this.httpReq.onreadystatechange = function (e) { return oThis.onHttpReadyStateChange(e); };
 
-		try {
-			this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-			this.httpReq.overrideMimeType("application/xml");
-		} catch (e) {
-			this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
-		}
+    try {
+      this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
+      this.httpReq.overrideMimeType("application/xml");
+    } catch (e) {
+      this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
+    }
 
-		try {
-			this.httpReq.send(null);
-			this.loading = true;
-			this.currentFeed = null;
-		}
-		catch (e) {
-			this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
-		}
-	},
+    try {
+      this.httpReq.send(null);
+      this.loading = true;
+      this.currentFeed = null;
+    }
+    catch (e) {
+      this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
+    }
+  },
 
-	abort: function () {
-		if (this.loading) {
-			if (this.httpReq) {
-				this.httpReq.abort();
-			}
-			this.httpReq = null;
-			this.loading = false;
-			this._callListeners("abort", this.uri);
-		}
-	},
+  abort: function () {
+    if (this.loading) {
+      if (this.httpReq) {
+        this.httpReq.abort();
+      }
+      this.httpReq = null;
+      this.loading = false;
+      this._callListeners("abort", this.uri);
+    }
+  },
 
-	onHttpError:	function (e)
-	{
-		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-		var logger = new Logger();
+  onHttpError:  function (e)
+  {
+    var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+    var logger = new Logger();
 
-		logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
-		this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
-	},
+    logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
+    this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
+  },
 
-	onHttpReadyStateChange:	function (e)
-	{
-		if (this.httpReq.readyState == 2)
-		{
-			try
-			{
-				if (this.httpReq.status == 404)
-				{
-					this.httpGetResult(SageUtils.RESULT_NOT_FOUND);
-				}
-			}
-			catch (e)
-			{
-				this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
-				return;
-			}
-		}
-		//else if (this.httpReq.readyState == 3) {}
-	},
+  onHttpReadyStateChange:  function (e)
+  {
+    if (this.httpReq.readyState == 2)
+    {
+      try
+      {
+        if (this.httpReq.status == 404)
+        {
+          this.httpGetResult(SageUtils.RESULT_NOT_FOUND);
+        }
+      }
+      catch (e)
+      {
+        this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
+        return;
+      }
+    }
+    //else if (this.httpReq.readyState == 3) {}
+  },
 
-	onHttpLoaded:	function (e)
-	{
-		this.responseXML = this.httpReq.responseXML;
-		var rootNodeName = this.responseXML.documentElement.localName.toLowerCase();
+  onHttpLoaded:  function (e)
+  {
+    this.responseXML = this.httpReq.responseXML;
+    var rootNodeName = this.responseXML.documentElement.localName.toLowerCase();
 
-		switch (rootNodeName)
-		{
-			case "parsererror":
-				// XML Parse Error
-				this.httpGetResult(SageUtils.RESULT_PARSE_ERROR);
-				break;
-			case "rss":
-			case "rdf":
-			case "feed":
-				this.httpGetResult(SageUtils.RESULT_OK);
-				break;
-			default:
-				// Not RSS or Atom
-				this.httpGetResult(SageUtils.RESULT_NOT_RSS);
-				break;
-		}
-	},
+    switch (rootNodeName)
+    {
+      case "parsererror":
+        // XML Parse Error
+        this.httpGetResult(SageUtils.RESULT_PARSE_ERROR);
+        break;
+      case "rss":
+      case "rdf":
+      case "feed":
+        this.httpGetResult(SageUtils.RESULT_OK);
+        break;
+      default:
+        // Not RSS or Atom
+        this.httpGetResult(SageUtils.RESULT_NOT_RSS);
+        break;
+    }
+  },
 
-	httpGetResult:	function httpGetResult(aResultCode)
-	{
-		//this.abort();
-		this.loading = false;
+  httpGetResult:  function httpGetResult(aResultCode)
+  {
+    //this.abort();
+    this.loading = false;
 
-		if (aResultCode == SageUtils.RESULT_OK)
-		{
-			var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
-			var feedParserFactory = new FeedParserFactory();
-			var feedParser = feedParserFactory.createFeedParser(this.responseXML);
-			this.currentFeed = feedParser.parse(this.responseXML);
-			this.currentFeed.setFeedURI(this.uri);
+    if (aResultCode == SageUtils.RESULT_OK)
+    {
+      var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+      var feedParserFactory = new FeedParserFactory();
+      var feedParser = feedParserFactory.createFeedParser(this.responseXML);
+      this.currentFeed = feedParser.parse(this.responseXML);
+      this.currentFeed.setFeedURI(this.uri);
 
-			this._callListeners("load", this.currentFeed);
+      this._callListeners("load", this.currentFeed);
 
-		}
-		else
-		{
-			this._callListeners("error", aResultCode);
-		}
+    }
+    else
+    {
+      this._callListeners("error", aResultCode);
+    }
 
-		// clean up
-		this.responseXML = null;
-		this.httpReq = null;
-	}
+    // clean up
+    this.responseXML = null;
+    this.httpReq = null;
+  }
 };

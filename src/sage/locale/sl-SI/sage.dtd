@@ -1,29 +1,29 @@
-<!ENTITY sage.label				"Sage">
-<!ENTITY sage.version.label				"verzija">
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version.label        "verzija">
 
-<!ENTITY sage.toolbarLabel			"Sage">
-<!ENTITY sage.sidebarTitle			"Sage">
-<!ENTITY sage.tooltip				"Prikaži Sage">
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Prikaži Sage">
 
-<!ENTITY menu.view				"Poglej">
-<!ENTITY menu.showFeedItemList			"Pokaži seznam dnevniških elementov">
-<!ENTITY menu.showFeedItemListToolbar	"Pokaži orodno vrstico seznama dnevniških elementov">
-<!ENTITY menu.showFeedItemTooltips			"Pokaži namige">
-<!ENTITY menu.openHTML				"Odpri dnevnik v polju za vsebino">
-<!ENTITY menu.options				"Nastavitve">
-<!ENTITY menu.checkUpdate			"Preveri dnevnike">
-<!ENTITY menu.organizeFeedList			"Opravljanje z dnevniki...">
-<!ENTITY menu.opmlImportExport			"OPML Uvoz/Izvoz...">
-<!ENTITY menu.setting				"Nastavitve...">
-<!ENTITY menu.aboutSage				"About Sage">
-<!ENTITY menu.discoverFeeds				"Odkrij RSS dnevnike">
-<!ENTITY menu.sidebarLayout				"Sidebar Layout">
+<!ENTITY menu.view        "Poglej">
+<!ENTITY menu.showFeedItemList      "Pokaži seznam dnevniških elementov">
+<!ENTITY menu.showFeedItemListToolbar  "Pokaži orodno vrstico seznama dnevniških elementov">
+<!ENTITY menu.showFeedItemTooltips      "Pokaži namige">
+<!ENTITY menu.openHTML        "Odpri dnevnik v polju za vsebino">
+<!ENTITY menu.options        "Nastavitve">
+<!ENTITY menu.checkUpdate      "Preveri dnevnike">
+<!ENTITY menu.organizeFeedList      "Opravljanje z dnevniki...">
+<!ENTITY menu.opmlImportExport      "OPML Uvoz/Izvoz...">
+<!ENTITY menu.setting        "Nastavitve...">
+<!ENTITY menu.aboutSage        "About Sage">
+<!ENTITY menu.discoverFeeds        "Odkrij RSS dnevnike">
+<!ENTITY menu.sidebarLayout        "Sidebar Layout">
 
 <!-- Feed Discovery -->
 <!ENTITY discovery.status.searching     "Preiskujem trenutno stran">
 <!ENTITY discovery.button.addFeed    "Dodaj dnevnik">
-<!ENTITY discovery.button.close			 "Zapri">
-<!ENTITY discovery.header.title			 "Naslov">
+<!ENTITY discovery.button.close       "Zapri">
+<!ENTITY discovery.header.title       "Naslov">
 <!ENTITY discovery.header.format     "Format">
 <!ENTITY discovery.header.lastPubDate     "Zadnja posodobitev">
 <!ENTITY discovery.header.itemCount     "Elementi">
@@ -40,15 +40,15 @@
 <!ENTITY settings.feedDiscoveryMode.exhaustive     "Izčrpno">
 <!ENTITY settings.feedDiscoveryMode.conservative     "Varčno">
 <!ENTITY settingWindow.title                    "Sage nastavitve">
-<!ENTITY selectFolder.label			"Izberi mapo dnevnikov">
-<!ENTITY openInContentsArea.caption		"Generiranje prikaza">
-<!ENTITY enableUserCss.label			"Uporabi privzeto podlogo">
-<!ENTITY browseCss.label			"Brskaj...">
-<!ENTITY allowEContent.label			"Dovoli HTML">
+<!ENTITY selectFolder.label      "Izberi mapo dnevnikov">
+<!ENTITY openInContentsArea.caption    "Generiranje prikaza">
+<!ENTITY enableUserCss.label      "Uporabi privzeto podlogo">
+<!ENTITY browseCss.label      "Brskaj...">
+<!ENTITY allowEContent.label      "Dovoli HTML">
 
 
-<!ENTITY openSageSidebar.commandkey		"Z">
-<!ENTITY openSageSidebar.modifiersKey		"alt">
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
 
 <!-- These are taken from history.dtd -->
 <!ENTITY openLinkInWindow.label "Odpri">
@@ -59,24 +59,24 @@
 <!ENTITY openInNewWindow.accesskey "N">
 
 <!-- Read State -->
-<!ENTITY markAsRead.command.label			"Označi kot prebrano">
-<!ENTITY markAsRead.command.tooltip			"Označi kot prebrano">
-<!ENTITY markAsRead.command.accesskey		"R">
+<!ENTITY markAsRead.command.label      "Označi kot prebrano">
+<!ENTITY markAsRead.command.tooltip      "Označi kot prebrano">
+<!ENTITY markAsRead.command.accesskey    "R">
 
-<!ENTITY markAsUnread.command.label			"Označi kot neprebrano">
-<!ENTITY markAsUnread.command.tooltip		"Označi kot neprebrano">
-<!ENTITY markAsUnread.command.accesskey		"U">
+<!ENTITY markAsUnread.command.label      "Označi kot neprebrano">
+<!ENTITY markAsUnread.command.tooltip    "Označi kot neprebrano">
+<!ENTITY markAsUnread.command.accesskey    "U">
 
-<!ENTITY markAllAsRead.command.label		"Označi vse kot prebrano">
-<!ENTITY markAllAsRead.command.tooltip		"Označi vse kot prebrano">
-<!ENTITY markAllAsRead.command.accesskey	"A">
-<!ENTITY markAllAsRead.command.key			"C">
-<!ENTITY markAllAsRead.command.modifiers	"accel shift">
+<!ENTITY markAllAsRead.command.label    "Označi vse kot prebrano">
+<!ENTITY markAllAsRead.command.tooltip    "Označi vse kot prebrano">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
 
-<!ENTITY markAllAsUnread.command.label		"Označi vse kot neprebrano">
-<!ENTITY markAllAsUnread.command.tooltip	"Označi vse kot neprebrano">
-<!ENTITY markAllAsUnread.command.accesskey	"n">
+<!ENTITY markAllAsUnread.command.label    "Označi vse kot neprebrano">
+<!ENTITY markAllAsUnread.command.tooltip  "Označi vse kot neprebrano">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
 
-<!ENTITY toggleReadState.command.key		"M">
+<!ENTITY toggleReadState.command.key    "M">
 
 
