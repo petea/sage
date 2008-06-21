@@ -42,53 +42,7 @@ var CreateHTML = {
 	ITEM_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-item.txt"),
 	DEFAULT_CSS: "chrome://sage/content/res/sage.css",
 
-	_tabbed: false,
-
-	set tabbed(aValue) { this._tabbed = aValue },
-
-	openHTML: function(feed) {
-		if (!feed) {
-			return;
-		}
-
-		try {
-			var htmlURL = this.createHTML(feed);
-			if (this._tabbed) {
-				getContentBrowser().addTab(htmlURL);
-			} else {
-				getContentBrowser().loadURI(htmlURL);
-			}
-		} catch(e) {
-			dump(e);
-		}
-	},
-
-	createHTML: function(feed) {
-		var tmpFile = this.getSpecialDir("UChrm");
-		tmpFile.appendRelativePath("sage.html");
-
-		var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-							.getService(Components.interfaces.nsIIOService);
-		var xmlFilePath = ioService.newFileURI(tmpFile).spec;
-
-		if (tmpFile.exists()) {
-			tmpFile.remove(true);
-		}
-		tmpFile.create(tmpFile.NORMAL_FILE_TYPE, 0666);
-
-		var stream = Components.classes['@mozilla.org/network/file-output-stream;1']
-						.createInstance(Components.interfaces.nsIFileOutputStream);
-		stream.init(tmpFile, 2, 0x200, false); // open as "write only"
-
-		var content = this.createHTMLSource(feed);
-		stream.write(content, content.length);
-		stream.flush();
-		stream.close();
-
-		return xmlFilePath;
-	},
-
-	getUserCssURL: function() {
+	getUserCssURL : function() {
 		var userCssEnable = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE);
 		var userCssPath = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_PATH);
 		if (!userCssEnable || !userCssPath) {
@@ -106,7 +60,7 @@ var CreateHTML = {
 		}
 	},
 
-	formatFileSize:	function (n) {
+	formatFileSize : function(n) {
 		if (n > 1048576) {
 			return Math.round(n / 1048576) + " MB";
 		} else if (n > 1024) {
@@ -116,19 +70,13 @@ var CreateHTML = {
 		}
 	},
 
-	createHTMLSource: function(feed) {
+	createHTMLSource : function(feed) {
 		return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
 				return CreateHTML.replaceFeedKeyword(feed, s);
 			});
-
-		return SageUtils.convertCharCodeFrom(
-			this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
-				return CreateHTML.replaceFeedKeyword(feed, s);
-			}),
-			"UTF-8");
 	},
 
-	replaceFeedKeyword:	function (feed, s) {
+	replaceFeedKeyword : function(feed, s) {
 		var footer;
 
 		switch (s) {
@@ -151,39 +99,6 @@ var CreateHTML = {
 				}
 				return "";
 
-/*
-			case "**LOGOLINK**":
-				return feed.getLogo().link;
-
-			case "**LOGOALT**":
-				return feed.getLogo().alt;
-
-			case "**COPYRIGHT**":
-				return feed.getFooter().copyright;
-
-			case "**GENERATOR**":
-				return feed.getFooter().generator;
-
-			case "**EDITOR**":
-				var editor = "";
-				footer = feed.getFooter();
-				if (footer.editor) {
-					editor = "<a href=\"mailto:" + footer.editor + "\">Editor</a>";
-					if (footer.webmaster) {
-						editor += ", ";
-					}
-				}
-				return editor;
-
-			case "**WEBMASTER**":
-				footer = feed.getFooter();
-				if (footer.webmaster) {
-					return "<a href=\"mailto:" + footer.webmaster + "\">" +
-						strRes.GetStringFromName("feed_summary_webmaster") +
-						"</a>";
-				}
-				return "";
-*/
 			case "**ITEMS**":
 				return this.getItemsHtml(feed);
 		}
@@ -191,7 +106,7 @@ var CreateHTML = {
 		return s;
 	},
 
-	getItemsHtml:	function (feed) {
+	getItemsHtml : function(feed) {
 		var feedItemOrder = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 		switch (feedItemOrder) {
 			case "chrono": feed.setSort(feed.SORT_CHRONO); break;
@@ -204,16 +119,16 @@ var CreateHTML = {
 		return sb.join("");
 	},
 
-	getItemHtml:	function (feed, item, i) {
+	getItemHtml : function(feed, item, i) {
 		return  this.ITEM_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
 			return CreateHTML.replaceFeedItemKeyword(feed, item, i, s);
 		});
 	},
 
-	replaceFeedItemKeyword:	function (feed, item, i, s) {
+	replaceFeedItemKeyword : function(feed, item, i, s) {
 		switch (s) {
 			case "**NUMBER**":
-				return i  +1;
+				return i + 1;
 
 			case "**LINK**":
 				return item.getLink();
@@ -287,14 +202,8 @@ var CreateHTML = {
 
 		return s;
 	},
-
-	getSpecialDir: function(aProp) {
-		var dirService = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties);
-		return dirService.get(aProp, Components.interfaces.nsILocalFile);
-	},
 	
-	entityEncode: function(aStr)
-	{
+	entityEncode : function(aStr) {
 		function replacechar(match) {
 			if (match=="<")
 				return "&lt;";
@@ -309,7 +218,7 @@ var CreateHTML = {
 		}
 		
 		var re = /[<>"'&]/g;
-		return aStr.replace(re, function(m){return replacechar(m)});
+		return aStr.replace(re, function(m) { return replacechar(m) });
 	},
 
 	simpleHtmlParser:	new SimpleHtmlParser,

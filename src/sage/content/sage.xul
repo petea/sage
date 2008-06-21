@@ -57,13 +57,10 @@
 	<script type="application/x-javascript" src="chrome://browser/content/bookmarks/sidebarUtils.js"/>
 	<script type="application/x-javascript" src="chrome://global/content/contentAreaUtils.js"/>
 	
+	<script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
 	<script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/simplehtmlparser.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/filterhtmlhandler.js"/>
-	<script type="application/x-javascript" src="chrome://sage/content/createhtml.js"/>
 	
 	<commandset id="placesCommands"/>
 	<commandset id="editMenuCommands"/>
