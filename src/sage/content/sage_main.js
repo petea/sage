@@ -316,7 +316,7 @@ var sageOverlay = {
 		if (prefBranch) {
 			prefBranch.setCharPref("title", "Sage");
 			prefBranch.setCharPref("type", "application/vnd.mozilla.maybe.feed");
-			prefBranch.setCharPref("uri", "chrome://sage/content/feedsummary.html?uri=%s");
+			prefBranch.setCharPref("uri", "sage://viewer/#feed/%s");
 		}
 		prefService.savePrefFile(null);
 	},

@@ -237,7 +237,7 @@ var sidebarController = {
 		this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
 		feedLoader.loadURI(uri);
 		if (SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS)) {
-			openURI(SageUtils.FEED_SUMMARY_URI + "?uri=" + encodeURIComponent(uri), aEvent);
+			openURI(SageUtils.FEED_SUMMARY_URI + "#feed/" + encodeURIComponent(uri), aEvent);
 		}
 	},
 	

@@ -61,7 +61,7 @@ var SageUtils = {
 	RESULT_NOT_AVAILABLE : 4,
 	RESULT_ERROR_FAILURE : 5,
 
-	FEED_SUMMARY_URI :		"chrome://sage/content/feedsummary.html",
+	FEED_SUMMARY_URI :		"sage://viewer/",
 
 	ANNO_ROOT : "sage/root", // int, a Places itemId
 	ANNO_STATUS : "sage/status", // string, as defined in SageUtils (STATUS_*)

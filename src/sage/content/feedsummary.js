@@ -43,7 +43,7 @@ const Cu = Components.utils;
 
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
-var strBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+var strBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
 var strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
 
 var feedSummary = {
@@ -58,14 +58,10 @@ var feedSummary = {
 		}
 
 		// parse
-		var s = document.location.search.substr(1);
-		var params = s.split(/&|;/);
-		var parts
-		for (var i = 0; i < params.length; i++) {
-			parts = params[i].split("=");
-			if (parts[0] == "uri") {
-				return this._uri = decodeURIComponent(parts[1]);
-			}
+		var docFrag = document.location.toString().split("#")[1];
+		var params = docFrag.split("/");
+		if (params[0] == "feed") {
+			return this._uri = decodeURIComponent(params[1]);
 		}
 		return null;
 	},
@@ -215,15 +211,15 @@ var feedSummary = {
 		// for all windows find all browsers and all frames.
 		// xul:tabbrowser . browsers
 
-		var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-		var windowManagerInterface = windowManager.QueryInterface( Components.interfaces.nsIWindowMediator);
+		var windowManager = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+		var windowManagerInterface = windowManager.QueryInterface(Ci.nsIWindowMediator);
 
 		//var topWindowOfType = windowManagerInterface.getMostRecentWindow( "navigator:browser" );
 		var wins = windowManagerInterface.getEnumerator( "navigator:browser" );
 		var win, res;
 		while (wins.hasMoreElements()) {
 			win = wins.getNext();
-			win.QueryInterface(Components.interfaces.nsIDOMWindow);
+			win.QueryInterface(Ci.nsIDOMWindow);
 			if (this._findInDocument(win.document, document)) {
 				return win;
 			}
