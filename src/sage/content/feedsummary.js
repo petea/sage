@@ -50,36 +50,34 @@ var feedSummary = {
 
 	_uri:			null,
 	_feedLoader:	null,
-
 	_ownFeedLoader:	false,
 
-	 get uri()
-	{
-		if (this._uri != null)
+	get uri() {
+		if (this._uri != null) {
 			return this._uri;
+		}
 
 		// parse
 		var s = document.location.search.substr(1);
 		var params = s.split(/&|;/);
 		var parts
-		for (var i = 0; i < params.length; i++)
-		{
+		for (var i = 0; i < params.length; i++) {
 			parts = params[i].split("=");
-			if (parts[0] == "uri")
+			if (parts[0] == "uri") {
 				return this._uri = decodeURIComponent(parts[1]);
+			}
 		}
 		return null;
 	},
 
-	get feedLoader()
-	{
-		if (this._feedLoader != null)
+	get feedLoader() {
+		if (this._feedLoader != null) {
 			return this._feedLoader;
+		}
 
 		// if the sidebar has the same uri then we should reuse that
 		var ssb = this.findSageSideBar();
-		if (ssb != null && ssb.feedLoader.uri == this.uri)
-		{
+		if (ssb != null && ssb.feedLoader.uri == this.uri) {
 			this._ownFeedLoader = false;
 			return this._feedLoader = ssb.feedLoader;
 		}
@@ -88,12 +86,9 @@ var feedSummary = {
 		return fl
 	},
 
-	set feedLoader (fl)
-	{
-		if (fl != this._feedLoader)
-		{
-			if (this._feedLoader != null)
-			{
+	set feedLoader(fl) {
+		if (fl != this._feedLoader) {
+			if (this._feedLoader != null) {
 				this._feedLoader.removeListener("load", this._onFeedLoad);
 				this._feedLoader.removeListener("error", this._onFeedError);
 				this._feedLoader.removeListener("abort", this._onFeedAbort);
@@ -103,8 +98,7 @@ var feedSummary = {
 		return fl;
 	},
 
-	onPageLoad:	function (e)
-	{
+	onPageLoad : function(e) {
 		// populate the error array
 		resultStrArray = [
 			strRes.GetStringFromName("RESULT_OK_STR"),
@@ -121,7 +115,6 @@ var feedSummary = {
 
 		var p = document.createElement("p");
 		p.setAttribute("id", "loading-text");
-		//var title = this._getFeedTitle(uri);
 		p.textContent = strRes.formatStringFromName("RESULT_LOADING", [uri], 1);
 		document.body.appendChild(p);
 
@@ -133,53 +126,34 @@ var feedSummary = {
 
 		document.body.setAttribute("loading", "true");
 
-		if (uri)
+		if (uri) {
 			this.loadFeed(uri);
-
-	},
-
-	_getFeedTitle: function (uri) {
-		var NC_NS = "http://home.netscape.com/NC-rdf#";
-		var RDF = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-					.getService(Components.interfaces.nsIRDFService);
-		var BMDS = RDF.GetDataSource("rdf:bookmarks");
-		var bm = BMDS.GetSource(RDF.GetResource(NC_NS + "URL"), RDF.GetLiteral(uri), true);
-		if (bm) {
-			var name = BMDS.GetTarget(bm, RDF.GetResource(NC_NS + "Name"), true);
-			return name.QueryInterface(Components.interfaces.nsIRDFLiteral).Value;
 		}
-		return uri;
 	},
 
-	onPageUnload:	function (e)
-	{
+	onPageUnload : function(e) {
 		var fl = this.feedLoader;
 		fl.removeListener("load", feedSummary.onFeedLoad);
 		fl.removeListener("error", feedSummary.onFeedError);
 		fl.removeListener("abort", feedSummary.onFeedAbort);
 	},
 
-	loadFeed:	function (uri)
-	{
+	loadFeed : function(uri) {
 		var fl = this.feedLoader;
-		if (fl.currentFeed != null)
-		{
+		if (fl.currentFeed != null) {
 			this.onFeedLoad(fl.currentFeed);
-		}
-		else
-		{
+		} else {
 			fl.addListener("load", this.onFeedLoad);
 			fl.addListener("error", this.onFeedError);
 			fl.addListener("abort", this.onFeedAbort);
-
-			if (!fl.loading)
-				fl.loadURI(uri)
+			if (!fl.loading) {
+				fl.loadURI(uri);
+			}
 		}
 	},
 
 
-	onFeedLoad:	function (aFeed)
-	{
+	onFeedLoad : function(aFeed) {
 		var fl = feedSummary.feedLoader
 		fl.removeListener("load", feedSummary.onFeedLoad);
 		fl.removeListener("error", feedSummary.onFeedError);
@@ -187,22 +161,17 @@ var feedSummary = {
 
 		// in case the sidebar started loading some other feed.
 		// This should be handled in a better way.
-		if (aFeed.getFeedURI() == feedSummary.uri)
-		{
+		if (aFeed.getFeedURI() == feedSummary.uri) {
 			feedSummary.displayFeed(aFeed);
-
 			document.body.removeAttribute("loading");
 			document.body.removeAttribute("error");
-		}
-		else
-		{
+		} else {
 			feedSummary._feedLoader = null;
 			feedSummary.loadFeed(feedSummary.uri);
 		}
 	},
 
-	onFeedError: function (aErrorCode)
-	{
+	onFeedError : function(aErrorCode) {
 		var fl = feedSummary.feedLoader
 		fl.removeListener("load", feedSummary.onFeedLoad);
 		fl.removeListener("error", feedSummary.onFeedError);
@@ -218,79 +187,31 @@ var feedSummary = {
 		document.body.removeAttribute("loading");
 	},
 
-	onFeedAbort: function ()
-	{
-		if (feedSummary._ownFeedLoader)
-		{
+	onFeedAbort : function() {
+		if (feedSummary._ownFeedLoader) {
 			feedSummary.loadFeed(feedSummary.uri);
-		}
-		else
-		{
+		} else {
 			document.body.removeAttribute("loading");
 		}
 	},
 
-	displayFeed:	function (feed)
-	{
+	displayFeed : function(feed) {
 		document.title = feed.getTitle() + " - Sage";
 		document.body.innerHTML = CreateHTML.createHTMLSource(feed);
 	},
 
-	findSageSideBar:	function ()
-	{
-		////var cid = "@mozilla.org/embedding/browser/nsWebBrowser;1";
-		//var cid = "@mozilla.org/webshell;1";
-		//var ti;
-		////ti = Components.classes[cid].createInstance(Components.interfaces.nsIDocShell)
-		//ti = Components.classes[cid].createInstance(Components.interfaces.nsIDocShellTreeItem)
-		////ti.QueryInterface(Components.interfaces.nsIDocShellTreeItem);
-		//alert(ti.name);
-		////var tmp = ti;//.rootTreeItem;
-		////tmp.QueryInterface(Components.interfaces.nsIDOMWindow);
-		////ti.QueryInterface(Components.interfaces.nsIWebBrowser);
-		////alert(ti.contentDOMWindow );
-		////ti = ti.rootTreeItem;
-		//ti.QueryInterface(Components.interfaces.nsIDocShell);
-		//alert(ti);
-		////ti.QueryInterface(Components.interfaces.nsI
-		////alert(ti.contentDOMWindow);
-		//alert(ti.contentViewer);
-		//
-		
-		/*
-		var basewin = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIWebNavigation)
-			.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-			.treeOwner
-			.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-			.getInterface(Components.interfaces.nsIBaseWindow);
-		alert(basewin);
-		*/
-		
-		////var cid = "@mozilla.org/embedding/browser/nsWebBrowser;1";
-		//var cid = "@mozilla.org/webshell;1";
-		//var wb = new Components.classes[cid];
-		//wb.QueryInterface(Components.interfaces.nsIDocShell);
-		//wb.QueryInterface(Components.interfaces.nsIDocShellTreeItem);
-		//wb.QueryInterface(Components.interfaces.nsIDOMWindow);
-		//alert(wb);
-		
+	findSageSideBar : function() {
 		var win = this.findCurrentWindow();
-		if (win)
-		{
+		if (win) {
 			var sageBrowser = win.document.getElementById("sidebar");
-			if (sageBrowser.getAttribute("src") == "chrome://sage/content/sage.xul")
-			{
+			if (sageBrowser.getAttribute("src") == "chrome://sage/content/sage.xul") {
 				return sageBrowser.contentWindow;
 			}
 		}
 		return null;
 	},
 
-	findCurrentWindow:	function ()
-	{
-
-
+	findCurrentWindow : function() {
 		// for all windows find all browsers and all frames.
 		// xul:tabbrowser . browsers
 
@@ -300,48 +221,47 @@ var feedSummary = {
 		//var topWindowOfType = windowManagerInterface.getMostRecentWindow( "navigator:browser" );
 		var wins = windowManagerInterface.getEnumerator( "navigator:browser" );
 		var win, res;
-		while (wins.hasMoreElements())
-		{
+		while (wins.hasMoreElements()) {
 			win = wins.getNext();
 			win.QueryInterface(Components.interfaces.nsIDOMWindow);
-			if ( this._findInDocument(win.document, document) )
+			if (this._findInDocument(win.document, document)) {
 				return win;
+			}
 		}
 		return null;
 	},
 
-	_findInDocument:	function (d)
-	{
+	_findInDocument : function(d) {
 		var doc = d;
-		if (doc == document)
+		if (doc == document) {
 			return true;
+		}
 
 		var frames = d.defaultView.frames;
 		var res, i;
-		for (i = 0; i < frames.length; i++)
-		{
+		for (i = 0; i < frames.length; i++) {
 			res = this._findInDocument(frames[i].document);
-			if (res)
+			if (res) {
 				return true;
+			}
 		}
 
 		var browsers = doc.getElementsByTagNameNS(XUL_NS, "browser");
-		for (i = 0; i < browsers.length; i++)
-		{
+		for (i = 0; i < browsers.length; i++) {
 			res = this._findInDocument(browsers[i].contentDocument);
-			if (res)
+			if (res) {
 				return true;
+			}
 		}
 
 		var tabBrowsers = doc.getElementsByTagNameNS(XUL_NS, "tabbrowser");
-		for (i = 0; i < tabBrowsers.length; i++)
-		{
+		for (i = 0; i < tabBrowsers.length; i++) {
 			browsers = tabBrowsers[i].browsers;
-			for (j = 0; j < browsers.length; j++)
-			{
+			for (j = 0; j < browsers.length; j++) {
 				res = this._findInDocument(browsers[j].contentDocument);
-				if (res)
+				if (res) {
 					return true;
+				}
 			}
 		}
 
@@ -350,16 +270,8 @@ var feedSummary = {
 
 };
 
-window.addEventListener("load", function (e)
-{
-	return feedSummary.onPageLoad(e);
-}, false);
-
-window.addEventListener("unload", function (e)
-{
-	return feedSummary.onPageUnload(e);
-}, false);
-
+window.addEventListener("load", function(e) { return feedSummary.onPageLoad(e); }, false);
+window.addEventListener("unload", function(e) { return feedSummary.onPageUnload(e); }, false);
 
 // Cannot use DOM to set base
 if (feedSummary.uri) {

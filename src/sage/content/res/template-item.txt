@@ -3,7 +3,7 @@
 			<span class="item-ordinal">**NUMBER**.</span>
 			<a href="**LINK**">**TITLE**</a>
 		</h2>
-		**DESCRIPTION**
+		**CONTENT**
 		**ENCLOSURE**
 		**PUBDATE**
 		**AUTHOR**

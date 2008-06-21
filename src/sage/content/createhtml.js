@@ -48,8 +48,8 @@ var CreateHTML = {
 		if (!userCssEnable || !userCssPath) {
 			return null;
 		}
-		var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-		var tmpFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+		var tmpFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
 		try {
 			tmpFile.initWithPath(userCssPath);
 			var cssUrl = ioService.newFileURI(tmpFile);
@@ -80,12 +80,12 @@ var CreateHTML = {
 		var footer;
 
 		switch (s) {
-			case "**TITLE**":
-				return this.entityEncode(feed.getTitle());
-
 			case "**LINK**":
 				return feed.getLink();
 				break;
+
+			case "**TITLE**":
+				return this.entityEncode(feed.getTitle());
 
 			case "**AUTHOR**":
 				if (feed.hasAuthor()) {
@@ -142,13 +142,7 @@ var CreateHTML = {
 					return this.entityEncode(strRes.GetStringFromName("feed_item_no_title"));
 				}
 
-			case "**AUTHOR**":
-				if (item.hasAuthor()) {
-					return "<div class=\"item-author\">" + this.entityEncode(item.getAuthor()) + "</div>";
-				}
-				return "";
-
-			case "**DESCRIPTION**":
+			case "**CONTENT**":
 				if (item.hasContent()) {
 					var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 					var ds;
@@ -160,16 +154,6 @@ var CreateHTML = {
 						ds = SageUtils.htmlToText(item.getContent());
 					}
 					return "<div class=\"item-desc\">" + ds + "</div>";
-				}
-				return "";
-
-			case "**PUBDATE**":
-				if (item.hasPubDate()) {
-					var twelveHourClock = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
-					var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
-					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
-					var dateString = formatter.formatDate(item.getPubDate());
-					return "<div class=\"item-pubDate\">" + dateString + "</div>";
 				}
 				return "";
 
@@ -196,6 +180,22 @@ var CreateHTML = {
 						"</a>" +
 						(enc.hasLength() ? " (" + this.formatFileSize(enc.getLength()) + ")" : "") +
 						"</div>";
+				}
+				return "";
+
+			case "**PUBDATE**":
+				if (item.hasPubDate()) {
+					var twelveHourClock = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
+					var formatter = Cc["@sage.mozdev.org/sage/dateformatter;1"].getService(Ci.sageIDateFormatter);
+					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
+					var dateString = formatter.formatDate(item.getPubDate());
+					return "<div class=\"item-pubDate\">" + dateString + "</div>";
+				}
+				return "";
+
+			case "**AUTHOR**":
+				if (item.hasAuthor()) {
+					return "<div class=\"item-author\">" + this.entityEncode(item.getAuthor()) + "</div>";
 				}
 				return "";
 		}
