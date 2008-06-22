@@ -71,9 +71,7 @@ var CreateHTML = {
   },
 
   createHTMLSource : function(feed) {
-    return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
-        return CreateHTML.replaceFeedKeyword(feed, s);
-      });
+    return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) { return CreateHTML.replaceFeedKeyword(feed, s); });
   },
 
   replaceFeedKeyword : function(feed, s) {
@@ -145,15 +143,15 @@ var CreateHTML = {
       case "**CONTENT**":
         if (item.hasContent()) {
           var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
-          var ds;
+          var content;
           if (allowEContent) {
             this.filterHtmlHandler.clear();
             this.simpleHtmlParser.parse(item.getContent());
-            ds = this.filterHtmlHandler.toString();
+            content = this.filterHtmlHandler.toString();
           } else {
-            ds = SageUtils.htmlToText(item.getContent());
+            content = SageUtils.htmlToText(item.getContent());
           }
-          return "<div class=\"item-desc\">" + ds + "</div>";
+          return "<div class=\"item-desc\">" + content + "</div>";
         }
         return "";
 

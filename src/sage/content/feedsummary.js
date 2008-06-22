@@ -43,21 +43,22 @@ const Cu = Components.utils;
 
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
+const URI_CHECK_INTERVAL = 200;
+
 var strBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
 var strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
 
 var feedSummary = {
 
-  _uri:      null,
-  _feedLoader:  null,
-  _ownFeedLoader:  false,
+  _uri: null,
+	_lastUri: null,
+  _feedLoader: null,
+  _ownFeedLoader: false,
+	_resultStrArray: null,
+	_logger: null,
+	_uriCheckTimer: null,
 
   get uri() {
-    if (this._uri != null) {
-      return this._uri;
-    }
-
-    // parse
     var docFrag = document.location.toString().split("#")[1];
     var params = docFrag.split("/");
     if (params[0] == "feed") {
@@ -96,7 +97,7 @@ var feedSummary = {
 
   onPageLoad : function(e) {
     // populate the error array
-    resultStrArray = [
+    this._resultStrArray = [
       strRes.GetStringFromName("RESULT_OK_STR"),
       strRes.GetStringFromName("RESULT_PARSE_ERROR_STR"),
       strRes.GetStringFromName("RESULT_NOT_RSS_STR"),
@@ -104,10 +105,35 @@ var feedSummary = {
       strRes.GetStringFromName("RESULT_NOT_AVAILABLE_STR"),
       strRes.GetStringFromName("RESULT_ERROR_FAILURE_STR")
     ];
+		
+		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+		this._logger = new Logger();
+		
+		this._uriCheckTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._uriCheckTimer.initWithCallback(this, URI_CHECK_INTERVAL, Ci.nsITimer.TYPE_REPEATING_SLACK);
+  },
 
-    this.findSageSideBar();
-
+  onPageUnload : function(e) {
+    var fl = this.feedLoader;
+    fl.removeListener("load", this.onFeedLoad);
+    fl.removeListener("error", this.onFeedError);
+    fl.removeListener("abort", this.onFeedAbort);
+		this._uriCheckTimer.cancel();
+		this._uriCheckTimer = null;
+  },
+	
+	checkUri : function() {
+		if (this.uri && this.uri != this._lastUri) {
+			this.render();
+		}
+	},
+	
+	render : function() {
     var uri = this.uri;
+		this._lastUri = uri;
+		
+		document.title = "Sage";
+    document.body.innerHTML = "";
 
     var p = document.createElement("p");
     p.setAttribute("id", "loading-text");
@@ -120,19 +146,10 @@ var feedSummary = {
     pb.setAttribute("mode", "undetermined");
     pb.setAttribute("value", "");
 
-    document.body.setAttribute("loading", "true");
-
-    if (uri) {
-      this.loadFeed(uri);
-    }
-  },
-
-  onPageUnload : function(e) {
-    var fl = this.feedLoader;
-    fl.removeListener("load", feedSummary.onFeedLoad);
-    fl.removeListener("error", feedSummary.onFeedError);
-    fl.removeListener("abort", feedSummary.onFeedAbort);
-  },
+    document.body.setAttribute("class", "loading");
+		
+    this.loadFeed(uri);
+	},
 
   loadFeed : function(uri) {
     var fl = this.feedLoader;
@@ -148,7 +165,6 @@ var feedSummary = {
     }
   },
 
-
   onFeedLoad : function(aFeed) {
     var fl = feedSummary.feedLoader
     fl.removeListener("load", feedSummary.onFeedLoad);
@@ -159,8 +175,7 @@ var feedSummary = {
     // This should be handled in a better way.
     if (aFeed.getFeedURI() == feedSummary.uri) {
       feedSummary.displayFeed(aFeed);
-      document.body.removeAttribute("loading");
-      document.body.removeAttribute("error");
+      document.body.removeAttribute("class");
     } else {
       feedSummary._feedLoader = null;
       feedSummary.loadFeed(feedSummary.uri);
@@ -174,20 +189,19 @@ var feedSummary = {
     fl.removeListener("abort", feedSummary.onFeedAbort);
 
     var p = document.getElementById("loading-text");
-    p.textContent = strRes.formatStringFromName("RESULT_ERROR", [resultStrArray[aErrorCode]], 1);
+    p.textContent = strRes.formatStringFromName("RESULT_ERROR", [feedSummary._resultStrArray[aErrorCode]], 1);
 
     var pb = document.getElementById("loading-progress-meter");
     pb.setAttribute("mode", "determined");
     pb.setAttribute("value", "100%");
-    document.body.setAttribute("error", "true");
-    document.body.removeAttribute("loading");
+    document.body.setAttribute("class", "error");
   },
 
   onFeedAbort : function() {
     if (feedSummary._ownFeedLoader) {
       feedSummary.loadFeed(feedSummary.uri);
     } else {
-      document.body.removeAttribute("loading");
+      document.body.removeAttribute("class");
     }
   },
 
@@ -262,7 +276,14 @@ var feedSummary = {
     }
 
     return false;
-  }
+  },
+	
+	// nsITimerCallback
+	notify : function(aTimer) {
+		if (aTimer == this._uriCheckTimer) {
+			this.checkUri();
+		}
+	}
 
 };
 

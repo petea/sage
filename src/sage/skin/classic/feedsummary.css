@@ -12,11 +12,11 @@
   display:  none;
 }
 
-[loading] #loading-progress-meter {
+body.loading #loading-progress-meter {
   display:  block;
 }
 
-[error] #loading-text {
+body.error #loading-text {
   background-image:    url("icon/error.gif");
   background-repeat:    no-repeat;
   background-position:  left center;
