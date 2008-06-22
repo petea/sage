@@ -36,6 +36,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://sage/SageUpdateChecker.jsm");
+
 var sageOverlay = {
   
   logger : null,
@@ -71,6 +73,8 @@ var sageOverlay = {
         .getService(Ci.nsIAppStartup)
         .quit(Ci.nsIAppStartup.eForceQuit | Ci.nsIAppStartup.eRestart);
     }
+    SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
+    SageUpdateChecker.startTimer();
     this.logger.info("initialized");
   },
   

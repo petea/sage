@@ -68,7 +68,8 @@
 		</copy>
 		<property name="version" value="sage-local"/>
 		<condition property="hasComponents"><available file="${build}/src/components" type="dir"/></condition>
-		<ant target="xpi"/>		
+		<condition property="hasModules"><available file="${build}/src/modules" type="dir"/></condition>
+		<ant target="xpi"/>
 	</target>
 
 	<!-- configure Gecko SDK -->
@@ -123,8 +124,18 @@
 		</copy>
 	</target>
 	
+	<!-- copy modules to XPI directory -->
+	<target name="build-modules" depends="compile-idl" if="hasModules">
+		<mkdir dir="${build}/xpi/modules"/>
+		<copy todir="${build}/xpi/modules">
+			<fileset dir="${build}/src/modules">
+				<include name="*.jsm"/>
+			</fileset>
+		</copy>
+	</target>
+	
 	<!-- assemeble extension structure -->
-	<target name="assemble" depends="build-components">
+	<target name="assemble" depends="build-components, build-modules">
 		<!-- create main jar file -->
 		<zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
 		

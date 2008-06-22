@@ -36,7 +36,21 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var UpdateChecker = {
+var EXPORTED_SYMBOLS = ["SageUpdateChecker"];
+
+var Cc = Components.classes;
+var Ci = Components.interfaces;
+
+var loader = Cc["@mozilla.org/moz/jssubscript-loader;1"]
+             .getService(Ci.mozIJSSubScriptLoader);
+loader.loadSubScript("chrome://sage/content/commonfunc.js");
+
+var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+logger = new Logger();
+
+const DELAY = 3600 * 1000;
+
+var SageUpdateChecker = {
 
   checking: false,
   checkList: null,
@@ -45,18 +59,41 @@ var UpdateChecker = {
   logger: null,
   livemarkService: null,
 
+  hist: Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService),
+  bmsvc: Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService),
+  anno: Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService),
+
+  startTimer: function() {
+    if (this._timer) {
+      return;
+    }
+
+    var callback = {
+      notify: function() {
+        SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
+      }
+    }
+    this._timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    this._timer.initWithCallback(callback, DELAY, Ci.nsITimer.TYPE_REPEATING_SLACK);
+  },
+
+  resetTimer: function() {
+    this._timer.cancel();
+    this._timer = null;
+    this.startTimer();
+  },
+
   getURL: function(aItemId) {
     if (this.livemarkService.isLivemark(aItemId)) {
       return this.livemarkService.getFeedURI(aItemId).spec;
     } else {
-      return PlacesUtils.bookmarks.getBookmarkURI(aItemId).spec;
+      return this.bmsvc.getBookmarkURI(aItemId).spec;
     }
   },
 
   getItemAnnotation: function(aItemId, aName) {
-    var anno = PlacesUtils.annotations;
     try {
-      return anno.getItemAnnotation(aItemId, aName);
+      return this.anno.getItemAnnotation(aItemId, aName);
     } catch(e) {
       // we could check for existence before, but the try/catch is more efficient
       return null;
@@ -65,14 +102,14 @@ var UpdateChecker = {
 
   queueItem: function uc_queueItem(aResultNode) {
     var itemId = aResultNode.itemId;
-    var itemType = PlacesUtils.bookmarks.getItemType(itemId);
-    if (itemType == PlacesUtils.bookmarks.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
+    var itemType = this.bmsvc.getItemType(itemId);
+    if (itemType == this.bmsvc.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
       var url = this.getURL(aResultNode.itemId);
       var status = this.getItemAnnotation(aResultNode.itemId, SageUtils.ANNO_STATUS);
       if(url && status != SageUtils.STATUS_UPDATE) {
         this.checkList.push(aResultNode.itemId);
       }
-    } else if (itemType == PlacesUtils.bookmarks.TYPE_FOLDER) {
+    } else if (itemType == this.bmsvc.TYPE_FOLDER) {
       aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
       aResultNode.containerOpen = true;
       for (var i = 0; i < aResultNode.childCount; i ++) {
@@ -87,9 +124,13 @@ var UpdateChecker = {
 
     this.livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
-    var hist = PlacesUtils.history;
-    var bmsvc = PlacesUtils.bookmarks;
-    var anno = PlacesUtils.annotations;
+    var hist = Cc["@mozilla.org/browser/nav-history-service;1"]
+               .getService(Ci.nsINavHistoryService);
+    var bmsvc = Cc["@mozilla.org/browser/nav-bookmarks-service;1"]
+                .getService(Ci.nsINavBookmarksService);
+    var anno = Cc["@mozilla.org/browser/annotation-service;1"]
+               .getService(Ci.nsIAnnotationService);
+
 
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     this.logger = new Logger();
@@ -120,7 +161,7 @@ var UpdateChecker = {
 
   check: function() {
     this.lastItemId = this.checkList.shift();
-    var name = PlacesUtils.bookmarks.getItemTitle(this.lastItemId);
+    var name = this.bmsvc.getItemTitle(this.lastItemId);
     var url = this.getURL(this.lastItemId);
     
     this.logger.info("checking: " + name);
@@ -133,7 +174,9 @@ var UpdateChecker = {
       this.httpReq.abort();
     }
 
-    this.httpReq = new XMLHttpRequest();
+    this.httpReq = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+                   .createInstance(Ci.nsIXMLHttpRequest);
+    this.httpReq.mozBackgroundRequest = true;
     this.httpReq.parent = this;
 
     this.httpReq.open("GET", url);
@@ -157,18 +200,18 @@ var UpdateChecker = {
 
   httpError: function(e) {
     this.logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
-    UpdateChecker.httpReq.abort();
-    UpdateChecker.checkResult(false, 0);
+    SageUpdateChecker.httpReq.abort();
+    SageUpdateChecker.checkResult(false, 0);
   },
 
   httpReadyStateChange: function() {
-    if(UpdateChecker.httpReq.readyState == 2) {
+    if (SageUpdateChecker.httpReq.readyState == 2) {
       try {
-        UpdateChecker.httpReq.status;
+        SageUpdateChecker.httpReq.status;
       } catch(e) {
           // URL NOT AVAILABLE
-        UpdateChecker.httpReq.abort();
-        UpdateChecker.checkResult(false, 0);
+        SageUpdateChecker.httpReq.abort();
+        SageUpdateChecker.checkResult(false, 0);
       }
     }
   },
@@ -179,11 +222,11 @@ var UpdateChecker = {
     try {
       var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
       var feedParserFactory = new FeedParserFactory();
-      var feedParser = feedParserFactory.createFeedParser(UpdateChecker.httpReq.responseXML);
-      var feed = feedParser.parse(UpdateChecker.httpReq.responseXML);
-      feed.setFeedURI(UpdateChecker.httpReq.channel.originalURI);
+      var feedParser = feedParserFactory.createFeedParser(SageUpdateChecker.httpReq.responseXML);
+      var feed = feedParser.parse(SageUpdateChecker.httpReq.responseXML);
+      feed.setFeedURI(SageUpdateChecker.httpReq.channel.originalURI);
     } catch(e) {
-      UpdateChecker.checkResult(false, 0);
+      SageUpdateChecker.checkResult(false, 0);
       return;
     }
 
@@ -191,11 +234,11 @@ var UpdateChecker = {
       lastModified = feed.getLastPubDate();
     }
 
-    UpdateChecker.checkResult(true, lastModified, feed);
+    SageUpdateChecker.checkResult(true, lastModified, feed);
   },
 
   checkResult: function(aSucceed, aLastModified, feed) {
-    var name = PlacesUtils.bookmarks.getItemTitle(this.lastItemId);
+    var name = this.bmsvc.getItemTitle(this.lastItemId);
     var url = this.getURL(this.lastItemId).spec;
     var status = 0;
 
@@ -241,7 +284,7 @@ var UpdateChecker = {
 
   setStatusFlag: function(aItemId, aState) {
     logger.info("setting " + SageUtils.ANNO_STATUS + " => " + aState + " on item " + aItemId);
-    PlacesUtils.annotations.setItemAnnotation(aItemId, SageUtils.ANNO_STATUS, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
+    this.anno.setItemAnnotation(aItemId, SageUtils.ANNO_STATUS, aState, 0, this.anno.EXPIRE_NEVER);
   },
   
   onCheck: function(aName, aURL) {},

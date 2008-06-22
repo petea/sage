@@ -60,7 +60,6 @@
   <script type="application/x-javascript" src="chrome://sage/content/sage.js"/>
   <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
   <script type="application/x-javascript" src="chrome://sage/content/feedloader.js"/>
-  <script type="application/x-javascript" src="chrome://sage/content/updatechecker.js"/>
   
   <commandset id="placesCommands"/>
   <commandset id="editMenuCommands"/>

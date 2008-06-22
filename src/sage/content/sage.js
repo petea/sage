@@ -35,7 +35,9 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
- 
+
+Components.utils.import("resource://sage/SageUpdateChecker.jsm");
+
 var bookmarksTree;
 var statusBarImage, statusBarLabel;
 var rssItemListBox;
@@ -128,7 +130,7 @@ var sidebarController = {
   
   uninit : function() {  
     feedLoader.abort();
-    UpdateChecker.done();
+    SageUpdateChecker.done();
     
     // remove observers
     linkVisitor.uninit();
@@ -243,17 +245,18 @@ var sidebarController = {
   
   checkFeeds : function(aFolderId) {
     var self = this;
-    UpdateChecker.onCheck = function(aName, aURL) {
+    SageUpdateChecker.onCheck = function(aName, aURL) {
       self.setStatus("checking", strRes.getFormattedString("RESULT_CHECKING", [aName]));
     }
-    UpdateChecker.onChecked = function(aName, aURL) {
+    SageUpdateChecker.onChecked = function(aName, aURL) {
       self.clearStatus();
     }
   
     if(aFolderId) {
-      UpdateChecker.startCheck(aFolderId);
+      SageUpdateChecker.startCheck(aFolderId);
     } else {
-      UpdateChecker.startCheck(SageUtils.getSageRootFolderId());
+      SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
+      SageUpdateChecker.resetTimer();
     }
   },
   
@@ -456,7 +459,7 @@ function onFeedLoaded(aFeed) {
 
     var now = new Date().getTime();
     PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_LASTVISIT, now, 0, PlacesUtils.annotations.EXPIRE_NEVER);
-    UpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_NO_UPDATE);
+    SageUpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_NO_UPDATE);
     PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_SIG, aFeed.getSignature(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
     PlacesUtils.annotations.setItemAnnotation(lastItemId, SageUtils.ANNO_FEEDTITLE, aFeed.getTitle(), 0, PlacesUtils.annotations.EXPIRE_NEVER);
   }
@@ -470,7 +473,7 @@ function onFeedLoadError(aErrorCode) {
 }
 
 function onFeedAbort(sURI) {
-  UpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_UNKNOWN);
+  SageUpdateChecker.setStatusFlag(lastItemId, SageUtils.STATUS_UNKNOWN);
 }
 
 // This takes a list item from the rss list box and returns the uri it represents

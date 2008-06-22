@@ -2,6 +2,8 @@ content  sage  jar:chrome/sage.jar!/content/
 
 skin  sage  classic/1.0    jar:chrome/sage.jar!/skin/classic/
 
+resource sage modules/
+
 locale  sage  en-US      jar:chrome/sage.jar!/locale/en-US/
 locale  sage  ja-JP      jar:chrome/sage.jar!/locale/ja-JP/
 locale  sage  fr-FR      jar:chrome/sage.jar!/locale/fr-FR/
