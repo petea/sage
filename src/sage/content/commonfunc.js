@@ -151,16 +151,21 @@ var SageUtils = {
 
   getPrefValue : function(aPref) {
     var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
+    var prefValue;
     switch (prefService.getPrefType(aPref)) {
       case Ci.nsIPrefBranch.PREF_INVALID:
         throw "Invalid preference: " + aPref;
       case Ci.nsIPrefBranch.PREF_STRING:
-        return prefService.getComplexValue(aPref, Ci.nsISupportsString).data;
+        prefValue = prefService.getComplexValue(aPref, Ci.nsISupportsString).data;
+        break;
       case Ci.nsIPrefBranch.PREF_INT:
-        return prefService.getIntPref(aPref);
+        prefValue = prefService.getIntPref(aPref);
+        break;
       case Ci.nsIPrefBranch.PREF_BOOL:
-        return prefService.getBoolPref(aPref);
+        prefValue = prefService.getBoolPref(aPref);
+        break;
     }
+    return prefValue;
   },
   
   setSagePrefValue : function(aSagePref, aValue) {
@@ -174,13 +179,15 @@ var SageUtils = {
   getSageRootFolderId : function() {
     var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
     var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT, {});
+    var rootFolderId;
     if (results.length == 1) {
-      return results[0];
+      rootFolderId = results[0];
     } else if (results.length == 0) {
       throw "No root folder found";
     } else if (results.length > 1) {
       throw "Multiple root folders found";
     }
+    return rootFolderId;
   },
   
   // Set the sage/root annotation to the corresponding folder, as well as
