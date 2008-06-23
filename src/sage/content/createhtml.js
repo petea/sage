@@ -50,19 +50,13 @@ function CreateHtml() {
 
 CreateHtml.prototype = {
 
-  formatFileSize : function(n) {
-    if (n > 1048576) {
-      return Math.round(n / 1048576) + " MB";
-    } else if (n > 1024) {
-      return Math.round(n / 1024) + " KB";
-    } else {
-      return n + " B";
-    }
-  },
-
-  createHtmlSource : function(feed) {
+  renderFeed : function(feed) {
     var self = this;
-    return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) { return self.replaceFeedKeyword(feed, s); });
+    var html = this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) { return self.replaceFeedKeyword(feed, s); });
+    var doc = this.domParser.parseFromString("<div class=\"feed\"/>", "application/xhtml+xml");
+    var fragment = this.unescapeHtmlService.parseFragment(html, false, null, doc.documentElement);
+    doc.documentElement.appendChild(fragment);
+    return this.xmlSerializer.serializeToString(doc);
   },
 
   replaceFeedKeyword : function(feed, s) {
@@ -136,17 +130,12 @@ CreateHtml.prototype = {
         if (item.hasContent()) {
           var allowEncodedContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
           var addClass = "";
-          var rawContent = item.getContent();
+          var content = item.getContent();
           if (!allowEncodedContent) {
-            rawContent = SageUtils.htmlToText(rawContent);
+            content = SageUtils.htmlToText(content);
             addClass = " text";
           }
-          var template = "<div class=\"item-desc" + addClass + "\"/>";
-          var doc = this.domParser.parseFromString(template, "application/xhtml+xml");
-          var fragment = this.unescapeHtmlService.parseFragment(rawContent, false, null, doc.documentElement);
-          doc.documentElement.appendChild(fragment);
-          this.sanitizeContent(doc);
-          return this.xmlSerializer.serializeToString(doc);
+          return "<div class=\"item-desc" + addClass + "\">" + content + "</div>";
         }
         return "";
 
@@ -204,6 +193,16 @@ CreateHtml.prototype = {
     }
   },
   
+  formatFileSize : function(n) {
+    if (n > 1048576) {
+      return Math.round(n / 1048576) + " MB";
+    } else if (n > 1024) {
+      return Math.round(n / 1024) + " KB";
+    } else {
+      return n + " B";
+    }
+  },
+  
   entityEncode : function(aStr) {
     function replacechar(match) {
       if (match=="<")
@@ -219,7 +218,6 @@ CreateHtml.prototype = {
       else
         return match;
     }
-    
     var re = /[<>"'&]/g;
     return aStr.replace(re, function(m) { return replacechar(m) });
   }

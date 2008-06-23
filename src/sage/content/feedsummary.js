@@ -138,6 +138,8 @@ var feedSummary = {
     
     document.title = "Sage";
     document.body.innerHTML = "";
+    
+    window.scrollTo(0,0);
 
     var p = document.createElement("p");
     p.setAttribute("id", "loading-text");
@@ -211,7 +213,7 @@ var feedSummary = {
 
   displayFeed : function(feed) {
     document.title = feed.getTitle() + " - Sage";
-    document.body.innerHTML = this._createHtml.createHtmlSource(feed);
+    document.body.innerHTML = this._createHtml.renderFeed(feed);
   },
 
   findSageSideBar : function() {
@@ -323,9 +325,9 @@ window.addEventListener("load", feedSummary, false);
 window.addEventListener("unload", feedSummary, false);
 
 // Cannot use DOM to set base
-if (feedSummary.uri) {
-  document.write("<base href=\"" + feedSummary.uri + "\">");
-}
+//if (feedSummary.uri) {
+//  document.write("<base href=\"" + feedSummary.uri + "\">");
+//}
 
 // set feed style sheet before content loads
 var cssUrl = feedSummary.getUserCssURL();
