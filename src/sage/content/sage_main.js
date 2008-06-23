@@ -251,6 +251,11 @@ var sageOverlay = {
         // add content handler
         self.addContentHandler();
         self.needsRestart = true;
+      },
+      
+      "1.5a" : function() {
+        self.addContentHandler();
+        self.needsRestart = true;
       }
       
     }
@@ -310,7 +315,10 @@ var sageOverlay = {
     while (true) {
       prefBranch = prefService.getBranch("browser.contentHandlers.types." + i + ".");
       try {
-        prefBranch.getCharPref("type");
+        var title = prefBranch.getCharPref("title");
+        if (title == "Sage") {
+          break;
+        }
         i++;
       } catch (e) {
         // No more handlers
