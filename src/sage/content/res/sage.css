@@ -89,6 +89,10 @@ div.item-desc {
   padding: 8px 10px;
 }
 
+div.item-desc.text {
+  white-space: pre-wrap;
+}
+
 div.item-desc table {
   font-size: x-small;
 }

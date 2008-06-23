@@ -44,6 +44,7 @@ const Cu = Components.utils;
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 const URI_CHECK_INTERVAL = 200;
+const DEFAULT_CSS = "chrome://sage/content/res/sage.css";
 
 var strBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
 var strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
@@ -51,12 +52,13 @@ var strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties
 var feedSummary = {
 
   _uri: null,
-	_lastUri: null,
+  _lastUri: null,
   _feedLoader: null,
   _ownFeedLoader: false,
-	_resultStrArray: null,
-	_logger: null,
-	_uriCheckTimer: null,
+  _resultStrArray: null,
+  _logger: null,
+  _uriCheckTimer: null,
+  _createHtml: null,
 
   get uri() {
     var docFrag = document.location.toString().split("#")[1];
@@ -105,11 +107,13 @@ var feedSummary = {
       strRes.GetStringFromName("RESULT_NOT_AVAILABLE_STR"),
       strRes.GetStringFromName("RESULT_ERROR_FAILURE_STR")
     ];
-		
-		var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-		this._logger = new Logger();
-		
-		this._uriCheckTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    
+    var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+    this._logger = new Logger();
+    
+    this._createHtml = new CreateHtml();
+    
+    this._uriCheckTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this._uriCheckTimer.initWithCallback(this, URI_CHECK_INTERVAL, Ci.nsITimer.TYPE_REPEATING_SLACK);
   },
 
@@ -118,21 +122,21 @@ var feedSummary = {
     fl.removeListener("load", this.onFeedLoad);
     fl.removeListener("error", this.onFeedError);
     fl.removeListener("abort", this.onFeedAbort);
-		this._uriCheckTimer.cancel();
-		this._uriCheckTimer = null;
+    this._uriCheckTimer.cancel();
+    this._uriCheckTimer = null;
   },
-	
-	checkUri : function() {
-		if (this.uri && this.uri != this._lastUri) {
-			this.render();
-		}
-	},
-	
-	render : function() {
+  
+  checkUri : function() {
+    if (this.uri && this.uri != this._lastUri) {
+      this.render();
+    }
+  },
+  
+  render : function() {
     var uri = this.uri;
-		this._lastUri = uri;
-		
-		document.title = "Sage";
+    this._lastUri = uri;
+    
+    document.title = "Sage";
     document.body.innerHTML = "";
 
     var p = document.createElement("p");
@@ -147,9 +151,9 @@ var feedSummary = {
     pb.setAttribute("value", "");
 
     document.body.setAttribute("class", "loading");
-		
+    
     this.loadFeed(uri);
-	},
+  },
 
   loadFeed : function(uri) {
     var fl = this.feedLoader;
@@ -207,7 +211,7 @@ var feedSummary = {
 
   displayFeed : function(feed) {
     document.title = feed.getTitle() + " - Sage";
-    document.body.innerHTML = CreateHTML.createHTMLSource(feed);
+    document.body.innerHTML = this._createHtml.createHtmlSource(feed);
   },
 
   findSageSideBar : function() {
@@ -277,18 +281,46 @@ var feedSummary = {
 
     return false;
   },
-	
-	// nsITimerCallback
-	notify : function(aTimer) {
-		if (aTimer == this._uriCheckTimer) {
-			this.checkUri();
-		}
-	}
+  
+  getUserCssURL : function() {
+    var cssUrl = DEFAULT_CSS;
+    var userCssEnable = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE);
+    var userCssPath = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_PATH);
+    if (userCssEnable && userCssPath) {
+      var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+      var tmpFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+      try {
+        tmpFile.initWithPath(userCssPath);
+        var fileUrl = ioService.newFileURI(tmpFile);
+        cssUrl = fileUrl.spec;
+      } catch(e) { }
+    }
+    return cssUrl;
+  },
+  
+  // nsITimerCallback
+  notify : function(aTimer) {
+    if (aTimer == this._uriCheckTimer) {
+      this.checkUri();
+    }
+  },
+  
+  // nsIDOMEventListener
+  handleEvent: function(event) {
+    switch(event.type) {
+      case "load":
+        this.onPageLoad(event);
+        break;
+      case "unload":
+        this.onPageUnload(event);
+        break;
+    }
+  }
 
 };
 
-window.addEventListener("load", function(e) { return feedSummary.onPageLoad(e); }, false);
-window.addEventListener("unload", function(e) { return feedSummary.onPageUnload(e); }, false);
+window.addEventListener("load", feedSummary, false);
+window.addEventListener("unload", feedSummary, false);
 
 // Cannot use DOM to set base
 if (feedSummary.uri) {
@@ -296,10 +328,7 @@ if (feedSummary.uri) {
 }
 
 // set feed style sheet before content loads
-var cssUrl  = CreateHTML.getUserCssURL();
-if (!cssUrl) {
-  cssUrl = CreateHTML.DEFAULT_CSS;
-}
+var cssUrl = feedSummary.getUserCssURL();
 var headEl = document.getElementsByTagName("head")[0];
 var linkEl = document.createElement("link");
 linkEl.setAttribute("rel", "stylesheet");

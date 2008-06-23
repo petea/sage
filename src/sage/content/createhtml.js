@@ -36,29 +36,19 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var CreateHTML = {
+function CreateHtml() {
+  this.HTML_SOURCE = SageUtils.loadText("chrome://sage/content/res/template-html.txt");
+  this.ITEM_SOURCE = SageUtils.loadText("chrome://sage/content/res/template-item.txt");
+    
+  this.unescapeHtmlService = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
+  this.domParser = Cc["@mozilla.org/xmlextras/domparser;1"].createInstance(Ci.nsIDOMParser);
+  this.xmlSerializer = Cc["@mozilla.org/xmlextras/xmlserializer;1"].createInstance(Ci.nsIDOMSerializer);
   
-  HTML_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-html.txt"),
-  ITEM_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-item.txt"),
-  DEFAULT_CSS: "chrome://sage/content/res/sage.css",
+  var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+  this.logger = new Logger();
+}
 
-  getUserCssURL : function() {
-    var userCssEnable = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_ENABLE);
-    var userCssPath = SageUtils.getSagePrefValue(SageUtils.PREF_USER_CSS_PATH);
-    if (!userCssEnable || !userCssPath) {
-      return null;
-    }
-    var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
-    var tmpFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
-    try {
-      tmpFile.initWithPath(userCssPath);
-      var cssUrl = ioService.newFileURI(tmpFile);
-      var contentType = ioService.newChannelFromURI(cssUrl).contentType;
-      return cssUrl.spec;
-    } catch(e) {
-      return null;
-    }
-  },
+CreateHtml.prototype = {
 
   formatFileSize : function(n) {
     if (n > 1048576) {
@@ -70,8 +60,9 @@ var CreateHTML = {
     }
   },
 
-  createHTMLSource : function(feed) {
-    return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) { return CreateHTML.replaceFeedKeyword(feed, s); });
+  createHtmlSource : function(feed) {
+    var self = this;
+    return this.HTML_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) { return self.replaceFeedKeyword(feed, s); });
   },
 
   replaceFeedKeyword : function(feed, s) {
@@ -118,8 +109,9 @@ var CreateHTML = {
   },
 
   getItemHtml : function(feed, item, i) {
+    var self = this;
     return  this.ITEM_SOURCE.replace(/\*\*[^\*]+\*\*/g, function (s) {
-      return CreateHTML.replaceFeedItemKeyword(feed, item, i, s);
+      return self.replaceFeedItemKeyword(feed, item, i, s);
     });
   },
 
@@ -142,16 +134,19 @@ var CreateHTML = {
 
       case "**CONTENT**":
         if (item.hasContent()) {
-          var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
-          var content;
-          if (allowEContent) {
-            this.filterHtmlHandler.clear();
-            this.simpleHtmlParser.parse(item.getContent());
-            content = this.filterHtmlHandler.toString();
-          } else {
-            content = SageUtils.htmlToText(item.getContent());
+          var allowEncodedContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
+          var addClass = "";
+          var rawContent = item.getContent();
+          if (!allowEncodedContent) {
+            rawContent = SageUtils.htmlToText(rawContent);
+            addClass = " text";
           }
-          return "<div class=\"item-desc\">" + content + "</div>";
+          var template = "<div class=\"item-desc" + addClass + "\"/>";
+          var doc = this.domParser.parseFromString(template, "application/xhtml+xml");
+          var fragment = this.unescapeHtmlService.parseFragment(rawContent, false, null, doc.documentElement);
+          doc.documentElement.appendChild(fragment);
+          this.sanitizeContent(doc);
+          return this.xmlSerializer.serializeToString(doc);
         }
         return "";
 
@@ -201,6 +196,14 @@ var CreateHTML = {
     return s;
   },
   
+  sanitizeContent : function(document) {
+    var walker = document.createTreeWalker(document.documentElement, Ci.nsIDOMNodeFilter.SHOW_ELEMENT, null, false);
+    node = walker.nextNode();
+    while (node) {
+      node = walker.nextNode();
+    }
+  },
+  
   entityEncode : function(aStr) {
     function replacechar(match) {
       if (match=="<")
@@ -213,14 +216,12 @@ var CreateHTML = {
         return "&#039;";
       else if (match=="&")
         return "&amp;";
+      else
+        return match;
     }
     
     var re = /[<>"'&]/g;
     return aStr.replace(re, function(m) { return replacechar(m) });
-  },
+  }
 
-  simpleHtmlParser:  new SimpleHtmlParser,
-  filterHtmlHandler:  new FilterHtmlHandler
 };
-
-CreateHTML.simpleHtmlParser.contentHandler = CreateHTML.filterHtmlHandler
