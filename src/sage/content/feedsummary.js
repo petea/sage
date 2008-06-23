@@ -139,7 +139,7 @@ var feedSummary = {
     document.title = "Sage";
     document.body.innerHTML = "";
     
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 
     var p = document.createElement("p");
     p.setAttribute("id", "loading-text");
@@ -321,20 +321,18 @@ var feedSummary = {
 
 };
 
-window.addEventListener("load", feedSummary, false);
-window.addEventListener("unload", feedSummary, false);
-
-// Cannot use DOM to set base
-//if (feedSummary.uri) {
-//  document.write("<base href=\"" + feedSummary.uri + "\">");
-//}
+// cannot use DOM to set base
+if (feedSummary.uri) {
+  document.write("<base href=\"" + feedSummary.uri + "\">");
+}
 
 // set feed style sheet before content loads
-var cssUrl = feedSummary.getUserCssURL();
 var headEl = document.getElementsByTagName("head")[0];
 var linkEl = document.createElement("link");
 linkEl.setAttribute("rel", "stylesheet");
 linkEl.setAttribute("type", "text/css");
-linkEl.setAttribute("title", "standard Style");
-linkEl.setAttribute("href", cssUrl);
+linkEl.setAttribute("href", feedSummary.getUserCssURL());
 headEl.appendChild(linkEl);
+
+window.addEventListener("load", feedSummary, false);
+window.addEventListener("unload", feedSummary, false);
