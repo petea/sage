@@ -59,7 +59,7 @@ p.item-desc a:link { color: #029; }
   float: right;
 }
 
-div.item {
+.item {
   border: 1px solid #8cacbb;
   width: 47%;
   min-width: 14em;
@@ -69,7 +69,7 @@ div.item {
   overflow: hidden;
 }
 
-h2.item-title {
+.item-title {
   background-color: #dee7ec;
   font-size: x-small;
   font-weight: normal;
@@ -78,33 +78,34 @@ h2.item-title {
   padding: 5px 5px 8px 8px;
 }
 
-span.item-ordinal {
+.item-ordinal {
   padding-right: 0.2em;
 }
 
-div.item-desc {
+.item-desc {
   min-height: 6em;
   font-size: x-small;
   margin: 0px;
   padding: 8px 10px;
 }
 
-div.item-desc.text {
+.item-desc.text {
   white-space: pre-wrap;
 }
 
-div.item-desc table {
+.item-desc table {
   font-size: x-small;
 }
 
-div.item-pubDate {
+.item-pubDate {
   font-size: x-small;
   margin: 0px;
   padding: 8px 10px;
+  border: 0;
   float: left;
 }
 
-div.item-enclosure {
+.item-enclosure {
   font-size: x-small;
   margin: 0px;
   padding: 8px 10px;
@@ -119,7 +120,7 @@ div.item-enclosure {
   margin-right: 5px;
 }
 
-div.item-author {
+.item-author {
   font-size: x-small;
   margin: 0px;
   padding: 8px 10px;

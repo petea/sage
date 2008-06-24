@@ -36,6 +36,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://gre/modules/Microformats.js");
+
 function CreateHtml() {
   this.HTML_SOURCE = SageUtils.loadText("chrome://sage/content/res/template-html.txt");
   this.ITEM_SOURCE = SageUtils.loadText("chrome://sage/content/res/template-item.txt");
@@ -152,14 +154,12 @@ CreateHtml.prototype = {
           }
           return "<div class=\"item-enclosure\">" +
             "<a href=\"" + enc.getLink() + "\" title=\"" +
-            strRes.GetStringFromName("feed_summary_enclosure") +
+            createDescriptionFromURL(enc.getLink()) +
             "\"><img src=\"" +
               (enc.hasMimeType() ?
                 "moz-icon://dummy?size=16&contentType=" + enc.getMimeType() :
                 "chrome://sage/skin/enclosure.png") +
-            "\">" +
-            (enc.getDescription() ? enc.getDescription() + ", " : createDescriptionFromURL(enc.getLink())) +
-            "</a>" +
+            "\">" + strRes.GetStringFromName("feed_summary_enclosure") + "</a>" +
             (enc.hasLength() ? " (" + this.formatFileSize(enc.getLength()) + ")" : "") +
             "</div>";
         }
@@ -171,7 +171,9 @@ CreateHtml.prototype = {
           var formatter = Cc["@sage.mozdev.org/sage/dateformatter;1"].getService(Ci.sageIDateFormatter);
           formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
           var dateString = formatter.formatDate(item.getPubDate());
-          return "<div class=\"item-pubDate\">" + dateString + "</div>";
+          var date = new Date(item.getPubDate());
+          date.time = true;
+          return "<abbr class=\"item-pubDate\" title=\"" + Microformats.iso8601FromDate(date, true) + "\">" + dateString + "</abbr>";
         }
         return "";
 
