@@ -271,14 +271,12 @@ var CreateHTML = {
 					}
 					return "<div class=\"item-enclosure\">" +
 						"<a href=\"" + enc.getLink() + "\" title=\"" +
-						strRes.GetStringFromName("feed_summary_enclosure") +
+						createDescriptionFromURL(enc.getLink()) +
 						"\"><img src=\"" +
 							(enc.hasMimeType() ?
 								"moz-icon://dummy?size=16&contentType=" + enc.getMimeType() :
 								"chrome://sage/skin/enclosure.png") +
-						"\">" +
-						(enc.getDescription() ? enc.getDescription() + ", " : createDescriptionFromURL(enc.getLink())) +
-						"</a>" +
+						"\">" + strRes.GetStringFromName("feed_summary_enclosure") + "</a>" +
 						(enc.hasLength() ? " (" + this.formatFileSize(enc.getLength()) + ")" : "") +
 						"</div>";
 				}
