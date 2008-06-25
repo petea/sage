@@ -187,7 +187,7 @@ var SageUpdateChecker = {
 
     try {
       this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-      this.httpReq.overrideMimeType("application/xml");
+      //this.httpReq.overrideMimeType("application/xml");
       this.httpReq.send(null);
       this.setStatusFlag(this.lastItemId, SageUtils.STATUS_CHECKING);
       this.onCheck(name, url);
@@ -217,24 +217,24 @@ var SageUpdateChecker = {
   },
 
   httpLoaded: function(e) {
-    var lastModified = 0;
-
-    try {
-      var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
-      var feedParserFactory = new FeedParserFactory();
-      var feedParser = feedParserFactory.createFeedParser(SageUpdateChecker.httpReq.responseXML);
-      var feed = feedParser.parse(SageUpdateChecker.httpReq.responseXML);
-      feed.setFeedURI(SageUpdateChecker.httpReq.channel.originalURI);
-    } catch(e) {
-      SageUpdateChecker.checkResult(false, 0);
-      return;
+    var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+    var feedParserFactory = new FeedParserFactory();
+    var feedParser = feedParserFactory.createFeedParser(SageUpdateChecker.httpReq.responseText);
+    var feed = feedParser.parse(SageUpdateChecker.httpReq.responseText, SageUpdateChecker.httpReq.channel.originalURI, SageUpdateChecker);
+  },
+  
+  // sageIFeedParserListener
+  onFeedParsed : function(feed) {
+    if (feed) {
+      feed.setFeedURI(this.httpReq.channel.originalURI.spec);
+      var lastModified = 0;
+      if (feed.hasLastPubDate()) {
+        lastModified = feed.getLastPubDate();
+      }
+      this.checkResult(true, lastModified, feed);
+    } else {
+      this.checkResult(false);
     }
-
-    if(feed.hasLastPubDate()) {
-      lastModified = feed.getLastPubDate();
-    }
-
-    SageUpdateChecker.checkResult(true, lastModified, feed);
   },
 
   checkResult: function(aSucceed, aLastModified, feed) {

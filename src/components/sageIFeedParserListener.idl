@@ -37,13 +37,12 @@
  * ***** END LICENSE BLOCK ***** */
 
 #include "nsISupports.idl"
-#include "nsIURI.idl"
-#include "sageIFeedParserListener.idl"
+#include "nsIDOMDocument.idl"
+#include "sageIFeed.idl"
 
-[scriptable, uuid(42AC3223-5F64-4B34-ACE0-7D4E521F8D02)]
-interface sageIFeedParser: nsISupports {
+[scriptable, uuid(7C45F28E-28F6-4E2C-AB71-2691D647080D)]
+interface sageIFeedParserListener: nsISupports {
 
-  PRBool discover(in AString feedText);
-  void parse(in AString feedText, in nsIURI feedUri, in sageIFeedParserListener listener);
+  void onFeedParsed(in sageIFeed feed);
 
 };

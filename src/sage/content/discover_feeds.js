@@ -153,7 +153,7 @@ function init() {
     try {
       httpReq.open("GET", possibleFeeds[entry][0], true);
       httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-      httpReq.overrideMimeType("application/xml");
+      //httpReq.overrideMimeType("application/xml");
       httpReq.send(null);
     } catch(e) {
       httpReq.abort();
@@ -219,17 +219,23 @@ function httpError() {
 }
 
 function httpLoaded(e) {
+  var feedParserListener = {
+    httpReq : e.target,
+    // sageIFeedParserListener
+    onFeedParsed : function(feed) {
+      if (feed) {
+        var uri = this.httpReq.channel.originalURI;
+        feed.setFeedURI(uri.spec);
+        addDiscoveredFeed(uri, feed);
+      }
+      progressUpdate();
+    }
+  };
   var httpReq = e.target;
-  var uri = httpReq.channel.originalURI;
-  try {
-    var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
-    var feedParserFactory = new FeedParserFactory();
-    var feedParser = feedParserFactory.createFeedParser(httpReq.responseXML);
-    var feed = feedParser.parse(httpReq.responseXML);
-    feed.setFeedURI(uri);
-    addDiscoveredFeed(uri, feed);
-  } catch(e) {  }
-  progressUpdate();
+  var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+  var feedParserFactory = new FeedParserFactory();
+  var feedParser = feedParserFactory.createFeedParser(httpReq.responseText);
+  var feed = feedParser.parse(httpReq.responseText, httpReq.channel.originalURI, feedParserListener);
 }
 
 function addDiscoveredFeed(uri, feed) {

@@ -41,11 +41,12 @@ function FeedLoader() {
 }
 
 FeedLoader.prototype = {
+  
   uri:      null,
   currentFeed:  null,
   loading:    false,
 
-  addListener: function (n, f) {
+  addListener : function(n, f) {
     var found = false;
     var ls = this._listeners[n];
     if (ls == null) {
@@ -64,7 +65,7 @@ FeedLoader.prototype = {
     }
   },
 
-  removeListener: function (n, f) {
+  removeListener : function(n, f) {
     var ls = this._listeners[n];
     if (ls) {
       var l = ls.length;
@@ -77,7 +78,7 @@ FeedLoader.prototype = {
     }
   },
 
-  _callListeners: function (n, arg) {
+  _callListeners : function(n, arg) {
     var ls = this._listeners[n];
     if (ls) {
       var l = ls.length;
@@ -87,7 +88,7 @@ FeedLoader.prototype = {
     }
   },
 
-  loadURI: function (aURI) {
+  loadURI : function(aURI) {
     if (this.loading) {
       this.abort();
     }
@@ -103,7 +104,7 @@ FeedLoader.prototype = {
 
     try {
       this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-      this.httpReq.overrideMimeType("application/xml");
+      //this.httpReq.overrideMimeType("application/xml");
     } catch (e) {
       this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
     }
@@ -118,7 +119,7 @@ FeedLoader.prototype = {
     }
   },
 
-  abort: function () {
+  abort : function() {
     if (this.loading) {
       if (this.httpReq) {
         this.httpReq.abort();
@@ -129,8 +130,7 @@ FeedLoader.prototype = {
     }
   },
 
-  onHttpError:  function (e)
-  {
+  onHttpError : function(e) {
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     var logger = new Logger();
 
@@ -138,8 +138,7 @@ FeedLoader.prototype = {
     this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
   },
 
-  onHttpReadyStateChange:  function (e)
-  {
+  onHttpReadyStateChange : function(e) {
     if (this.httpReq.readyState == 2)
     {
       try
@@ -158,52 +157,35 @@ FeedLoader.prototype = {
     //else if (this.httpReq.readyState == 3) {}
   },
 
-  onHttpLoaded:  function (e)
-  {
-    this.responseXML = this.httpReq.responseXML;
-    var rootNodeName = this.responseXML.documentElement.localName.toLowerCase();
-
-    switch (rootNodeName)
-    {
-      case "parsererror":
-        // XML Parse Error
-        this.httpGetResult(SageUtils.RESULT_PARSE_ERROR);
-        break;
-      case "rss":
-      case "rdf":
-      case "feed":
-        this.httpGetResult(SageUtils.RESULT_OK);
-        break;
-      default:
-        // Not RSS or Atom
-        this.httpGetResult(SageUtils.RESULT_NOT_RSS);
-        break;
-    }
+  onHttpLoaded : function(e) {
+    var responseText = this.httpReq.responseText;
+    var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
+    var feedParserFactory = new FeedParserFactory();
+    var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+    var uri = ioService.newURI(this.uri, null, null);
+    feedParserFactory.createFeedParser(responseText).parse(responseText, uri, this);
   },
 
-  httpGetResult:  function httpGetResult(aResultCode)
-  {
-    //this.abort();
+  httpGetResult : function(aResultCode) {
     this.loading = false;
-
-    if (aResultCode == SageUtils.RESULT_OK)
-    {
-      var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
-      var feedParserFactory = new FeedParserFactory();
-      var feedParser = feedParserFactory.createFeedParser(this.responseXML);
-      this.currentFeed = feedParser.parse(this.responseXML);
-      this.currentFeed.setFeedURI(this.uri);
-
+    if (aResultCode == SageUtils.RESULT_OK) {
       this._callListeners("load", this.currentFeed);
-
-    }
-    else
-    {
+    } else {
       this._callListeners("error", aResultCode);
     }
-
     // clean up
-    this.responseXML = null;
     this.httpReq = null;
+  },
+  
+  // sageIFeedParserListener
+  onFeedParsed : function(feed) {
+    if (feed) {
+      this.currentFeed = feed;
+      this.currentFeed.setFeedURI(this.uri);
+      this.httpGetResult(SageUtils.RESULT_OK);
+    } else {
+      this.httpGetResult(SageUtils.RESULT_PARSE_ERROR);
+    }
   }
+  
 };

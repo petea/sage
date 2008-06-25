@@ -47,25 +47,24 @@ const sageIFeedParserFactory = Components.interfaces.sageIFeedParserFactory;
 function sageFeedParserFactory() {};
 sageFeedParserFactory.prototype = {
 
-  createFeedParser: function(feedDocument)
+  createFeedParser: function(feedText)
   {
-    if (!feedDocument) {
+    if (!feedText.length) {
       throw "Feed document empty";
     }
     
     var parsers = new Array();
-    parsers.push("@sage.mozdev.org/sage/rssparser;1");
-    parsers.push("@sage.mozdev.org/sage/atomparser;1");
-    parsers.push("@sage.mozdev.org/sage/atom03parser;1");
-    
-    
-    var FeedParser;
-    var feedParser;
+    parsers.push("@sage.mozdev.org/sage/mozillafeedparser;1");
+    //parsers.push("@sage.mozdev.org/sage/rssparser;1");
+    //parsers.push("@sage.mozdev.org/sage/atomparser;1");
+    //parsers.push("@sage.mozdev.org/sage/atom03parser;1");
+        
+    var FeedParser, feedParser;
     var found = false;
     for (var parser in parsers) {
       FeedParser = new Components.Constructor(parsers[parser], "sageIFeedParser");
       feedParser = new FeedParser();
-      if (feedParser.discover(feedDocument)) {
+      if (feedParser.discover(feedText)) {
         found = true;
         break;
       }
