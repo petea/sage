@@ -314,8 +314,8 @@ var sidebarController = {
 
 
 function rssItemListBoxClick(aEvent) {
-  if(aEvent.type == "click") {
-    if(aEvent.button == 2 || aEvent.originalTarget.localName != "listitem") {
+  if (aEvent.type == "click") {
+    if (aEvent.button == 2 || aEvent.originalTarget.localName != "listitem") {
       return;
     }
   } else if(aEvent.type == "keypress") {
@@ -323,11 +323,10 @@ function rssItemListBoxClick(aEvent) {
       return;
     }
   }
-
   var listItem = rssItemListBox.selectedItem;
-  var feedItem = getFeedItemFromListItem( listItem );
-
+  var feedItem = getFeedItemFromListItem(listItem);
   openURI(feedItem.getLink(), aEvent);
+  setListItemReadState(listItem, true);
 }
 
 function rssTitleLabelClick(aNode, aEvent){
@@ -374,7 +373,7 @@ function setRssItemListBox() {
     case "source": currentFeed.setSort(currentFeed.SORT_SOURCE); break;
   }
 
-  for(var i = 0; currentFeed.getItemCount() > i; i++) {
+  for (var i = 0; currentFeed.getItemCount() > i; i++) {
     var item = currentFeed.getItem(i);
     var itemLabel;
     if (item.hasTitle()) {
@@ -484,7 +483,7 @@ function onFeedAbort(sURI) {
  * @param  oListItem : XULListItem
  * @returns  FeedItem
  */
-function getFeedItemFromListItem( oListItem ) {
+function getFeedItemFromListItem(oListItem) {
   var feedItemOrder = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
   switch (feedItemOrder) {
     case "chrono": currentFeed.setSort(currentFeed.SORT_CHRONO); break;
@@ -514,16 +513,6 @@ function getWindowType(aEvent) {
 }
 
 /**
- * Create a nsIURI from a string spec
- *
- * @param  spec : String
- * @returns  nsIURI
- */
-function newURI(spec) {
-  return Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(spec, null, null);
-}
-
-/**
  * Opens a link in the same window, a new tab or a new window
  *
  * @param  sURI : String
@@ -544,7 +533,6 @@ function openURI(aURI, aEvent) {
     default:
       getContentBrowser().loadURI(aURI);
   }
-  readStateController.onCommandUpdate();
 }
 
 /**
@@ -555,99 +543,44 @@ function openURI(aURI, aEvent) {
 function openListItem(aEvent) {
   var listItem = document.popupNode;
   var feedItem = getFeedItemFromListItem(listItem);
-  listItem.setAttribute("visited", "true");
   openURI(feedItem.getLink(), aEvent);
+  setListItemReadState(listItem, true);
 }
 
-// link visit code based on LinkVisitor.mozdev.org
+function setListItemReadState(listItem, state) {
+  if (state) {
+    listItem.setAttribute("visited", "true");
+  } else {
+    listItem.removeAttribute("visited");
+  }
+  readStateController.onCommandUpdate();
+}
 
 /*
  * This observes to the link-visited broadcast topic and calls onURIChanged when
  * an URI changed its visited state.
+ * 
+ * Adapted from LinkVisitor.mozdev.org
  */
 var linkVisitor = {
-  _uriFixup : Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup),
-  _topic: "link-visited",
   
-  setVisited:  function (sURI, bRead) {
-    if (!sURI) {
-      return;
-    }
-
-    // why do we need to fixup the URI?
-    var fixupURI = this._getFixupURI(sURI);
-    if (fixupURI == null) {
-      return;
-    }
-    if (bRead) {
-      if (this._ff08) {
-        this._globalHistory.addPage(fixupURI);
-      } else {
-        // Firefox 1.1 added a forth argument used for the referrer
-        this._globalHistory.addURI(fixupURI, false, true, null);
-      }
-    } else {
-      this._browserHistory.removePage(fixupURI);
-    }
-  },
-
-  getVisited : function (sURI) {
-    var fixupURI = this._getFixupURI(sURI);
-    if (fixupURI == null)
-      return false;
-    return this._globalHistory.isVisited(fixupURI);
-  },
-
-  _getFixupURI : function (sURI) {
-    try {
-      return this._uriFixup.createFixupURI(sURI, 0);
-    }
-    catch (e) {
-      logger.warn("Could not fixup URI: " + sURI);
-      return null;
-    }
-  },
-
-  init : function () {
-    // Firefox 0.8 does not support @mozilla.org/browser/global-history;2 or
-    // nsIGlobalHistory2
-    this._ff08 = !("@mozilla.org/browser/global-history;2" in Components.classes);
-    var gh;
-    if (this._ff08) {
-      gh = Components.classes["@mozilla.org/browser/global-history;1"];
-      linkVisitor._globalHistory = gh.getService(Components.interfaces.nsIGlobalHistory);
-    } else {
-      gh = Components.classes["@mozilla.org/browser/global-history;2"];
-      linkVisitor._globalHistory = gh.getService(Components.interfaces.nsIGlobalHistory2);
-    }
-    linkVisitor._browserHistory = gh.getService(Components.interfaces.nsIBrowserHistory);
-    
+  NS_LINK_VISITED_EVENT_TOPIC : "link-visited",
+  _items : {}, // mapping from the observer to the rss list items
+  
+  init : function() {
+    gh = Cc["@mozilla.org/browser/global-history;2"];
+    this._globalHistory = gh.getService(Ci.nsIGlobalHistory2);
+    this._browserHistory = gh.getService(Ci.nsIBrowserHistory);
+    this._observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
+    this._uriFixup = Cc["@mozilla.org/docshell/urifixup;1"].getService(Ci.nsIURIFixup);
     // add observer
-    var os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
-    os.addObserver(this, this._topic, false);    
+    this._observerService.addObserver(this, this.NS_LINK_VISITED_EVENT_TOPIC, false);    
   },
   
-  uninit: function () {
+  uninit : function() {
     this.clearItems();
-    var os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
-    os.removeObserver(this, this._topic);
-    
+    this._observerService.removeObserver(this, this.NS_LINK_VISITED_EVENT_TOPIC);
   },
-  
-  // nsIObserver
-  observe: function (aSubject, aTopic, aData) {
-    // subject is an URI
-    // data is null
-    if (aTopic != this._topic) {
-      return;
-    }
-    
-    var uri = aSubject.QueryInterface(Components.interfaces.nsIURI);
-    this.onURIChanged(uri.spec)
-  },
-  
-  // mapping from the observer to the rss list items
-  _items: {},
   
   clearItems: function () {
     this._items = {};
@@ -657,16 +590,56 @@ var linkVisitor = {
     this._items[aURI] = aListItem;
   },
   
-  onURIChanged: function (aURI) {
-    if (aURI in this._items) {
-      var listItem = this._items[aURI];
-      if (this.getVisited(aURI)) {
-        listItem.setAttribute("visited", "true");
-      } else {
-        listItem.removeAttribute("visited");
-      }
+  setVisited : function(sURI, bRead) {
+    if (!sURI) {
+      return;
+    }
+    // why do we need to fixup the URI?
+    var fixupURI = this._getFixupURI(sURI);
+    if (fixupURI == null) {
+      return;
+    }
+    if (bRead) {
+      this._globalHistory.addURI(fixupURI, false, true, null);
+    } else {
+      this._browserHistory.removePage(fixupURI);
+    }
+    this._observerService.notifyObservers(fixupURI, this.NS_LINK_VISITED_EVENT_TOPIC, null);
+  },
+
+  getVisited : function(sURI) {
+    var fixupURI = this._getFixupURI(sURI);
+    if (fixupURI == null) {
+      return false;
+    }
+    return this._globalHistory.isVisited(fixupURI);
+  },
+
+  _getFixupURI : function(sURI) {
+    try {
+      return this._uriFixup.createFixupURI(sURI, 0);
+    } catch (e) {
+      logger.warn("Could not fixup URI: " + sURI);
+      return null;
+    }
+  },
+  
+  onURIChanged : function(aURI) {
+    if (aURI.spec in this._items) {
+      var listItem = this._items[aURI.spec];
+      setListItemReadState(listItem, this.getVisited(aURI.spec));
+    }
+  },
+    
+  // nsIObserver
+  observe : function(aSubject, aTopic, aData) {
+    // subject is a URI
+    // data is null
+    if (aTopic == this.NS_LINK_VISITED_EVENT_TOPIC) {
+      this.onURIChanged(aSubject.QueryInterface(Ci.nsIURI))
     }
   }
+    
 };
 
 
@@ -707,10 +680,7 @@ function markAllReadState(bRead) {
     var listItem;
     for (var y = 0; y < rssItemListBox.getRowCount(); y++) {
       listItem = rssItemListBox.getItemAtIndex(y);
-      if (bRead)
-        listItem.setAttribute("visited", "true");
-      else
-        listItem.removeAttribute("visited");
+      setListItemReadState(listItem, bRead);
     }
   }
 }
@@ -728,11 +698,8 @@ function markReadState(bRead) {
     var listItem = listItems[i];
     var feedItem = getFeedItemFromListItem(listItem);
     var uri = feedItem.getLink();
-    if (bRead)
-      listItem.setAttribute("visited", "true");
-    else
-      listItem.removeAttribute("visited");
     linkVisitor.setVisited(uri, bRead);
+    setListItemReadState(listItem, bRead);
   }
 }
 
@@ -754,11 +721,8 @@ function toggleMarkAsRead() {
     var uri = feedItem.getLink();
     if (read == null)
       read = !linkVisitor.getVisited(uri);
-    if (read)
-      listItem.setAttribute("visited", "true");
-    else
-      listItem.removeAttribute("visited");
     linkVisitor.setVisited(uri, read);
+    setListItemReadState(listItem, read);
   }
 }
 
@@ -768,6 +732,7 @@ function toggleMarkAsRead() {
  * items as read
  */
 var readStateController = {
+  
   supportsCommand : function(cmd) {
     switch (cmd) {
       case "cmd_markasread":
@@ -805,9 +770,7 @@ var readStateController = {
 
         // if we have one non visited we can mark as read
         for (i = 0; i < items.length; i++) {
-          feedItem = getFeedItemFromListItem( items[i] );
-          visited = linkVisitor.getVisited( feedItem.getLink() );
-          if (!visited || items[i].getAttribute("visited") != "true")
+          if (items[i].getAttribute("visited") != "true")
             return true;
         }
         return false;
@@ -817,9 +780,7 @@ var readStateController = {
 
         // if we have one visited we can mark as unread
         for (i = 0; i < items.length; i++) {
-          feedItem = getFeedItemFromListItem( items[i] );
-          visited = linkVisitor.getVisited( feedItem.getLink() );
-          if (visited || items[i].getAttribute("visited") == "true")
+          if (items[i].getAttribute("visited") == "true")
             return true;
         }
         return false;
@@ -831,6 +792,7 @@ var readStateController = {
 
     return false;
   },
+  
   doCommand : function(cmd) {
     switch (cmd) {
       case "cmd_markasread":
@@ -856,13 +818,13 @@ var readStateController = {
     this.onCommandUpdate();
   },
 
-  onCommandUpdate: function () {
-    var commands = ["cmd_markasread", "cmd_markasunread",
-            "cmd_toggleread",
-            "cmd_markallasread", "cmd_markallasunread"];
-    for (var i = 0; i < commands.length; i++)
+  onCommandUpdate : function () {
+    var commands = ["cmd_markasread", "cmd_markasunread", "cmd_toggleread", "cmd_markallasread", "cmd_markallasunread"];
+    for (var i = 0; i < commands.length; i++) {
       goSetCommandEnabled(commands[i], this.isCommandEnabled(commands[i]));
+    }
   },
 
-  onEvent : function(evt){ }
+  onEvent : function(evt) { }
+  
 };
