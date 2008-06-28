@@ -192,12 +192,12 @@
   -moz-image-region: rect(16px 80px 32px 64px) !important;
 }
 
-#markAsReadButton[disabled="true"] {
-  -moz-image-region: rect(32px 80px 48px 64px) !important;
-}
-
 #markAsReadButton:active {
   -moz-image-region: rect(48px 80px 64px 64px) !important;
+}
+
+#markAsReadButton[disabled="true"] {
+  -moz-image-region: rect(32px 80px 48px 64px) !important;
 }
 
 #markAsUnreadButton {
@@ -208,12 +208,12 @@
   -moz-image-region: rect(16px 96px 32px 80px) !important;
 }
 
-#markAsUnreadButton[disabled="true"] {
-  -moz-image-region: rect(32px 96px 48px 80px) !important;
-}
-
 #markAsUnreadButton:active {
   -moz-image-region: rect(48px 96px 64px 80px) !important;
+}
+
+#markAsUnreadButton[disabled="true"] {
+  -moz-image-region: rect(32px 96px 48px 80px) !important;
 }
 
 #markAllAsReadButton {
@@ -224,12 +224,12 @@
   -moz-image-region: rect(16px 48px 32px 32px) !important;
 }
 
-#markAllAsReadButton[disabled="true"] {
-  -moz-image-region: rect(32px 48px 48px 32px) !important;
-}
-
 #markAllAsReadButton:active {
   -moz-image-region: rect(48px 48px 64px 32px) !important;
+}
+
+#markAllAsReadButton[disabled="true"] {
+  -moz-image-region: rect(32px 48px 48px 32px) !important;
 }
 
 #markAllAsUnreadButton {
@@ -240,12 +240,12 @@
   -moz-image-region: rect(16px 64px 32px 48px) !important;
 }
 
-#markAllAsUnreadButton[disabled="true"] {
-  -moz-image-region: rect(32px 64px 48px 48px) !important;
-}
-
 #markAllAsUnreadButton:active {
   -moz-image-region: rect(48px 64px 64px 48px) !important;
+}
+
+#markAllAsUnreadButton[disabled="true"] {
+  -moz-image-region: rect(32px 64px 48px 48px) !important;
 }
 
 
