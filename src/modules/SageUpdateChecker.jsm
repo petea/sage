@@ -48,7 +48,8 @@ loader.loadSubScript("chrome://sage/content/commonfunc.js");
 var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
 logger = new Logger();
 
-const DELAY = 3600 * 1000;
+const DELAY = 3600 * 1000; // One hour between each check
+const INITIAL_CHECK = 20 * 1000; // Delay the first check to avoid impacting startup performances
 
 var SageUpdateChecker = {
 
@@ -78,9 +79,19 @@ var SageUpdateChecker = {
     }
 
     this._refreshHasNew();
-    this.startCheck(SageUtils.getSageRootFolderId());
+    this.initialCheck();
     this.startTimer();
     this._initialized = true;
+  },
+
+  initialCheck: function() {
+    var callback = {};
+    callback.notify = function () {
+      SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
+    };
+    
+    var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+    timer.initWithCallback(callback, INITIAL_CHECK, Ci.nsITimer.TYPE_ONE_SHOT);
   },
 
   startTimer: function() {
