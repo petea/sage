@@ -52,16 +52,36 @@ const DELAY = 3600 * 1000;
 
 var SageUpdateChecker = {
 
+  _initialized: false,
+  _observers: [],
   checking: false,
   checkList: null,
   httpReq: null,
   lastItemId: -1,
   logger: null,
   livemarkService: null,
+  hasNew: false,
 
   hist: Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService),
   bmsvc: Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService),
   anno: Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService),
+  livemarkService: Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService),
+
+
+  /********************************************************
+   * Initialization and timer functions
+   ********************************************************/
+
+  init: function() {
+    if (this._initialized) {
+      return;
+    }
+
+    this._refreshHasNew();
+    this.startCheck(SageUtils.getSageRootFolderId());
+    this.startTimer();
+    this._initialized = true;
+  },
 
   startTimer: function() {
     if (this._timer) {
@@ -83,6 +103,34 @@ var SageUpdateChecker = {
     this.startTimer();
   },
 
+  /********************************************************
+   * Observers
+   ********************************************************/
+
+  addObserver: function(aObserver) {
+    this._observers.push(aObserver);
+  },
+
+  removeObserver: function(aObserver) {
+    this._observers = this._observers.filter(function(x) { return (x == aObserver); });
+  },
+
+  notifyObservers: function(aEvent, aValue) {
+    var observerService = Cc["@mozilla.org/observer-service;1"]
+                          .getService(Ci.nsIObserverService);
+    observerService.notifyObservers(null, aEvent, aValue);
+/*    switch(aEvent) {
+      case "hasNew-updated":
+        for each (obs in this._observers) {
+          obs.onHasNewUpdated(aValue);
+        }
+    }*/
+  },
+
+  /********************************************************
+   * Helpers
+   ********************************************************/
+
   getURL: function(aItemId) {
     if (this.livemarkService.isLivemark(aItemId)) {
       return this.livemarkService.getFeedURI(aItemId).spec;
@@ -98,6 +146,12 @@ var SageUpdateChecker = {
       // we could check for existence before, but the try/catch is more efficient
       return null;
     }
+  },
+
+  setStatusFlag: function(aItemId, aState) {
+    logger.info("setting " + SageUtils.ANNO_STATUS + " => " + aState + " on item " + aItemId);
+    this.anno.setItemAnnotation(aItemId, SageUtils.ANNO_STATUS, aState, 0, this.anno.EXPIRE_NEVER);
+    this._refreshHasNew();
   },
 
   queueItem: function uc_queueItem(aResultNode) {
@@ -119,10 +173,47 @@ var SageUpdateChecker = {
     }
   },
 
+  setHasNew: function(aValue) {
+    if (this.hasNew !== aValue) {
+      // alert("set to "+aValue);
+      this.hasNew = aValue;
+      this.notifyObservers("sage-hasNewUpdated", this.hasNew);
+    }
+  },
+
+  _refreshHasNew: function() {
+    var inst = this;
+    function itemHasNew(aResultNode) {
+      var itemId = aResultNode.itemId;
+      var itemType = inst.bmsvc.getItemType(itemId);
+      if (itemType == inst.bmsvc.TYPE_BOOKMARK || inst.livemarkService.isLivemark(itemId)) {
+        var status = inst.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
+        return (status == SageUtils.STATUS_UPDATE);
+      } else if (itemType == inst.bmsvc.TYPE_FOLDER) {
+        aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+        aResultNode.containerOpen = true;
+        for (var i = 0; i < aResultNode.childCount; i ++) {
+          if (itemHasNew(aResultNode.getChild(i))) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    var query = this.hist.getNewQuery();
+    var options = this.hist.getNewQueryOptions();
+    query.setFolders([SageUtils.getSageRootFolderId()], 1);
+    var result = this.hist.executeQuery(query, options);
+    this.setHasNew(itemHasNew(result.root));
+  },
+
+  /********************************************************
+   * Network functions and actually checking
+   ********************************************************/
+
   startCheck: function(aCheckFolderId) {
     if(this.checking) return;
-
-    this.livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
     var hist = Cc["@mozilla.org/browser/nav-history-service;1"]
                .getService(Ci.nsINavHistoryService);
@@ -249,6 +340,7 @@ var SageUpdateChecker = {
       if (aLastModified && lastVisit && sig) {
         if ((aLastModified > lastVisit) && (sig != feed.getSignature())) {
           status = SageUtils.STATUS_UPDATE;
+          this.setHasNew(true);
         } else {
           status = SageUtils.STATUS_NO_UPDATE;
         }
@@ -282,11 +374,6 @@ var SageUpdateChecker = {
     }
   },
 
-  setStatusFlag: function(aItemId, aState) {
-    logger.info("setting " + SageUtils.ANNO_STATUS + " => " + aState + " on item " + aItemId);
-    this.anno.setItemAnnotation(aItemId, SageUtils.ANNO_STATUS, aState, 0, this.anno.EXPIRE_NEVER);
-  },
-  
   onCheck: function(aName, aURL) {},
   onChecked: function(aName, aURL) {}
 }

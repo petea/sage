@@ -43,7 +43,7 @@ var sageOverlay = {
   logger : null,
   needsRestart : null,
 
-  init : function() {    
+  init : function() {
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     this.logger = new Logger();
         
@@ -73,13 +73,45 @@ var sageOverlay = {
         .getService(Ci.nsIAppStartup)
         .quit(Ci.nsIAppStartup.eForceQuit | Ci.nsIAppStartup.eRestart);
     }
-    SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
-    SageUpdateChecker.startTimer();
+    this.obs = {
+      observe: function(aSubject, aTopic, aData) {
+        switch(aTopic) {
+          case "sage-hasNewUpdated":
+            var button = document.getElementById("sage-button");
+            if (button) {
+              button.setAttribute("hasNew", aData);
+            }
+            break;
+          default:
+            // do nothing
+        }
+      },
+      getInterfaces: function (count) {
+        var interfaceList = [Ci.nsIObserver, Ci.nsIClassInfo];
+        count.value = interfaceList.length;
+        return interfaceList;
+      },
+      QueryInterface: function (iid) {
+        /*if (!iid.equals(Ci.nsIObserver) &&
+            !iid.equals(Ci.nsIClassInfo))
+          throw Components.results.NS_ERROR_NO_INTERFACE;*/
+        return this;
+      }
+    }
+    var observerService = Cc["@mozilla.org/observer-service;1"]
+                          .getService(Ci.nsIObserverService);
+    observerService.addObserver(this.obs, "sage-hasNewUpdated", true);
+    SageUpdateChecker.init();
+
     this.logger.info("initialized");
   },
   
-  uninit : function() {},
-  
+  uninit : function() {
+    var observerService = Cc["@mozilla.org/observer-service;1"]
+                          .getService(Ci.nsIObserverService);
+    observerService.removeObserver(this.obs, "sage-hasNewUpdated");
+  },
+
   createRoot : function() {
     var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
     var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
@@ -276,8 +308,9 @@ var sageOverlay = {
         if (toolbar.currentSet.indexOf("sage-button") > -1) {
           return true;
         }
-        }
       }
+    }
+    return false;
   },
   
   addToolbarButton : function() {
@@ -352,7 +385,6 @@ var sageOverlay = {
         break;
     }
   }
-
 }
 
 window.addEventListener("load", sageOverlay, false);

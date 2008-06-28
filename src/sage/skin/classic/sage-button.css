@@ -42,6 +42,15 @@
   list-style-image: url("chrome://sage/skin/sage_leaf_24.png");
 }
 
+#sage-button[hasNew="true"] {
+  list-style-image: url("chrome://sage/skin/sage_leaf_new_24.png");
+}
+
 toolbar[iconsize="small"] #sage-button {
   list-style-image: url("chrome://sage/skin/sage_leaf_16.png");
 }
+
+toolbar[iconsize="small"] #sage-button[hasNew="true"] {
+  list-style-image: url("chrome://sage/skin/sage_leaf_new_16.png");
+}
+
