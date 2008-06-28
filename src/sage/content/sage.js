@@ -76,6 +76,34 @@ var annotationObserver = {
   
 }
 
+var sageObserver = {
+  observe: function(aSubject, aTopic, aData) {
+    switch(aTopic) {
+      case "sage-nowRefreshing":
+        if (aData == "") {
+          sidebarController.clearStatus();
+        } else {
+          sidebarController.setStatus("checking",
+                                      strRes.getFormattedString("RESULT_CHECKING", [aData]));
+        }
+        break;
+      default:
+        // do nothing
+    }
+  },
+  getInterfaces: function (count) {
+    var interfaceList = [Ci.nsIObserver, Ci.nsIClassInfo];
+    count.value = interfaceList.length;
+    return interfaceList;
+  },
+  QueryInterface: function (iid) {
+    /*if (!iid.equals(Ci.nsIObserver) &&
+        !iid.equals(Ci.nsIClassInfo))
+      throw Components.results.NS_ERROR_NO_INTERFACE;*/
+    return this;
+  }
+}
+
 var sidebarController = {
 
   init : function() {
@@ -101,7 +129,7 @@ var sidebarController = {
     PlacesUtils.annotations.addObserver(annotationObserver);
     
     livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
-  
+
     strRes = document.getElementById("strRes");    
     resultStrArray = new Array(
       strRes.getString("RESULT_OK_STR"),
@@ -114,7 +142,7 @@ var sidebarController = {
       
     toggleShowFeedItemList();
     toggleShowFeedItemListToolbar();
-  
+
     document.documentElement.controllers.appendController(readStateController);
     readStateController.onCommandUpdate();
     
@@ -122,9 +150,13 @@ var sidebarController = {
     feedLoader.addListener("load", onFeedLoaded);
     feedLoader.addListener("error", onFeedLoadError);
     feedLoader.addListener("abort", onFeedAbort);
-    
+
     linkVisitor.init();
-  
+
+    var observerService = Cc["@mozilla.org/observer-service;1"]
+                          .getService(Ci.nsIObserverService);
+    observerService.addObserver(sageObserver, "sage-nowRefreshing", true);
+
     logger.info("sidebar open");
   },
   
@@ -245,13 +277,7 @@ var sidebarController = {
   
   checkFeeds : function(aFolderId) {
     var self = this;
-    SageUpdateChecker.onCheck = function(aName, aURL) {
-      self.setStatus("checking", strRes.getFormattedString("RESULT_CHECKING", [aName]));
-    }
-    SageUpdateChecker.onChecked = function(aName, aURL) {
-      self.clearStatus();
-    }
-  
+
     if(aFolderId) {
       SageUpdateChecker.startCheck(aFolderId);
     } else {

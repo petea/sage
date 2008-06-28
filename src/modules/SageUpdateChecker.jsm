@@ -49,7 +49,7 @@ var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageI
 logger = new Logger();
 
 const DELAY = 3600 * 1000; // One hour between each check
-const INITIAL_CHECK = 20 * 1000; // Delay the first check to avoid impacting startup performances
+const INITIAL_CHECK = 10 * 1000; // Delay the first check to avoid impacting startup performances
 
 var SageUpdateChecker = {
 
@@ -130,12 +130,6 @@ var SageUpdateChecker = {
     var observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
     observerService.notifyObservers(null, aEvent, aValue);
-/*    switch(aEvent) {
-      case "hasNew-updated":
-        for each (obs in this._observers) {
-          obs.onHasNewUpdated(aValue);
-        }
-    }*/
   },
 
   /********************************************************
@@ -292,7 +286,7 @@ var SageUpdateChecker = {
       //this.httpReq.overrideMimeType("application/xml");
       this.httpReq.send(null);
       this.setStatusFlag(this.lastItemId, SageUtils.STATUS_CHECKING);
-      this.onCheck(name, url);
+      this.notifyObservers("sage-nowRefreshing", name);
     } catch(e) {
         // FAILURE
       this.httpReq.abort();
@@ -378,13 +372,10 @@ var SageUpdateChecker = {
     
     if (this.checkList.length == 0) {
       this.checking = false;
-      this.onChecked(name, url);
+      this.notifyObservers("sage-nowRefreshing", "");
       return;
     } else {
       this.check();
     }
   },
-
-  onCheck: function(aName, aURL) {},
-  onChecked: function(aName, aURL) {}
 }
