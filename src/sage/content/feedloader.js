@@ -93,7 +93,9 @@ FeedLoader.prototype = {
       this.abort();
     }
 
-    this.httpReq = new XMLHttpRequest();
+    this.httpReq = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
+                   .createInstance(Components.interfaces.nsIXMLHttpRequest);
+    this.httpReq.mozBackgroundRequest = true;
     this.httpReq.open("GET", aURI);
     this.uri = aURI;
 
