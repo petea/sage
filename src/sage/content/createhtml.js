@@ -37,7 +37,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var CreateHTML = {
-	
+
 	HTML_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-html.txt"),
 	ITEM_SOURCE: SageUtils.loadText("chrome://sage/content/res/template-item.txt"),
 	DEFAULT_CSS: "chrome://sage/content/res/sage.css",
@@ -213,7 +213,7 @@ var CreateHTML = {
 	replaceFeedItemKeyword:	function (feed, item, i, s) {
 		switch (s) {
 			case "**NUMBER**":
-				return i  +1;
+				return i + 1;
 
 			case "**LINK**":
 				return item.getLink();
@@ -238,9 +238,9 @@ var CreateHTML = {
 					var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 					var ds;
 					if (allowEContent) {
-						this.filterHtmlHandler.clear();
-						this.simpleHtmlParser.parse(item.getContent());
-						ds = this.filterHtmlHandler.toString();
+            var sanitizer = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
+            var fragment = sanitizer.parseFragment(item.getContent(), false, null, document.documentElement);
+            ds = new XMLSerializer().serializeToString(fragment);
 					} else {
 						ds = SageUtils.htmlToText(item.getContent());
 					}
@@ -290,28 +290,26 @@ var CreateHTML = {
 		var dirService = Components.classes['@mozilla.org/file/directory_service;1'].getService(Components.interfaces.nsIProperties);
 		return dirService.get(aProp, Components.interfaces.nsILocalFile);
 	},
-	
-	entityEncode: function(aStr)
-	{
+
+	entityEncode: function(aStr) {
+
 		function replacechar(match) {
-			if (match=="<")
+			if (match == "<")
 				return "&lt;";
-			else if (match==">")
+			else if (match == ">")
 				return "&gt;";
-			else if (match=="\"")
+			else if (match == "\"")
 				return "&quot;";
-			else if (match=="'")
+			else if (match == "'")
 				return "&#039;";
-			else if (match=="&")
+			else if (match == "&")
 				return "&amp;";
+      else
+        return "";
 		}
-		
+
 		var re = /[<>"'&]/g;
-		return aStr.replace(re, function(m){return replacechar(m)});
-	},
+		return aStr.replace(re, function(m) { return replacechar(m); });
+	}
 
-	simpleHtmlParser:	new SimpleHtmlParser,
-	filterHtmlHandler:	new FilterHtmlHandler
 };
-
-CreateHTML.simpleHtmlParser.contentHandler = CreateHTML.filterHtmlHandler
