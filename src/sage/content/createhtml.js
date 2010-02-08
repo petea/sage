@@ -136,7 +136,7 @@ var CreateHTML = {
 				return this.entityEncode(feed.getTitle());
 
 			case "**LINK**":
-				return feed.getLink();
+				return this.entityEncode(feed.getLink());
 				break;
 
 			case "**AUTHOR**":
@@ -147,7 +147,16 @@ var CreateHTML = {
 
 			case "**DESCRIPTION**":
 				if (feed.hasDescription()) {
-					return feed.getDescription();
+					var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
+					var ds;
+					if (allowEContent) {
+						var sanitizer = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
+						var fragment = sanitizer.parseFragment(feed.getDescription(), false, null, document.documentElement);
+						ds = new XMLSerializer().serializeToString(fragment);
+					} else {
+						ds = this.entityEncode(SageUtils.htmlToText(feed.getDescription()));
+					}
+					return ds;
 				}
 				return "";
 
@@ -216,7 +225,7 @@ var CreateHTML = {
 				return i + 1;
 
 			case "**LINK**":
-				return item.getLink();
+				return this.entityEncode(item.getLink());
 
 			case "**TITLE**":
 				if (item.hasTitle()) {
@@ -238,11 +247,11 @@ var CreateHTML = {
 					var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 					var ds;
 					if (allowEContent) {
-            var sanitizer = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
-            var fragment = sanitizer.parseFragment(item.getContent(), false, null, document.documentElement);
-            ds = new XMLSerializer().serializeToString(fragment);
+						var sanitizer = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
+						var fragment = sanitizer.parseFragment(item.getContent(), false, null, document.documentElement);
+						ds = new XMLSerializer().serializeToString(fragment);
 					} else {
-						ds = SageUtils.htmlToText(item.getContent());
+						ds = this.entityEncode(SageUtils.htmlToText(item.getContent()));
 					}
 					return "<div class=\"item-desc\">" + ds + "</div>";
 				}
@@ -253,7 +262,7 @@ var CreateHTML = {
 					var twelveHourClock = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 					var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
 					formatter.setFormat(formatter.FORMAT_LONG, formatter.ABBREVIATED_FALSE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
-					var dateString = formatter.formatDate(item.getPubDate());
+					var dateString = this.entityEncode(formatter.formatDate(item.getPubDate()));
 					return "<div class=\"item-pubDate\">" + dateString + "</div>";
 				}
 				return "";
@@ -270,11 +279,11 @@ var CreateHTML = {
 						return description;
 					}
 					return "<div class=\"item-enclosure\">" +
-						"<a href=\"" + enc.getLink() + "\" title=\"" +
-						createDescriptionFromURL(enc.getLink()) +
+						"<a href=\"" + this.entityEncode(enc.getLink()) + "\" title=\"" +
+						createDescriptionFromURL(this.entityEncode(enc.getLink())) +
 						"\"><img src=\"" +
 							(enc.hasMimeType() ?
-								"moz-icon://dummy?size=16&contentType=" + enc.getMimeType() :
+								"moz-icon://dummy?size=16&contentType=" + this.entityEncode(enc.getMimeType()) :
 								"chrome://sage/skin/enclosure.png") +
 						"\">" + strRes.GetStringFromName("feed_summary_enclosure") + "</a>" +
 						(enc.hasLength() ? " (" + this.formatFileSize(enc.getLength()) + ")" : "") +
@@ -304,8 +313,8 @@ var CreateHTML = {
 				return "&#039;";
 			else if (match == "&")
 				return "&amp;";
-      else
-        return "";
+			else
+				return "";
 		}
 
 		var re = /[<>"'&]/g;
