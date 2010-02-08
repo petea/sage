@@ -160,7 +160,7 @@ var sidebarController = {
 			
 			if (!properties) {
 				properties = [];
-				var node = this._visibleElements[aRow].node;
+				var node = this._visibleElements[aRow].node || this._visibleElements[aRow];
 				var nodeType = node.type;
 				var itemId = node.itemId;
 				if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
@@ -184,12 +184,13 @@ var sidebarController = {
 				}
 			}
 		}
+		
 		PlacesTreeView.prototype.isContainerBase = PlacesTreeView.prototype.isContainer;
 		PlacesTreeView.prototype.isContainer =
 		function sage_isContainer(aRow) {
 			var baseValue = this.isContainerBase(aRow);
  			if (baseValue) {
- 				var node = this._visibleElements[aRow].node;
+ 				var node = this._visibleElements[aRow].node || this._visibleElements[aRow];
  				if (PlacesUtils.annotations.itemHasAnnotation(node.itemId, LMANNO_FEEDURI)) {
  					return false;
  				} else {
@@ -199,6 +200,7 @@ var sidebarController = {
  				return false;
  			}
 		}
+		
 		PlacesTreeView.prototype.getImageSrc =
 		function sage_getImageSrc(aRow, aColumn) {
 			return "";
