@@ -63,7 +63,8 @@ var annotationObserver = {
 				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
 				break;
 			case SageUtils.ANNO_STATUS:
-				bookmarksTree.getResultView().invalidateAll();
+				bookmarksTree.view.invalidateContainer(bookmarksTree.getResultNode());
+				logger.info("onItemAnnotationSet: " + aName);
 				break;
 		}
 	},
@@ -122,7 +123,7 @@ var sidebarController = {
 		feedLoader.addListener("abort", onFeedAbort);
 		
 		linkVisitor.init();
-	
+			
 		logger.info("sidebar open");
 	},
 	
@@ -143,11 +144,18 @@ var sidebarController = {
 		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
 		PlacesTreeView.prototype.getCellProperties =
 		function sage_getCellProperties(aRow, aColumn, aProperties) {
-			var properties = this._visibleElements[aRow].properties;
+			var cached = false;
+			if (this._visibleElements[aRow].properties !== undefined) {
+				if (this._visibleElements[aRow].properties) {
+					cached = true;
+				}
+			}
+			
+			logger.info("sage_getCellProperties: cached: " + cached);
 			
 			var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
 			this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
-			var proptery;
+			var property;
 			for (var i = 0; i < propertiesBase.Count(); i++) {
 				property = propertiesBase.GetElementAt(i);
 				if (property != this._getAtomFor("livemark")) {
@@ -158,8 +166,8 @@ var sidebarController = {
 			if (aColumn.id != "title")
 			  return;
 			
-			if (!properties) {
-				properties = [];
+			if (!cached) {
+				var properties = [];
 				var node = this._visibleElements[aRow].node || this._visibleElements[aRow];
 				var nodeType = node.type;
 				var itemId = node.itemId;
@@ -179,8 +187,10 @@ var sidebarController = {
 					}
 				}
 				for (var i = 0; i < properties.length; i++) {
+					if (this._visibleElements[aRow].properties !== undefined) {
+						this._visibleElements[aRow].properties.push(properties[i]);
+					}
 					aProperties.AppendElement(properties[i]);
-					this._visibleElements[aRow].properties.push(properties[i]);
 				}
 			}
 		}
