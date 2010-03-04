@@ -301,7 +301,7 @@ var feedSummary = {
 				item.appendChild(description);
 			}
 			if (feedItem.hasEnclosure()) {
-				var enc = item.getEnclosure();
+				var enc = feedItem.getEnclosure();
 				var enclosure = document.createElement("div");
 				enclosure.setAttribute("class", "item-enclosure");
 				a = document.createElement("a");
