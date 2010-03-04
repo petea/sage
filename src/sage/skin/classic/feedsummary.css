@@ -3,13 +3,18 @@
 	margin:	3em auto 0.5em auto;
 	width:	200px;
 	font:	Icon;
-	white-space:	nowrap
+	white-space:	nowrap;
+	display: none;
 }
 
 #loading-progress-meter {
 	margin:		0 auto 3em auto;
 	width:		200px;
 	display:	none;
+}
+
+[loading] #loading-text {
+	display:	block;
 }
 
 [loading] #loading-progress-meter {
