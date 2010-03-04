@@ -151,8 +151,6 @@ var sidebarController = {
 				}
 			}
 			
-			logger.info("sage_getCellProperties: cached: " + cached);
-			
 			var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
 			this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
 			var property;
