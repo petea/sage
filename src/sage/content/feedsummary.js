@@ -238,7 +238,7 @@ var feedSummary = {
 		
 		var allowEContent = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT);
 		var twelveHourClock = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
-		var sanitizer = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
+		var parser = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
 		var dateFormatter = Cc["@sage.mozdev.org/sage/dateformatter;1"].getService(Ci.sageIDateFormatter);
 		dateFormatter.setFormat(dateFormatter.FORMAT_LONG, dateFormatter.ABBREVIATED_FALSE, twelveHourClock ? dateFormatter.CLOCK_12HOUR : dateFormatter.CLOCK_24HOUR);
 		var content;
@@ -261,7 +261,7 @@ var feedSummary = {
 			} else {
 				content = SageUtils.htmlToText(feed.getDescription());
 			}
-			p.appendChild(sanitizer.parseFragment(content, false, null, document.documentElement));
+			p.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement)));
 			header.appendChild(p);
 		}
 		document.body.appendChild(header);
@@ -297,7 +297,7 @@ var feedSummary = {
 				} else {
 					content = SageUtils.htmlToText(feedItem.getContent());
 				}
-				description.appendChild(sanitizer.parseFragment(content, false, null, document.documentElement));
+				description.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement)));
 				item.appendChild(description);
 			}
 			if (feedItem.hasEnclosure()) {
@@ -491,6 +491,27 @@ var feedSummary = {
 			return;
 		}
 		element.setAttribute(attribute, uri);
+	},
+	
+	sanitizeFragment: function(fragment) {
+		var walker = document.createTreeWalker(fragment, Ci.nsIDOMNodeFilter.SHOW_ELEMENT, null, false);
+		var node, attrName, attr, value;
+		
+		const URI_ATTR_LIST = ["action", "href", "src", "longdesc", "usemap", "cite", "background"];
+		
+		while (walker.nextNode()) {
+			node = walker.currentNode;
+			for each (attrName in URI_ATTR_LIST) {
+				attr = node.attributes.getNamedItem(attrName);
+				if (attr) {
+					value = node.getAttribute(attrName);
+					node.removeAttribute(attrName);
+					this.setURIAttributeSafe(node, attrName, value);
+				}
+			}
+		}
+		
+		return fragment;
 	},
 	
 	getUserCssURL: function() {
