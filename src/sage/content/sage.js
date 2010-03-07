@@ -540,6 +540,22 @@ function newURI(spec) {
  * @returns	void
  */
 function openURI(aURI, aEvent) {
+	var secman = Cc["@mozilla.org/scriptsecuritymanager;1"].getService(Ci.nsIScriptSecurityManager);
+	var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);		
+	
+	var sidebarURI = null;
+	try {
+		sidebarURI = ios.newURI("chrome://sage/content/sage.xul", null, null);
+	} catch (e) { }
+	
+	var sidebarPrincipal = secman.getCodebasePrincipal(sidebarURI);
+	const flags = Ci.nsIScriptSecurityManager.DISALLOW_INHERIT_PRINCIPAL;
+	try {
+		secman.checkLoadURIStrWithPrincipal(sidebarPrincipal, aURI, flags);
+	} catch (e) {
+		return;
+	}
+
 	switch (getWindowType(aEvent)) {
 		case "tab":
 			getContentBrowser().addTab(aURI);
