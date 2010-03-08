@@ -476,7 +476,7 @@ var feedSummary = {
 		
 	setURIAttributeSafe: function(element, attribute, uri) {
 		var secman = Cc["@mozilla.org/scriptsecuritymanager;1"].getService(Ci.nsIScriptSecurityManager);
-		var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);		
+		var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 		
 		var feedURI = null;
 		try {
@@ -493,21 +493,41 @@ var feedSummary = {
 		element.setAttribute(attribute, uri);
 	},
 	
+	decorateAnchorElement: function(element) {
+		var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+		var url;
+		
+		if (element.hasAttribute("href")) {
+			try {
+				url = ios.newURI(element.getAttribute("href"), null, null).QueryInterface(Ci.nsIURL);
+				if (url.host.match(/(.*\.)?amazon\.(com|[a-z]{2}(\.[a-z]{2})?)$/i)) {
+					if (!url.path.match(/-[0-9]{2}$/i) && !url.query.match(/(^|&)tag=/i)) {
+						url.query += (url.query == "" ? "" : "&") + "tag=sagerss-20";
+						element.setAttribute("href", url.spec);
+					}
+				}
+			} catch(e) { }
+		}
+	},
+	
 	sanitizeFragment: function(fragment) {
 		var walker = document.createTreeWalker(fragment, Ci.nsIDOMNodeFilter.SHOW_ELEMENT, null, false);
-		var node, attrName, attr, value;
+		var elem, attrName, attr, value;
 		
 		const URI_ATTR_LIST = ["action", "href", "src", "longdesc", "usemap", "cite", "background"];
 		
 		while (walker.nextNode()) {
-			node = walker.currentNode;
+			elem = walker.currentNode;
 			for each (attrName in URI_ATTR_LIST) {
-				attr = node.attributes.getNamedItem(attrName);
+				attr = elem.attributes.getNamedItem(attrName);
 				if (attr) {
-					value = node.getAttribute(attrName);
-					node.removeAttribute(attrName);
-					this.setURIAttributeSafe(node, attrName, value);
+					value = elem.getAttribute(attrName);
+					elem.removeAttribute(attrName);
+					this.setURIAttributeSafe(elem, attrName, value);
 				}
+			}
+			if (elem.tagName.toLowerCase() == "a") {
+				this.decorateAnchorElement(elem);
 			}
 		}
 		
