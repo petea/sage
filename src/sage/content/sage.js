@@ -298,7 +298,7 @@ var sidebarController = {
 	},
 	
 	openOrganizeFeedsDialog : function() {
-		var query = "SageRoot";
+		var query = "BookmarksMenu";
 		var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
 		var organizer = wm.getMostRecentWindow("Places:Organizer");
 		if (!organizer) {

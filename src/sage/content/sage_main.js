@@ -37,7 +37,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var sageOverlay = {
-	
+
 	logger : null,
 	needsRestart : null,
 
@@ -78,7 +78,7 @@ var sageOverlay = {
 	
 	createRoot : function() {
 		var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-		var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
+		var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, SageUtils.SAGE_ROOT_TITLE, bookmarksService.DEFAULT_INDEX);
 		SageUtils.setSageRootFolderId(folderId);
 		SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
 		SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
@@ -247,6 +247,18 @@ var sageOverlay = {
 				// add content handler
 				self.addContentHandler();
 				self.needsRestart = true;
+			},
+			
+			"1.4.6" : function() {
+				var bs = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+				var as = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+				var root = SageUtils.getSageRootFolderId(); 
+				try {
+					as.removeItemAnnotation(root, "PlacesOrganizer/OrganizerQuery");
+				} catch (e) { }
+				if (bs.getItemTitle(root) == null) {
+					bs.setItemTitle(root, SageUtils.SAGE_ROOT_TITLE);
+				}
 			}
 			
 		}
