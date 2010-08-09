@@ -194,6 +194,10 @@ sageAtomParser.prototype = {
 			var authorNodes = entryNodes[i].getElementsByTagNameNS(ATOM_NS, "author");
 			if (authorNodes.length) {
 				node = authorNodes[0];
+				var nameNodes = node.getElementsByTagNameNS(ATOM_NS, "name");
+				if (nameNodes.length) {
+					node = nameNodes[0];
+				}
 				if (node.hasAttribute("type") && (node.getAttribute("type").toLowerCase() == "html" || node.getAttribute("type").toLowerCase() == "xhtml")) {
 					item.author = this._entityDecode(this._getInnerText(node));
 				} else {
