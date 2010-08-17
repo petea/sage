@@ -80,7 +80,7 @@ var feedSummary = {
 
 		// if the sidebar has the same uri then we should reuse that
 		var ssb = this.findSageSideBar();
-		if (ssb != null && ssb.feedLoader.uri == this.uri)
+		if (ssb != null && ssb.feedLoader && ssb.feedLoader.uri == this.uri)
 		{
 			this._ownFeedLoader = false;
 			return this._feedLoader = ssb.feedLoader;
