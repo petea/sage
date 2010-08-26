@@ -112,9 +112,10 @@ var UpdateChecker = {
 	},
 
 	done: function() {
-		if(this.checking) {
+		if (this.checking) {
 			this.httpReq.abort();
 			this.setStatusFlag(this.lastItemId, SageUtils.STATUS_NO_UPDATE);
+			this.logger.info("aborted check in progress")
 		}
 	},
 
@@ -233,8 +234,9 @@ var UpdateChecker = {
 		if (this.checkList.length == 0) {
 			this.checking = false;
 			this.onChecked(name, url);
-			return;
+			this.logger.info("finished checking feeds");
 		} else {
+			this.logger.info(this.checkList.length + " feed(s) remaining to be checked");
 			this.check();
 		}
 	},
