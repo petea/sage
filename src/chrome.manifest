@@ -1,3 +1,42 @@
+interfaces components/sageIDateFormatter.xpt
+interfaces components/sageIDateParser.xpt
+interfaces components/sageIFeed.xpt
+interfaces components/sageIFeedItem.xpt
+interfaces components/sageIFeedItemEnclosure.xpt
+interfaces components/sageIFeedParser.xpt
+interfaces components/sageIFeedParserFactory.xpt
+interfaces components/sageILogger.xpt
+
+component {B315E9D2-7300-4C70-A2A3-B2BE328813AE} components/sageAtom03Parser.js
+contract @sage.mozdev.org/sage/atom03parser;1 {B315E9D2-7300-4C70-A2A3-B2BE328813AE}
+
+component {C48B7642-5C72-45C7-AA88-1AB550B0AB9B} components/sageAtomParser.js
+contract @sage.mozdev.org/sage/atomparser;1 {C48B7642-5C72-45C7-AA88-1AB550B0AB9B}
+
+component {E5D15F67-C113-497D-AC6F-40296FEAD058} components/sageDateFormatter.js
+contract @sage.mozdev.org/sage/dateformatter;1 {E5D15F67-C113-497D-AC6F-40296FEAD058}
+
+component {16077429-E1DE-434C-BCDB-D0AD6BE13AEE} components/sageDateParser.js
+contract @sage.mozdev.org/sage/dateparser;1 {16077429-E1DE-434C-BCDB-D0AD6BE13AEE}
+
+component {E7E23F87-1993-4D04-8663-25946CB58153} components/sageFeed.js
+contract @sage.mozdev.org/sage/feed;1 {E7E23F87-1993-4D04-8663-25946CB58153}
+
+component {BBAEEF86-C8B5-4B03-A250-2C433CB8EC5B} components/sageFeedItem.js
+contract @sage.mozdev.org/sage/feeditem;1 {BBAEEF86-C8B5-4B03-A250-2C433CB8EC5B}
+
+component {E32528AA-6F29-4763-AB2A-2182CA6649FA} components/sageFeedItemEnclosure.js
+contract @sage.mozdev.org/sage/feeditemenclosure;1 {E32528AA-6F29-4763-AB2A-2182CA6649FA}
+
+component {9C464FBF-590A-4BD0-A0F9-D72A44A505BB} components/sageFeedParserFactory.js
+contract @sage.mozdev.org/sage/feedparserfactory;1 {9C464FBF-590A-4BD0-A0F9-D72A44A505BB}
+
+component {DA518D7D-6C3E-4507-99E2-6102EB3BD031} components/sageLogger.js
+contract @sage.mozdev.org/sage/logger;1 {DA518D7D-6C3E-4507-99E2-6102EB3BD031}
+
+component {69F7C75E-9A41-4E7B-9E6F-620158D2DE09} components/sageRSSParser.js
+contract @sage.mozdev.org/sage/rssparser;1 {69F7C75E-9A41-4E7B-9E6F-620158D2DE09}
+
 content	sage	jar:chrome/sage.jar!/content/
 
 skin	sage	classic/1.0		jar:chrome/sage.jar!/skin/classic/

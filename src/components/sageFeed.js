@@ -227,4 +227,8 @@ sageFeed.prototype = {
 
 };
 
-var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeed]);
+if (XPCOMUtils.generateNSGetFactory) {
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageFeed]);
+} else {
+	var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeed]);
+}

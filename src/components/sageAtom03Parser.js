@@ -315,4 +315,8 @@ sageAtom03Parser.prototype = {
 
 };
 
-var NSGetModule = XPCOMUtils.generateNSGetModule([sageAtom03Parser]);
+if (XPCOMUtils.generateNSGetFactory) {
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageAtom03Parser]);
+} else {
+	var NSGetModule = XPCOMUtils.generateNSGetModule([sageAtom03Parser]);
+}

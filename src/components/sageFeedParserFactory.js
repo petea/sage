@@ -86,4 +86,8 @@ sageFeedParserFactory.prototype = {
 
 };
 
-var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeedParserFactory]);
+if (XPCOMUtils.generateNSGetFactory) {
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageFeedParserFactory]);
+} else {
+	var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeedParserFactory]);
+}

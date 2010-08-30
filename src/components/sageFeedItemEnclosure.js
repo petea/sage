@@ -149,4 +149,8 @@ sageFeedItemEnclosure.prototype = {
 
 };
 
-var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeedItemEnclosure]);
+if (XPCOMUtils.generateNSGetFactory) {
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageFeedItemEnclosure]);
+} else {
+	var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeedItemEnclosure]);
+}

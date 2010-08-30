@@ -254,4 +254,8 @@ sageDateParser.prototype = {
 
 };
 
-var NSGetModule = XPCOMUtils.generateNSGetModule([sageDateParser]);
+if (XPCOMUtils.generateNSGetFactory) {
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageDateParser]);
+} else {
+	var NSGetModule = XPCOMUtils.generateNSGetModule([sageDateParser]);
+}
