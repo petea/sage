@@ -147,7 +147,6 @@ var UpdateChecker = {
 			this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
 			this.httpReq.overrideMimeType("application/xml");
 			this.httpReq.send(null);
-			this.setStatusFlag(this.lastItemId, SageUtils.STATUS_CHECKING);
 			this.onCheck(name, url);
 		} catch(e) {
 				// FAILURE
@@ -242,7 +241,7 @@ var UpdateChecker = {
 	},
 
 	setStatusFlag: function(aItemId, aState) {
-		logger.info("setting " + SageUtils.ANNO_STATUS + " => " + aState + " on item " + aItemId);
+		logger.debug("setting " + SageUtils.ANNO_STATUS + " => " + aState + " on item " + aItemId);
 		PlacesUtils.annotations.setItemAnnotation(aItemId, SageUtils.ANNO_STATUS, aState, 0, PlacesUtils.annotations.EXPIRE_NEVER);
 	},
 	

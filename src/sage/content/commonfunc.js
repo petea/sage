@@ -76,7 +76,6 @@ var SageUtils = {
 	STATUS_NO_UPDATE: "no-updated",
 	STATUS_UNKNOWN: "unknown",
 	STATUS_ERROR: "error",
-	STATUS_CHECKING: "checking",
 	
 	SAGE_ROOT_TITLE : "Sage Feeds",
 
