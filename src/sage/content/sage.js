@@ -64,7 +64,7 @@ var annotationObserver = {
 				break;
 			case SageUtils.ANNO_STATUS:
 				bookmarksTree.view.invalidateContainer(bookmarksTree.getResultNode());
-				logger.info("onItemAnnotationSet: " + aName);
+				logger.debug("onItemAnnotationSet: " + aName);
 				break;
 		}
 	},
@@ -144,9 +144,12 @@ var sidebarController = {
 		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
 		PlacesTreeView.prototype.getCellProperties =
 		function sage_getCellProperties(aRow, aColumn, aProperties) {
+			if (!this._rows) { // FF 3.x
+				this._rows = this._visibleElements;
+			}
 			var cached = false;
-			if (this._visibleElements[aRow].properties !== undefined) {
-				if (this._visibleElements[aRow].properties) {
+			if (this._rows[aRow].properties !== undefined) {
+				if (this._rows[aRow].properties) {
 					cached = true;
 				}
 			}
@@ -160,17 +163,17 @@ var sidebarController = {
 					aProperties.AppendElement(propertiesBase.GetElementAt(i));
 				}
 			}
-					
+			
 			if (aColumn.id != "title")
 			  return;
 			
 			if (!cached) {
 				var properties = [];
-				var node = this._visibleElements[aRow].node || this._visibleElements[aRow];
+				var node = this._rows[aRow].node || this._rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
 				var nodeType = node.type;
 				var itemId = node.itemId;
 				if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
-					if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
+					if (!PlacesUtils.nodeIsLivemarkItem(node)) {
 						try {
 							var state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
 							properties.push(this._getAtomFor("sage_state_" + state));
@@ -185,8 +188,8 @@ var sidebarController = {
 					}
 				}
 				for (var i = 0; i < properties.length; i++) {
-					if (this._visibleElements[aRow].properties !== undefined) {
-						this._visibleElements[aRow].properties.push(properties[i]);
+					if (this._rows[aRow].properties !== undefined) {
+						this._rows[aRow].properties.push(properties[i]);
 					}
 					aProperties.AppendElement(properties[i]);
 				}
@@ -196,10 +199,13 @@ var sidebarController = {
 		PlacesTreeView.prototype.isContainerBase = PlacesTreeView.prototype.isContainer;
 		PlacesTreeView.prototype.isContainer =
 		function sage_isContainer(aRow) {
+			if (!this._rows) { // FF 3.x
+				this._rows = this._visibleElements;
+			}
 			var baseValue = this.isContainerBase(aRow);
  			if (baseValue) {
- 				var node = this._visibleElements[aRow].node || this._visibleElements[aRow];
- 				if (PlacesUtils.annotations.itemHasAnnotation(node.itemId, LMANNO_FEEDURI)) {
+ 				var node = this._rows[aRow].node || this._rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
+ 				if (PlacesUtils.nodeIsLivemarkContainer(node)) {
  					return false;
  				} else {
  					return true;
