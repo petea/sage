@@ -261,7 +261,7 @@ var feedSummary = {
 			} else {
 				content = SageUtils.htmlToText(feed.getDescription());
 			}
-			p.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement)));
+			p.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement), null));
 			header.appendChild(p);
 		}
 		document.body.appendChild(header);
@@ -297,7 +297,7 @@ var feedSummary = {
 				} else {
 					content = SageUtils.htmlToText(feedItem.getContent());
 				}
-				description.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement)));
+				description.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement), feedItem.hasBaseURI() ? feedItem.getBaseURI() : null));
 				item.appendChild(description);
 			}
 			if (feedItem.hasEnclosure()) {
@@ -478,19 +478,14 @@ var feedSummary = {
 		var secman = Cc["@mozilla.org/scriptsecuritymanager;1"].getService(Ci.nsIScriptSecurityManager);
 		var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 		
-		var feedURI = null;
+		const flags = Ci.nsIScriptSecurityManager.DISALLOW_INHERIT_PRINCIPAL;
+		
 		try {
 			feedURI = ios.newURI(this.uri, null, null);
+			attrURI = ios.newURI(uri, null, null);
+			secman.checkLoadURI(feedURI, attrURI, flags);
+			element.setAttribute(attribute, attrURI.spec);
 		} catch (e) { }
-		
-		var feedPrincipal = secman.getCodebasePrincipal(feedURI);
-		const flags = Ci.nsIScriptSecurityManager.DISALLOW_INHERIT_PRINCIPAL;
-		try {
-			secman.checkLoadURIStrWithPrincipal(feedPrincipal, uri, flags);
-		} catch (e) {
-			return;
-		}
-		element.setAttribute(attribute, uri);
 	},
 	
 	decorateAnchorElement: function(element) {
@@ -501,7 +496,7 @@ var feedSummary = {
 			try {
 				url = ios.newURI(element.getAttribute("href"), null, null).QueryInterface(Ci.nsIURL);
 				if (url.host.match(/(.*\.)?amazon\.(com|[a-z]{2}(\.[a-z]{2})?)$/i)) {
-					if (!url.path.match(/-[0-9]{2}$/i) && !url.query.match(/(^|&)tag=/i)) {
+					if (!(url.path.match(/-[0-9]{2}$/i) || url.path == "/" || url.query.match(/(^|&)tag=/i))) {
 						url.query += (url.query == "" ? "" : "&") + "tag=sagerss-20";
 						element.setAttribute("href", url.spec);
 					}
@@ -510,9 +505,11 @@ var feedSummary = {
 		}
 	},
 	
-	sanitizeFragment: function(fragment) {
+	sanitizeFragment: function(fragment, baseURI) {
 		var walker = document.createTreeWalker(fragment, Ci.nsIDOMNodeFilter.SHOW_ELEMENT, null, false);
 		var elem, attrName, attr, value;
+		
+		const URIFixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Ci.nsIURIFixup);
 		
 		const URI_ATTR_LIST = ["action", "href", "src", "longdesc", "usemap", "cite", "background"];
 		
@@ -523,6 +520,11 @@ var feedSummary = {
 				if (attr) {
 					value = elem.getAttribute(attrName);
 					elem.removeAttribute(attrName);
+					if (baseURI) {
+						try {
+							value = URIFixup.createFixupURI(baseURI, Ci.nsIURIFixup.FIXUP_FLAG_NONE).resolve(value);
+						} catch (e) { }
+					}
 					this.setURIAttributeSafe(elem, attrName, value);
 				}
 			}
@@ -564,11 +566,6 @@ window.addEventListener("unload", function (e)
 	return feedSummary.onPageUnload(e);
 }, false);
 
-
-// Cannot use DOM to set base
-if (feedSummary.uri) {
-	document.write("<base href=\"" + feedSummary.uri + "\">");
-}
 
 // set feed style sheet before content loads
 var cssUrl	= feedSummary.getUserCssURL();
