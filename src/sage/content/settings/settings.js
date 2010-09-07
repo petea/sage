@@ -88,7 +88,7 @@ function init() {
 
 	setDisabled();
 
-	setTimeout(fillSelectFolderMenupopup, 0);
+	fillSelectFolderMenupopup();
 }
 
 function accept() {
@@ -124,7 +124,7 @@ function browseCss() {
 	}
 }
 
-function fillSelectFolderMenupopup () {
+function fillSelectFolderMenupopup() {
 	var popup = document.getElementById("select-folder");
 
 	// clearing the old menupopup
