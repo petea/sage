@@ -137,21 +137,21 @@ sageDateParser.prototype = {
 	parseISO8601: function(aDateString)
 	{
 		// trims leading spaces
-		String.prototype.lTrim = function () {
-			return this.replace(/^\s+/gm, '');
+		function lTrim(string) {
+			return string.replace(/^\s+/gm, '');
 		}
 		
 		// trims trailing spaces
-		String.prototype.rTrim = function () {
-			return this.replace(/\s+$/gm, '');
+		function rTrim(string) {
+			return string.replace(/\s+$/gm, '');
 		}
 		
 		// trims spaces
-		String.prototype.trim = function () {
-			return this.rTrim().lTrim();
+		function trim(string) {
+			return lTrim(rTrim(string));
 		}
 	
-		var tmp = aDateString.trim(); // remove any leding and/or trailing spaces
+		var tmp = trim(aDateString); // remove any leding and/or trailing spaces
 		if (tmp.indexOf('T') > -1) {
 			tmp = tmp.split('T');
 		} else {
