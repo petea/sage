@@ -82,7 +82,7 @@ var sageOverlay = {
 		SageUtils.setSageRootFolderId(folderId);
 		SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
 		SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
-		SageUtils.addFeed("Sage Project News", "http://sage.mozdev.org/rss.xml");
+		SageUtils.addFeed("Sage", "http://sagerss.com/feed/");
 	},
 	
 	getVersion : function() {
