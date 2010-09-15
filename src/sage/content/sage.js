@@ -145,7 +145,9 @@ var sidebarController = {
 		PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
 		PlacesTreeView.prototype.getCellProperties =
 		function sage_getCellProperties(aRow, aColumn, aProperties) {
-			this._ensureValidRow(aRow);
+			if (this._ensureValidRow) { // FF 3.x
+				this._ensureValidRow(aRow);
+			}
 			
 			if (!this._rows) { // FF 3.x
 				this._rows = this._visibleElements;
@@ -202,7 +204,9 @@ var sidebarController = {
 		PlacesTreeView.prototype.isContainerBase = PlacesTreeView.prototype.isContainer;
 		PlacesTreeView.prototype.isContainer =
 		function sage_isContainer(aRow) {
-			this._ensureValidRow(aRow);
+			if (this._ensureValidRow) { // FF 3.x
+				this._ensureValidRow(aRow);
+			}
 			
 			if (!this._rows) { // FF 3.x
 				this._rows = this._visibleElements;
@@ -222,7 +226,9 @@ var sidebarController = {
 		
 		PlacesTreeView.prototype.getImageSrc =
 		function sage_getImageSrc(aRow, aColumn) {
-			this._ensureValidRow(aRow);
+			if (this._ensureValidRow) { // FF 3.x
+				this._ensureValidRow(aRow);
+			}
 			
 			return "";
 		}
