@@ -703,11 +703,7 @@ var linkVisitor = {
 	onURIChanged: function (aURI) {
 		if (aURI in this._items) {
 			var listItem = this._items[aURI];
-			if (this.getVisited(aURI)) {
-				listItem.setAttribute("visited", "true");
-			} else {
-				listItem.removeAttribute("visited");
-			}
+			listItem.setAttribute("visited", "true");
 		}
 	}
 };
