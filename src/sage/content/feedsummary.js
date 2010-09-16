@@ -261,7 +261,7 @@ var feedSummary = {
 			} else {
 				content = SageUtils.htmlToText(feed.getDescription());
 			}
-			p.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement), null));
+			p.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement), feed.getLink()));
 			header.appendChild(p);
 		}
 		document.body.appendChild(header);
@@ -297,7 +297,7 @@ var feedSummary = {
 				} else {
 					content = SageUtils.htmlToText(feedItem.getContent());
 				}
-				description.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement), feedItem.hasBaseURI() ? feedItem.getBaseURI() : null));
+				description.appendChild(this.sanitizeFragment(parser.parseFragment(content, false, null, document.documentElement), feedItem.hasBaseURI() ? feedItem.getBaseURI() : feed.getLink()));
 				item.appendChild(description);
 			}
 			if (feedItem.hasEnclosure()) {
