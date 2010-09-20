@@ -42,11 +42,6 @@
 	-moz-appearance: none;
 }
 
-#sage-splitter {
-	border-top: 1px solid ThreeDLightShadow;
-	background-color: #eee;
-}
-
 sidebarheader {
 	background-color: #eee;
 }
@@ -65,4 +60,9 @@ sidebarheader {
 
 #feedListToolbar toolbarbutton {
 	padding: 5px 3px 2px 3px;
+}
+
+#sage-splitter {
+	border-top: 1px solid ThreeDLightShadow;
+	background-color: #eee;
 }
