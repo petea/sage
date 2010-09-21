@@ -65,7 +65,7 @@
 	
 	<commandset id="placesCommands"/>
 	<commandset id="editMenuCommands"/>
-	<popup id="placesContext"/>
+	<menupopup id="placesContext"/>
 	
 	<keyset>
 		<key id="key_toggleread" key="&toggleReadState.command.key;" command="cmd_toggleread"/>
