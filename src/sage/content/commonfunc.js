@@ -38,7 +38,7 @@
 
 var SageUtils = {
 
-	VERSION : "1.4.8b",
+	VERSION : "1.4.8",
 	
 	USER_AGENT : "Mozilla/5.0 (Sage)",
 
