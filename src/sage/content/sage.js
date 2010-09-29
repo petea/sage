@@ -149,12 +149,16 @@ var sidebarController = {
 				this._ensureValidRow(aRow);
 			}
 			
-			if (!this._rows) { // FF 3.x
-				this._rows = this._visibleElements;
+			var rows;
+			if (this._rows) { // FF 4
+				rows = this._rows;
+			} else { // FF 3.x
+				rows = this._visibleElements;
 			}
+			
 			var cached = false;
-			if (this._rows[aRow].properties !== undefined) {
-				if (this._rows[aRow].properties) {
+			if (rows[aRow].properties !== undefined) {
+				if (rows[aRow].properties) {
 					cached = true;
 				}
 			}
@@ -174,7 +178,7 @@ var sidebarController = {
 			
 			if (!cached) {
 				var properties = [];
-				var node = this._rows[aRow].node || this._rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
+				var node = rows[aRow].node || rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
 				var nodeType = node.type;
 				var itemId = node.itemId;
 				if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
@@ -193,8 +197,8 @@ var sidebarController = {
 					}
 				}
 				for (var i = 0; i < properties.length; i++) {
-					if (this._rows[aRow].properties !== undefined) {
-						this._rows[aRow].properties.push(properties[i]);
+					if (rows[aRow].properties !== undefined) {
+						rows[aRow].properties.push(properties[i]);
 					}
 					aProperties.AppendElement(properties[i]);
 				}
@@ -208,12 +212,16 @@ var sidebarController = {
 				this._ensureValidRow(aRow);
 			}
 			
-			if (!this._rows) { // FF 3.x
-				this._rows = this._visibleElements;
+			var rows;
+			if (this._rows) { // FF 4
+				rows = this._rows;
+			} else { // FF 3.x
+				rows = this._visibleElements;
 			}
+			
 			var baseValue = this.isContainerBase(aRow);
  			if (baseValue) {
- 				var node = this._rows[aRow].node || this._rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
+ 				var node = rows[aRow].node || rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
  				if (PlacesUtils.nodeIsLivemarkContainer(node)) {
  					return false;
  				} else {
