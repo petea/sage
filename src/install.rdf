@@ -42,7 +42,7 @@
 	<Description about="urn:mozilla:install-manifest">
 	
 		<em:id>{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}</em:id>
-		<em:version>1.4.9</em:version>
+		<em:version>1.4.10</em:version>
 		<em:type>2</em:type>
 	
 		<em:name>Sage</em:name>
