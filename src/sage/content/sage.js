@@ -58,13 +58,13 @@ var annotationObserver = {
 	onPageAnnotationSet : function(aURI, aName) { },
 	
 	onItemAnnotationSet : function(aItemId, aName) {
+		logger.debug("onItemAnnotationSet: " + aName);
 		switch (aName) {
 			case SageUtils.ANNO_ROOT:
 				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
 				break;
 			case SageUtils.ANNO_STATUS:
-				bookmarksTree.view.invalidateContainer(bookmarksTree.getResultNode());
-				logger.debug("onItemAnnotationSet: " + aName);
+				bookmarksTree.view.invalidateContainer(bookmarksTree.getResultNode ? /* Firefox 3.x */ bookmarksTree.getResultNode() : bookmarksTree.result.root);
 				break;
 		}
 	},
@@ -123,7 +123,7 @@ var sidebarController = {
 		feedLoader.addListener("abort", onFeedAbort);
 		
 		linkVisitor.init();
-			
+		
 		logger.info("sidebar open");
 	},
 	
