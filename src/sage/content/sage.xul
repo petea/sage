@@ -141,7 +141,7 @@
 				onkeypress="SidebarUtils.handleTreeKeyPress(event);"
 				onclick="sidebarController.bookmarksTreeClick(event);"
 				onmousemove="SidebarUtils.handleTreeMouseMove(event);"
-				onmouseout="SidebarUtils.clearURLFromStatusBar();">
+				onmouseout="SidebarUtils.setMouseoverURL ? SidebarUtils.setMouseoverURL('') : /* FF 3.x */ SidebarUtils.clearURLFromStatusBar();">
 				<treecols>
 					<treecol id="title" flex="1" primary="true" hideheader="true"/>
 				</treecols>
