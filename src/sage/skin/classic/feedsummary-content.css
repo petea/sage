@@ -122,7 +122,7 @@ div.item-author {
 	float: right;
 }
 
-img {
+img, video {
 	max-width: 100%;
 	height: auto;
 }
