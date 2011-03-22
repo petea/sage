@@ -135,7 +135,7 @@ var sidebarController = {
 		linkVisitor.uninit();
 		PlacesUtils.annotations.removeObserver(annotationObserver);
 				
-		SidebarUtils.clearURLFromStatusBar();
+		SidebarUtils.setMouseoverURL ? SidebarUtils.setMouseoverURL("") : /* FF 3.x */ SidebarUtils.clearURLFromStatusBar();
 	
 		logger.info("sidebar closed");
 	},
