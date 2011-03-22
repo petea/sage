@@ -156,7 +156,7 @@
 				</hbox>
 			</sidebarheader>
 			<toolbox class="plain">
-				<toolbar id="itemListToolbar" iconsize="small" mode="icons">
+				<toolbar id="itemListToolbar">
 					<toolbarbutton id="markAsReadButton" class="toolbarbutton-1" command="cmd_markasread"/>
 					<toolbarbutton id="markAsUnreadButton" class="toolbarbutton-1" command="cmd_markasunread"/>
 					<toolbarbutton id="markAllAsReadButton" class="toolbarbutton-1" command="cmd_markallasread"/>
