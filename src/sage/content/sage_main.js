@@ -69,7 +69,7 @@ var sageOverlay = {
 			prefService.setBoolPref("browser.sessionstore.resume_session_once", true);
 			Cc["@mozilla.org/toolkit/app-startup;1"]
 				.getService(Ci.nsIAppStartup)
-				.quit(Ci.nsIAppStartup.eForceQuit | Ci.nsIAppStartup.eRestart);
+				.quit(Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart);
 		}
 		this.logger.info("initialized");
 	},
