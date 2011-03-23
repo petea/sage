@@ -175,7 +175,7 @@
 
 	<popupset>
 		<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)" noautohide="true"/>
-		<popup id="rssItemListBoxContextMenu"
+		<menupopup id="rssItemListBoxContextMenu"
 			onpopupshowing="updateItemContextMenu();">
 			<menuitem id="rssOpenItem" default="true" oncommand="openListItem();"
 				label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
@@ -188,7 +188,7 @@
 			<menuitem id="rssMarkAsUnreadItem" command="cmd_markasunread"/>
 			<menuitem id="rssMarkAllAsReadItem" command="cmd_markallasread"/>
 			<menuitem id="rssMarkAllAsUnreadItem" command="cmd_markallasunread"/>
-		</popup>
+		</menupopup>
 	</popupset>
 
 </page>
