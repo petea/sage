@@ -175,14 +175,6 @@
 
 	<popupset>
 		<tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)" noautohide="true"/>
-		<popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
-			<template>
-				<menuitem type="checkbox" uri="..." value="..."
-					oncommand="FeedSearch.popSearchEngineClick(event);"
-					label="rdf:http://sage.mozdev.org/#name"
-					image="rdf:http://sage.mozdev.org/#icon"/>
-			</template>
-		</popup>
 		<popup id="rssItemListBoxContextMenu"
 			onpopupshowing="updateItemContextMenu();">
 			<menuitem id="rssOpenItem" default="true" oncommand="openListItem();"
