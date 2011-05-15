@@ -263,13 +263,18 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
 
 	var outlineNode = aOpmlDoc.createElement("outline");
 
+	var childNode, childNodeType;
 	if (type == bmsvc.TYPE_FOLDER) {
 		outlineNode.setAttribute("text", title);
 
 		aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
 		aResultNode.containerOpen = true;
 		for (var i = 0; i < aResultNode.childCount; i ++) {
-			outlineNode.appendChild(createOpmlOutline(aOpmlDoc, aResultNode.getChild(i)));
+			childNode = aResultNode.getChild(i);
+			childNodeType = bmsvc.getItemType(childNode.itemId);
+			if (childNodeType == bmsvc.TYPE_FOLDER || childNodeType == bmsvc.TYPE_BOOKMARK) {
+				outlineNode.appendChild(createOpmlOutline(aOpmlDoc, childNode));				
+			}
 		}
 		aResultNode.containerOpen = false;
 	} else if (type == bmsvc.TYPE_BOOKMARK) {
