@@ -134,7 +134,7 @@ function importOPML() {
 		return false;
 	}
 
-	opmlDoc = httpReq.responseXML;
+	var opmlDoc = httpReq.responseXML;
 	if(opmlDoc.documentElement.localName != "opml") {
 		reportError(strRes.getString("opml_import_badfile"));
 		return false;
@@ -151,16 +151,19 @@ function importOPML() {
 
 	var treeWalker = opmlDoc.createTreeWalker(opmlDoc, NodeFilter.SHOW_ELEMENT, outlineFilter, true);
 
-	while(treeWalker.nextNode()) {
+	function isFolder(node) {
+		return !(node.hasAttribute('xmlUrl') || node.hasAttribute('xmlurl'));
+	}
+	
+	while (treeWalker.nextNode()) {
 		var cNode = treeWalker.currentNode;
 		var pNode = cNode.parentNode;
 		var parentFolderId = ("_folderId" in pNode) ? pNode._folderId : rootFolderId;
-		if(cNode.hasChildNodes()) {
+		if (isFolder(cNode)) {
 			var title = cNode.getAttribute("title");
-			if(!title) title = cNode.getAttribute("text");
-			if(!title) title = "folder";
+			if (!title) title = cNode.getAttribute("text");
+			if (!title) title = "folder";
 			cNode._folderId = bookmarksService.createFolder(parentFolderId, title, bookmarksService.DEFAULT_INDEX);
-			
 		} else {
 			createRssItem(cNode, parentFolderId);
 		}
@@ -328,8 +331,8 @@ function reportError(s)
 
 // Page initializers
 function onPageStartShow() {
-	winMain.getButton("cancel").disabled = false;
-	winMain.canAdvance = true;
+	document.documentElement.getButton("cancel").disabled = false;
+	document.documentElement.canAdvance = true;
 }
 
 function onPageImportShow() {
