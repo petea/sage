@@ -61,7 +61,7 @@ var annotationObserver = {
 		logger.debug("onItemAnnotationSet: " + aName);
 		switch (aName) {
 			case SageUtils.ANNO_ROOT:
-				bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
+				bookmarksTree.place = sidebarController.bookmarksTreeQueryURI(aItemId);
 				break;
 			case SageUtils.ANNO_STATUS:
 				bookmarksTree.view.invalidateContainer(bookmarksTree.getResultNode ? /* Firefox 3.x */ bookmarksTree.getResultNode() : bookmarksTree.result.root);
@@ -92,7 +92,7 @@ var sidebarController = {
 		
 		try {
 			var sageRootFolderId = SageUtils.getSageRootFolderId();
-			bookmarksTree.place = "place:queryType=1&folder=" + sageRootFolderId;
+			bookmarksTree.place = this.bookmarksTreeQueryURI(sageRootFolderId);
 		} catch(e) {
 			logger.error(e);
 		}
@@ -241,6 +241,10 @@ var sidebarController = {
 			return "";
 		}
 		
+	},
+	
+	bookmarksTreeQueryURI : function(rootFolderId) {
+		return "place:queryType=1&excludeItemIfParentHasAnnotation=livemark%2FfeedURI&folder=" + rootFolderId;
 	},
 		
 	bookmarksTreeClick : function(aEvent) {
