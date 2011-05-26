@@ -60,12 +60,13 @@ var annotationObserver = {
   onPageAnnotationSet : function(aURI, aName) { },
   
   onItemAnnotationSet : function(aItemId, aName) {
+    logger.debug("onItemAnnotationSet: " + aName);
     switch (aName) {
       case SageUtils.ANNO_ROOT:
-        bookmarksTree.place = "place:queryType=1&folder=" + aItemId;
+        bookmarksTree.place = sidebarController.bookmarksTreeQueryURI(aItemId);
         break;
       case SageUtils.ANNO_STATUS:
-        bookmarksTree.getResultView().invalidateAll();
+        bookmarksTree.view.invalidateContainer(bookmarksTree.getResultNode ? /* Firefox 3.x */ bookmarksTree.getResultNode() : bookmarksTree.result.root);
         break;
     }
   },
@@ -121,7 +122,7 @@ var sidebarController = {
     
     try {
       var sageRootFolderId = SageUtils.getSageRootFolderId();
-      bookmarksTree.place = "place:queryType=1&folder=" + sageRootFolderId;
+      bookmarksTree.place = this.bookmarksTreeQueryURI(sageRootFolderId);
     } catch(e) {
       logger.error(e);
     }
@@ -129,7 +130,7 @@ var sidebarController = {
     PlacesUtils.annotations.addObserver(annotationObserver);
     
     livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
-
+  
     strRes = document.getElementById("strRes");    
     resultStrArray = new Array(
       strRes.getString("RESULT_OK_STR"),
@@ -142,7 +143,7 @@ var sidebarController = {
       
     toggleShowFeedItemList();
     toggleShowFeedItemListToolbar();
-
+  
     document.documentElement.controllers.appendController(readStateController);
     readStateController.onCommandUpdate();
     
@@ -150,13 +151,13 @@ var sidebarController = {
     feedLoader.addListener("load", onFeedLoaded);
     feedLoader.addListener("error", onFeedLoadError);
     feedLoader.addListener("abort", onFeedAbort);
-
+    
     linkVisitor.init();
-
+    
     var observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
     observerService.addObserver(sageObserver, "sage-nowRefreshing", true);
-
+    
     logger.info("sidebar open");
   },
   
@@ -168,37 +169,54 @@ var sidebarController = {
     linkVisitor.uninit();
     PlacesUtils.annotations.removeObserver(annotationObserver);
         
-    SidebarUtils.clearURLFromStatusBar();
+    SidebarUtils.setMouseoverURL ? SidebarUtils.setMouseoverURL("") : /* FF 3.x */ SidebarUtils.clearURLFromStatusBar();
   
     logger.info("sidebar closed");
   },
   
   _extendPlacesTreeView : function() {
+    
     PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
     PlacesTreeView.prototype.getCellProperties =
     function sage_getCellProperties(aRow, aColumn, aProperties) {
-      var properties = this._visibleElements[aRow].properties;
+      if (this._ensureValidRow) { // FF 3.x
+        this._ensureValidRow(aRow);
+      }
+      
+      var rows;
+      if (this._rows) { // FF 4
+        rows = this._rows;
+      } else { // FF 3.x
+        rows = this._visibleElements;
+      }
+      
+      var cached = false;
+      if (rows[aRow].properties !== undefined) {
+        if (rows[aRow].properties) {
+          cached = true;
+        }
+      }
       
       var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
       this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
-      var proptery;
+      var property;
       for (var i = 0; i < propertiesBase.Count(); i++) {
         property = propertiesBase.GetElementAt(i);
         if (property != this._getAtomFor("livemark")) {
           aProperties.AppendElement(propertiesBase.GetElementAt(i));
         }
       }
-          
+      
       if (aColumn.id != "title")
         return;
       
-      if (!properties) {
-        properties = [];
-        var node = this._visibleElements[aRow].node;
+      if (!cached) {
+        var properties = [];
+        var node = rows[aRow].node || rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
         var nodeType = node.type;
         var itemId = node.itemId;
         if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
-          if (!PlacesUtils.nodeIsLivemarkContainer(node.parent)) {
+          if (!PlacesUtils.nodeIsLivemarkItem(node)) {
             try {
               var state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
               properties.push(this._getAtomFor("sage_state_" + state));
@@ -213,18 +231,32 @@ var sidebarController = {
           }
         }
         for (var i = 0; i < properties.length; i++) {
+          if (rows[aRow].properties !== undefined) {
+            rows[aRow].properties.push(properties[i]);
+          }
           aProperties.AppendElement(properties[i]);
-          this._visibleElements[aRow].properties.push(properties[i]);
         }
       }
     }
+    
     PlacesTreeView.prototype.isContainerBase = PlacesTreeView.prototype.isContainer;
     PlacesTreeView.prototype.isContainer =
     function sage_isContainer(aRow) {
+      if (this._ensureValidRow) { // FF 3.x
+        this._ensureValidRow(aRow);
+      }
+      
+      var rows;
+      if (this._rows) { // FF 4
+        rows = this._rows;
+      } else { // FF 3.x
+        rows = this._visibleElements;
+      }
+      
       var baseValue = this.isContainerBase(aRow);
        if (baseValue) {
-         var node = this._visibleElements[aRow].node;
-         if (PlacesUtils.annotations.itemHasAnnotation(node.itemId, LMANNO_FEEDURI)) {
+         var node = rows[aRow].node || rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
+         if (PlacesUtils.nodeIsLivemarkContainer(node)) {
            return false;
          } else {
            return true;
@@ -233,10 +265,20 @@ var sidebarController = {
          return false;
        }
     }
+    
     PlacesTreeView.prototype.getImageSrc =
     function sage_getImageSrc(aRow, aColumn) {
+      if (this._ensureValidRow) { // FF 3.x
+        this._ensureValidRow(aRow);
+      }
+      
       return "";
-    }  
+    }
+    
+  },
+  
+  bookmarksTreeQueryURI : function(rootFolderId) {
+    return "place:queryType=1&excludeItemIfParentHasAnnotation=livemark%2FfeedURI&folder=" + rootFolderId;
   },
     
   bookmarksTreeClick : function(aEvent) {
@@ -317,7 +359,7 @@ var sidebarController = {
   },
   
   openOrganizeFeedsDialog : function() {
-    var query = "SageRoot";
+    var query = "BookmarksMenu";
     var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
     var organizer = wm.getMostRecentWindow("Places:Organizer");
     if (!organizer) {
@@ -331,9 +373,18 @@ var sidebarController = {
   },
   
   openAboutDialog : function() {
-    var extensionManager = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
-    openDialog("chrome://mozapps/content/extensions/about.xul", "",
-      "chrome,centerscreen,modal", "urn:mozilla:item:{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", extensionManager.datasource);
+    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+    var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+    if (versionChecker.compare(appInfo.version, "4.0a") >= 0) {
+      Components.utils.import("resource://gre/modules/AddonManager.jsm");
+      AddonManager.getAddonByID("{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", function(aAddon) {
+        openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", aAddon);
+      });
+    } else {
+      var extensionManager = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
+      openDialog("chrome://mozapps/content/extensions/about.xul", "",
+        "chrome,centerscreen,modal", "urn:mozilla:item:{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", extensionManager.datasource);
+    }
   }
 
 }
@@ -345,7 +396,7 @@ function rssItemListBoxClick(aEvent) {
       return;
     }
   } else if(aEvent.type == "keypress") {
-    if(aEvent.originalTarget.localName != "listbox") {
+    if (aEvent.originalTarget.localName != "listbox") {
       return;
     }
   }
@@ -539,6 +590,16 @@ function getWindowType(aEvent) {
 }
 
 /**
+ * Create a nsIURI from a string spec
+ *
+ * @param  spec : String
+ * @returns  nsIURI
+ */
+function newURI(spec) {
+  return Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(spec, null, null);
+}
+
+/**
  * Opens a link in the same window, a new tab or a new window
  *
  * @param  sURI : String
@@ -548,6 +609,22 @@ function getWindowType(aEvent) {
  * @returns  void
  */
 function openURI(aURI, aEvent) {
+  var secman = Cc["@mozilla.org/scriptsecuritymanager;1"].getService(Ci.nsIScriptSecurityManager);
+  var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);    
+  
+  var sidebarURI = null;
+  try {
+    sidebarURI = ios.newURI("chrome://sage/content/sage.xul", null, null);
+  } catch (e) { }
+  
+  var sidebarPrincipal = secman.getCodebasePrincipal(sidebarURI);
+  const flags = Ci.nsIScriptSecurityManager.DISALLOW_INHERIT_PRINCIPAL;
+  try {
+    secman.checkLoadURIStrWithPrincipal(sidebarPrincipal, aURI, flags);
+  } catch (e) {
+    return;
+  }
+
   switch (getWindowType(aEvent)) {
     case "tab":
       getContentBrowser().addTab(aURI);
@@ -758,7 +835,7 @@ function toggleMarkAsRead() {
  * items as read
  */
 var readStateController = {
-  
+
   supportsCommand : function(cmd) {
     switch (cmd) {
       case "cmd_markasread":

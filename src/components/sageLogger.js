@@ -36,11 +36,9 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const CLASS_ID = Components.ID("{DA518D7D-6C3E-4507-99E2-6102EB3BD031}");
-const CLASS_NAME = "Sage Logger Component";
-const CONTRACT_ID = "@sage.mozdev.org/sage/logger;1";
-const sageILogger = Components.interfaces.sageILogger;
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
+const sageILogger = Components.interfaces.sageILogger;
 const PREF_LOG_LEVEL = "extensions.sage.logLevel";
 
 /******************************************************************************
@@ -48,6 +46,11 @@ const PREF_LOG_LEVEL = "extensions.sage.logLevel";
  ******************************************************************************/
 function sageLogger() {};
 sageLogger.prototype = {
+  
+  classDescription: "Sage Logger Component",
+  classID: Components.ID("{DA518D7D-6C3E-4507-99E2-6102EB3BD031}"),
+  contractID: "@sage.mozdev.org/sage/logger;1",
+    
   _level: sageILogger.LEVEL_WARN,
   _consoleService: Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService),
   
@@ -100,54 +103,12 @@ sageLogger.prototype = {
   },
   
   // nsISupports
-  QueryInterface: function(aIID)
-  {
-    if (!aIID.equals(Components.interfaces.sageILogger) && !aIID.equals(Components.interfaces.nsISupports))
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    return this;
-  }
+  QueryInterface: XPCOMUtils.generateQI([Components.interfaces.sageILogger])
+
 };
 
-/******************************************************************************
- * XPCOM Functions for construction and registration
- ******************************************************************************/
-var Module = {
-  _firstTime: true,
-  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-  {
-    if (this._firstTime) {
-      this._firstTime = false;
-      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-    }
-    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-  },
-
-  unregisterSelf: function(aCompMgr, aLocation, aType)
-  {
-    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-  },
-  
-  getClassObject: function(aCompMgr, aCID, aIID)
-  {
-    if (!aIID.equals(Components.interfaces.nsIFactory))
-      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-    if (aCID.equals(CLASS_ID))
-      return Factory;
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  },
-
-  canUnload: function(aCompMgr) { return true; }
-};
-
-var Factory = {
-  createInstance: function(aOuter, aIID)
-  {
-    if (aOuter != null)
-      throw Components.results.NS_ERROR_NO_AGGREGATION;
-    return (new sageLogger()).QueryInterface(aIID);
-  }
-};
-
-function NSGetModule(aCompMgr, aFileSpec) { return Module; }
+if (XPCOMUtils.generateNSGetFactory) {
+  var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageLogger]);
+} else {
+  var NSGetModule = XPCOMUtils.generateNSGetModule([sageLogger]);
+}

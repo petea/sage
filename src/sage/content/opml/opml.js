@@ -44,6 +44,7 @@ var winMain, txtImportFile, txtExportFile;
 var strRes;
 
 var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+var livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
 var g_errorMesage = "";
 
@@ -134,7 +135,7 @@ function importOPML() {
     return false;
   }
 
-  opmlDoc = httpReq.responseXML;
+  var opmlDoc = httpReq.responseXML;
   if(opmlDoc.documentElement.localName != "opml") {
     reportError(strRes.getString("opml_import_badfile"));
     return false;
@@ -151,16 +152,19 @@ function importOPML() {
 
   var treeWalker = opmlDoc.createTreeWalker(opmlDoc, NodeFilter.SHOW_ELEMENT, outlineFilter, true);
 
-  while(treeWalker.nextNode()) {
+  function isFolder(node) {
+    return !(node.hasAttribute('xmlUrl') || node.hasAttribute('xmlurl'));
+  }
+  
+  while (treeWalker.nextNode()) {
     var cNode = treeWalker.currentNode;
     var pNode = cNode.parentNode;
     var parentFolderId = ("_folderId" in pNode) ? pNode._folderId : rootFolderId;
-    if(cNode.hasChildNodes()) {
+    if (isFolder(cNode)) {
       var title = cNode.getAttribute("title");
-      if(!title) title = cNode.getAttribute("text");
-      if(!title) title = "folder";
+      if (!title) title = cNode.getAttribute("text");
+      if (!title) title = "folder";
       cNode._folderId = bookmarksService.createFolder(parentFolderId, title, bookmarksService.DEFAULT_INDEX);
-      
     } else {
       createRssItem(cNode, parentFolderId);
     }
@@ -260,13 +264,18 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
 
   var outlineNode = aOpmlDoc.createElement("outline");
 
-  if (type == bmsvc.TYPE_FOLDER) {
+  var childNode, childNodeType;
+  if (type == bmsvc.TYPE_FOLDER && !livemarkService.isLivemark(aResultNode.itemId)) {
     outlineNode.setAttribute("text", title);
 
     aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
     aResultNode.containerOpen = true;
     for (var i = 0; i < aResultNode.childCount; i ++) {
-      outlineNode.appendChild(createOpmlOutline(aOpmlDoc, aResultNode.getChild(i)));
+      childNode = aResultNode.getChild(i);
+      childNodeType = bmsvc.getItemType(childNode.itemId);
+      if (childNodeType == bmsvc.TYPE_FOLDER || childNodeType == bmsvc.TYPE_BOOKMARK) {
+        outlineNode.appendChild(createOpmlOutline(aOpmlDoc, childNode));        
+      }
     }
     aResultNode.containerOpen = false;
   } else if (type == bmsvc.TYPE_BOOKMARK) {
@@ -275,6 +284,11 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
     outlineNode.setAttribute("text", title);
     outlineNode.setAttribute("title", title);
     outlineNode.setAttribute("xmlUrl", url);
+  } else if (livemarkService.isLivemark(aResultNode.itemId)) {
+    outlineNode.setAttribute("type", "rss");
+    outlineNode.setAttribute("text", title);
+    outlineNode.setAttribute("title", title);
+    outlineNode.setAttribute("xmlUrl", livemarkService.getFeedURI(aResultNode.itemId).spec);
   }
   return outlineNode;
 }
@@ -328,8 +342,8 @@ function reportError(s)
 
 // Page initializers
 function onPageStartShow() {
-  winMain.getButton("cancel").disabled = false;
-  winMain.canAdvance = true;
+  document.documentElement.getButton("cancel").disabled = false;
+  document.documentElement.canAdvance = true;
 }
 
 function onPageImportShow() {

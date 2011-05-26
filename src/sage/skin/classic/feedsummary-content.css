@@ -13,12 +13,13 @@ body {
   font-family: Verdana, Sans-Serif;
 }
 
-a:link    { text-decoration: none; color: #436976; font-weight: bold; }
-a:visited  { text-decoration: none;  color: #537986; }
-a:hover    { text-decoration: underline; }
-a:active  { text-decoration: none; }
-
-p.item-desc a:link { color: #029; }
+a {
+  color: #436976;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:visited { color: #7399a6; }
+a:hover { text-decoration: underline; }
 
 #rss-header {
   background-color: #dee7ec;
@@ -33,6 +34,7 @@ p.item-desc a:link { color: #029; }
   margin: 0px;
   padding: 0px;
 }
+#rss-title a:visited { color: #436976; }
 
 #rss-desc {
   font-size: small;
@@ -127,7 +129,7 @@ p.item-desc a:link { color: #029; }
   float: right;
 }
 
-img {
+img, video {
   max-width: 100%;
   height: auto;
 }

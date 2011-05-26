@@ -52,7 +52,7 @@
     <em:developer>Erik Arvidsson</em:developer>
     <em:developer>Erwan Loisant</em:developer>
   
-    <em:homepageURL>http://sage.mozdev.org</em:homepageURL>
+    <em:homepageURL>http://sagerss.com</em:homepageURL>
     <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
     <em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
   
@@ -61,7 +61,7 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>3.0b1</em:minVersion>
-        <em:maxVersion>3.0.*</em:maxVersion>
+        <em:maxVersion>4.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
     

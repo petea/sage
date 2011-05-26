@@ -36,9 +36,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const CLASS_ID = Components.ID("{E32528AA-6F29-4763-AB2A-2182CA6649FA}");
-const CLASS_NAME = "Sage Feed Item Enclosure Component";
-const CONTRACT_ID = "@sage.mozdev.org/sage/feeditemenclosure;1";
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+
 const sageIFeedItemEnclosure = Components.interfaces.sageIFeedItemEnclosure;
 
 /******************************************************************************
@@ -46,6 +45,11 @@ const sageIFeedItemEnclosure = Components.interfaces.sageIFeedItemEnclosure;
  ******************************************************************************/
 function sageFeedItemEnclosure() {};
 sageFeedItemEnclosure.prototype = {
+  
+  classDescription: "Sage Feed Item Enclosure Component",
+  classID: Components.ID("{E32528AA-6F29-4763-AB2A-2182CA6649FA}"),
+  contractID: "@sage.mozdev.org/sage/feeditemenclosure;1",
+  
   _link: null,
   _length: null,
   _mimeType: null,
@@ -141,54 +145,12 @@ sageFeedItemEnclosure.prototype = {
   },
   
   // nsISupports
-  QueryInterface: function(aIID)
-  {
-    if (!aIID.equals(Components.interfaces.sageIFeedItemEnclosure) && !aIID.equals(Components.interfaces.nsISupports))
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    return this;
-  }
+  QueryInterface: XPCOMUtils.generateQI([Components.interfaces.sageIFeedItemEnclosure])
+
 };
 
-/******************************************************************************
- * XPCOM Functions for construction and registration
- ******************************************************************************/
-var Module = {
-  _firstTime: true,
-  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-  {
-    if (this._firstTime) {
-      this._firstTime = false;
-      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-    }
-    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-  },
-
-  unregisterSelf: function(aCompMgr, aLocation, aType)
-  {
-    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-  },
-  
-  getClassObject: function(aCompMgr, aCID, aIID)
-  {
-    if (!aIID.equals(Components.interfaces.nsIFactory))
-      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-    if (aCID.equals(CLASS_ID))
-      return Factory;
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  },
-
-  canUnload: function(aCompMgr) { return true; }
-};
-
-var Factory = {
-  createInstance: function(aOuter, aIID)
-  {
-    if (aOuter != null)
-      throw Components.results.NS_ERROR_NO_AGGREGATION;
-    return (new sageFeedItemEnclosure()).QueryInterface(aIID);
-  }
-};
-
-function NSGetModule(aCompMgr, aFileSpec) { return Module; }
+if (XPCOMUtils.generateNSGetFactory) {
+  var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageFeedItemEnclosure]);
+} else {
+  var NSGetModule = XPCOMUtils.generateNSGetModule([sageFeedItemEnclosure]);
+}

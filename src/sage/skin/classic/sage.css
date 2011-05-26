@@ -115,10 +115,6 @@
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/unknown.png") !important;
 }
-#bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_checking) {
-  -moz-image-region: auto !important;
-  list-style-image: url("chrome://global/skin/icons/loading_16.png") !important;
-}
 #bookmarks-view treechildren::-moz-tree-image(leaf, sage_state_error) {
   -moz-image-region: auto !important;
   list-style-image: url("chrome://sage/skin/icon/error.gif") !important;

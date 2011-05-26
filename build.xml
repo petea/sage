@@ -39,9 +39,9 @@
 
 <project name="sage" default="build-local">
   
-  <property name="build"    location="build"/>
-  <property name="src"    location="src"/>
-  <property name="tools"    location="tools"/>
+  <property name="build"      location="build"/>
+  <property name="src"        location="src"/>
+  <property name="tools"      location="tools"/>
   <property name="gecko-sdk"  location="${build}/gecko-sdk"/>
   
   <!-- create build directories -->
@@ -49,8 +49,8 @@
     <echo>The operating system is ${os.name}</echo>
     <echo>The architecture is ${os.arch}</echo>
     <condition property="isWin"><os family="windows"/></condition>
-    <condition property="isMacPPC"><and><os family="mac"/><os family="unix"/><not><equals arg1="${os.arch}" arg2="i386"/></not></and></condition>
-    <condition property="isMacX86"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="i386"/></and></condition>
+    <condition property="isMacPPC"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="ppc"/></and></condition>
+    <condition property="isMacX86"><and><os family="mac"/><os family="unix"/><or><equals arg1="${os.arch}" arg2="i386"/><equals arg1="${os.arch}" arg2="x86_64"/></or></and></condition>
     <condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not><not><os name="SunOS"/></not></and></condition>
     <condition property="isSolaris"><os name="SunOS"/></condition>
     <mkdir dir="${build}"/>

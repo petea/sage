@@ -40,7 +40,6 @@ pref("extensions.sage.version", "");
 pref("extensions.sage.userCss.enable", false);
 pref("extensions.sage.userCss.path", "");
 pref("extensions.sage.allowEncodedContent", true);
-pref("extensions.sage.autoFeedTitle", true);
 pref("extensions.sage.renderFeeds", true);
 pref("extensions.sage.twelveHourClock", true);
 pref("extensions.sage.feedItemOrder", "chrono");

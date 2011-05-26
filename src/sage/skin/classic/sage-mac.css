@@ -38,12 +38,15 @@
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+#sagePanel {
+	-moz-appearance: none;
+}
+
 sidebarheader {
   background-color: #eee;
 }
 
 #bookmarks-view {
-  background-color: #fff;
   border-top: 1px solid #aaa !important;
 }
 
@@ -52,8 +55,14 @@ sidebarheader {
   background-color: #ddd;
   border-top: 1px solid #aaa;
   border-bottom: 1px solid #aaa;
+  -moz-appearance: none;
 }
 
 #feedListToolbar toolbarbutton {
   padding: 5px 3px 2px 3px;
+}
+
+#sage-splitter {
+	border-top: 1px solid ThreeDLightShadow;
+	background-color: #eee;
 }

@@ -39,7 +39,7 @@
 Components.utils.import("resource://sage/SageUpdateChecker.jsm");
 
 var sageOverlay = {
-  
+
   logger : null,
   needsRestart : null,
 
@@ -71,7 +71,7 @@ var sageOverlay = {
       prefService.setBoolPref("browser.sessionstore.resume_session_once", true);
       Cc["@mozilla.org/toolkit/app-startup;1"]
         .getService(Ci.nsIAppStartup)
-        .quit(Ci.nsIAppStartup.eForceQuit | Ci.nsIAppStartup.eRestart);
+        .quit(Ci.nsIAppStartup.eAttemptQuit | Ci.nsIAppStartup.eRestart);
     }
     this.obs = {
       observe: function(aSubject, aTopic, aData) {
@@ -102,23 +102,23 @@ var sageOverlay = {
                           .getService(Ci.nsIObserverService);
     observerService.addObserver(this.obs, "sage-hasNewUpdated", true);
     SageUpdateChecker.init();
-
+    
     this.logger.info("initialized");
   },
-  
+
   uninit : function() {
     var observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
     observerService.removeObserver(this.obs, "sage-hasNewUpdated");
   },
-
+  
   createRoot : function() {
     var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-    var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, "Sage Feeds", bookmarksService.DEFAULT_INDEX);
+    var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, SageUtils.SAGE_ROOT_TITLE, bookmarksService.DEFAULT_INDEX);
     SageUtils.setSageRootFolderId(folderId);
     SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
     SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
-    SageUtils.addFeed("Sage Project News", "http://sage.mozdev.org/rss.xml");
+    SageUtils.addFeed("Sage", "http://sagerss.com/feed/");
   },
   
   getVersion : function() {
@@ -285,6 +285,18 @@ var sageOverlay = {
         self.needsRestart = true;
       },
       
+      "1.4.6" : function() {
+        var bs = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+        var as = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
+        var root = SageUtils.getSageRootFolderId(); 
+        try {
+          as.removeItemAnnotation(root, "PlacesOrganizer/OrganizerQuery");
+        } catch (e) { }
+        if (bs.getItemTitle(root) == null) {
+          bs.setItemTitle(root, SageUtils.SAGE_ROOT_TITLE);
+        }
+      },
+      
       "1.5a" : function() {
         self.addContentHandler();
         self.needsRestart = true;
@@ -385,6 +397,7 @@ var sageOverlay = {
         break;
     }
   }
+
 }
 
 window.addEventListener("load", sageOverlay, false);

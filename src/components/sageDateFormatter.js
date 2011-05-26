@@ -36,9 +36,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const CLASS_ID = Components.ID("{E5D15F67-C113-497D-AC6F-40296FEAD058}");
-const CLASS_NAME = "Sage Date Formatter Component";
-const CONTRACT_ID = "@sage.mozdev.org/sage/dateformatter;1";
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+
 const sageIDateFormatter = Components.interfaces.sageIDateFormatter;
 
 /******************************************************************************
@@ -46,6 +45,11 @@ const sageIDateFormatter = Components.interfaces.sageIDateFormatter;
  ******************************************************************************/
 function sageDateFormatter() {};
 sageDateFormatter.prototype = {
+
+  classDescription: "Sage Date Formatter Component",
+  classID: Components.ID("{E5D15F67-C113-497D-AC6F-40296FEAD058}"),
+  contractID: "@sage.mozdev.org/sage/dateformatter;1",
+
   _format: sageIDateFormatter.FORMAT_LONG,
   _abbreviated: sageIDateFormatter.ABBREVIATED_TRUE,
   _clock: sageIDateFormatter.CLOCK_12HOUR,
@@ -133,54 +137,12 @@ sageDateFormatter.prototype = {
   },
   
   // nsISupports
-  QueryInterface: function(aIID)
-  {
-    if (!aIID.equals(Components.interfaces.sageIDateFormatter) && !aIID.equals(Components.interfaces.nsISupports))
-      throw Components.results.NS_ERROR_NO_INTERFACE;
-    return this;
-  }
+  QueryInterface: XPCOMUtils.generateQI([Components.interfaces.sageIDateFormatter])
+
 };
 
-/******************************************************************************
- * XPCOM Functions for construction and registration
- ******************************************************************************/
-var Module = {
-  _firstTime: true,
-  registerSelf: function(aCompMgr, aFileSpec, aLocation, aType)
-  {
-    if (this._firstTime) {
-      this._firstTime = false;
-      throw Components.results.NS_ERROR_FACTORY_REGISTER_AGAIN;
-    }
-    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-    aCompMgr.registerFactoryLocation(CLASS_ID, CLASS_NAME, CONTRACT_ID, aFileSpec, aLocation, aType);
-  },
-
-  unregisterSelf: function(aCompMgr, aLocation, aType)
-  {
-    aCompMgr = aCompMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-    aCompMgr.unregisterFactoryLocation(CLASS_ID, aLocation);        
-  },
-  
-  getClassObject: function(aCompMgr, aCID, aIID)
-  {
-    if (!aIID.equals(Components.interfaces.nsIFactory))
-      throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
-    if (aCID.equals(CLASS_ID))
-      return Factory;
-    throw Components.results.NS_ERROR_NO_INTERFACE;
-  },
-
-  canUnload: function(aCompMgr) { return true; }
-};
-
-var Factory = {
-  createInstance: function(aOuter, aIID)
-  {
-    if (aOuter != null)
-      throw Components.results.NS_ERROR_NO_AGGREGATION;
-    return (new sageDateFormatter()).QueryInterface(aIID);
-  }
-};
-
-function NSGetModule(aCompMgr, aFileSpec) { return Module; }
+if (XPCOMUtils.generateNSGetFactory) {
+  var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageDateFormatter]);
+} else {
+  var NSGetModule = XPCOMUtils.generateNSGetModule([sageDateFormatter]);
+}

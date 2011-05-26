@@ -139,7 +139,7 @@
         onkeypress="SidebarUtils.handleTreeKeyPress(event);"
         onclick="sidebarController.bookmarksTreeClick(event);"
         onmousemove="SidebarUtils.handleTreeMouseMove(event);"
-        onmouseout="SidebarUtils.clearURLFromStatusBar();">
+        onmouseout="SidebarUtils.setMouseoverURL ? SidebarUtils.setMouseoverURL('') : /* FF 3.x */ SidebarUtils.clearURLFromStatusBar();">
         <treecols>
           <treecol id="title" flex="1" primary="true" hideheader="true"/>
         </treecols>
@@ -154,7 +154,7 @@
         </hbox>
       </sidebarheader>
       <toolbox class="plain">
-        <toolbar id="itemListToolbar" iconsize="small" mode="icons">
+        <toolbar id="itemListToolbar">
           <toolbarbutton id="markAsReadButton" class="toolbarbutton-1" command="cmd_markasread"/>
           <toolbarbutton id="markAsUnreadButton" class="toolbarbutton-1" command="cmd_markasunread"/>
           <toolbarbutton id="markAllAsReadButton" class="toolbarbutton-1" command="cmd_markallasread"/>
@@ -173,15 +173,7 @@
 
   <popupset>
     <tooltip id="rssItemToolTip" onpopupshowing="populateToolTip(event)" noautohide="true"/>
-    <popup id="popSearchEngine" datasources="rdf:null" ref="urn:rrp:searchengine:root">
-      <template>
-        <menuitem type="checkbox" uri="..." value="..."
-          oncommand="FeedSearch.popSearchEngineClick(event);"
-          label="rdf:http://sage.mozdev.org/#name"
-          image="rdf:http://sage.mozdev.org/#icon"/>
-      </template>
-    </popup>
-    <popup id="rssItemListBoxContextMenu"
+    <menupopup id="rssItemListBoxContextMenu"
       onpopupshowing="updateItemContextMenu();">
       <menuitem id="rssOpenItem" default="true" oncommand="openListItem();"
         label="&openLinkInWindow.label;" accesskey="&openLinkInWindow.accesskey;"/>
@@ -194,7 +186,7 @@
       <menuitem id="rssMarkAsUnreadItem" command="cmd_markasunread"/>
       <menuitem id="rssMarkAllAsReadItem" command="cmd_markallasread"/>
       <menuitem id="rssMarkAllAsUnreadItem" command="cmd_markallasunread"/>
-    </popup>
+    </menupopup>
   </popupset>
 
 </page>

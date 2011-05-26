@@ -68,8 +68,6 @@ var SageUtils = {
   ANNO_SIG : "sage/signature", // string
   ANNO_LASTVISIT : "sage/lastvisit", // Epoch seconds
   ANNO_FEEDTITLE : "sage/feedtitle", // string
-    
-  ORGANIZER_QUERY_ANNO : "PlacesOrganizer/OrganizerQuery", // Not Sage-specific
 
   NC_NS: "http://home.netscape.com/NC-rdf#",
   XUL_NS: "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul",
@@ -78,7 +76,8 @@ var SageUtils = {
   STATUS_NO_UPDATE: "no-updated",
   STATUS_UNKNOWN: "unknown",
   STATUS_ERROR: "error",
-  STATUS_CHECKING: "checking",
+  
+  SAGE_ROOT_TITLE : "Sage Feeds",
 
   convertCharCodeFrom : function(aString, aCharCode) {
     var UConvID = "@mozilla.org/intl/scriptableunicodeconverter";
@@ -179,15 +178,13 @@ var SageUtils = {
   getSageRootFolderId : function() {
     var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
     var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT, {});
-    var rootFolderId;
     if (results.length == 1) {
-      rootFolderId = results[0];
+      return results[0];
     } else if (results.length == 0) {
       throw "No root folder found";
     } else if (results.length > 1) {
       throw "Multiple root folders found";
     }
-    return rootFolderId;
   },
   
   // Set the sage/root annotation to the corresponding folder, as well as
@@ -202,16 +199,9 @@ var SageUtils = {
       if (results[0] != folderId) {
         annotationService.removeItemAnnotation(results[0], this.ANNO_ROOT);
         annotationService.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
-        try {
-          annotationService.removeItemAnnotation(results[0], this.ORGANIZER_QUERY_ANNO);
-        } catch (e) {
-          // The annotation didn't exist
-        }
-        annotationService.setItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO, "SageRoot", 0, annotationService.EXPIRE_NEVER);
       }
     } else if (results.length == 0) {
       annotationService.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
-      annotationService.setItemAnnotation(folderId, this.ORGANIZER_QUERY_ANNO, "SageRoot", 0, annotationService.EXPIRE_NEVER);
     } else if (results.length > 1) {
       throw "Multiple root folders found";
     }
