@@ -37,12 +37,11 @@
  * ***** END LICENSE BLOCK ***** */
 
 #include "nsISupports.idl"
-#include "nsIDOMDocument.idl"
 #include "sageIFeedParser.idl"
 
 [scriptable, uuid(CF7FAF01-7354-401A-ACE6-8D7C40092EC4)]
 interface sageIFeedParserFactory: nsISupports {
 
-	sageIFeedParser createFeedParser(in nsIDOMDocument feedDocument);
+	sageIFeedParser createFeedParser(in nsISupports feedDocument);
 
 };

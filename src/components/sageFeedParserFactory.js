@@ -52,6 +52,7 @@ sageFeedParserFactory.prototype = {
 
 	createFeedParser: function(feedDocument)
 	{
+	  feedDocument = feedDocument.QueryInterface(Components.interfaces.nsIDOMDocument);
 		if (!feedDocument) {
 			throw "Feed document empty";
 		}
