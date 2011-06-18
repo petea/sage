@@ -52,6 +52,7 @@ sageAtomParser.prototype = {
 
   discover: function(feedDocument)
   {
+    feedDocument = feedDocument.QueryInterface(Components.interfaces.nsIDOMDocument);
     var rootNode = feedDocument.documentElement;
     if (rootNode.localName.toLowerCase() == "feed"  && rootNode.namespaceURI == "http://www.w3.org/2005/Atom") {
       return true;
@@ -62,6 +63,7 @@ sageAtomParser.prototype = {
 
   parse: function(feedDocument)
   {
+    feedDocument = feedDocument.QueryInterface(Components.interfaces.nsIDOMDocument);
     var Feed = new Components.Constructor("@sage.mozdev.org/sage/feed;1", "sageIFeed", "init");
     var FeedItem = new Components.Constructor("@sage.mozdev.org/sage/feeditem;1", "sageIFeedItem", "init");
     var FeedItemEnclosure = new Components.Constructor("@sage.mozdev.org/sage/feeditemenclosure;1", "sageIFeedItemEnclosure", "init");
