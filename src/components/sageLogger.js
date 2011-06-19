@@ -107,8 +107,4 @@ sageLogger.prototype = {
 
 };
 
-if (XPCOMUtils.generateNSGetFactory) {
-  var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageLogger]);
-} else {
-  var NSGetModule = XPCOMUtils.generateNSGetModule([sageLogger]);
-}
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([sageLogger]);

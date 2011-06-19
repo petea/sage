@@ -141,8 +141,4 @@ sageDateFormatter.prototype = {
 
 };
 
-if (XPCOMUtils.generateNSGetFactory) {
-  var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageDateFormatter]);
-} else {
-  var NSGetModule = XPCOMUtils.generateNSGetModule([sageDateFormatter]);
-}
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([sageDateFormatter]);

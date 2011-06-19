@@ -277,8 +277,4 @@ sageRSSParser.prototype = {
 
 };
 
-if (XPCOMUtils.generateNSGetFactory) {
-  var NSGetFactory = XPCOMUtils.generateNSGetFactory([sageRSSParser]);
-} else {
-  var NSGetModule = XPCOMUtils.generateNSGetModule([sageRSSParser]);
-}
+const NSGetFactory = XPCOMUtils.generateNSGetFactory([sageRSSParser]);
