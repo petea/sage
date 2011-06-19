@@ -136,9 +136,14 @@
   
   <!-- assemeble extension structure -->
   <target name="assemble" depends="build-components, build-modules">
-    <!-- create main jar file -->
-    <zip destfile="${build}/xpi/chrome/${ant.project.name}.jar" basedir="${build}/src/sage" compress="true"/>
-    
+  
+    <!-- copy chrome -->
+    <copy todir="${build}/xpi/chrome" failonerror="false">
+      <fileset dir="${build}/src/chrome">
+        <include name="**"/>
+      </fileset>
+    </copy>
+
     <!-- copy defaults -->
     <copy todir="${build}/xpi/defaults" failonerror="false">
       <fileset dir="${build}/src/defaults">
@@ -149,7 +154,7 @@
     <!-- copy install meta files -->
     <copy todir="${build}/xpi">
       <fileset dir="${build}/src">
-        <include name="install.*"/>
+        <include name="install.rdf"/>
         <include name="chrome.manifest"/>
       </fileset>
     </copy>
