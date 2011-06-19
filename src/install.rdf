@@ -47,10 +47,29 @@
   
     <em:name>Sage</em:name>
     <em:description>A lightweight RSS and Atom feed reader.</em:description>
-    <em:creator>The Sage Team</em:creator>
-    <em:developer>Peter Andrews</em:developer>
+    
+    <em:creator>Peter Andrews</em:creator>
     <em:developer>Erik Arvidsson</em:developer>
     <em:developer>Erwan Loisant</em:developer>
+    <em:translator>Xavier Ivars</em:translator>
+    <em:translator>Fehér János</em:translator>
+    <em:translator>Giuliano Masseroni</em:translator>
+    <em:translator>Ben Branders</em:translator>
+    <em:translator>Chia-Sheng Wu</em:translator>
+    <em:translator>Andrés Villanueva</em:translator>
+    <em:translator>Gerald Fränkl</em:translator>
+    <em:translator>Denis Tazetdinov</em:translator>
+    <em:translator>Ricardo González Castro</em:translator>
+    <em:translator>Calle Moberg</em:translator>
+    <em:translator>Aarni Koskela</em:translator>
+    <em:translator>Gomyoung Kim</em:translator>
+    <em:translator>Filip Miletić</em:translator>
+    <em:translator>Vaclav Cerny</em:translator>
+    <em:translator>George Karidis</em:translator>
+    <em:translator>Darek Mlynarczyk</em:translator>
+    <em:translator>Jacinto Leal</em:translator>
+    <em:translator>Oto Brglez</em:translator>
+    <em:translator>FiAG</em:translator>
   
     <em:homepageURL>http://sagerss.com</em:homepageURL>
     <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
