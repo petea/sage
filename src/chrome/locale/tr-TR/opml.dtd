@@ -1,0 +1,16 @@
+<!ENTITY pageStart.label      "OPML Aktarma Sihirbazı">
+<!ENTITY pageStart.desc        "Bir işlem seçin">
+<!ENTITY pageImport.label      "OPML'yi içeri aktar">
+<!ENTITY pageImport.desc      "İçeri aktarılacak OPML dosyası">
+<!ENTITY pageExport.label      "OPML'yi dışarı aktar">
+<!ENTITY pageExport.desc      "Dışarı aktarılacak OPML dosyası">
+
+<!ENTITY rdoImport.label      "OPML'yi içeri aktar">
+<!ENTITY rdoExport.label      "OPML'yi dışarı aktar">
+
+<!ENTITY browseButton.label      "Göz at...">
+
+<!ENTITY pageImportFinished.label  "OPML'yi içeri aktar">
+<!ENTITY pageImportFinished.desc  "Aktarma tamamlandı">
+<!ENTITY pageExportFinished.label  "OPML'yi dışarı aktar">
+<!ENTITY pageExportFinished.desc  "Aktarma tamamlandı">

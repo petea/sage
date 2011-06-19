@@ -1,0 +1,82 @@
+<!ENTITY sage.label        "Sage">
+<!ENTITY sage.version.label        "sürüm">
+
+<!ENTITY sage.toolbarLabel      "Sage">
+<!ENTITY sage.sidebarTitle      "Sage">
+<!ENTITY sage.tooltip        "Sage'yi Aç">
+
+<!ENTITY menu.view        "Görünüm">
+<!ENTITY menu.showFeedItemList      "Kaynaktaki makalelerin listesi">
+<!ENTITY menu.showFeedItemListToolbar  "Kaynak makaleler için araç kutusu">
+<!ENTITY menu.showFeedItemTooltips    "Kaynak makaleler için ipucu kutucukları">
+<!ENTITY menu.openHTML        "Kaynağı içerik alanına aç">
+<!ENTITY menu.options        "Tercihler">
+<!ENTITY menu.checkUpdate      "Kaynakları güncelle">
+<!ENTITY menu.organizeFeedList    "Kaynak listesini yer imlerinde düzenle...">
+<!ENTITY menu.opmlImportExport      "OPML aktarma...">
+<!ENTITY menu.setting        "Ayarlar...">
+<!ENTITY menu.aboutSage        "Sage hakkında">
+<!ENTITY menu.discoverFeeds        "Kaynakları keşfet">
+<!ENTITY menu.sidebarLayout        "Yan menü düzeni">
+
+<!-- Feed Discovery -->
+<!ENTITY discovery.status.searching     "Açık sayfayı tarıyor">
+<!ENTITY discovery.button.addFeed    "Bu kaynağı ekle">
+<!ENTITY discovery.button.close       "Kapat">
+<!ENTITY discovery.header.title       "Başlık">
+<!ENTITY discovery.header.format     "Biçim">
+<!ENTITY discovery.header.lastPubDate     "Son güncelleme">
+<!ENTITY discovery.header.itemCount     "Makaleler">
+<!ENTITY discovery.header.url     "URL">
+
+<!-- Settings Dialog -->
+<!ENTITY settings.general.caption     "Genel">
+<!ENTITY settings.renderFeeds.label     "Kaynak içeriği, içerik alanında birleştir">
+<!ENTITY settings.twelveHourClock.label     "Saat AM/PM olarak görünsün">
+<!ENTITY settings.feedItemOrder.label     "Kaynak makalelerin sıralaması:">
+<!ENTITY settings.feedItemOrder.chrono     "Tarihe göre">
+<!ENTITY settings.feedItemOrder.source     "Kaynaktaki sıraya göre">
+<!ENTITY settings.feedDiscoveryMode.label     "Kaynak bulma kipi">
+<!ENTITY settings.feedDiscoveryMode.exhaustive     "Atılgan">
+<!ENTITY settings.feedDiscoveryMode.conservative     "Klasik">
+<!ENTITY settingWindow.title                    "Sage Ayarları">
+<!ENTITY selectFolder.label      "Kaynaklar için klasör seçimi">
+<!ENTITY openInContentsArea.caption    "Kaynak derleme alanı">
+<!ENTITY enableUserCss.label      "Kişisel stil dosyası kullan">
+<!ENTITY browseCss.label      "Göz at...">
+<!ENTITY allowEContent.label      "HTML komutları çalışsın">
+
+
+<!ENTITY openSageSidebar.commandkey    "Z">
+<!ENTITY openSageSidebar.modifiersKey    "alt">
+
+<!-- These are taken from history.dtd -->
+<!ENTITY openLinkInWindow.label "Aç">
+<!ENTITY openLinkInWindow.accesskey "O">
+<!ENTITY openInNewTab.label "Yeni sekmede aç">
+<!ENTITY openInNewTab.accesskey "T">
+<!ENTITY openInNewWindow.label "Yeni pencerede aç">
+<!ENTITY openInNewWindow.accesskey "W">
+
+<!-- Read State -->
+<!ENTITY markAsRead.command.label      "Okunmuş işaretle">
+<!ENTITY markAsRead.command.tooltip      "Okunmuş işaretle">
+<!ENTITY markAsRead.command.accesskey    "R">
+
+<!ENTITY markAsUnread.command.label      "Okunmamış işaretle">
+<!ENTITY markAsUnread.command.tooltip    "Okunmamış işaretle">
+<!ENTITY markAsUnread.command.accesskey    "U">
+
+<!ENTITY markAllAsRead.command.label    "Hepsini okunmuş işaretle">
+<!ENTITY markAllAsRead.command.tooltip    "Hepsini okunmuş işaretle">
+<!ENTITY markAllAsRead.command.accesskey  "A">
+<!ENTITY markAllAsRead.command.key      "C">
+<!ENTITY markAllAsRead.command.modifiers  "accel shift">
+
+<!ENTITY markAllAsUnread.command.label    "Hepsini okunmamış işaretle">
+<!ENTITY markAllAsUnread.command.tooltip  "Hepsini okunmamış işaretle">
+<!ENTITY markAllAsUnread.command.accesskey  "n">
+
+<!ENTITY toggleReadState.command.key    "M">
+
+
