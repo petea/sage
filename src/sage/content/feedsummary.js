@@ -44,7 +44,7 @@ const Cu = Components.utils;
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 const URI_CHECK_INTERVAL = 200;
-const DEFAULT_CSS = "chrome://sage/content/res/sage.css";
+const DEFAULT_CSS = "chrome://sage/skin/feedsummary-content.css";
 
 var strBundleService = Cc["@mozilla.org/intl/stringbundle;1"].getService(Ci.nsIStringBundleService);
 var strRes = strBundleService.createBundle("chrome://sage/locale/sage.properties");
