@@ -37,137 +37,71 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
-<project name="sage" default="build-local">
+<project name="sage" default="build-xpi">
   
   <property name="build"      location="build"/>
   <property name="src"        location="src"/>
-  <property name="tools"      location="tools"/>
-  <property name="gecko-sdk"  location="${build}/gecko-sdk"/>
-  
-  <!-- create build directories -->
-  <target name="init" depends="clean">
-    <echo>The operating system is ${os.name}</echo>
-    <echo>The architecture is ${os.arch}</echo>
-    <condition property="isWin"><os family="windows"/></condition>
-    <condition property="isMacPPC"><and><os family="mac"/><os family="unix"/><equals arg1="${os.arch}" arg2="ppc"/></and></condition>
-    <condition property="isMacX86"><and><os family="mac"/><os family="unix"/><or><equals arg1="${os.arch}" arg2="i386"/><equals arg1="${os.arch}" arg2="x86_64"/></or></and></condition>
-    <condition property="isLinux"><and><os family="unix"/><not><os family="mac"/></not><not><os name="SunOS"/></not></and></condition>
-    <condition property="isSolaris"><os name="SunOS"/></condition>
-    <mkdir dir="${build}"/>
-    <mkdir dir="${build}/src"/>
-    <mkdir dir="${build}/xpi"/>
-    <mkdir dir="${build}/xpi/chrome"/>
-  </target>
-
-  <!-- build from local source files -->
-  <target name="build-local" depends="init">
-    <copy todir="${build}/src">
-      <fileset dir="${src}">
-        <include name="**"/>
-      </fileset>
-    </copy>
-    <property name="version" value="sage-local"/>
-    <condition property="hasComponents"><available file="${build}/src/components" type="dir"/></condition>
-    <condition property="hasModules"><available file="${build}/src/modules" type="dir"/></condition>
-    <ant target="xpi"/>
-  </target>
-
-  <!-- configure Gecko SDK -->
-  <target name="gecko-sdk" depends="gecko-sdk-win, gecko-sdk-mac, gecko-sdk-mac-x86, gecko-sdk-linux, gecko-sdk-solaris"/>
-  <target name="gecko-sdk-win" if="isWin">
-    <unzip src="${tools}/gecko-sdk-win.zip" dest="${build}"/>
-    <property name="xpidl_executable" value="xpidl.exe"/>
-  </target>
-  <target name="gecko-sdk-mac" if="isMacPPC">
-    <exec dir="${build}" executable="tar" failonerror="true">
-      <arg line="xjf ${tools}/gecko-sdk-mac-ppc.tar.bz2"/>
-    </exec>
-    <property name="xpidl_executable" value="xpidl"/>
-  </target>
-  <target name="gecko-sdk-mac-x86" if="isMacX86">
-    <exec dir="${build}" executable="tar" failonerror="true">
-      <arg line="xjf ${tools}/gecko-sdk-mac-x86.tar.bz2"/>
-    </exec>
-    <property name="xpidl_executable" value="xpidl"/>
-  </target>
-  <target name="gecko-sdk-linux" if="isLinux">
-    <exec dir="${build}" executable="tar" failonerror="true">
-      <arg line="xjf ${tools}/gecko-sdk-linux-x86.tar.bz2"/>
-    </exec>
-    <property name="xpidl_executable" value="xpidl"/>
-  </target>
-  <target name="gecko-sdk-solaris" if="isSolaris">
-    <exec dir="${build}" executable="gtar" failonerror="true">
-      <arg line="xjf ${tools}/gecko-sdk-solaris-x86.tar.bz2"/>
-    </exec>
-    <property name="xpidl_executable" value="xpidl"/>
+  <property name="gecko-sdk"  location="xulrunner-sdk"/>
+    
+  <target name="clean" description="Remove build output">
+    <delete dir="${build}"/>
   </target>
   
-  <!-- compile XPCOM typelib files -->
-  <target name="compile-idl" depends="gecko-sdk">
-    <apply dir="${build}/src/components" executable="${gecko-sdk}/bin/${xpidl_executable}" failonerror="true">
-      <arg line="-m typelib -w -v -I ${gecko-sdk}/idl"/>
-      <fileset dir="${build}/src/components">
-        <include name="*.idl"/>
-      </fileset>
-    </apply>
-  </target>
-
-  <!-- copy component files to XPI directory -->
-  <target name="build-components" depends="compile-idl" if="hasComponents">
-    <mkdir dir="${build}/xpi/components"/>
+  <target name="assemble" description="Assemeble extension structure">
+    <!-- copy components -->
     <copy todir="${build}/xpi/components">
-      <fileset dir="${build}/src/components">
-        <include name="*.xpt"/>
+      <fileset dir="${src}/components">
         <include name="*.js"/>
       </fileset>
     </copy>
-  </target>
-  
-  <!-- copy modules to XPI directory -->
-  <target name="build-modules" depends="compile-idl" if="hasModules">
-    <mkdir dir="${build}/xpi/modules"/>
+    <!-- copy modules -->
     <copy todir="${build}/xpi/modules">
-      <fileset dir="${build}/src/modules">
+      <fileset dir="${src}/modules">
         <include name="*.jsm"/>
       </fileset>
     </copy>
-  </target>
-  
-  <!-- assemeble extension structure -->
-  <target name="assemble" depends="build-components, build-modules">
-  
     <!-- copy chrome -->
     <copy todir="${build}/xpi/chrome" failonerror="false">
-      <fileset dir="${build}/src/chrome">
+      <fileset dir="${src}/chrome">
         <include name="**"/>
       </fileset>
     </copy>
-
     <!-- copy defaults -->
     <copy todir="${build}/xpi/defaults" failonerror="false">
-      <fileset dir="${build}/src/defaults">
+      <fileset dir="${src}/defaults">
         <include name="**"/>
       </fileset>
     </copy>
-    
-    <!-- copy install meta files -->
+    <!-- copy install and manifest files -->
     <copy todir="${build}/xpi">
-      <fileset dir="${build}/src">
+      <fileset dir="${src}">
         <include name="install.rdf"/>
         <include name="chrome.manifest"/>
       </fileset>
     </copy>
   </target>
   
-    <!-- create XPI archive -->
-  <target name="xpi" depends="assemble">
-    <zip destfile="${build}/${version}.xpi" basedir="${build}/xpi" compress="true"/>
+  <target name="compile-idl" description="Compile XPCOM IDL to typelib files" depends="assemble">
+    <condition property="xpidl_executable" value="xpidl" else="xpidl.exe">
+      <os family="unix"/>
+    </condition>
+    <apply executable="${gecko-sdk}/bin/${xpidl_executable}" dir="${src}/components" failonerror="true" verbose="true">
+      <arg line="-m typelib"/>
+      <arg value="-w"/>
+      <arg value="-v"/>
+      <arg line="-I ${gecko-sdk}/idl"/>
+      <arg value="-e"/>
+      <targetfile/>
+      <srcfile/>
+      <fileset dir="${src}/components">
+        <include name="*.idl"/>
+      </fileset>
+      <mapper type="glob" from="*.idl" to="${build}/xpi/components/*.xpt"/>
+    </apply>
   </target>
-
-  <!-- remove build output -->
-  <target name="clean">
-    <delete dir="${build}"/>
+  
+  <target name="build-xpi" description="Build the Sage XPI file" depends="compile-idl">
+    <zip destfile="${build}/sage.xpi" basedir="${build}/xpi" compress="true"/>
   </target>
 
 </project>
