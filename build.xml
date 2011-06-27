@@ -37,71 +37,53 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
-<project name="sage" default="build-xpi">
+<project name="sage" default="build">
   
-  <property name="build"      location="build"/>
-  <property name="src"        location="src"/>
-  <property name="gecko-sdk"  location="xulrunner-sdk"/>
+  <property name="build.dir"      location="build"/>
+  <property name="src.dir"        location="src"/>
+  <property name="gecko-sdk.dir"  location="xulrunner-sdk"/>
+  
+  <available file="${gecko-sdk.dir}" type="dir" property="gecko-sdk.dir.available"/>
     
   <target name="clean" description="Remove build output">
-    <delete dir="${build}"/>
+    <delete dir="${build.dir}"/>
   </target>
   
-  <target name="assemble" description="Assemeble extension structure">
-    <!-- copy components -->
-    <copy todir="${build}/xpi/components">
-      <fileset dir="${src}/components">
-        <include name="*.js"/>
-      </fileset>
-    </copy>
-    <!-- copy modules -->
-    <copy todir="${build}/xpi/modules">
-      <fileset dir="${src}/modules">
-        <include name="*.jsm"/>
-      </fileset>
-    </copy>
-    <!-- copy chrome -->
-    <copy todir="${build}/xpi/chrome" failonerror="false">
-      <fileset dir="${src}/chrome">
-        <include name="**"/>
-      </fileset>
-    </copy>
-    <!-- copy defaults -->
-    <copy todir="${build}/xpi/defaults" failonerror="false">
-      <fileset dir="${src}/defaults">
-        <include name="**"/>
-      </fileset>
-    </copy>
-    <!-- copy install and manifest files -->
-    <copy todir="${build}/xpi">
-      <fileset dir="${src}">
-        <include name="install.rdf"/>
+  <target name="assemble" description="Assemble extension structure">
+    <copy todir="${build.dir}/xpi">
+      <fileset dir="${src.dir}">
+        <include name="chrome/**"/>
+        <include name="components/*.js"/>
+        <include name="defaults/**"/>
+        <include name="modules/*.jsm"/>
         <include name="chrome.manifest"/>
+        <include name="install.rdf"/>
       </fileset>
     </copy>
   </target>
   
-  <target name="compile-idl" description="Compile XPCOM IDL to typelib files" depends="assemble">
+  <target name="compile" description="Compile XPCOM IDL to typelib files" depends="assemble">
+    <fail unless="gecko-sdk.dir.available" message="Gecko SDK missing.  See http://code.google.com/p/sage/wiki/BuildingSage"/>
     <condition property="xpidl_executable" value="xpidl" else="xpidl.exe">
       <os family="unix"/>
     </condition>
-    <apply executable="${gecko-sdk}/bin/${xpidl_executable}" dir="${src}/components" failonerror="true" verbose="true">
+    <apply executable="${gecko-sdk.dir}/bin/${xpidl_executable}" dir="${src.dir}/components" failonerror="true" verbose="true">
       <arg line="-m typelib"/>
       <arg value="-w"/>
       <arg value="-v"/>
-      <arg line="-I ${gecko-sdk}/idl"/>
+      <arg line="-I ${gecko-sdk.dir}/idl"/>
       <arg value="-e"/>
       <targetfile/>
       <srcfile/>
-      <fileset dir="${src}/components">
+      <fileset dir="${src.dir}/components">
         <include name="*.idl"/>
       </fileset>
-      <mapper type="glob" from="*.idl" to="${build}/xpi/components/*.xpt"/>
+      <mapper type="glob" from="*.idl" to="${build.dir}/xpi/components/*.xpt"/>
     </apply>
   </target>
   
-  <target name="build-xpi" description="Build the Sage XPI file" depends="compile-idl">
-    <zip destfile="${build}/sage.xpi" basedir="${build}/xpi" compress="true"/>
+  <target name="build" description="Build the Sage XPI file" depends="compile">
+    <zip destfile="${build.dir}/sage.xpi" basedir="${build.dir}/xpi" compress="true"/>
   </target>
 
 </project>
