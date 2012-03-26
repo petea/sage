@@ -44,23 +44,23 @@ interface sageIFeedItem: nsISupports {
 
   void init(in AString title, in AString link, in AString author, in AString content, in PRTime pubDate, in sageIFeedItemEnclosure enclosure, in AString baseURI);
   
-  PRBool hasTitle();
+  bool hasTitle();
   AString getTitle();
   
-  PRBool hasAuthor();
+  bool hasAuthor();
   AString getAuthor();
   
   AString getLink();
   
-  PRBool hasContent();
+  bool hasContent();
   AString getContent();
 
-  PRBool hasPubDate();
+  bool hasPubDate();
   PRTime getPubDate();
   
-  PRBool hasEnclosure();
+  bool hasEnclosure();
   sageIFeedItemEnclosure getEnclosure();
   
-  PRBool hasBaseURI();
+  bool hasBaseURI();
   AString getBaseURI();
 };

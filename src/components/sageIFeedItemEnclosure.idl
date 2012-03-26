@@ -43,15 +43,15 @@ interface sageIFeedItemEnclosure: nsISupports {
 
   void init(in AString link, in PRInt64 length, in AString mimeType);
   
-  PRBool hasLink();
+  bool hasLink();
   AString getLink();
   
-  PRBool hasLength();
+  bool hasLength();
   PRInt64 getLength();
   
   AString getSize();
   
-  PRBool hasMimeType();
+  bool hasMimeType();
   AString getMimeType();
   
   AString getDescription();
