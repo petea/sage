@@ -64,15 +64,10 @@
   
   <target name="compile" description="Compile XPCOM IDL to typelib files" depends="assemble">
     <fail unless="gecko-sdk.dir.available" message="Gecko SDK missing.  See http://code.google.com/p/sage/wiki/BuildingSage"/>
-    <condition property="xpidl_executable" value="xpidl" else="xpidl.exe">
-      <os family="unix"/>
-    </condition>
-    <apply executable="${gecko-sdk.dir}/bin/${xpidl_executable}" dir="${src.dir}/components" failonerror="true" verbose="true">
-      <arg line="-m typelib"/>
-      <arg value="-w"/>
-      <arg value="-v"/>
+    <apply executable="python" dir="${src.dir}/components" failonerror="true" verbose="true">
+      <arg line="${gecko-sdk.dir}/sdk/bin/typelib.py"/>
       <arg line="-I ${gecko-sdk.dir}/idl"/>
-      <arg value="-e"/>
+      <arg value="-o"/>
       <targetfile/>
       <srcfile/>
       <fileset dir="${src.dir}/components">
