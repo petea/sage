@@ -589,7 +589,7 @@ function openURI(aURI, aEvent) {
 		sidebarURI = ios.newURI("chrome://sage/content/sage.xul", null, null);
 	} catch (e) { }
 	
-	var sidebarPrincipal = secman.getCodebasePrincipal(sidebarURI);
+	var sidebarPrincipal = (secman.getSimpleCodebasePrincipal || secman.getCodebasePrincipal)(sidebarURI);  // With Firefox 17, getCodebasePrinciple has been renamed
 	const flags = Ci.nsIScriptSecurityManager.DISALLOW_INHERIT_PRINCIPAL;
 	try {
 		secman.checkLoadURIStrWithPrincipal(sidebarPrincipal, aURI, flags);
