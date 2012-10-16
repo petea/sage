@@ -42,7 +42,7 @@
 [scriptable, uuid(42AC3223-5F64-4B34-ACE0-7D4E521F8D02)]
 interface sageIFeedParser: nsISupports {
 
-	PRBool discover(in nsISupports feedDocument);
+	bool discover(in nsISupports feedDocument);
 	
 	sageIFeed parse(in nsISupports feedDocument);
 

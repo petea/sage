@@ -50,21 +50,21 @@ interface sageIFeed: nsISupports {
 	
 	void addItem(in sageIFeedItem item);
 	
-	PRBool hasFeedURI();
+	bool hasFeedURI();
 	AString getFeedURI();
 	void setFeedURI(in AString feedURI);
 	
 	AString getTitle();
 
-	PRBool hasDescription();
+	bool hasDescription();
 	AString getDescription();
 	
 	AString getLink();
 	
-	PRBool hasAuthor();
+	bool hasAuthor();
 	AString getAuthor();
 
-	PRBool hasLastPubDate();
+	bool hasLastPubDate();
 	PRTime getLastPubDate();
 
 	PRInt32 getItemCount();
