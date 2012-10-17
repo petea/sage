@@ -414,7 +414,7 @@ var feedSummary = {
     try {
       feedURI = ios.newURI(this.uri, null, null);
       attrURI = ios.newURI(uri, null, null);
-      secman.checkLoadURI(feedURI, attrURI, flags);
+      secman.checkLoadURIWithPrincipal((secman.getSimpleCodebasePrincipal || secman.getCodebasePrincipal)(feedURI), attrURI, flags);  // getCodebasePrincipal renamed in Firefox 17
       element.setAttribute(attribute, attrURI.spec);
     } catch (e) { }
   },
