@@ -67,9 +67,9 @@ interface sageIFeed: nsISupports {
 	bool hasLastPubDate();
 	PRTime getLastPubDate();
 
-	PRInt32 getItemCount();
+	int32_t getItemCount();
 	
-	sageIFeedItem getItem(in PRInt32 index);
+	sageIFeedItem getItem(in int32_t index);
 	
 	void setSort(in unsigned short order);
 	
