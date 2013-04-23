@@ -292,13 +292,10 @@ var sageOverlay = {
 					var newSet = "";
 					var child = toolbar.firstChild;
 					while (child) {
-						if(child.id == "urlbar-container") {
-							newSet += "sage-button,";
-						}
 						newSet += child.id + ",";
 						child = child.nextSibling;
 					}
-					newSet = newSet.substring(0, newSet.length - 1);
+					newSet += "sage-button";
 					toolbar.currentSet = newSet;
 					toolbar.setAttribute("currentset", newSet);
 					toolbox.ownerDocument.persist(toolbar.id, "currentset");
