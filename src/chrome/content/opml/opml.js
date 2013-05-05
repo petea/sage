@@ -44,7 +44,6 @@ var winMain, txtImportFile, txtExportFile;
 var strRes;
 
 var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-var livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
 var g_errorMesage = "";
 
@@ -265,7 +264,7 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
   var outlineNode = aOpmlDoc.createElement("outline");
 
   var childNode, childNodeType;
-  if (type == bmsvc.TYPE_FOLDER && !livemarkService.isLivemark(aResultNode.itemId)) {
+  if (type == bmsvc.TYPE_FOLDER){
     outlineNode.setAttribute("text", title);
 
     aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
@@ -284,11 +283,6 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
     outlineNode.setAttribute("text", title);
     outlineNode.setAttribute("title", title);
     outlineNode.setAttribute("xmlUrl", url);
-  } else if (livemarkService.isLivemark(aResultNode.itemId)) {
-    outlineNode.setAttribute("type", "rss");
-    outlineNode.setAttribute("text", title);
-    outlineNode.setAttribute("title", title);
-    outlineNode.setAttribute("xmlUrl", livemarkService.getFeedURI(aResultNode.itemId).spec);
   }
   return outlineNode;
 }

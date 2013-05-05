@@ -154,8 +154,7 @@ function fillFolder(aPopup, aFolder, aDepth) {
   aFolder.containerOpen = true;
   for (var c = 0; c < aFolder.childCount; c++) {
     var child = aFolder.getChild(c);
-    if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
-      !PlacesUtils.nodeIsLivemarkContainer(child)) {
+    if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
       child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
       var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
       element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);

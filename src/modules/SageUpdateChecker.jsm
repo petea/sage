@@ -60,14 +60,11 @@ var SageUpdateChecker = {
   httpReq: null,
   lastItemId: -1,
   logger: null,
-  livemarkService: null,
   hasNew: false,
 
   hist: Cc["@mozilla.org/browser/nav-history-service;1"].getService(Ci.nsINavHistoryService),
   bmsvc: Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService),
   anno: Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService),
-  livemarkService: Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService),
-
 
   /********************************************************
    * Initialization and timer functions
@@ -137,11 +134,7 @@ var SageUpdateChecker = {
    ********************************************************/
 
   getURL: function(aItemId) {
-    if (this.livemarkService.isLivemark(aItemId)) {
-      return this.livemarkService.getFeedURI(aItemId).spec;
-    } else {
-      return this.bmsvc.getBookmarkURI(aItemId).spec;
-    }
+    return this.bmsvc.getBookmarkURI(aItemId).spec;
   },
 
   getItemAnnotation: function(aItemId, aName) {
@@ -162,7 +155,7 @@ var SageUpdateChecker = {
   queueItem: function uc_queueItem(aResultNode) {
     var itemId = aResultNode.itemId;
     var itemType = this.bmsvc.getItemType(itemId);
-    if (itemType == this.bmsvc.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
+    if (itemType == this.bmsvc.TYPE_BOOKMARK) {
       var url = this.getURL(aResultNode.itemId);
       var status = this.getItemAnnotation(aResultNode.itemId, SageUtils.ANNO_STATUS);
       if(url && status != SageUtils.STATUS_UPDATE) {
@@ -191,7 +184,7 @@ var SageUpdateChecker = {
     function itemHasNew(aResultNode) {
       var itemId = aResultNode.itemId;
       var itemType = inst.bmsvc.getItemType(itemId);
-      if (itemType == inst.bmsvc.TYPE_BOOKMARK || inst.livemarkService.isLivemark(itemId)) {
+      if (itemType == inst.bmsvc.TYPE_BOOKMARK) {
         var status = inst.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
         return (status == SageUtils.STATUS_UPDATE);
       } else if (itemType == inst.bmsvc.TYPE_FOLDER) {
