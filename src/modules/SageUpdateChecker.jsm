@@ -103,7 +103,7 @@ var SageUpdateChecker = {
       notify: function() {
         SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
       }
-    }
+    };
     this._timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
     this._timer.initWithCallback(callback, DELAY, Ci.nsITimer.TYPE_REPEATING_SLACK);
   },
@@ -165,7 +165,7 @@ var SageUpdateChecker = {
     if (itemType == this.bmsvc.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
       var url = this.getURL(aResultNode.itemId);
       var status = this.getItemAnnotation(aResultNode.itemId, SageUtils.ANNO_STATUS);
-      if(url && status != SageUtils.STATUS_UPDATE) {
+      if (url && status != SageUtils.STATUS_UPDATE) {
         this.checkList.push(aResultNode.itemId);
       }
     } else if (itemType == this.bmsvc.TYPE_FOLDER) {
@@ -180,7 +180,6 @@ var SageUpdateChecker = {
 
   setHasNew: function(aValue) {
     if (this.hasNew !== aValue) {
-      // alert("set to "+aValue);
       this.hasNew = aValue;
       this.notifyObservers("sage-hasNewUpdated", this.hasNew);
     }
@@ -218,7 +217,7 @@ var SageUpdateChecker = {
    ********************************************************/
 
   startCheck: function(aCheckFolderId) {
-    if(this.checking) return;
+    if (this.checking) return;
 
     var hist = Cc["@mozilla.org/browser/nav-history-service;1"]
                .getService(Ci.nsINavHistoryService);
@@ -249,7 +248,7 @@ var SageUpdateChecker = {
   },
 
   done: function() {
-    if(this.checking) {
+    if (this.checking) {
       this.httpReq.abort();
       this.setStatusFlag(this.lastItemId, SageUtils.STATUS_NO_UPDATE);
     }
@@ -262,11 +261,11 @@ var SageUpdateChecker = {
     
     this.logger.info("checking: " + name);
 
-    if(!url) {
+    if (!url) {
       this.checkResult(false, 0);
     }
 
-    if(this.httpReq) {
+    if (this.httpReq) {
       this.httpReq.abort();
     }
 
@@ -377,5 +376,5 @@ var SageUpdateChecker = {
     } else {
       this.check();
     }
-  },
-}
+  }
+};
