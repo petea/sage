@@ -19,8 +19,8 @@
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
+ * Erwan Loisant <eloisant@gmail.com>
  * Peter Andrews <petea@jhu.edu>
- * Erik Arvidsson <erik@eae.net>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
