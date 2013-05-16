@@ -159,7 +159,7 @@ var SageUpdateChecker = {
     this._refreshHasNew();
   },
 
-  queueItem: function uc_queueItem(aResultNode) {
+  queueItems: function uc_queueItems(aResultNode) {
     var itemId = aResultNode.itemId;
     var itemType = this.bmsvc.getItemType(itemId);
     if (itemType == this.bmsvc.TYPE_BOOKMARK || this.livemarkService.isLivemark(itemId)) {
@@ -172,7 +172,7 @@ var SageUpdateChecker = {
       aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
       aResultNode.containerOpen = true;
       for (var i = 0; i < aResultNode.childCount; i ++) {
-        this.queueItem(aResultNode.getChild(i));
+        this.queueItems(aResultNode.getChild(i));
       }
       aResultNode.containerOpen = false;
     }
@@ -237,7 +237,7 @@ var SageUpdateChecker = {
     this.checkList = [];
 
     // select feeds to be checked, exclude separators and updated feeds
-    this.queueItem(result.root);
+    this.queueItems(result.root);
 
     this.logger.info("found " + this.checkList.length + " feed(s) to check");
 
