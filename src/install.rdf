@@ -49,8 +49,10 @@
     <em:description>A lightweight RSS and Atom feed reader.</em:description>
     
     <em:creator>Peter Andrews</em:creator>
+
     <em:developer>Erik Arvidsson</em:developer>
     <em:developer>Erwan Loisant</em:developer>
+
     <em:translator>Xavier Ivars</em:translator>
     <em:translator>Fehér János</em:translator>
     <em:translator>Giuliano Masseroni</em:translator>
