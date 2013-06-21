@@ -144,7 +144,7 @@ function fillSelectFolderMenupopup() {
   var folder = result.root;
   fillFolder(popup, folder, 1);
   
-  if(gList.selectedIndex == -1) {
+  if (gList.selectedIndex == -1) {
     gList.selectedIndex = 0;
     sageFolderID = PlacesUtils.bookmarks.bookmarksMenuFolder;
   }
@@ -152,12 +152,13 @@ function fillSelectFolderMenupopup() {
 
 function fillFolder(aPopup, aFolder, aDepth) {
   aFolder.containerOpen = true;
+  var child, element;
   for (var c = 0; c < aFolder.childCount; c++) {
-    var child = aFolder.getChild(c);
-    if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER &&
-      !PlacesUtils.nodeIsLivemarkContainer(child)) {
+    child = aFolder.getChild(c);
+    // TODO: we need to exclude livemark nodes here
+    if (child.type == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
       child.QueryInterface(Ci.nsINavHistoryContainerResultNode);
-      var element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
+      element = document.createElementNS(SageUtils.XUL_NS, "menuitem");
       element.setAttribute("label", new Array(aDepth + 1).join("   ") + child.title);
       element.setAttribute("id", child.itemId);
       aPopup.appendChild(element);
