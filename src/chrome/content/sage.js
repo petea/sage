@@ -50,7 +50,6 @@ var sageFolderID = "";
 var enableTooltip = true;
 
 var logger;
-var livemarkService;
 var strRes;
 var resultStrArray;
 var feedLoader;
@@ -129,8 +128,6 @@ var sidebarController = {
     
     PlacesUtils.annotations.addObserver(annotationObserver);
     
-    livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
-  
     strRes = document.getElementById("strRes");    
     resultStrArray = new Array(
       strRes.getString("RESULT_OK_STR"),
@@ -178,102 +175,69 @@ var sidebarController = {
     
     PlacesTreeView.prototype.getCellPropertiesBase = PlacesTreeView.prototype.getCellProperties;
     PlacesTreeView.prototype.getCellProperties =
-    function sage_getCellProperties(aRow, aColumn, aProperties) {
-      if (this._ensureValidRow) { // FF 3.x
-        this._ensureValidRow(aRow);
+    function sage_getCellProperties(aRow, aColumn) {
+      var rows = this._rows;      
+      var propertiesFinal = this.getCellPropertiesBase(aRow, aColumn)
+            .split(" ")
+            .filter(function(e) { return e != "livemark"; });
+      
+      if (aColumn.id != "title") {
+        return propertiesFinal.join(" ");
       }
       
-      var rows;
-      if (this._rows) { // FF 4
-        rows = this._rows;
-      } else { // FF 3.x
-        rows = this._visibleElements;
-      }
-      
-      var cached = false;
-      if (rows[aRow].properties !== undefined) {
-        if (rows[aRow].properties) {
-          cached = true;
+      var properties = [],
+          node = rows[aRow],
+          nodeType = node.type,
+          itemId = node.itemId,
+          state;
+      if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
+        try {
+          state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
+          properties.push("sage_state_" + state);
+        } catch (e) { }
+      } else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
+        if (this._controller.hasCachedLivemarkInfo(node)) {
+          try {
+            state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
+            properties.push("sage_state_" + state);
+          } catch (e) { }
+        } else {
+          PlacesUtils.livemarks.getLivemark(
+            { id: itemId },
+            function (aStatus, aLivemark) {
+              if (Components.isSuccessCode(aStatus)) {
+                this._controller.cacheLivemarkInfo(node, aLivemark);
+                properties.push("livemark");
+                // The livemark attribute is set as a cell property on the title cell.
+                this._invalidateCellValue(node, this.COLUMN_TYPE_TITLE);
+              }
+            }.bind(this)
+          );
         }
       }
-      
-      var propertiesBase = Cc["@mozilla.org/supports-array;1"].createInstance(Ci.nsISupportsArray);
-      this.getCellPropertiesBase(aRow, aColumn, propertiesBase);
-      var property;
-      for (var i = 0; i < propertiesBase.Count(); i++) {
-        property = propertiesBase.GetElementAt(i);
-        if (property != this._getAtomFor("livemark")) {
-          aProperties.AppendElement(propertiesBase.GetElementAt(i));
-        }
-      }
-      
-      if (aColumn.id != "title")
-        return;
-      
-      if (!cached) {
-        var properties = [];
-        var node = rows[aRow].node || rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
-        var nodeType = node.type;
-        var itemId = node.itemId;
-        if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
-          if (!PlacesUtils.nodeIsLivemarkItem(node)) {
-            try {
-              var state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
-              properties.push(this._getAtomFor("sage_state_" + state));
-            } catch (e) { }
-          }
-        } else if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER) {
-          if (PlacesUtils.nodeIsLivemarkContainer(node)) {
-            try {
-              var state = PlacesUtils.annotations.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
-              properties.push(this._getAtomFor("sage_state_" + state));
-            } catch (e) { }
-          }
-        }
-        for (var i = 0; i < properties.length; i++) {
-          if (rows[aRow].properties !== undefined) {
-            rows[aRow].properties.push(properties[i]);
-          }
-          aProperties.AppendElement(properties[i]);
-        }
-      }
-    }
+      properties.forEach(function(property) {
+        propertiesFinal.push(property);
+      });
+
+      return propertiesFinal.join(" ");
+    };
     
     PlacesTreeView.prototype.isContainerBase = PlacesTreeView.prototype.isContainer;
-    PlacesTreeView.prototype.isContainer =
-    function sage_isContainer(aRow) {
-      if (this._ensureValidRow) { // FF 3.x
-        this._ensureValidRow(aRow);
+    PlacesTreeView.prototype.isContainer = function sage_isContainer(aRow) {
+      if (this.isContainerBase(aRow)) {
+        if (this._controller.hasCachedLivemarkInfo(this._rows[aRow])) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
       }
-      
-      var rows;
-      if (this._rows) { // FF 4
-        rows = this._rows;
-      } else { // FF 3.x
-        rows = this._visibleElements;
-      }
-      
-      var baseValue = this.isContainerBase(aRow);
-       if (baseValue) {
-         var node = rows[aRow].node || rows[aRow]; // FF 3.0 - 3.5 / 3.6 - 4.0
-         if (PlacesUtils.nodeIsLivemarkContainer(node)) {
-           return false;
-         } else {
-           return true;
-         }
-       } else {
-         return false;
-       }
-    }
+    };
     
-    PlacesTreeView.prototype.getImageSrc =
-    function sage_getImageSrc(aRow, aColumn) {
-      if (this._ensureValidRow) { // FF 3.x
-        this._ensureValidRow(aRow);
-      }
-      
+    PlacesTreeView.prototype.getImageSrc = function sage_getImageSrc(aRow, aColumn) {
       return "";
-    }
+    };
     
   },
   
@@ -298,23 +262,32 @@ var sidebarController = {
   },
   
   loadFeedFromNode : function(aNode, aEvent) {
-    var nodeType = aNode.type;
-    var itemId = aNode.itemId;
-    var uri;
-    if ((nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER ||
-      nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER_SHORTCUT) &&
-      livemarkService.isLivemark(itemId)) {
-      uri = livemarkService.getFeedURI(itemId).spec;
-    } else {
-      uri = PlacesUtils.bookmarks.getBookmarkURI(itemId).spec;
-    }
-    
-    lastItemId = itemId;
-    this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
-    feedLoader.loadURI(uri);
-    if (SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS)) {
-      openURI(SageUtils.FEED_SUMMARY_URI + "#feed/" + encodeURIComponent(uri), aEvent);
-    }
+    var nodeType = aNode.type,
+        itemId = aNode.itemId,
+        uri;
+    PlacesUtils.livemarks.getLivemark(
+      { id: itemId },
+      (function(aStatus, aLivemark) {
+        var isLivemark = false,
+            feedURI;
+        if (Components.isSuccessCode(aStatus)) {
+          isLivemark = true;
+          feedURI = aLivemark.feedURI;
+        }
+        if ((nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER ||
+             nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER_SHORTCUT) && isLivemark) {
+          uri = feedURI.spec;
+        } else {
+          uri = PlacesUtils.bookmarks.getBookmarkURI(itemId).spec;
+        }
+        
+        lastItemId = itemId;
+        this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
+        feedLoader.loadURI(uri);
+        if (SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS)) {
+          openURI(SageUtils.FEED_SUMMARY_URI + "#feed/" + encodeURIComponent(uri), aEvent);
+        }
+      }).bind(this));
   },
   
   checkFeeds : function(aFolderId) {
@@ -436,10 +409,10 @@ function toggleShowFeedItemListToolbar() {
 }
 
 function setRssItemListBox() {
-  if(!currentFeed) return;
-  if(document.getElementById("rssItemListBoxBox").hidden) return;
+  if (!currentFeed) return;
+  if (document.getElementById("rssItemListBoxBox").hidden) return;
 
-  while(rssItemListBox.getRowCount() != 0) {
+  while (rssItemListBox.getRowCount() != 0) {
     rssItemListBox.removeItemAt(0);
   }
 
@@ -458,14 +431,18 @@ function setRssItemListBox() {
     } else if (item.getTitle()) {
       itemLabel = item.getTitle();
     } else {
-      itemLabel = strRes.getString("feed_item_no_title")
+      itemLabel = strRes.getString("feed_item_no_title");
     }
-    itemLabel = (i+1) + ". " + itemLabel;
+    itemLabel = (i + 1) + ". " + itemLabel;
     var listItem = rssItemListBox.appendItem(itemLabel, i);
     linkVisitor.addItem(item.getLink(), listItem);
-    if(linkVisitor.getVisited(item.getLink())) {
-      listItem.setAttribute("visited", "true");
-    }
+    linkVisitor.getVisited(item.getLink(), (function(item) {
+      return function(isVisited) {
+        if (isVisited) {
+          item.setAttribute("visited", "true");
+        }
+      };
+    })(listItem));
   }
 
   readStateController.onCommandUpdate();
@@ -670,17 +647,12 @@ var linkVisitor = {
   NS_LINK_VISITED_EVENT_TOPIC : "link-visited",
   _items : {}, // mapping from the observer to the rss list items
   
-  init : function() {
-    gh = Cc["@mozilla.org/browser/global-history;2"];
-    this._globalHistory = gh.getService(Ci.nsIGlobalHistory2);
-    this._browserHistory = gh.getService(Ci.nsIBrowserHistory);
+  init: function() {
     this._observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
-    this._uriFixup = Cc["@mozilla.org/docshell/urifixup;1"].getService(Ci.nsIURIFixup);
-    // add observer
     this._observerService.addObserver(this, this.NS_LINK_VISITED_EVENT_TOPIC, false);    
   },
   
-  uninit : function() {
+  uninit: function() {
     this.clearItems();
     this._observerService.removeObserver(this, this.NS_LINK_VISITED_EVENT_TOPIC);
   },
@@ -693,7 +665,7 @@ var linkVisitor = {
     this._items[aURI] = aListItem;
   },
   
-  setVisited : function(sURI, bRead) {
+  setVisited: function(sURI, bRead) {
     if (!sURI) {
       return;
     }
@@ -703,43 +675,47 @@ var linkVisitor = {
       return;
     }
     if (bRead) {
-      this._globalHistory.addURI(fixupURI, false, true, null);
+      PlacesUtils.history.markPageAsFollowedLink(fixupURI);
     } else {
-      this._browserHistory.removePage(fixupURI);
+      PlacesUtils.history.removePage(fixupURI);
     }
     this._observerService.notifyObservers(fixupURI, this.NS_LINK_VISITED_EVENT_TOPIC, null);
   },
 
-  getVisited : function(sURI) {
+  getVisited: function(sURI, callback) {
     var fixupURI = this._getFixupURI(sURI);
     if (fixupURI == null) {
-      return false;
+      callback(false);
     }
-    return this._globalHistory.isVisited(fixupURI);
+    PlacesUtils.asyncHistory.isURIVisited(fixupURI, function(aURI, aIsVisited) { callback(aIsVisited); });
   },
 
-  _getFixupURI : function(sURI) {
+  _getFixupURI: function(sURI) {
     try {
-      return this._uriFixup.createFixupURI(sURI, 0);
+      return PlacesUIUtils.createFixedURI(sURI);
     } catch (e) {
       logger.warn("Could not fixup URI: " + sURI);
       return null;
     }
   },
   
-  onURIChanged : function(aURI) {
+  onURIChanged: function(aURI) {
     if (aURI.spec in this._items) {
+      logger.debug("onURIChanged: " + aURI.spec);
       var listItem = this._items[aURI.spec];
-      setListItemReadState(listItem, this.getVisited(aURI.spec));
+      this.getVisited(aURI.spec, function(isVisited) {
+        logger.debug("isVisited: " + isVisited);
+        setListItemReadState(listItem, isVisited);
+      });
     }
   },
     
   // nsIObserver
-  observe : function(aSubject, aTopic, aData) {
+  observe: function(aSubject, aTopic, aData) {
     // subject is a URI
     // data is null
     if (aTopic == this.NS_LINK_VISITED_EVENT_TOPIC) {
-      this.onURIChanged(aSubject.QueryInterface(Ci.nsIURI))
+      this.onURIChanged(aSubject.QueryInterface(Ci.nsIURI));
     }
   }
     
@@ -817,15 +793,16 @@ function markReadState(bRead) {
  */
 function toggleMarkAsRead() {
   var listItems = rssItemListBox.selectedItems;
-  var read;
   for (var i = 0; i < listItems.length; i++) {
     var listItem = listItems[i];
     var feedItem = getFeedItemFromListItem(listItem);
     var uri = feedItem.getLink();
-    if (read == null)
-      read = !linkVisitor.getVisited(uri);
-    linkVisitor.setVisited(uri, read);
-    setListItemReadState(listItem, read);
+    linkVisitor.getVisited(uri, (function(uri, item) {
+      return function(isVisited) {
+        linkVisitor.setVisited(uri, !isVisited);
+        setListItemReadState(item, !isVisited);
+      };
+    })(uri, listItem));
   }
 }
 

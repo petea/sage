@@ -44,7 +44,6 @@ var winMain, txtImportFile, txtExportFile;
 var strRes;
 
 var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-var livemarkService = Cc["@mozilla.org/browser/livemark-service;2"].getService(Ci.nsILivemarkService);
 
 var g_errorMesage = "";
 
@@ -255,6 +254,7 @@ function createOpmlSource() {
   return opmlSource;
 }
 
+// TODO: replace livemarkService references
 function createOpmlOutline(aOpmlDoc, aResultNode) {
   var bmsvc = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
               .getService(Components.interfaces.nsINavBookmarksService);
@@ -326,11 +326,11 @@ function isTextBoxEmpty(el) {
 }
 
 function canAdvanceImport() {
-  winMain.canAdvance = !isTextBoxEmpty(txtImportFile)
+  winMain.canAdvance = !isTextBoxEmpty(txtImportFile);
 }
 
 function canAdvanceExport() {
-  winMain.canAdvance = !isTextBoxEmpty(txtExportFile)
+  winMain.canAdvance = !isTextBoxEmpty(txtExportFile);
 }
 
 function reportError(s)
@@ -363,4 +363,3 @@ function onPageImportFinishedShow() {
 function onPageExportFinishedShow() {
   document.documentElement.getButton("cancel").disabled = true;
 }
-
