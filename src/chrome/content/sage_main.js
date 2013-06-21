@@ -65,7 +65,6 @@ var sageOverlay = {
       }
     }
     SageUtils.setSagePrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
-    //this.loadFaviconForHandler();
     if (this.needsRestart) {
       var prefService = Cc["@mozilla.org/preferences;1"].getService(Ci.nsIPrefBranch);
       prefService.setBoolPref("browser.sessionstore.resume_session_once", true);
@@ -243,14 +242,6 @@ var sageOverlay = {
       prefBranch.setCharPref("uri", "sage://viewer/#feed/%s");
     }
     prefService.savePrefFile(null);
-  },
-  
-  loadFaviconForHandler : function() {
-    var faviconService = Cc["@mozilla.org/browser/favicon-service;1"].getService(Ci.nsIFaviconService);
-    var ioservice = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
-    var pageURI = ioservice.newURI("chrome://sage/content/feedsummary.html", null, null);
-    var faviconURI = ioservice.newURI("chrome://sage/skin/sage_leaf_16.png", null, null);
-    faviconService.setAndLoadFaviconForPage(pageURI, faviconURI, false);
   },
   
   // nsIDOMEventListener
