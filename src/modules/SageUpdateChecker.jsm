@@ -80,11 +80,10 @@ var SageUpdateChecker = {
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     this.logger = new Logger();
 
-    this.logger.info("feed checker intializing");
-
     this.initialCheck();
     this.startTimer();
     this._initialized = true;
+    this.logger.info("update checker intialized");
   },
 
   initialCheck: function() {
