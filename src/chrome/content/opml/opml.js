@@ -63,7 +63,7 @@ function finish() {
 }
 
 function browseImportFile() {
-  var fpicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
+  var fpicker = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
   fpicker.init(window, strRes.getString("opml_select_file"), fpicker.modeOpen);
   fpicker.appendFilter(strRes.getString("opml_opml_file") + " (*.xml, *.opml)", "*.xml;*.opml");
   fpicker.appendFilters(fpicker.filterAll);
@@ -76,7 +76,7 @@ function browseImportFile() {
 }
 
 function browseExportFile() {
-  var fpicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
+  var fpicker = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
   fpicker.init(window, strRes.getString("opml_select_file"), fpicker.modeSave);
   fpicker.appendFilter(strRes.getString("opml_opml_file") + " (*.xml, *.opml)", "*.xml;*.opml");
   fpicker.appendFilters(fpicker.filterAll);
@@ -95,7 +95,7 @@ function checkFilePath(aFilePath, aExistCheck) {
     return false;
   }
 
-  var tmpFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+  var tmpFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
   try {
     tmpFile.initWithPath(aFilePath);
     if(aExistCheck) {
@@ -121,7 +121,7 @@ function importOPML() {
     return false;
   }
 
-  var uriFixup = Components.classes['@mozilla.org/docshell/urifixup;1'].getService(Components.interfaces.nsIURIFixup);
+  var uriFixup = Cc['@mozilla.org/docshell/urifixup;1'].getService(Ci.nsIURIFixup);
   var opmlUrl = uriFixup.createFixupURI(path, uriFixup.FIXUP_FLAG_ALLOW_KEYWORD_LOOKUP);
 
   var httpReq = new XMLHttpRequest();
@@ -208,14 +208,14 @@ function exportOPML() {
   var opmlSource = createOpmlSource();
   opmlSource = SageUtils.convertCharCodeFrom(opmlSource, "UTF-8");
 
-  var tmpFile = Components.classes['@mozilla.org/file/local;1'].createInstance(Components.interfaces.nsILocalFile);
+  var tmpFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
   try {
     tmpFile.initWithPath(path);
     if(tmpFile.exists()) {
       tmpFile.remove(true);
     }
     tmpFile.create(tmpFile.NORMAL_FILE_TYPE, 0666);
-    var stream = Components.classes['@mozilla.org/network/file-output-stream;1'].createInstance(Components.interfaces.nsIFileOutputStream);
+    var stream = Cc['@mozilla.org/network/file-output-stream;1'].createInstance(Ci.nsIFileOutputStream);
     stream.init(tmpFile, 2, 0x200, false); // open as "write only"
     stream.write(opmlSource, opmlSource.length);
     stream.flush();
@@ -229,8 +229,8 @@ function exportOPML() {
 }
 
 function createOpmlSource() {
-  var hist = Components.classes["@mozilla.org/browser/nav-history-service;1"]
-             .getService(Components.interfaces.nsINavHistoryService);
+  var hist = Cc["@mozilla.org/browser/nav-history-service;1"]
+             .getService(Ci.nsINavHistoryService);
 
   var rssReaderFolderID = SageUtils.getSageRootFolderId();
 
@@ -256,8 +256,8 @@ function createOpmlSource() {
 
 // TODO: replace livemarkService references
 function createOpmlOutline(aOpmlDoc, aResultNode) {
-  var bmsvc = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
-              .getService(Components.interfaces.nsINavBookmarksService);
+  var bmsvc = Cc["@mozilla.org/browser/nav-bookmarks-service;1"]
+              .getService(Ci.nsINavBookmarksService);
 
   var type = bmsvc.getItemType(aResultNode.itemId);
   var title = bmsvc.getItemTitle(aResultNode.itemId);
@@ -268,7 +268,7 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
   if (type == bmsvc.TYPE_FOLDER && !livemarkService.isLivemark(aResultNode.itemId)) {
     outlineNode.setAttribute("text", title);
 
-    aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+    aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
     aResultNode.containerOpen = true;
     for (var i = 0; i < aResultNode.childCount; i ++) {
       childNode = aResultNode.getChild(i);
