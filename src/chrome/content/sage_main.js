@@ -36,7 +36,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-Components.utils.import("resource://sage/SageUpdateChecker.jsm");
+Cu.import("resource://sage/SageUpdateChecker.jsm");
 
 var sageOverlay = {
 
@@ -96,7 +96,7 @@ var sageOverlay = {
           throw Components.results.NS_ERROR_NO_INTERFACE;*/
         return this;
       }
-    }
+    };
     var observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
     observerService.addObserver(this.obs, "sage-hasNewUpdated", true);
