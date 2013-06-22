@@ -49,8 +49,6 @@ var loader = Cc["@mozilla.org/moz/jssubscript-loader;1"]
              .getService(Ci.mozIJSSubScriptLoader);
 loader.loadSubScript("chrome://sage/content/commonfunc.js");
 
-var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-
 const DELAY = 60 * 60 * 1000; // One hour between each check
 const INITIAL_CHECK = 10 * 1000; // Delay the first check to avoid impacting startup performances
 
@@ -79,7 +77,9 @@ var SageUpdateChecker = {
       return;
     }
     
+    var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     this.logger = new Logger();
+
     this.logger.info("feed checker intializing");
 
     this.initialCheck();
