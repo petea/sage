@@ -38,73 +38,72 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xul-overlay href="chrome://browser/content/places/placesOverlay.xul"?>
 
 <!DOCTYPE wizard SYSTEM "chrome://sage/locale/opml.dtd">
 
 <wizard id="winMain" title="&pageStart.label;"
-  onload="init()"  onwizardfinish="return finish()"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+        onload="init()"  onwizardfinish="return finish()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"></script>
-<script type="application/x-javascript" src="chrome://sage/content/opml/opml.js"></script>
+  <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"></script>
+  <script type="application/x-javascript" src="chrome://sage/content/opml/opml.js"></script>
 
-<stringbundleset>
-  <stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
-</stringbundleset>
+  <stringbundleset>
+    <stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
+  </stringbundleset>
 
-<wizardpage pageid="pageStart" next="pageImport"
-    label="&pageStart.label;" description="&pageStart.desc;"
-    onpageshow="onPageStartShow()">
-  <spacer height="40px"/>
-  <hbox>
-    <radiogroup>
-      <radio id="rdoImport" label="&rdoImport.label;" selected="true"
-        onclick="winMain.currentPage.next='pageImport'"/>
-      <radio id="rdoExport" label="&rdoExport.label;"
-        onclick="winMain.currentPage.next='pageExport'"/>
-    </radiogroup>
-    <spacer flex="1"/>
-  </hbox>
-</wizardpage>
+  <wizardpage pageid="pageStart" next="pageImport"
+              label="&pageStart.label;" description="&pageStart.desc;"
+              onpageshow="onPageStartShow()">
+    <spacer height="40px"/>
+    <hbox>
+      <radiogroup>
+        <radio id="rdoImport" label="&rdoImport.label;" selected="true"
+               onclick="winMain.currentPage.next='pageImport'"/>
+        <radio id="rdoExport" label="&rdoExport.label;"
+               onclick="winMain.currentPage.next='pageExport'"/>
+      </radiogroup>
+      <spacer flex="1"/>
+    </hbox>
+  </wizardpage>
 
-<!-- Import -->
-<wizardpage id="pageImport" pageid="pageImport"
-      label="&pageImport.label;" description="&pageImport.desc;"
-      next="pageImportFinished"
-      onpageshow="onPageImportShow()"
-      onpageadvanced="return importOPML()">
-  <spacer height="40px"/>
-  <hbox align="center">
-    <textbox flex="1" id="txtImportFile" oninput="canAdvanceImport()"/>
-    <button label="&browseButton.label;" oncommand="browseImportFile()"/>
-  </hbox>
-</wizardpage>
+  <!-- Import -->
+  <wizardpage id="pageImport" pageid="pageImport"
+              label="&pageImport.label;" description="&pageImport.desc;"
+              next="pageImportFinished"
+              onpageshow="onPageImportShow()"
+              onpageadvanced="return importOPML()">
+    <spacer height="40px"/>
+    <hbox align="center">
+      <textbox flex="1" id="txtImportFile" oninput="canAdvanceImport()"/>
+      <button label="&browseButton.label;" oncommand="browseImportFile()"/>
+    </hbox>
+  </wizardpage>
 
-<wizardpage pageid="pageImportFinished" label="&pageImportFinished.label;"
-      onpageshow="onPageImportFinishedShow()">
-  <spacer height="40px"/>
-  <description>&pageImportFinished.desc;</description>
-</wizardpage>
+  <wizardpage pageid="pageImportFinished" label="&pageImportFinished.label;"
+              onpageshow="onPageImportFinishedShow()">
+    <spacer height="40px"/>
+    <description>&pageImportFinished.desc;</description>
+  </wizardpage>
 
-<!-- Export -->
-<wizardpage id="pageExport" pageid="pageExport"
-      label="&pageExport.label;" description="&pageExport.desc;"
-      next="pageExportFinished"
-      onpageshow="onPageExportShow()"
-      onpageadvanced="return exportOPML()">
-  <spacer height="40px"/>
-  <hbox align="center">
-    <textbox flex="1" id="txtExportFile" oninput="canAdvanceExport()"/>
-    <button label="&browseButton.label;" oncommand="browseExportFile()"/>
-  </hbox>
-</wizardpage>
+  <!-- Export -->
+  <wizardpage id="pageExport" pageid="pageExport"
+              label="&pageExport.label;" description="&pageExport.desc;"
+              next="pageExportFinished"
+              onpageshow="onPageExportShow()"
+              onpageadvanced="return exportOPML()">
+    <spacer height="40px"/>
+    <hbox align="center">
+      <textbox flex="1" id="txtExportFile" oninput="canAdvanceExport()"/>
+      <button label="&browseButton.label;" oncommand="browseExportFile()"/>
+    </hbox>
+  </wizardpage>
 
-<wizardpage pageid="pageExportFinished" label="&pageExportFinished.label;"
-      onpageshow="onPageExportFinishedShow()">
-  <spacer height="40px"/>
-  <description>&pageExportFinished.desc;</description>
-</wizardpage>
-
+  <wizardpage pageid="pageExportFinished" label="&pageExportFinished.label;"
+              onpageshow="onPageExportFinishedShow()">
+    <spacer height="40px"/>
+    <description>&pageExportFinished.desc;</description>
+  </wizardpage>
 
 </wizard>
-
