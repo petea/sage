@@ -47,7 +47,8 @@ var sageOverlay = {
   init : function() {
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     this.logger = new Logger();
-        
+    SageMetrics.init();
+
     this.needsRestart = false;
     
     if (this.isNewUser()) {
@@ -58,12 +59,14 @@ var sageOverlay = {
       SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
       this.addContentHandler();
       this.needsRestart = true;
+      SageMetrics.event("Startup", "New Install");
     } else if (this.needsMigration()) {
       try {
         this.migrate();
       } catch (e) {
         this.logger.error("migration failed: " + e);
       }
+      SageMetrics.event("Startup", "Upgrade");
     }
     SageUtils.setSagePrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
     if (this.needsRestart) {
@@ -101,8 +104,7 @@ var sageOverlay = {
     var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
     observerService.addObserver(this.obs, "sage-hasNewUpdated", true);
 
-    // Initialize shared JavaScript modules
-    SageMetrics.init();
+    // Start background feed checking
     SageUpdateChecker.init();
     
     this.logger.info("initialized");
