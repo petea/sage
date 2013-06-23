@@ -38,6 +38,10 @@
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+const Cr = Components.results;
+const Cu = Components.utils;
+
+Cu.import("resource://sage/SageMetrics.jsm");
 
 var strRes;
 var feedTree;
@@ -61,7 +65,6 @@ var bmsvc;
 var logger;
 
 function init() {
-
   var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
   logger = new Logger();
 
@@ -73,20 +76,20 @@ function init() {
   progressMeter = document.getElementById("progress");
   feedTree = document.getElementById("feedTree");
 
-  dataSource = Components.classes["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"];
-  rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"];
+  dataSource = Cc["@mozilla.org/rdf/datasource;1?name=in-memory-datasource"];
+  rdf = Cc["@mozilla.org/rdf/rdf-service;1"];
 
-  rdfService = rdf.getService(Components.interfaces.nsIRDFService);
+  rdfService = rdf.getService(Ci.nsIRDFService);
 
-  ds = dataSource.createInstance(Components.interfaces.nsIRDFInMemoryDataSource);
+  ds = dataSource.createInstance(Ci.nsIRDFInMemoryDataSource);
   feedTree.database.AddDataSource(ds);
 
   schema = "http://sage.mozdev.org/FeedData#";
 
-  ds = ds.QueryInterface(Components.interfaces.nsIRDFDataSource);
+  ds = ds.QueryInterface(Ci.nsIRDFDataSource);
   bmsvc = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
 
-  var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
+  var windowManager = Cc['@mozilla.org/appshell/window-mediator;1'].getService(Ci.nsIWindowMediator);
   var browserWindow = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
 
   bookmarksTree = window.arguments[0];
@@ -160,6 +163,8 @@ function init() {
       progressUpdate();
     }
   }
+
+  SageMetrics.view("/discoverfeeds");
 }
 
 function progressUpdate() {
@@ -183,7 +188,7 @@ function progressUpdate() {
 
 function doAddFeed() {
   var index = feedTree.view.selection.currentIndex;
-  if(index != -1) {
+  if (index != -1) {
     var url, title;
     if (feedTree.columns) { // columns property introduced in Firefox 1.1
       url = feedTree.view.getCellText(index, feedTree.columns.getNamedColumn("url"));
@@ -192,14 +197,15 @@ function doAddFeed() {
       url = feedTree.view.getCellText(index, "url");
       title = feedTree.view.getCellText(index, "title");
     }
-    if(url) {
-      if(title == "") {
+    if (url) {
+      if (title == "") {
         title = "No Title";
       }
       var sage_folder = SageUtils.getSageRootFolderId();
       var uri = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService).newURI(url, null, null);
       bmsvc.insertBookmark(sage_folder, uri, -1, title);
       logger.info("added feed: '" + title + "' " + url);
+      SageMetrics.event("Feed Discovery", "Add Feed");
 
       // select new feed in sibebar
       var bm_index = bookmarksTree.treeBoxObject.view.rowCount - 1;
@@ -261,7 +267,7 @@ function addDiscoveredFeed(uri, feed) {
   var twelveHourClock = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
   lastPubDate = "N/A";
   if(feed.hasLastPubDate()) {
-    var formatter = Components.classes["@sage.mozdev.org/sage/dateformatter;1"].getService(Components.interfaces.sageIDateFormatter);
+    var formatter = Cc["@sage.mozdev.org/sage/dateformatter;1"].getService(Ci.sageIDateFormatter);
     formatter.setFormat(formatter.FORMAT_SHORT, formatter.ABBREVIATED_TRUE, twelveHourClock ? formatter.CLOCK_12HOUR : formatter.CLOCK_24HOUR);
     lastPubDate = formatter.formatDate(feed.getLastPubDate());
   }

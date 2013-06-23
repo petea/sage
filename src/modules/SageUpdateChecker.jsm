@@ -88,7 +88,7 @@ var SageUpdateChecker = {
 
   initialCheck: function() {
     setTimeout((function () {
-      this.startCheck(SageUtils.getSageRootFolderId());
+      this.startCheck(SageUtils.getSageRootFolderId(), true);
     }).bind(this), INITIAL_CHECK);
   },
 
@@ -97,7 +97,7 @@ var SageUpdateChecker = {
       return;
     }
     setTimeout((function() {
-      this.startCheck(SageUtils.getSageRootFolderId());
+      this.startCheck(SageUtils.getSageRootFolderId(), true);
       this.resetTimer();
     }).bind(this), DELAY);
   },
@@ -194,7 +194,7 @@ var SageUpdateChecker = {
    * Network functions and actually checking
    ********************************************************/
 
-  startCheck: function(aCheckFolderId) {
+  startCheck: function(aCheckFolderId, nonInteraction) {
     if (this.checking) return;
     this.logger.info("looking for feeds to check");
 

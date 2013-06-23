@@ -53,6 +53,7 @@ var SageUtils = {
   PREF_FEED_ITEM_ORDER : "feedItemOrder",
   PREF_FEED_DISCOVERY_MODE : "feedDiscoveryMode",
   PREF_LOG_LEVEL : "logLevel",
+  PREF_UUID : "uuid",
 
   RESULT_OK : 0,
   RESULT_PARSE_ERROR : 1,

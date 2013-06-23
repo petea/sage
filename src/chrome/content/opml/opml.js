@@ -38,6 +38,10 @@
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+const Cr = Components.results;
+const Cu = Components.utils;
+
+Cu.import("resource://sage/SageMetrics.jsm");
 
 // XUL Object
 var winMain, txtImportFile, txtExportFile;
@@ -56,6 +60,7 @@ function init() {
 
   document.getElementById( "pageExport" ).canAdvance = false;
   document.getElementById( "pageImport" ).canAdvance = false;
+  SageMetrics.view("/opml");
 }
 
 function finish() {
@@ -349,17 +354,21 @@ function onPageStartShow() {
 function onPageImportShow() {
   winMain.getButton("cancel").disabled = false;
   canAdvanceImport();
+  SageMetrics.view("/opml/import");
 }
 
 function onPageExportShow() {
   winMain.getButton("cancel").disabled = false;
   canAdvanceExport();
+  SageMetrics.view("/opml/export");
 }
 
 function onPageImportFinishedShow() {
   document.documentElement.getButton("cancel").disabled = true;
+  SageMetrics.view("/opml/import/finished");
 }
 
 function onPageExportFinishedShow() {
   document.documentElement.getButton("cancel").disabled = true;
+  SageMetrics.view("/opml/export/finished");
 }

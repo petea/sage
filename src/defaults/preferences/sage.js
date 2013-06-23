@@ -45,3 +45,4 @@ pref("extensions.sage.twelveHourClock", true);
 pref("extensions.sage.feedItemOrder", "chrono");
 pref("extensions.sage.feedDiscoveryMode", "exhaustive");
 pref("extensions.sage.logLevel", 3);
+pref("extensions.sage.uuid", "");

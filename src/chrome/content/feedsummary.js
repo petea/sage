@@ -41,6 +41,8 @@ const Ci = Components.interfaces;
 const Cr = Components.results;
 const Cu = Components.utils;
 
+Cu.import("resource://sage/SageMetrics.jsm");
+
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 const URI_CHECK_INTERVAL = 200;
@@ -183,6 +185,7 @@ var feedSummary = {
       feedSummary._feedLoader = null;
       feedSummary.loadFeed(feedSummary.uri);
     }
+    SageMetrics.view("/feedview");
   },
 
   onFeedError : function(aErrorCode) {

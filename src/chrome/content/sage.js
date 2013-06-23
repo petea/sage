@@ -36,7 +36,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-Components.utils.import("resource://sage/SageUpdateChecker.jsm");
+const Cu = Components.utils;
+
+Cu.import("resource://sage/SageMetrics.jsm");
+Cu.import("resource://sage/SageUpdateChecker.jsm");
 
 var bookmarksTree;
 var statusBarImage, statusBarLabel;
@@ -156,6 +159,7 @@ var sidebarController = {
     observerService.addObserver(sageObserver, "sage-nowRefreshing", true);
     
     logger.info("sidebar open");
+    SageMetrics.event("Sidebar", "Open");
   },
   
   uninit : function() {  
@@ -169,6 +173,7 @@ var sidebarController = {
     SidebarUtils.setMouseoverURL ? SidebarUtils.setMouseoverURL("") : /* FF 3.x */ SidebarUtils.clearURLFromStatusBar();
   
     logger.info("sidebar closed");
+    SageMetrics.event("Sidebar", "Close");
   },
   
   _extendPlacesTreeView : function() {
@@ -291,14 +296,13 @@ var sidebarController = {
   },
   
   checkFeeds : function(aFolderId) {
-    var self = this;
-
     if(aFolderId) {
       SageUpdateChecker.startCheck(aFolderId);
     } else {
       SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
       SageUpdateChecker.resetTimer();
     }
+    SageMetrics.event("Sidebar", "Check Feeds");
   },
   
   setStatus : function(aClass, aStatus) {

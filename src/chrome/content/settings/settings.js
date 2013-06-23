@@ -36,6 +36,13 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+const Cr = Components.results;
+const Cu = Components.utils;
+
+Cu.import("resource://sage/SageMetrics.jsm");
+
 var sageFolderID;
 
 var chkUserCssEnable;
@@ -89,6 +96,7 @@ function init() {
   setDisabled();
 
   fillSelectFolderMenupopup();
+  SageMetrics.view("/settings");
 }
 
 function accept() {
@@ -112,8 +120,8 @@ function setDisabled() {
 }
 
 function browseCss() {
-  var fpicker = Components.classes["@mozilla.org/filepicker;1"]
-          .createInstance(Components.interfaces.nsIFilePicker);
+  var fpicker = Cc["@mozilla.org/filepicker;1"]
+          .createInstance(Ci.nsIFilePicker);
   fpicker.init(window, strRes.getString("css_select_file"), fpicker.modeOpen);
   fpicker.appendFilter(strRes.getString("css_css_file") + " (*.css)", "*.css");
   fpicker.appendFilters(fpicker.filterAll);
