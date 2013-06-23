@@ -77,11 +77,11 @@ var annotationObserver = {
   
   onItemAnnotationRemoved : function(aItemId, aName) { }
   
-}
+};
 
 var sageObserver = {
   observe: function(aSubject, aTopic, aData) {
-    switch(aTopic) {
+    switch (aTopic) {
       case "sage-nowRefreshing":
         if (aData == "") {
           sidebarController.clearStatus();
@@ -90,22 +90,20 @@ var sageObserver = {
                                       strRes.getFormattedString("RESULT_CHECKING", [aData]));
         }
         break;
-      default:
-        // do nothing
     }
   },
-  getInterfaces: function (count) {
+  getInterfaces: function(count) {
     var interfaceList = [Ci.nsIObserver, Ci.nsIClassInfo];
     count.value = interfaceList.length;
     return interfaceList;
   },
-  QueryInterface: function (iid) {
+  QueryInterface: function(iid) {
     /*if (!iid.equals(Ci.nsIObserver) &&
         !iid.equals(Ci.nsIClassInfo))
       throw Components.results.NS_ERROR_NO_INTERFACE;*/
     return this;
   }
-}
+};
 
 var sidebarController = {
 
