@@ -37,6 +37,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 Cu.import("resource://sage/SageUpdateChecker.jsm");
+Cu.import("resource://sage/SageMetrics.jsm");
 
 var sageOverlay = {
 
@@ -97,9 +98,11 @@ var sageOverlay = {
         return this;
       }
     };
-    var observerService = Cc["@mozilla.org/observer-service;1"]
-                          .getService(Ci.nsIObserverService);
+    var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
     observerService.addObserver(this.obs, "sage-hasNewUpdated", true);
+
+    // Initialize shared JavaScript modules
+    SageMetrics.init();
     SageUpdateChecker.init();
     
     this.logger.info("initialized");
