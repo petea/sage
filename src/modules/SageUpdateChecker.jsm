@@ -40,6 +40,7 @@ var EXPORTED_SYMBOLS = ["SageUpdateChecker"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+const Cr = Components.results;
 const Cu = Components.utils;
 
 Cu.import('resource://gre/modules/PlacesUtils.jsm');
@@ -172,7 +173,7 @@ var SageUpdateChecker = {
             this.checkList.push(feed);
           }
         } else if (itemType == this.bmsvc.TYPE_FOLDER) {
-          aResultNode.QueryInterface(Components.interfaces.nsINavHistoryContainerResultNode);
+          aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
           aResultNode.containerOpen = true;
           for (var i = 0; i < aResultNode.childCount; i ++) {
             this.queueItems(aResultNode.getChild(i));
