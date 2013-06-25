@@ -83,7 +83,7 @@ var sageOverlay = {
             var button = document.getElementById("sage-button"),
                 sidebarWindow = document.getElementById("sidebar").contentWindow,
                 isSidebarOpen = (sidebarWindow.location.href == "chrome://sage/content/sage/xul");
-            if (button && !isSidebarOpen) {
+            if (button && !(isSidebarOpen && aData)) {
               button.setAttribute("hasNew", aData);
             }
             break;
