@@ -39,19 +39,17 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #sage-button {
-  list-style-image: url("chrome://sage/skin/sage_leaf_32.png");
+  list-style-image: url("chrome://sage/skin/sage_leaf_16.png");
 }
 
-#sage-button[checked="true"] {
-	list-style-image: url("chrome://sage/skin/sage_leaf_32-selected.png");
-	background-color: transparent;
-	border-color: transparent;
+#sage-button[hasNew="true"] {
+  list-style-image: url("chrome://sage/skin/sage_leaf_new_16.png");
 }
 
 toolbar[iconsize="small"] #sage-button {
-  list-style-image: url("chrome://sage/skin/sage_leaf_24.png");
+  list-style-image: url("chrome://sage/skin/sage_leaf_16.png");
 }
 
-toolbar[iconsize="small"] #sage-button[checked="true"] {
-	list-style-image: url("chrome://sage/skin/sage_leaf_24-selected.png");
+toolbar[iconsize="small"] #sage-button[hasNew="true"] {
+  list-style-image: url("chrome://sage/skin/sage_leaf_new_16.png");
 }
