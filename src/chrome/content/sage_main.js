@@ -80,8 +80,10 @@ var sageOverlay = {
       observe: function(aSubject, aTopic, aData) {
         switch(aTopic) {
           case "sage-hasNewUpdated":
-            var button = document.getElementById("sage-button");
-            if (button) {
+            var button = document.getElementById("sage-button"),
+                sidebarWindow = document.getElementById("sidebar").contentWindow,
+                isSidebarOpen = (sidebarWindow.location.href == "chrome://sage/content/sage/xul");
+            if (button && !isSidebarOpen) {
               button.setAttribute("hasNew", aData);
             }
             break;

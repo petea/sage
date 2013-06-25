@@ -155,6 +155,9 @@ var sidebarController = {
     var observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
     observerService.addObserver(sageObserver, "sage-nowRefreshing", true);
+
+    // Clear any new content notification from the toolbar icon
+    observerService.notifyObservers(null, "sage-hasNewUpdated", false);
     
     logger.info("sidebar open");
     SageMetrics.event("Sidebar", "Open");
