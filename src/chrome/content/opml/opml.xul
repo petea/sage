@@ -92,7 +92,7 @@
               label="&pageExport.label;" description="&pageExport.desc;"
               next="pageExportFinished"
               onpageshow="onPageExportShow()"
-              onpageadvanced="return exportOPML()">
+              onpageadvanced="return checkExportPath()">
     <spacer height="40px"/>
     <hbox align="center">
       <textbox flex="1" id="txtExportFile" oninput="canAdvanceExport()"/>

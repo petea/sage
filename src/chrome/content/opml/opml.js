@@ -42,6 +42,7 @@ const Cr = Components.results;
 const Cu = Components.utils;
 
 Cu.import("resource://sage/SageMetrics.jsm");
+Cu.import("resource://gre/modules/commonjs/sdk/core/promise.js");
 
 // XUL Object
 var winMain, txtImportFile, txtExportFile;
@@ -51,7 +52,12 @@ var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getSer
 
 var g_errorMesage = "";
 
+var logger;
+
 function init() {
+  var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+  logger = new Logger();
+
   strRes = document.getElementById("strRes");
 
   winMain = document.getElementById("winMain");
@@ -189,10 +195,11 @@ function createRssItem(aOutlineNode, aRssFolderId) {
   var type = aOutlineNode.getAttribute("type");
   var title = aOutlineNode.getAttribute("title");
   if(!title) title = aOutlineNode.getAttribute("text");
+  var xmlUrl;
   if(aOutlineNode.hasAttribute("xmlUrl")) {
-    var xmlUrl = aOutlineNode.getAttribute("xmlUrl");
+    xmlUrl = aOutlineNode.getAttribute("xmlUrl");
   } else {
-    var xmlUrl = aOutlineNode.getAttribute("xmlurl");
+    xmlUrl = aOutlineNode.getAttribute("xmlurl");
   }
 
   if(type!="rss" && !title && xmlUrl) return;
@@ -203,37 +210,41 @@ function createRssItem(aOutlineNode, aRssFolderId) {
 
 // ********** ********** Export OPML ********** **********
 
-function exportOPML() {
+function checkExportPath() {
   var path = txtExportFile.value;
   if (!checkFilePath(path, false)) {
     reportError(g_errorMesage);
     return false;
   }
-
-  var opmlSource = createOpmlSource();
-  opmlSource = SageUtils.convertCharCodeFrom(opmlSource, "UTF-8");
-
-  var tmpFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
-  try {
-    tmpFile.initWithPath(path);
-    if(tmpFile.exists()) {
-      tmpFile.remove(true);
-    }
-    tmpFile.create(tmpFile.NORMAL_FILE_TYPE, 0666);
-    var stream = Cc['@mozilla.org/network/file-output-stream;1'].createInstance(Ci.nsIFileOutputStream);
-    stream.init(tmpFile, 2, 0x200, false); // open as "write only"
-    stream.write(opmlSource, opmlSource.length);
-    stream.flush();
-    stream.close();
-  } catch(e) {
-    reportError(strRes.getString("opml_export_nocreate"));
-    return false;
-  }
-
   return true;
 }
 
+function exportOPML() {
+  var path = txtExportFile.value;
+  var promise = createOpmlSource();
+  promise.then(function(opmlSource) {
+    opmlSource = SageUtils.convertCharCodeFrom(opmlSource, "UTF-8");
+
+    var tmpFile = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
+    try {
+      tmpFile.initWithPath(path);
+      if (tmpFile.exists()) {
+        tmpFile.remove(true);
+      }
+      tmpFile.create(tmpFile.NORMAL_FILE_TYPE, 0666);
+      var stream = Cc['@mozilla.org/network/file-output-stream;1'].createInstance(Ci.nsIFileOutputStream);
+      stream.init(tmpFile, 2, 0x200, false); // open as "write only"
+      stream.write(opmlSource, opmlSource.length);
+      stream.flush();
+      stream.close();
+    } catch(e) {
+      reportError(strRes.getString("opml_export_nocreate"));
+    }
+  });
+}
+
 function createOpmlSource() {
+  var deferred = Promise.defer();
   var hist = Cc["@mozilla.org/browser/nav-history-service;1"]
              .getService(Ci.nsINavHistoryService);
 
@@ -252,50 +263,83 @@ function createOpmlSource() {
   query.setFolders([rssReaderFolderID], 1);
   var result = hist.executeQuery(query, options);
 
-  opmlBody.appendChild(createOpmlOutline(opmlDoc, result.root));
-  xmlIndent(opmlDoc);
-
-  var opmlSource = new XMLSerializer().serializeToString(opmlDoc);
-  return opmlSource;
+  var promise = createOpmlOutline(opmlDoc, result.root);
+  promise.then(function(opmlOutline) {
+    opmlBody.appendChild(opmlOutline);
+    xmlIndent(opmlDoc);
+    deferred.resolve((new XMLSerializer()).serializeToString(opmlDoc));
+  });
+  return deferred.promise;
 }
 
-// TODO: replace livemarkService references
 function createOpmlOutline(aOpmlDoc, aResultNode) {
+  var deferred = Promise.defer();
   var bmsvc = Cc["@mozilla.org/browser/nav-bookmarks-service;1"]
-              .getService(Ci.nsINavBookmarksService);
+        .getService(Ci.nsINavBookmarksService);
 
   var type = bmsvc.getItemType(aResultNode.itemId);
   var title = bmsvc.getItemTitle(aResultNode.itemId);
 
   var outlineNode = aOpmlDoc.createElement("outline");
 
-  var childNode, childNodeType;
-  if (type == bmsvc.TYPE_FOLDER && !livemarkService.isLivemark(aResultNode.itemId)) {
-    outlineNode.setAttribute("text", title);
-
-    aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
-    aResultNode.containerOpen = true;
-    for (var i = 0; i < aResultNode.childCount; i ++) {
-      childNode = aResultNode.getChild(i);
-      childNodeType = bmsvc.getItemType(childNode.itemId);
-      if (childNodeType == bmsvc.TYPE_FOLDER || childNodeType == bmsvc.TYPE_BOOKMARK) {
-        outlineNode.appendChild(createOpmlOutline(aOpmlDoc, childNode));        
+  PlacesUtils.livemarks.getLivemark(
+    { id: aResultNode.itemId },
+    (function(aStatus, aLivemark) {
+      var isLivemark = false,
+          feedURI;
+      if (Components.isSuccessCode(aStatus)) {
+        isLivemark = true;
+        feedURI = aLivemark.feedURI;
       }
-    }
-    aResultNode.containerOpen = false;
-  } else if (type == bmsvc.TYPE_BOOKMARK) {
-    var url = bmsvc.getBookmarkURI(aResultNode.itemId).spec;
-    outlineNode.setAttribute("type", "rss");
-    outlineNode.setAttribute("text", title);
-    outlineNode.setAttribute("title", title);
-    outlineNode.setAttribute("xmlUrl", url);
-  } else if (livemarkService.isLivemark(aResultNode.itemId)) {
-    outlineNode.setAttribute("type", "rss");
-    outlineNode.setAttribute("text", title);
-    outlineNode.setAttribute("title", title);
-    outlineNode.setAttribute("xmlUrl", livemarkService.getFeedURI(aResultNode.itemId).spec);
-  }
-  return outlineNode;
+
+      var childNode, childNodeType;
+      if (type == bmsvc.TYPE_FOLDER && !isLivemark) {
+        outlineNode.setAttribute("text", title);
+        aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
+        aResultNode.containerOpen = true;
+        var promise;
+        if (aResultNode.childCount > 0) {
+          var i = 0;
+          function step() {
+            childNode = aResultNode.getChild(i);
+            i++;
+            childNodeType = bmsvc.getItemType(childNode.itemId);
+            if (childNodeType == bmsvc.TYPE_FOLDER || childNodeType == bmsvc.TYPE_BOOKMARK) {
+              promise = createOpmlOutline(aOpmlDoc, childNode);
+              promise.then(function(opmlOutline) {
+                outlineNode.appendChild(opmlOutline);
+                if (i < aResultNode.childCount) {
+                  step();
+                } else {
+                  aResultNode.containerOpen = false;
+                  deferred.resolve(outlineNode);
+                }
+              });
+            }
+          }
+          step();
+        } else {
+          aResultNode.containerOpen = false;
+          deferred.resolve(outlineNode);
+        }
+      } else if (type == bmsvc.TYPE_BOOKMARK) {
+        var url = bmsvc.getBookmarkURI(aResultNode.itemId).spec;
+        outlineNode.setAttribute("type", "rss");
+        outlineNode.setAttribute("text", title);
+        outlineNode.setAttribute("title", title);
+        outlineNode.setAttribute("xmlUrl", url);
+        deferred.resolve(outlineNode);
+      } else if (isLivemark) {
+        outlineNode.setAttribute("type", "rss");
+        outlineNode.setAttribute("text", title);
+        outlineNode.setAttribute("title", title);
+        outlineNode.setAttribute("xmlUrl", feedURI.spec);
+        deferred.resolve(outlineNode);
+      } else {
+        deferred.resolve(outlineNode);
+      }
+    }).bind(this));
+  return deferred.promise;
 }
 
 function xmlIndent(aDoc) {
@@ -338,12 +382,10 @@ function canAdvanceExport() {
   winMain.canAdvance = !isTextBoxEmpty(txtExportFile);
 }
 
-function reportError(s)
-{
+function reportError(s) {
   // This should really show an error prompt
   alert(s);
 }
-
 
 // Page initializers
 function onPageStartShow() {
@@ -370,5 +412,6 @@ function onPageImportFinishedShow() {
 
 function onPageExportFinishedShow() {
   document.documentElement.getButton("cancel").disabled = true;
+  exportOPML();
   SageMetrics.view("/opml/export/finished");
 }
