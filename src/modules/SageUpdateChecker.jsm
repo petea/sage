@@ -52,6 +52,7 @@ loader.loadSubScript("chrome://sage/content/commonfunc.js");
 
 const DELAY = 60 * 60 * 1000; // One hour between each check
 const INITIAL_CHECK = 10 * 1000; // Delay the first check to avoid impacting startup performances
+const FEED_CHECK_TIMEOUT = 10 * 1000; // Wait up to ten seconds for a feed to load
 
 var SageUpdateChecker = {
 
@@ -254,9 +255,9 @@ var SageUpdateChecker = {
 
     this.httpReq.open("GET", url);
 
-    this.httpReq.onload = this.httpLoaded;
-    this.httpReq.onerror = this.httpError;
-    this.httpReq.onreadystatechange = this.httpReadyStateChange;
+    this.httpReq.onload = this.httpLoaded.bind(this);
+    this.httpReq.onerror = this.httpError.bind(this);
+    this.httpReq.onreadystatechange = this.httpReadyStateChange.bind(this);
 
     this.logger.debug("fetching: " + url);
     try {
@@ -264,6 +265,11 @@ var SageUpdateChecker = {
       //this.httpReq.overrideMimeType("application/xml");
       this.httpReq.send(null);
       this.notifyObservers("sage-nowRefreshing", name);
+      this.clearFeedCheckTimer();
+      this.feedCheckTimer = setTimeout((function() {
+        this.httpReq.abort();
+        this.checkResult(false, 0);        
+      }).bind(this), FEED_CHECK_TIMEOUT);
     } catch(e) {
         // FAILURE
       this.httpReq.abort();
@@ -271,33 +277,43 @@ var SageUpdateChecker = {
     }
   },
 
+  clearFeedCheckTimer: function() {
+    if (this.feedCheckTimer) {
+      clearTimeout(this.feedCheckTimer);
+      this.feedCheckTimer = null;
+    }
+  },
+
   httpError: function(e) {
     this.logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
-    SageUpdateChecker.httpReq.abort();
-    SageUpdateChecker.checkResult(false, 0);
+    this.httpReq.abort();
+    this.checkResult(false, 0);
+    this.clearFeedCheckTimer();
   },
 
   httpReadyStateChange: function() {
-    if (SageUpdateChecker.httpReq.readyState == 2) {
+    if (this.httpReq.readyState == 2) {
       try {
-        SageUpdateChecker.httpReq.status;
+        this.httpReq.status;
       } catch(e) {
           // URL NOT AVAILABLE
-        SageUpdateChecker.httpReq.abort();
-        SageUpdateChecker.checkResult(false, 0);
+        this.httpReq.abort();
+        this.checkResult(false, 0);
+        this.clearFeedCheckTimer();
       }
     }
   },
 
   httpLoaded: function(e) {
+    this.clearFeedCheckTimer();
     var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
     var feedParserFactory = new FeedParserFactory();
-    var feedParser = feedParserFactory.createFeedParser(SageUpdateChecker.httpReq.responseText);
-    var feed = feedParser.parse(SageUpdateChecker.httpReq.responseText, SageUpdateChecker.httpReq.channel.originalURI, SageUpdateChecker);
+    var feedParser = feedParserFactory.createFeedParser(this.httpReq.responseText);
+    var feed = feedParser.parse(this.httpReq.responseText, this.httpReq.channel.originalURI, this);
   },
   
   // sageIFeedParserListener
-  onFeedParsed : function(feed) {
+  onFeedParsed: function(feed) {
     if (feed) {
       feed.setFeedURI(this.httpReq.channel.originalURI.spec);
       var lastModified = 0;
