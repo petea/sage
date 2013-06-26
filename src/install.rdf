@@ -63,7 +63,7 @@
     <em:translator>Calle Moberg</em:translator>
     <em:translator>Aarni Koskela</em:translator>
     <em:translator>Gomyoung Kim</em:translator>
-    <em:translator>Filip Miletić</em:translator>
+    <em:translator>Filip Miletic</em:translator>
     <em:translator>Vaclav Cerny</em:translator>
     <em:translator>George Karidis</em:translator>
     <em:translator>Darek Mlynarczyk</em:translator>
@@ -75,6 +75,16 @@
     <em:homepageURL>http://sagerss.com</em:homepageURL>
     <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
     <em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
+    
+    <!-- Localized description -->
+        <em:localized>
+        <Description>
+            <em:locale>it-IT</em:locale>
+            <em:name>Sage</em:name>
+            <em:description>Un leggero lettore di feed RSS e Atom.</em:description>
+        </Description>
+    </em:localized>
+    
   
     <!-- Firefox -->
     <em:targetApplication>
