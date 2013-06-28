@@ -136,7 +136,7 @@ sageMozillaFeedParser.prototype = {
           logger.warn("unable to parse RFC822 date string: " + date + " feed: " + title);
         }
       }
-      item.content = feedItem.content ? feedItem.content.text : feedItem.summary.text;
+      item.content = feedItem.content ? feedItem.content.text : (feedItem.summary ? feedItem.summary.text : "");
       if (feedItem.enclosures && feedItem.enclosures.length) {
         enc = feedItem.enclosures.queryElementAt(0, Ci.nsIWritablePropertyBag2);
         if (enc.hasKey("url")) {
