@@ -109,11 +109,15 @@ sageMozillaFeedParser.prototype = {
       
       item = { title : "", link : "", author : "", content : "", pubDate : "", enclosure : null, baseURI : "" };
       
-      item.baseURI = feedItem.baseURI.spec;
+      if (feedItem.baseURI) {
+        item.baseURI = feedItem.baseURI.spec;
+      }
       if (feedItem.title) {
         item.title = feedItem.title.plainText();
       }
-      item.link = feedItem.link.spec;
+      if (feedItem.link) {
+        item.link = feedItem.link.spec;
+      }
       if (feedItem.authors && feedItem.authors.length) {
         item.author = feedItem.authors.queryElementAt(0, Ci.nsIFeedPerson).name;
       }
