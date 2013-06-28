@@ -48,6 +48,7 @@ var SageMetrics = {
 
   TID: null,
   GA_URL: "http://www.google-analytics.com/collect",
+  APP_NAME: "Sage for Firefox",
 
   _initialized: false,
   _uuid: null,
@@ -107,6 +108,8 @@ var SageMetrics = {
       v: "1",
       tid: this.TID,
       cid: this._uuid,
+      an: this.APP_NAME,
+      av: SageUtils.VERSION,
       cd1: SageUtils.VERSION
     };
     Object.keys(params).forEach(function(key) {
