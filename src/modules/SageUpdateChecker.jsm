@@ -51,7 +51,7 @@ var loader = Cc["@mozilla.org/moz/jssubscript-loader;1"]
 loader.loadSubScript("chrome://sage/content/commonfunc.js");
 
 const DELAY = 60 * 60 * 1000; // One hour between each check
-const INITIAL_CHECK = 10 * 1000; // Delay the first check to avoid impacting startup performances
+const INITIAL_CHECK = 5 * 1000; // Delay the first check to avoid impacting startup performance
 const FEED_CHECK_TIMEOUT = 10 * 1000; // Wait up to ten seconds for a feed to load
 
 var SageUpdateChecker = {
