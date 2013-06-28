@@ -649,17 +649,31 @@ function setListItemReadState(listItem, state) {
  */
 var linkVisitor = {
   
-  NS_LINK_VISITED_EVENT_TOPIC : "link-visited",
   _items : {}, // mapping from the observer to the rss list items
+  _historyObserver: null,
   
   init: function() {
-    this._observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
-    this._observerService.addObserver(this, this.NS_LINK_VISITED_EVENT_TOPIC, false);    
+    this._historyObserver = {
+      onBeginUpdateBatch: function() {},
+      onEndUpdateBatch: function() {},
+      onVisit: (function(aURI, aVisitID, aTime, aSessionID, aReferringID, aTransitionType) {
+        this.onURIChanged(aURI, true);
+      }).bind(this),
+      onTitleChanged: function() {},
+      onDeleteURI: (function(aURI, aGUID) {
+        this.onURIChanged(aURI, false);
+      }).bind(this),
+      onClearHistory: function() {},
+      onPageChanged: function() {},
+      onDeleteVisits: function() {},
+      QueryInterface: XPCOMUtils.generateQI([Ci.nsINavHistoryObserver])
+    };
+    PlacesUtils.history.addObserver(this._historyObserver, false);
   },
   
   uninit: function() {
     this.clearItems();
-    this._observerService.removeObserver(this, this.NS_LINK_VISITED_EVENT_TOPIC);
+    PlacesUtils.history.removeObserver(this._historyObserver);
   },
   
   clearItems: function () {
@@ -680,11 +694,16 @@ var linkVisitor = {
       return;
     }
     if (bRead) {
-      PlacesUtils.history.markPageAsFollowedLink(fixupURI);
+      PlacesUtils.asyncHistory.updatePlaces({
+        uri: fixupURI,
+        visits: [{
+          transitionType: Ci.nsINavHistoryService.TRANSITION_LINK,
+          visitDate: Date.now() * 1000
+        }]
+      });
     } else {
       PlacesUtils.history.removePage(fixupURI);
     }
-    this._observerService.notifyObservers(fixupURI, this.NS_LINK_VISITED_EVENT_TOPIC, null);
   },
 
   getVisited: function(sURI, callback) {
@@ -704,26 +723,13 @@ var linkVisitor = {
     }
   },
   
-  onURIChanged: function(aURI) {
+  onURIChanged: function(aURI, isVisited) {
     if (aURI.spec in this._items) {
-      logger.debug("onURIChanged: " + aURI.spec);
+      logger.debug("onURIChanged: " + aURI.spec + " isVisited: " + isVisited);
       var listItem = this._items[aURI.spec];
-      this.getVisited(aURI.spec, function(isVisited) {
-        logger.debug("isVisited: " + isVisited);
-        setListItemReadState(listItem, isVisited);
-      });
+      setListItemReadState(listItem, isVisited);
     }
-  },
-    
-  // nsIObserver
-  observe: function(aSubject, aTopic, aData) {
-    // subject is a URI
-    // data is null
-    if (aTopic == this.NS_LINK_VISITED_EVENT_TOPIC) {
-      this.onURIChanged(aSubject.QueryInterface(Ci.nsIURI));
-    }
-  }
-    
+  }    
 };
 
 
