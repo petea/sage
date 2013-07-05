@@ -433,8 +433,6 @@ function setRssItemListBox() {
     var itemLabel;
     if (item.hasTitle()) {
       itemLabel = item.getTitle();
-    } else if (item.getTitle()) {
-      itemLabel = item.getTitle();
     } else {
       itemLabel = strRes.getString("feed_item_no_title");
     }
@@ -710,6 +708,7 @@ var linkVisitor = {
     var fixupURI = this._getFixupURI(sURI);
     if (fixupURI == null) {
       callback(false);
+      return;
     }
     PlacesUtils.asyncHistory.isURIVisited(fixupURI, function(aURI, aIsVisited) { callback(aIsVisited); });
   },
