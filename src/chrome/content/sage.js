@@ -165,7 +165,6 @@ var sidebarController = {
   
   uninit : function() {  
     feedLoader.abort();
-    SageUpdateChecker.done();
     
     // remove observers
     linkVisitor.uninit();

@@ -226,13 +226,6 @@ var SageUpdateChecker = {
     }).bind(this), 1000);
   },
 
-  done: function() {
-    if (this.checking) {
-      this.httpReq.abort();
-      this.setStatusFlag(this.lastFeed.id, SageUtils.STATUS_NO_UPDATE);
-    }
-  },
-
   check: function() {
     this.lastFeed = this.checkList.shift();
     var name = this.bmsvc.getItemTitle(this.lastFeed.id);
