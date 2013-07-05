@@ -320,7 +320,6 @@ var SageUpdateChecker = {
   },
 
   checkResult: function(aSucceed, aLastModified, feed) {
-    var name = this.bmsvc.getItemTitle(this.lastFeed.id);
     var status = 0;
 
     if (aSucceed) {
