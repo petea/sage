@@ -137,7 +137,7 @@ var SageUpdateChecker = {
   getItemAnnotation: function(aItemId, aName) {
     try {
       return this.anno.getItemAnnotation(aItemId, aName);
-    } catch(e) {
+    } catch (e) {
       // we could check for existence before, but the try/catch is more efficient
       return null;
     }
@@ -228,13 +228,13 @@ var SageUpdateChecker = {
 
   check: function() {
     this.lastFeed = this.checkList.shift();
-    var name = this.bmsvc.getItemTitle(this.lastFeed.id);
-    var url = this.lastFeed.url;
+    var name = this.bmsvc.getItemTitle(this.lastFeed.id),
+        url = this.lastFeed.url;
     
     this.logger.info("checking: " + name);
 
     if (!url) {
-      this.checkResult(false, 0);
+      this.checkResult(false);
     }
 
     if (this.httpReq) {
@@ -261,12 +261,12 @@ var SageUpdateChecker = {
       this.clearFeedCheckTimer();
       this.feedCheckTimer = setTimeout((function() {
         this.httpReq.abort();
-        this.checkResult(false, 0);        
+        this.checkResult(false);        
       }).bind(this), FEED_CHECK_TIMEOUT);
-    } catch(e) {
+    } catch (e) {
         // FAILURE
       this.httpReq.abort();
-      this.checkResult(false, 0);
+      this.checkResult(false);
     }
   },
 
@@ -280,7 +280,7 @@ var SageUpdateChecker = {
   httpError: function(e) {
     this.logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
     this.httpReq.abort();
-    this.checkResult(false, 0);
+    this.checkResult(false);
     this.clearFeedCheckTimer();
   },
 
@@ -288,10 +288,10 @@ var SageUpdateChecker = {
     if (this.httpReq.readyState == 2) {
       try {
         this.httpReq.status;
-      } catch(e) {
+      } catch (e) {
           // URL NOT AVAILABLE
         this.httpReq.abort();
-        this.checkResult(false, 0);
+        this.checkResult(false);
         this.clearFeedCheckTimer();
       }
     }
@@ -320,46 +320,49 @@ var SageUpdateChecker = {
   },
 
   checkResult: function(aSucceed, aLastModified, feed) {
-    var status = 0;
+    try {
+      // Assume we're in an error state until proven otherwise
+      var status = SageUtils.STATUS_ERROR;
 
-    if (aSucceed) {
-      var lastVisit = this.getItemAnnotation(this.lastFeed.id, SageUtils.ANNO_LASTVISIT);
-      var sig = this.getItemAnnotation(this.lastFeed.id, SageUtils.ANNO_SIG);
+      if (aSucceed) {
+        var lastVisit = this.getItemAnnotation(this.lastFeed.id, SageUtils.ANNO_LASTVISIT);
+        var sig = this.getItemAnnotation(this.lastFeed.id, SageUtils.ANNO_SIG);
 
-      if (aLastModified && lastVisit && sig) {
-        if ((aLastModified > lastVisit) && (sig != feed.getSignature())) {
-          status = SageUtils.STATUS_UPDATE;
-          this.setHasNew(true);
+        if (aLastModified && lastVisit && sig) {
+          if ((aLastModified > lastVisit) && (sig != feed.getSignature())) {
+            status = SageUtils.STATUS_UPDATE;
+            this.setHasNew(true);
+          } else {
+            status = SageUtils.STATUS_NO_UPDATE;
+          }
+        } else if (aLastModified && lastVisit) {
+          if (aLastModified > lastVisit) {
+            status = SageUtils.STATUS_UPDATE;
+          } else {
+            status = SageUtils.STATUS_NO_UPDATE;
+          }
+        } else if (sig) {
+          if (sig != feed.getSignature()) {
+            status = SageUtils.STATUS_UPDATE;
+          } else {
+            status = SageUtils.STATUS_NO_UPDATE;
+          }
         } else {
-          status = SageUtils.STATUS_NO_UPDATE;
-        }
-      } else if (aLastModified && lastVisit) {
-        if (aLastModified > lastVisit) {
           status = SageUtils.STATUS_UPDATE;
-        } else {
-          status = SageUtils.STATUS_NO_UPDATE;
         }
-      } else if (sig) {
-        if (sig != feed.getSignature()) {
-          status = SageUtils.STATUS_UPDATE;
-        } else {
-          status = SageUtils.STATUS_NO_UPDATE;
-        }
-      } else {
-        status = SageUtils.STATUS_UPDATE;
       }
-    } else {
-      status = SageUtils.STATUS_ERROR;
-    }
 
-    this.setStatusFlag(this.lastFeed.id, status);
-    
-    if (this.checkList.length == 0) {
-      this.checking = false;
-      this.notifyObservers("sage-nowRefreshing", "");
-      return;
-    } else {
-      this.check();
-    }
+      this.setStatusFlag(this.lastFeed.id, status);
+    } catch (e) {
+      this.logger.error("Exception in checkResult: " + e);
+    } finally {
+      if (this.checkList.length == 0) {
+        this.checking = false;
+        this.notifyObservers("sage-nowRefreshing", "");
+      } else {
+        this.check();
+      }
+    }    
   }
+
 };
