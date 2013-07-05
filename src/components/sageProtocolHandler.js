@@ -53,7 +53,9 @@ sageProtocolHandler.prototype = {
 
   scheme : "sage",
   defaultPort : -1,
-  protocolFlags : Components.interfaces.nsIProtocolHandler.URI_NORELATIVE | Components.interfaces.nsIProtocolHandler.URI_NOAUTH,
+  protocolFlags : Ci.nsIProtocolHandler.URI_NORELATIVE |
+    Ci.nsIProtocolHandler.URI_NOAUTH |
+    Ci.nsIProtocolHandler.URI_LOADABLE_BY_ANYONE,
   
   allowPort : function(port, scheme) {
     return false;
