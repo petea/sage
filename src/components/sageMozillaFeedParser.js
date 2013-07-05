@@ -77,9 +77,16 @@ sageMozillaFeedParser.prototype = {
     
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     var logger = new Logger();
-  
-    if (!result || !result.doc || result.bozo) {
+
+    if (!result || !result.doc) {
       this._listener.onFeedParsed(null);
+      logger.warn("handleResult: no feed content in response");
+      return;
+    }
+
+    if (result.bozo) {
+      this._listener.onFeedParsed(null);
+      logger.warn("handleResult: XML parsing error");
       return;
     }
     
