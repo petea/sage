@@ -419,7 +419,9 @@ var feedSummary = {
       attrURI = ios.newURI(uri, null, null);
       secman.checkLoadURIWithPrincipal((secman.getSimpleCodebasePrincipal || secman.getCodebasePrincipal)(feedURI), attrURI, flags);  // getCodebasePrincipal renamed in Firefox 17
       element.setAttribute(attribute, attrURI.spec);
-    } catch (e) { }
+    } catch (e) {
+      this._logger.error("exception in setURIAttributeSafe: " + e);
+    }
   },
   
   decorateAnchorElement: function(element) {
@@ -457,7 +459,9 @@ var feedSummary = {
           if (baseURI) {
             try {
               value = URIFixup.createFixupURI(baseURI, Ci.nsIURIFixup.FIXUP_FLAG_NONE).resolve(value);
-            } catch (e) { }
+            } catch (e) {
+              this._logger.warn("Unable to resolve link: " + value + " using base: " + baseURI);
+            }
           }
           this.setURIAttributeSafe(elem, attrName, value);
         }
