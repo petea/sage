@@ -51,6 +51,7 @@ var SageMetrics = {
 
   _initialized: false,
   _uuid: null,
+  _locale: null,
 
   init: function() {
     if (this._initialized) {
@@ -69,6 +70,15 @@ var SageMetrics = {
     }
     this.logger.debug("using uuid: " + uuid);
     this._uuid = uuid;
+
+    try {
+      this._locale = Cc["@mozilla.org/preferences-service;1"]
+        .getService(Ci.nsIPrefService)
+        .getDefaultBranch("general.useragent.")
+        .getCharPref("locale");
+    } catch (e) {
+      this.logger.error("Could not find default locale");
+    }
 
     this._initialized = true;
     this.logger.info("metrics intialized");
@@ -107,7 +117,8 @@ var SageMetrics = {
       v: "1",
       tid: this.TID,
       cid: this._uuid,
-      cd1: SageUtils.VERSION
+      cd1: SageUtils.VERSION,
+      ul: this._locale
     };
     Object.keys(params).forEach(function(key) {
       finalParams[key] = params[key];
