@@ -38,6 +38,8 @@
 
 function FeedLoader() {
   this._listeners = {};
+  var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+  this._logger = new Logger();
 }
 
 FeedLoader.prototype = {
@@ -95,8 +97,8 @@ FeedLoader.prototype = {
 
     this.httpReq = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
                    .createInstance(Components.interfaces.nsIXMLHttpRequest);
+    this.httpReq.open("GET", aURI, true);
     this.httpReq.mozBackgroundRequest = true;
-    this.httpReq.open("GET", aURI);
     this.uri = aURI;
 
     var oThis = this;
@@ -106,7 +108,7 @@ FeedLoader.prototype = {
 
     try {
       this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-      //this.httpReq.overrideMimeType("application/xml");
+      this.httpReq.overrideMimeType("application/xml");
     } catch (e) {
       this.httpGetResult(SageUtils.RESULT_ERROR_FAILURE);
     }
@@ -133,10 +135,7 @@ FeedLoader.prototype = {
   },
 
   onHttpError : function(e) {
-    var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-    var logger = new Logger();
-
-    logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
+    this._logger.warn("HTTP Error: " + e.target.status + " - " + e.target.statusText);
     this.httpGetResult(SageUtils.RESULT_NOT_AVAILABLE);
   },
 

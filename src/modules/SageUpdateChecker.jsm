@@ -255,7 +255,7 @@ var SageUpdateChecker = {
     this.logger.debug("fetching: " + url);
     try {
       this.httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-      //this.httpReq.overrideMimeType("application/xml");
+      this.httpReq.overrideMimeType("application/xml");
       this.httpReq.send(null);
       this.notifyObservers("sage-nowRefreshing", name);
       this.clearFeedCheckTimer();

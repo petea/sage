@@ -156,7 +156,7 @@ function init() {
     try {
       httpReq.open("GET", possibleFeeds[entry][0], true);
       httpReq.setRequestHeader("User-Agent", SageUtils.USER_AGENT);
-      //httpReq.overrideMimeType("application/xml");
+      httpReq.overrideMimeType("application/xml");
       httpReq.send(null);
     } catch(e) {
       httpReq.abort();

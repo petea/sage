@@ -47,7 +47,10 @@ const CLASS_ID = Components.ID("{9C558AA2-52B7-4C0D-A7AB-387EB0EFBA05}");
 const CLASS_NAME = "Sage Mozilla Feed Parser Component";
 const CONTRACT_ID = "@sage.mozdev.org/sage/mozillafeedparser;1";
 
-function sageMozillaFeedParser() {}
+function sageMozillaFeedParser() {
+  var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
+  this._logger = new Logger();
+}
 
 sageMozillaFeedParser.prototype = {
 
@@ -63,6 +66,7 @@ sageMozillaFeedParser.prototype = {
       parser.parseFromString(feedText, feedUri);
     } catch (e) {
       this._listener.onFeedParsed(null);
+      this._logger.warn("Exception while parsing feed " + feedUri.spec + ": " + e);
     }
   },
   
@@ -75,18 +79,15 @@ sageMozillaFeedParser.prototype = {
     
     var dateParser = Components.classes["@sage.mozdev.org/sage/dateparser;1"].getService(Components.interfaces.sageIDateParser);
     
-    var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
-    var logger = new Logger();
-
     if (!result || !result.doc) {
       this._listener.onFeedParsed(null);
-      logger.warn("handleResult: no feed content in response");
+      this._logger.warn("handleResult: no feed content in response");
       return;
     }
 
     if (result.bozo) {
       this._listener.onFeedParsed(null);
-      logger.warn("handleResult: XML parsing error");
+      this._logger.warn("handleResult: XML parsing error");
       return;
     }
     
@@ -140,7 +141,7 @@ sageMozillaFeedParser.prototype = {
         try {
           item.pubDate = dateParser.parseRFC822(date);
         } catch (e) {
-          logger.warn("unable to parse RFC822 date string: " + date + " feed: " + title);
+          this._logger.warn("unable to parse RFC822 date string: " + date + " feed: " + title);
         }
       }
       item.content = feedItem.content ? feedItem.content.text : (feedItem.summary ? feedItem.summary.text : "");
