@@ -52,7 +52,7 @@ var sageOverlay = {
     this.needsRestart = false;
     
     if (this.isNewUser()) {
-      this.createRoot();
+      SageUtils.createRootFolder();
       this.addToolbarButton();
       SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemList", "checked", true);
       SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemListToolbar", "checked", true);
@@ -116,15 +116,6 @@ var sageOverlay = {
     var observerService = Cc["@mozilla.org/observer-service;1"]
                           .getService(Ci.nsIObserverService);
     observerService.removeObserver(this.obs, "sage-hasNewUpdated");
-  },
-  
-  createRoot : function() {
-    var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
-    var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, SageUtils.SAGE_ROOT_TITLE, bookmarksService.DEFAULT_INDEX);
-    SageUtils.setSageRootFolderId(folderId);
-    SageUtils.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
-    SageUtils.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
-    SageUtils.addFeed("Sage", "http://sagerss.com/feed/");
   },
   
   getVersion : function() {

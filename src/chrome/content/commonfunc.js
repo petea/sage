@@ -177,35 +177,40 @@ var SageUtils = {
   },
   
   getSageRootFolderId : function() {
-    var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-    var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT, {});
+    var annotationService = Cc["@mozilla.org/browser/annotation-service;1"]
+          .getService(Ci.nsIAnnotationService);
+    var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT);
+    var rootFolderId;
     if (results.length == 1) {
-      return results[0];
+      rootFolderId = results[0];
     } else if (results.length == 0) {
-      throw "No root folder found";
+      rootFolderId = this.createRootFolder();
     } else if (results.length > 1) {
-      throw "Multiple root folders found";
+      rootFolderId = results[0];
     }
+    return rootFolderId;
   },
   
-  // Set the sage/root annotation to the corresponding folder, as well as
-  // PlacesOrganizer/OrganizerQuery. Note that there is no risk to stomp
-  // a folder already annotated for Firefox, because Firefox only annotates
-  // left pane queries this way. Our UI doesn't allow users to select such
-  // queries so no problem.
   setSageRootFolderId : function(folderId) {
-    var annotationService = Cc["@mozilla.org/browser/annotation-service;1"].getService(Ci.nsIAnnotationService);
-    var results = annotationService.getItemsWithAnnotation(this.ANNO_ROOT, {});
-    if (results.length == 1) {
-      if (results[0] != folderId) {
-        annotationService.removeItemAnnotation(results[0], this.ANNO_ROOT);
-        annotationService.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
-      }
-    } else if (results.length == 0) {
-      annotationService.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0, annotationService.EXPIRE_NEVER);
-    } else if (results.length > 1) {
-      throw "Multiple root folders found";
+    var annotations = Cc["@mozilla.org/browser/annotation-service;1"]
+          .getService(Ci.nsIAnnotationService);
+    // Find all items with the Sage root annotation
+    var results = this.toJSArray(annotations.getItemsWithAnnotation(this.ANNO_ROOT));
+    // Remove these annotations if any are found
+    results.forEach((function(result) {
+      annotations.removeItemAnnotation(result, this.ANNO_ROOT);
+    }).bind(this));
+    // Add the new root annotation
+    annotations.setItemAnnotation(folderId, this.ANNO_ROOT, "Sage Root Folder", 0,
+                                  annotations.EXPIRE_NEVER);
+  },
+
+  toJSArray : function(nsIArray) {
+    var array = [];
+    for (var c = 0; c < nsIArray.length; c++) {
+      array.push(nsIArray[c]);
     }
+    return array;
   },
   
   addFeed : function(title, url) {
@@ -216,6 +221,16 @@ var SageUtils = {
     var folderId = this.getSageRootFolderId();
     var id = bookmarksService.insertBookmark(folderId, bookmarkURI, bookmarksService.DEFAULT_INDEX, title);
     annotationService.setItemAnnotation(id, this.ANNO_STATUS, "updated", 0, annotationService.EXPIRE_NEVER);
+  },
+
+  createRootFolder : function() {
+    var bookmarksService = Cc["@mozilla.org/browser/nav-bookmarks-service;1"].getService(Ci.nsINavBookmarksService);
+    var folderId = bookmarksService.createFolder(bookmarksService.bookmarksMenuFolder, this.SAGE_ROOT_TITLE, bookmarksService.DEFAULT_INDEX);
+    this.setSageRootFolderId(folderId);
+    this.addFeed("BBC News | News Front Page | World Edition", "http://news.bbc.co.uk/rss/newsonline_world_edition/front_page/rss091.xml");
+    this.addFeed("Yahoo! News - Sports", "http://rss.news.yahoo.com/rss/sports");
+    this.addFeed("Sage", "http://sagerss.com/feed/");
+    return folderId;
   },
   
   persistValue : function(uri, id, attribute, value) {
