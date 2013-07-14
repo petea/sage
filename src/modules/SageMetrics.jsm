@@ -71,13 +71,19 @@ var SageMetrics = {
     this.logger.debug("using uuid: " + uuid);
     this._uuid = uuid;
 
+    var prefSvc = this._locale = Cc["@mozilla.org/preferences-service;1"]
+      .getService(Ci.nsIPrefService)
+      .getBranch(null);
+    // see if we have a localized value
     try {
-      this._locale = Cc["@mozilla.org/preferences-service;1"]
-        .getService(Ci.nsIPrefService)
-        .getDefaultBranch("general.useragent.")
-        .getCharPref("locale");
+      this._locale = prefSvc.getComplexValue("general.useragent.locale", Ci.nsIPrefLocalizedString).data;
     } catch (e) {
-      this.logger.error("Could not find default locale");
+      // if not, simply get the string value
+      try {
+        this._locale = prefSvc.getComplexValue("general.useragent.locale", Ci.nsISupportsString).data;
+      } catch (e) {
+        this.logger.error("Could not find default locale: " + e);
+      }
     }
 
     this._initialized = true;
