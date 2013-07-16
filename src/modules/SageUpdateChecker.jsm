@@ -50,8 +50,8 @@ var loader = Cc["@mozilla.org/moz/jssubscript-loader;1"]
              .getService(Ci.mozIJSSubScriptLoader);
 loader.loadSubScript("chrome://sage/content/commonfunc.js");
 
-const DELAY = 60 * 60 * 1000; // One hour between each check
-const INITIAL_CHECK = 5 * 1000; // Delay the first check to avoid impacting startup performance
+// const DELAY = 60 * 60 * 1000; // One hour between each check
+// const INITIAL_CHECK = 5 * 1000; // Delay the first check to avoid impacting startup performance
 const FEED_CHECK_TIMEOUT = 10 * 1000; // Wait up to ten seconds for a feed to load
 
 var SageUpdateChecker = {
@@ -82,35 +82,35 @@ var SageUpdateChecker = {
     var Logger = new Components.Constructor("@sage.mozdev.org/sage/logger;1", "sageILogger", "init");
     this.logger = new Logger();
 
-    this.initialCheck();
-    this.startTimer();
+//     this.initialCheck();
+//     this.startTimer();
     this._initialized = true;
     this.logger.info("update checker intialized");
   },
 
-  initialCheck: function() {
-    setTimeout((function () {
-      this.startCheck(SageUtils.getSageRootFolderId(), true);
-    }).bind(this), INITIAL_CHECK);
-  },
-
-  startTimer: function() {
-    if (this._timer) {
-      return;
-    }
-    setTimeout((function() {
-      this.startCheck(SageUtils.getSageRootFolderId(), true);
-      this.resetTimer();
-    }).bind(this), DELAY);
-  },
-
-  resetTimer: function() {
-    if (this._timer) {
-      clearTimeout(this._timer);
-      this._timer = null;
-    }
-    this.startTimer();
-  },
+//   initialCheck: function() {
+//     setTimeout((function () {
+//       this.startCheck(SageUtils.getSageRootFolderId(), true);
+//     }).bind(this), INITIAL_CHECK);
+//   },
+// 
+//   startTimer: function() {
+//     if (this._timer) {
+//       return;
+//     }
+//     setTimeout((function() {
+//       this.startCheck(SageUtils.getSageRootFolderId(), true);
+//       this.resetTimer();
+//     }).bind(this), DELAY);
+//   },
+// 
+//   resetTimer: function() {
+//     if (this._timer) {
+//       clearTimeout(this._timer);
+//       this._timer = null;
+//     }
+//     this.startTimer();
+//   },
 
   /********************************************************
    * Observers

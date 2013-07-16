@@ -301,7 +301,7 @@ var sidebarController = {
       SageUpdateChecker.startCheck(aFolderId);
     } else {
       SageUpdateChecker.startCheck(SageUtils.getSageRootFolderId());
-      SageUpdateChecker.resetTimer();
+//       SageUpdateChecker.resetTimer();
     }
     SageMetrics.event("Sidebar", "Check Feeds");
   },
