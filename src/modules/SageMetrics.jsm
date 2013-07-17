@@ -97,14 +97,20 @@ var SageMetrics = {
       ec: category,
       ea: action
     };
-    if (options && options["label"]) {
-      params["el"] = options["label"];
-    }
-    if (options && options["value"]) {
-      params["ev"] = options["value"];
-    }
-    if (options && options["nonInteraction"]) {
-      params["ni"] = "1";
+    if (options) {
+      if (options["label"]) {
+        params["el"] = options["label"];
+      }
+      if (options["value"]) {
+        params["ev"] = options["value"];
+      }
+      if (options["nonInteraction"]) {
+        params["ni"] = "1";
+      }
+      if (options["newInstall"]) {
+        // convert ISO 8601 format to YYYYMMDDHHMMSS
+        params["cd2"] = (new Date()).toISOString().replace(/(([-:TZ]?)|(\.[0-9]{3,3}))?/g, "");
+      }
     }
     this._sendData(params);
   },

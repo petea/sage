@@ -59,7 +59,7 @@ var sageOverlay = {
       SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
       this.addContentHandler();
       this.needsRestart = true;
-      SageMetrics.event("Startup", "New Install");
+      SageMetrics.event("Startup", "New Install", { newInstall: true });
     } else if (this.needsMigration()) {
       try {
         this.migrate();
