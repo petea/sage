@@ -59,14 +59,14 @@ var sageOverlay = {
       SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
       this.addContentHandler();
       this.needsRestart = true;
-      SageMetrics.event("Startup", "New Install", { newInstall: true });
+      SageMetrics.event("Noninteractive", "New Install", { newInstall: true });
     } else if (this.needsMigration()) {
       try {
         this.migrate();
       } catch (e) {
         this.logger.error("migration failed: " + e);
       }
-      SageMetrics.event("Startup", "Upgrade");
+      SageMetrics.event("Noninteractive", "Upgrade");
     }
     SageUtils.setSagePrefValue(SageUtils.PREF_VERSION, SageUtils.VERSION);
     if (this.needsRestart) {

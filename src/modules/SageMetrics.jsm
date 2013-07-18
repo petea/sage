@@ -110,6 +110,7 @@ var SageMetrics = {
       if (options["value"]) {
         params["ev"] = options["value"];
       }
+      // seems to only impact bounce rate
       if (options["nonInteraction"]) {
         params["ni"] = "1";
       }

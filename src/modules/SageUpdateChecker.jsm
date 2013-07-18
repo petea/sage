@@ -45,6 +45,7 @@ const Cu = Components.utils;
 
 Cu.import('resource://gre/modules/PlacesUtils.jsm');
 Cu.import("resource://gre/modules/Timer.jsm");
+Cu.import("resource://sage/SageMetrics.jsm");
 
 var loader = Cc["@mozilla.org/moz/jssubscript-loader;1"]
              .getService(Ci.mozIJSSubScriptLoader);
@@ -218,8 +219,10 @@ var SageUpdateChecker = {
 
     // TODO: handle this properly with a callback from queueItems()
     setTimeout((function() {
-      this.logger.info("found " + this.checkList.length + " feed(s) to check");
-      if (this.checkList.length > 0) {
+      var feedCount = this.checkList.length;
+      this.logger.info("found " + feedCount + " feed(s) to check");
+      SageMetrics.event("Noninteractive", "Checking Feeds", { value: feedCount });
+      if (feedCount > 0) {
         this.checking = true;
         this.check();
       }
