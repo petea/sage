@@ -48,12 +48,6 @@ interfaces components/sageIFeedParserFactory.xpt
 interfaces components/sageIFeedParserListener.xpt
 interfaces components/sageILogger.xpt
 
-component {B315E9D2-7300-4C70-A2A3-B2BE328813AE} components/sageAtom03Parser.js
-contract @sage.mozdev.org/sage/atom03parser;1 {B315E9D2-7300-4C70-A2A3-B2BE328813AE}
-
-component {C48B7642-5C72-45C7-AA88-1AB550B0AB9B} components/sageAtomParser.js
-contract @sage.mozdev.org/sage/atomparser;1 {C48B7642-5C72-45C7-AA88-1AB550B0AB9B}
-
 component {E5D15F67-C113-497D-AC6F-40296FEAD058} components/sageDateFormatter.js
 contract @sage.mozdev.org/sage/dateformatter;1 {E5D15F67-C113-497D-AC6F-40296FEAD058}
 
@@ -80,6 +74,3 @@ contract @sage.mozdev.org/sage/mozillafeedparser;1 {9C558AA2-52B7-4C0D-A7AB-387E
 
 component {D6C44263-AC55-43E7-BC5A-82BBDBD7CD37} components/sageProtocolHandler.js
 contract @mozilla.org/network/protocol;1?name=sage {D6C44263-AC55-43E7-BC5A-82BBDBD7CD37}
-
-component {69F7C75E-9A41-4E7B-9E6F-620158D2DE09} components/sageRSSParser.js
-contract @sage.mozdev.org/sage/rssparser;1 {69F7C75E-9A41-4E7B-9E6F-620158D2DE09}
