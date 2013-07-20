@@ -42,7 +42,7 @@
 <overlay id="sageOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
-  <script type="application/x-javascript" src="chrome://sage/content/sage_main.js"/>
+  <script type="application/x-javascript" src="chrome://sage/content/overlay.js"/>
 
   <menupopup id="viewSidebarMenu">
     <menuitem key="key_openSageSidebar" observes="viewSageSidebar"/>

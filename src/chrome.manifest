@@ -30,7 +30,7 @@ locale    sage  zh-CN        chrome/locale/zh-CN/
 locale    sage  da-DK        chrome/locale/da-DK/
 locale    sage  tr-TR        chrome/locale/tr-TR/
 
-overlay  chrome://browser/content/browser.xul          chrome://sage/content/sage-Overlay.xul
+overlay  chrome://browser/content/browser.xul          chrome://sage/content/overlay.xul
 style    chrome://browser/content/browser.xul          chrome://sage/skin/sage-button.css
 style    chrome://browser/content/browser.xul          chrome://sage/skin/sage-button-mac.css    os=Darwin
 style    chrome://global/content/customizeToolbar.xul  chrome://sage/skin/sage-button.css
