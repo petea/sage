@@ -593,7 +593,7 @@ function openURI(aURI, aEvent) {
   
   var sidebarURI = null;
   try {
-    sidebarURI = ios.newURI("chrome://sage/content/sage.xul", null, null);
+    sidebarURI = ios.newURI("chrome://sage/content/sidebar.xul", null, null);
   } catch (e) { }
   
   var sidebarPrincipal = (secman.getSimpleCodebasePrincipal || secman.getCodebasePrincipal)(sidebarURI);  // With Firefox 17, getCodebasePrinciple has been renamed

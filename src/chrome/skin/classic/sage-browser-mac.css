@@ -38,10 +38,10 @@
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#sidebar-box[src="chrome://sage/content/sage.xul"] sidebarheader {
+#sidebar-box[src="chrome://sage/content/sidebar.xul"] sidebarheader {
   background-color: #ccc;
 }
 
-#sidebar-box[src="chrome://sage/content/sage.xul"] browser {
+#sidebar-box[src="chrome://sage/content/sidebar.xul"] browser {
   padding: 0;
 }

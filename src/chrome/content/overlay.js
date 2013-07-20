@@ -54,9 +54,9 @@ var sageOverlay = {
     if (this.isNewUser()) {
       SageUtils.createRootFolder();
       this.addToolbarButton();
-      SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemList", "checked", true);
-      SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemListToolbar", "checked", true);
-      SageUtils.persistValue("chrome://sage/content/sage.xul", "chkShowFeedItemTooltips", "checked", true);
+      SageUtils.persistValue("chrome://sage/content/sidebar.xul", "chkShowFeedItemList", "checked", true);
+      SageUtils.persistValue("chrome://sage/content/sidebar.xul", "chkShowFeedItemListToolbar", "checked", true);
+      SageUtils.persistValue("chrome://sage/content/sidebar.xul", "chkShowFeedItemTooltips", "checked", true);
       this.addContentHandler();
       this.needsRestart = true;
       SageMetrics.event("Noninteractive", "New Install", { newInstall: true });
@@ -82,7 +82,7 @@ var sageOverlay = {
           case "sage-hasNewUpdated":
             var button = document.getElementById("sage-button"),
                 sidebarWindow = document.getElementById("sidebar").contentWindow,
-                isSidebarOpen = (sidebarWindow.location.href == "chrome://sage/content/sage.xul");
+                isSidebarOpen = (sidebarWindow.location.href == "chrome://sage/content/sidebar.xul");
             if (button && !(isSidebarOpen && aData == "true")) {
               button.setAttribute("hasNew", aData);
             }

@@ -63,7 +63,7 @@
       autoCheck="false"
       label="&sage.toolbarLabel;"
       type="checkbox" group="sidebar"
-      sidebarurl="chrome://sage/content/sage.xul"
+      sidebarurl="chrome://sage/content/sidebar.xul"
       sidebartitle="&sage.sidebarTitle;"
       oncommand="toggleSidebar('viewSageSidebar');"/>
   </broadcasterset>

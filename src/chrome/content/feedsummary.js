@@ -344,7 +344,7 @@ var feedSummary = {
     var win = this.findCurrentWindow();
     if (win) {
       var sageBrowser = win.document.getElementById("sidebar");
-      if (sageBrowser.getAttribute("src") == "chrome://sage/content/sage.xul") {
+      if (sageBrowser.getAttribute("src") == "chrome://sage/content/sidebar.xul") {
         return sageBrowser.contentWindow;
       }
     }

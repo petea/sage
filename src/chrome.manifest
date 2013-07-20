@@ -35,7 +35,7 @@ style    chrome://browser/content/browser.xul          chrome://sage/skin/sage-b
 style    chrome://browser/content/browser.xul          chrome://sage/skin/sage-button-mac.css    os=Darwin
 style    chrome://global/content/customizeToolbar.xul  chrome://sage/skin/sage-button.css
 style    chrome://global/content/customizeToolbar.xul  chrome://sage/skin/sage-button-mac.css    os=Darwin
-style    chrome://sage/content/sage.xul                chrome://sage/skin/sage-mac.css           os=Darwin
+style    chrome://sage/content/sidebar.xul             chrome://sage/skin/sage-mac.css           os=Darwin
 style    chrome://browser/content/browser.xul          chrome://sage/skin/sage-browser-mac.css   os=Darwin
 
 interfaces components/sageIDateFormatter.xpt
