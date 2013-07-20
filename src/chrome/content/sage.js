@@ -328,7 +328,7 @@ var sidebarController = {
   },
   
   openSettingsDialog : function() {
-    openDialog("chrome://sage/content/settings/settings.xul", "", "chrome,centerscreen,modal,close");
+    openDialog("chrome://sage/content/settings.xul", "", "chrome,centerscreen,modal,close");
   },
   
   openOPMLWizardDialog : function() {

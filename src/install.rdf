@@ -75,7 +75,7 @@
     <em:translator>Koray Löker</em:translator>
   
     <em:homepageURL>http://sagerss.com</em:homepageURL>
-    <em:optionsURL>chrome://sage/content/settings/settings.xul</em:optionsURL>
+    <em:optionsURL>chrome://sage/content/settings.xul</em:optionsURL>
     <em:iconURL>chrome://sage/skin/sage_leaf_32.png</em:iconURL>
   
     <!-- Firefox -->

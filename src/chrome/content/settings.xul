@@ -48,7 +48,7 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 
   <script type="application/x-javascript" src="chrome://sage/content/commonfunc.js"/>
-  <script type="application/x-javascript" src="chrome://sage/content/settings/settings.js"/>
+  <script type="application/x-javascript" src="chrome://sage/content/settings.js"/>
   
   <stringbundleset>
     <stringbundle id="strRes" src="chrome://sage/locale/sage.properties"/>
