@@ -46,3 +46,6 @@ pref("extensions.sage.feedItemOrder", "chrono");
 pref("extensions.sage.feedDiscoveryMode", "exhaustive");
 pref("extensions.sage.logLevel", 3);
 pref("extensions.sage.uuid", "");
+pref("extensions.sage.showFeedItemList", true);
+pref("extensions.sage.showFeedItemListToolbar", true);
+pref("extensions.sage.showFeedItemListTooltips", true);

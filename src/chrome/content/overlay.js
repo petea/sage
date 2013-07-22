@@ -54,9 +54,6 @@ var sageOverlay = {
     if (this.isNewUser()) {
       SageUtils.createRootFolder();
       this.addToolbarButton();
-      SageUtils.persistValue("chrome://sage/content/sidebar.xul", "chkShowFeedItemList", "checked", true);
-      SageUtils.persistValue("chrome://sage/content/sidebar.xul", "chkShowFeedItemListToolbar", "checked", true);
-      SageUtils.persistValue("chrome://sage/content/sidebar.xul", "chkShowFeedItemTooltips", "checked", true);
       this.addContentHandler();
       this.needsRestart = true;
       SageMetrics.event("Noninteractive", "New Install", { newInstall: true });
@@ -167,6 +164,32 @@ var sageOverlay = {
       "1.5a" : function() {
         self.addContentHandler();
         self.needsRestart = true;
+      },
+
+      "1.5.2b3" : function() {
+        var RDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
+        var localstore = RDF.GetDataSource("rdf:local-store");
+        SageUtils.setSagePrefValue(
+          "showFeedItemList",
+          localstore.HasAssertion(
+            RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemList"),
+            RDF.GetResource("checked"),
+            RDF.GetLiteral(true),
+            true));
+        SageUtils.setSagePrefValue(
+          "showFeedItemListToolbar",
+          localstore.HasAssertion(
+            RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemListToolbar"),
+            RDF.GetResource("checked"),
+            RDF.GetLiteral(true),
+            true));
+        SageUtils.setSagePrefValue(
+          "showFeedItemListTooltips",
+          localstore.HasAssertion(
+            RDF.GetResource("chrome://sage/content/sage.xul#chkShowFeedItemTooltips"),
+            RDF.GetResource("checked"),
+            RDF.GetLiteral(true),
+            true));
       }
       
     };

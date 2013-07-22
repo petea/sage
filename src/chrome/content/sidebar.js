@@ -126,9 +126,9 @@ var sidebarController = {
     } catch(e) {
       logger.error(e);
     }
-    
+
     PlacesUtils.annotations.addObserver(annotationObserver);
-    
+
     strRes = document.getElementById("strRes");    
     resultStrArray = new Array(
       strRes.getString("RESULT_OK_STR"),
@@ -138,10 +138,15 @@ var sidebarController = {
       strRes.getString("RESULT_NOT_AVAILABLE_STR"),
       strRes.getString("RESULT_ERROR_FAILURE_STR")
     );
-      
+
+    setCheckboxCheck("chkShowFeedItemList", SageUtils.getSagePrefValue("showFeedItemList"));
+    setCheckboxCheck("chkShowFeedItemListToolbar", SageUtils.getSagePrefValue("showFeedItemListToolbar"));
+    setCheckboxCheck("chkShowFeedItemListTooltips", SageUtils.getSagePrefValue("showFeedItemListTooltips"));
+
     toggleShowFeedItemList();
     toggleShowFeedItemListToolbar();
-  
+    toggleShowFeedItemListTooltips();
+
     document.documentElement.controllers.appendController(readStateController);
     readStateController.onCommandUpdate();
     
@@ -403,13 +408,24 @@ function toggleShowFeedItemList() {
   var showFeedItemList = getCheckboxCheck("chkShowFeedItemList");
   document.getElementById("sage-splitter").hidden = !showFeedItemList;
   document.getElementById("rssItemListBoxBox").hidden = !showFeedItemList;
-  if(showFeedItemList) setRssItemListBox();
+  if (showFeedItemList) {
+    setRssItemListBox();
+  }
+  SageUtils.setSagePrefValue("showFeedItemList", showFeedItemList);
 }
 
 function toggleShowFeedItemListToolbar() {
   var showFeedItemListToolbar = getCheckboxCheck("chkShowFeedItemListToolbar");
   document.getElementById("itemListToolbar").hidden = !showFeedItemListToolbar;
-  if (showFeedItemListToolbar) readStateController.onCommandUpdate();
+  if (showFeedItemListToolbar) {
+    readStateController.onCommandUpdate();
+  }
+  SageUtils.setSagePrefValue("showFeedItemListToolbar", showFeedItemListToolbar);
+}
+
+function toggleShowFeedItemListTooltips() {
+  var showFeedItemListTooltips = getCheckboxCheck("chkShowFeedItemListTooltips");
+  SageUtils.setSagePrefValue("showFeedItemListTooltips", showFeedItemListTooltips);
 }
 
 function setRssItemListBox() {
@@ -451,19 +467,16 @@ function setRssItemListBox() {
 }
 
 function getCheckboxCheck(element_id) {
-  var checkboxNode = document.getElementById(element_id);
-  return checkboxNode.getAttribute("checked") == "true";
+  return document.getElementById(element_id).getAttribute("checked") == "true";
 }
 
-function setCheckbox(element_id, value) {
-  var checkboxNode = document.getElementById(element_id);
-  checkboxNode.setAttribute("checked", value);
+function setCheckboxCheck(element_id, state) {
+  document.getElementById(element_id).setAttribute("checked", state ? "true" : "false");
 }
-
 
 function populateToolTip(e) {
   // if setting disabled
-  if(!getCheckboxCheck("chkShowFeedItemTooltips")) {
+  if(!getCheckboxCheck("chkShowFeedItemListTooltips")) {
     e.preventDefault();
     return;
   }

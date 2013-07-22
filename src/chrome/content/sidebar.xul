@@ -104,9 +104,9 @@
         <menupopup>
           <menu label="&menu.sidebarLayout;">
             <menupopup>
-              <menuitem id="chkShowFeedItemList" type="checkbox" persist="checked" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList();"/>
-              <menuitem id="chkShowFeedItemListToolbar" type="checkbox" persist="checked" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar();"/>
-              <menuitem id="chkShowFeedItemTooltips" type="checkbox" persist="checked" label="&menu.showFeedItemTooltips;"/>
+              <menuitem id="chkShowFeedItemList" type="checkbox" label="&menu.showFeedItemList;" oncommand="toggleShowFeedItemList();"/>
+              <menuitem id="chkShowFeedItemListToolbar" type="checkbox" label="&menu.showFeedItemListToolbar;" oncommand="toggleShowFeedItemListToolbar();"/>
+              <menuitem id="chkShowFeedItemListTooltips" type="checkbox" label="&menu.showFeedItemTooltips;" oncommand="toggleShowFeedItemListTooltips();"/>
             </menupopup>
           </menu>
           <menuseparator/>

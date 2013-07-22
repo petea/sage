@@ -233,13 +233,6 @@ var SageUtils = {
     return folderId;
   },
   
-  persistValue : function(uri, id, attribute, value) {
-    var RDF = Cc["@mozilla.org/rdf/rdf-service;1"].getService(Ci.nsIRDFService);
-    var localstore = RDF.GetDataSource("rdf:local-store");
-    localstore.Assert(RDF.GetResource(uri), RDF.GetResource("http://home.netscape.com/NC-rdf#persist"), RDF.GetResource(uri + "#" + id), true);
-    localstore.Assert(RDF.GetResource(uri + "#" + id), RDF.GetResource(attribute), RDF.GetLiteral(value), true);
-  },
-  
   htmlToText : function(aStr) {
     var  formatConverter = Cc["@mozilla.org/widget/htmlformatconverter;1"].createInstance(Ci.nsIFormatConverter);
     var fromStr = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
