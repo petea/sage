@@ -337,7 +337,7 @@ var sidebarController = {
   },
   
   openOPMLWizardDialog : function() {
-    openDialog("chrome://sage/content/opml/opml.xul", "", "chrome,centerscreen,modal,close");
+    openDialog("chrome://sage/content/opml.xul", "", "chrome,centerscreen,modal,close");
   },
   
   openOrganizeFeedsDialog : function() {
