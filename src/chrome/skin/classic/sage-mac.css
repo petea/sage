@@ -66,3 +66,17 @@ sidebarheader {
 	border-top: 1px solid ThreeDLightShadow;
 	background-color: #eee;
 }
+
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=643184 */
+
+#toolsMenuButton .menu-iconic-icon {
+  width: 16px;
+}
+
+#toolsMenuButton .menu-iconic-left {
+  -moz-margin-start: -15px;
+}
+
+#toolsMenuButton menuitem[checked="true"] .menu-iconic-left {
+  -moz-padding-start: 0;
+}
