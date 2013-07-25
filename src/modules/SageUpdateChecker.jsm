@@ -264,7 +264,7 @@ var SageUpdateChecker = {
       this.clearFeedCheckTimer();
       this.feedCheckTimer = setTimeout((function() {
         this.httpReq.abort();
-        this.checkResult(false);        
+        this.checkResult(false);
       }).bind(this), FEED_CHECK_TIMEOUT);
     } catch (e) {
         // FAILURE
@@ -288,6 +288,7 @@ var SageUpdateChecker = {
   },
 
   httpReadyStateChange: function() {
+    this.logger.debug("httpReadyStateChange: " + this.httpReq.readyState);
     if (this.httpReq.readyState == 2) {
       try {
         this.httpReq.status;
@@ -301,15 +302,22 @@ var SageUpdateChecker = {
   },
 
   httpLoaded: function(e) {
+    this.logger.debug("httpLoaded");
     this.clearFeedCheckTimer();
     var FeedParserFactory = new Components.Constructor("@sage.mozdev.org/sage/feedparserfactory;1", "sageIFeedParserFactory");
     var feedParserFactory = new FeedParserFactory();
-    var feedParser = feedParserFactory.createFeedParser(this.httpReq.responseText);
-    var feed = feedParser.parse(this.httpReq.responseText, this.httpReq.channel.originalURI, this);
+    try {
+      var feedParser = feedParserFactory.createFeedParser(this.httpReq.responseText);
+      var feed = feedParser.parse(this.httpReq.responseText, this.httpReq.channel.originalURI, this);
+    } catch (e) {
+      this.logger.warn("httpLoaded: error parsing feed");
+      this.checkResult(false);
+    }
   },
   
   // sageIFeedParserListener
   onFeedParsed: function(feed) {
+    this.logger.debug("onFeedParsed");
     if (feed) {
       feed.setFeedURI(this.httpReq.channel.originalURI.spec);
       var lastModified = 0;
