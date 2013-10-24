@@ -103,6 +103,12 @@ var SageMetrics = {
     if (!this.TID) {
       return;
     }
+
+    let allowMetrics = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_METRICS);
+    if (allowMetrics !== true) {
+      return;
+    }
+
     var finalParams = {
       v: "1",
       tid: this.TID,
