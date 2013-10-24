@@ -68,6 +68,7 @@
   <groupbox>
     <caption label="&settings.general.caption;"/>
     <checkbox id="chkTwelveHourClock" label="&settings.twelveHourClock.label;"/>
+    <checkbox id="chkAllowMetrics" label="&settings.allowMetrics.label;"/>
     <grid>
       <columns>
         <column/>

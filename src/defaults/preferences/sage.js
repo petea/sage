@@ -42,6 +42,7 @@ pref("extensions.sage.userCss.path", "");
 pref("extensions.sage.allowEncodedContent", true);
 pref("extensions.sage.renderFeeds", true);
 pref("extensions.sage.twelveHourClock", true);
+pref("extensions.sage.allowMetrics", false);
 pref("extensions.sage.feedItemOrder", "chrono");
 pref("extensions.sage.feedDiscoveryMode", "exhaustive");
 pref("extensions.sage.logLevel", 3);

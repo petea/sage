@@ -50,6 +50,7 @@ var txtUserCssPath;
 var chkAllowEContent;
 var chkRenderFeeds;
 var chkTwelveHourClock;
+var chkAllowMetrics;
 var feedItemOrder;
 var feedDiscoveryMode;
 
@@ -87,6 +88,9 @@ function init() {
   chkTwelveHourClock = document.getElementById("chkTwelveHourClock");
   chkTwelveHourClock.checked = SageUtils.getSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK);
 
+  chkAllowMetrics = document.getElementById("chkAllowMetrics");
+  chkAllowMetrics.checked = SageUtils.getSagePrefValue(SageUtils.PREF_ALLOW_METRICS);
+
   feedItemOrder = document.getElementById("feedItemOrder");
   feedItemOrder.value = SageUtils.getSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER);
 
@@ -106,6 +110,7 @@ function accept() {
   SageUtils.setSagePrefValue(SageUtils.PREF_ALLOW_ENCODED_CONTENT, chkAllowEContent.checked);
   SageUtils.setSagePrefValue(SageUtils.PREF_RENDER_FEEDS, chkRenderFeeds.checked);
   SageUtils.setSagePrefValue(SageUtils.PREF_TWELVE_HOUR_CLOCK, chkTwelveHourClock.checked);
+  SageUtils.setSagePrefValue(SageUtils.PREF_ALLOW_METRICS, chkAllowMetrics.checked);
   SageUtils.setSagePrefValue(SageUtils.PREF_FEED_ITEM_ORDER, feedItemOrder.value);
   SageUtils.setSagePrefValue(SageUtils.PREF_FEED_DISCOVERY_MODE, feedDiscoveryMode.value);
 }

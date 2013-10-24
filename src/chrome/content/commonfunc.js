@@ -50,6 +50,7 @@ var SageUtils = {
   PREF_ALLOW_ENCODED_CONTENT : "allowEncodedContent",
   PREF_RENDER_FEEDS : "renderFeeds",
   PREF_TWELVE_HOUR_CLOCK : "twelveHourClock",
+  PREF_ALLOW_METRICS : "allowMetrics",
   PREF_FEED_ITEM_ORDER : "feedItemOrder",
   PREF_FEED_DISCOVERY_MODE : "feedDiscoveryMode",
   PREF_LOG_LEVEL : "logLevel",

@@ -33,6 +33,7 @@
 <!ENTITY settings.general.caption     "General">
 <!ENTITY settings.renderFeeds.label     "Render feeds in contents area">
 <!ENTITY settings.twelveHourClock.label     "Use 12 hour clock">
+<!ENTITY settings.allowMetrics.label     "Allow Sage to collect user metrics">
 <!ENTITY settings.feedItemOrder.label     "Feed item order">
 <!ENTITY settings.feedItemOrder.chrono     "Chronological">
 <!ENTITY settings.feedItemOrder.source     "Source">
