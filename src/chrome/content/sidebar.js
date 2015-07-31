@@ -212,17 +212,12 @@ var sidebarController = {
             properties.push("sage_state_" + state);
           } catch (e) { }
         } else {
-          PlacesUtils.livemarks.getLivemark(
-            { id: itemId },
-            function (aStatus, aLivemark) {
-              if (Components.isSuccessCode(aStatus)) {
-                this._controller.cacheLivemarkInfo(node, aLivemark);
-                properties.push("livemark");
-                // The livemark attribute is set as a cell property on the title cell.
-                this._invalidateCellValue(node, this.COLUMN_TYPE_TITLE);
-              }
-            }.bind(this)
-          );
+          PlacesUtils.livemarks.getLivemark({ id: itemId }).then(aLivemark => {
+              this._controller.cacheLivemarkInfo(node, aLivemark);
+              properties.push("livemark");
+              // The livemark attribute is set as a cell property on the title cell.
+              this._invalidateCellValue(node, this.COLUMN_TYPE_TITLE);
+          }).catch(function() {});
         }
       }
       properties.forEach(function(property) {
@@ -272,32 +267,26 @@ var sidebarController = {
   },
   
   loadFeedFromNode : function(aNode, aEvent) {
+    logger.debug("loadFeedFromNode");
     var nodeType = aNode.type,
-        itemId = aNode.itemId,
-        uri;
-    PlacesUtils.livemarks.getLivemark(
-      { id: itemId },
-      (function(aStatus, aLivemark) {
-        var isLivemark = false,
-            feedURI;
-        if (Components.isSuccessCode(aStatus)) {
-          isLivemark = true;
-          feedURI = aLivemark.feedURI;
-        }
-        if ((nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER ||
-             nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_FOLDER_SHORTCUT) && isLivemark) {
-          uri = feedURI.spec;
-        } else {
-          uri = PlacesUtils.bookmarks.getBookmarkURI(itemId).spec;
-        }
-        
-        lastItemId = itemId;
-        this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
-        feedLoader.loadURI(uri);
-        if (SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS)) {
-          openURI(SageUtils.FEED_SUMMARY_URI + "#feed/" + encodeURIComponent(uri), aEvent);
-        }
-      }).bind(this));
+        itemId = aNode.itemId;
+
+    var onURIResolved = function(uri) {
+      lastItemId = itemId;
+      this.setStatus("loading", strRes.getFormattedString("RESULT_LOADING", [PlacesUtils.bookmarks.getItemTitle(itemId)]));
+      feedLoader.loadURI(uri);
+      if (SageUtils.getSagePrefValue(SageUtils.PREF_RENDER_FEEDS)) {
+        openURI(SageUtils.FEED_SUMMARY_URI + "#feed/" + encodeURIComponent(uri), aEvent);
+      }
+    }.bind(this);
+
+    PlacesUtils.livemarks.getLivemark({ id: itemId }).then(aLivemark => {
+      onURIResolved(aLivemark.feedURI.spec);
+    }).catch(function() {
+      if (nodeType == Ci.nsINavHistoryResultNode.RESULT_TYPE_URI) {
+        onURIResolved(PlacesUtils.bookmarks.getBookmarkURI(itemId).spec);
+      }
+    });
   },
   
   checkFeeds : function(aFolderId) {

@@ -282,63 +282,61 @@ function createOpmlOutline(aOpmlDoc, aResultNode) {
 
   var outlineNode = aOpmlDoc.createElement("outline");
 
-  PlacesUtils.livemarks.getLivemark(
-    { id: aResultNode.itemId },
-    (function(aStatus, aLivemark) {
-      var isLivemark = false,
-          feedURI;
-      if (Components.isSuccessCode(aStatus)) {
-        isLivemark = true;
-        feedURI = aLivemark.feedURI;
-      }
-
-      var childNode, childNodeType;
-      if (type == bmsvc.TYPE_FOLDER && !isLivemark) {
-        outlineNode.setAttribute("text", title);
-        aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
-        aResultNode.containerOpen = true;
-        var promise;
-        if (aResultNode.childCount > 0) {
-          var i = 0;
-          function step() {
-            childNode = aResultNode.getChild(i);
-            i++;
-            childNodeType = bmsvc.getItemType(childNode.itemId);
-            if (childNodeType == bmsvc.TYPE_FOLDER || childNodeType == bmsvc.TYPE_BOOKMARK) {
-              promise = createOpmlOutline(aOpmlDoc, childNode);
-              promise.then(function(opmlOutline) {
-                outlineNode.appendChild(opmlOutline);
-                if (i < aResultNode.childCount) {
-                  step();
-                } else {
-                  aResultNode.containerOpen = false;
-                  deferred.resolve(outlineNode);
-                }
-              });
-            }
+  var onLivemarkResolved = function(aLivemark) {
+    var childNode, childNodeType;
+    if (type == bmsvc.TYPE_FOLDER && !aLivemark) {
+      outlineNode.setAttribute("text", title);
+      aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
+      aResultNode.containerOpen = true;
+      var promise;
+      if (aResultNode.childCount > 0) {
+        var i = 0;
+        function step() {
+          childNode = aResultNode.getChild(i);
+          i++;
+          childNodeType = bmsvc.getItemType(childNode.itemId);
+          if (childNodeType == bmsvc.TYPE_FOLDER || childNodeType == bmsvc.TYPE_BOOKMARK) {
+            promise = createOpmlOutline(aOpmlDoc, childNode);
+            promise.then(function(opmlOutline) {
+              outlineNode.appendChild(opmlOutline);
+              if (i < aResultNode.childCount) {
+                step();
+              } else {
+                aResultNode.containerOpen = false;
+                deferred.resolve(outlineNode);
+              }
+            });
           }
-          step();
-        } else {
-          aResultNode.containerOpen = false;
-          deferred.resolve(outlineNode);
         }
-      } else if (type == bmsvc.TYPE_BOOKMARK) {
-        var url = bmsvc.getBookmarkURI(aResultNode.itemId).spec;
-        outlineNode.setAttribute("type", "rss");
-        outlineNode.setAttribute("text", title);
-        outlineNode.setAttribute("title", title);
-        outlineNode.setAttribute("xmlUrl", url);
-        deferred.resolve(outlineNode);
-      } else if (isLivemark) {
-        outlineNode.setAttribute("type", "rss");
-        outlineNode.setAttribute("text", title);
-        outlineNode.setAttribute("title", title);
-        outlineNode.setAttribute("xmlUrl", feedURI.spec);
-        deferred.resolve(outlineNode);
+        step();
       } else {
+        aResultNode.containerOpen = false;
         deferred.resolve(outlineNode);
       }
-    }).bind(this));
+    } else if (type == bmsvc.TYPE_BOOKMARK) {
+      var url = bmsvc.getBookmarkURI(aResultNode.itemId).spec;
+      outlineNode.setAttribute("type", "rss");
+      outlineNode.setAttribute("text", title);
+      outlineNode.setAttribute("title", title);
+      outlineNode.setAttribute("xmlUrl", url);
+      deferred.resolve(outlineNode);
+    } else if (aLivemark) {
+      outlineNode.setAttribute("type", "rss");
+      outlineNode.setAttribute("text", title);
+      outlineNode.setAttribute("title", title);
+      outlineNode.setAttribute("xmlUrl", aLivemark.feedURI.spec);
+      deferred.resolve(outlineNode);
+    } else {
+      deferred.resolve(outlineNode);
+    }
+  }.bind(this);
+
+  PlacesUtils.livemarks.getLivemark({ id: aResultNode.itemId }).then(aLivemark => {
+    onLivemarkResolved(aLivemark);
+  }).catch(function() {
+    onLivemarkResolved(null);
+  });
+    
   return deferred.promise;
 }
 

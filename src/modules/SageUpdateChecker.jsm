@@ -154,35 +154,34 @@ var SageUpdateChecker = {
 
   queueItems: function uc_queueItems(aResultNode) {
     var itemId = aResultNode.itemId;
-    PlacesUtils.livemarks.getLivemark(
-      { id: itemId },
-      (function(aStatus, aLivemark) {
-        var isLivemark = false,
-            feedURI;
-        if (Components.isSuccessCode(aStatus)) {
-          isLivemark = true;
-          feedURI = aLivemark.feedURI;
+    
+    var onLivemarkResolved = function(aLivemark) {
+      var itemType = this.bmsvc.getItemType(itemId);
+      if (itemType == this.bmsvc.TYPE_BOOKMARK || aLivemark) {
+        var url = (aLivemark ? aLivemark.feedURI : this.bmsvc.getBookmarkURI(itemId)).spec;
+        var status = this.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
+        if (url && status != SageUtils.STATUS_UPDATE) {
+          var feed = {
+            id: itemId,
+            url: url
+          };
+          this.checkList.push(feed);
         }
-        var itemType = this.bmsvc.getItemType(itemId);
-        if (itemType == this.bmsvc.TYPE_BOOKMARK || isLivemark) {
-          var url = (isLivemark ? feedURI : this.bmsvc.getBookmarkURI(itemId)).spec;
-          var status = this.getItemAnnotation(itemId, SageUtils.ANNO_STATUS);
-          if (url && status != SageUtils.STATUS_UPDATE) {
-            var feed = {
-              id: itemId,
-              url: url
-            };
-            this.checkList.push(feed);
-          }
-        } else if (itemType == this.bmsvc.TYPE_FOLDER) {
-          aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
-          aResultNode.containerOpen = true;
-          for (var i = 0; i < aResultNode.childCount; i ++) {
-            this.queueItems(aResultNode.getChild(i));
-          }
-          aResultNode.containerOpen = false;
+      } else if (itemType == this.bmsvc.TYPE_FOLDER) {
+        aResultNode.QueryInterface(Ci.nsINavHistoryContainerResultNode);
+        aResultNode.containerOpen = true;
+        for (var i = 0; i < aResultNode.childCount; i ++) {
+          this.queueItems(aResultNode.getChild(i));
         }
-      }).bind(this));
+        aResultNode.containerOpen = false;
+      }
+    }.bind(this);
+    
+    PlacesUtils.livemarks.getLivemark({ id: itemId }).then(aLivemark => {
+      onLivemarkResolved(aLivemark);
+    }).catch(function() {
+      onLivemarkResolved(null);
+    });
   },
 
   setHasNew: function(aValue) {
