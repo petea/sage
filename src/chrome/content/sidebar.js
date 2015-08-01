@@ -346,19 +346,13 @@ var sidebarController = {
   openAboutDialog : function() {
     var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
     var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
-    if (versionChecker.compare(appInfo.version, "4.0a") >= 0) {
-      Components.utils.import("resource://gre/modules/AddonManager.jsm");
-      AddonManager.getAddonByID("{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", function(aAddon) {
-        openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", aAddon);
-      });
-    } else {
-      var extensionManager = Cc["@mozilla.org/extensions/manager;1"].getService(Ci.nsIExtensionManager);
-      openDialog("chrome://mozapps/content/extensions/about.xul", "",
-        "chrome,centerscreen,modal", "urn:mozilla:item:{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", extensionManager.datasource);
-    }
+    Components.utils.import("resource://gre/modules/AddonManager.jsm");
+    AddonManager.getAddonByID("{a6ca9b3b-5e52-4f47-85d8-cca35bb57596}", function(aAddon) {
+      openDialog("chrome://mozapps/content/extensions/about.xul", "", "chrome,centerscreen,modal", aAddon);
+    });
   }
 
-}
+};
 
 
 function rssItemListBoxClick(aEvent) {
