@@ -270,6 +270,7 @@ var feedSummary = {
       if (feedItem.hasContent()) {
         var description = document.createElement("div");
         description.setAttribute("class", "item-desc");
+        var content;
         if (allowEContent) {
           content = feedItem.getContent();
         } else {
