@@ -54,6 +54,8 @@ loader.loadSubScript("chrome://sage/content/commonfunc.js");
 const DELAY = 60 * 60 * 1000; // One hour between each check
 const INITIAL_CHECK = 5 * 1000; // Delay the first check to avoid impacting startup performance
 const FEED_CHECK_TIMEOUT = 10 * 1000; // Wait up to ten seconds for a feed to load
+const DELAY_BETWEEN_FEEDS = 1 * 1000; // Pause between checking feeds to avoid monopolizing the main thread
+const DELAY_BETWEEN_FEEDS_INTERACTIVE = 0.1 * 1000; // Interactive checking delay 
 
 var SageUpdateChecker = {
 
@@ -223,6 +225,7 @@ var SageUpdateChecker = {
       SageMetrics.event("Noninteractive", "Checking Feeds", { value: feedCount });
       if (feedCount > 0) {
         this.checking = true;
+        this.interactive = !nonInteraction;
         this.check();
       }
     }).bind(this), 1000);
@@ -370,7 +373,9 @@ var SageUpdateChecker = {
         this.checking = false;
         this.notifyObservers("sage-nowRefreshing", "");
       } else {
-        this.check();
+        setTimeout(function() {
+          this.check();
+        }.bind(this), this.interactive ? DELAY_BETWEEN_FEEDS_INTERACTIVE : DELAY_BETWEEN_FEEDS);
       }
     }    
   }
