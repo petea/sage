@@ -65,7 +65,7 @@
       type="checkbox" group="sidebar"
       sidebarurl="chrome://sage/content/sidebar.xul"
       sidebartitle="&sage.sidebarTitle;"
-      oncommand="toggleSidebar('viewSageSidebar');"/>
+      oncommand="SidebarUI.toggle('viewSageSidebar');"/>
   </broadcasterset>
 
   <toolbox id="navigator-toolbox">
