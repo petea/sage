@@ -36,10 +36,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const Cu = Components.utils;
+//const Cu = Components.utils;
 
-Cu.import("resource://sage/SageMetrics.jsm");
-Cu.import("resource://sage/SageUpdateChecker.jsm");
+Components.utils.import("resource://sage/SageMetrics.jsm");
+Components.utils.import("resource://sage/SageUpdateChecker.jsm");
 
 var bookmarksTree;
 var statusBarImage, statusBarLabel;
